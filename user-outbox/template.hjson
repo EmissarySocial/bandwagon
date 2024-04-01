@@ -1,0 +1,89 @@
+{
+	templateId: music-outbox
+	model: User
+	templateRole: user-outbox
+	label: Arcadium Outbox
+	extends: ["user-outbox"]
+	schema: {
+		type: object
+		properties: {
+			location: {type: "string"}
+			data: {
+				type: object
+				wildcard: string
+				properties: {
+					albumLabel: {type: "string"}
+					eventLabel: {type: "string"}
+				}
+			}
+		}
+	}
+
+	actions: {
+
+		add-album: {
+			roles: ["myself"]
+			steps: [
+				{
+					do: add-stream
+					style: inline
+					location: outbox
+					template: arcadium-album
+					label: + Add Album
+				}
+			]
+		}
+
+		add-event: {
+			roles: ["myself"]
+			steps: [
+				{
+					do: add-stream
+					style: inline
+					location: outbox
+					template: arcadium-event
+					title: + Add a Song
+				}
+				{do: "save"}
+				{do: "refresh-page"}
+			]
+		}
+
+		edit: {
+			roles: ["myself"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Profile Settings
+							type:layout-tabs
+							children: [
+								{
+									type: layout-vertical
+									label: Basics
+									children: [
+										{type:"text", path:"displayName", label:"Name"}
+										{type:"text", path:"location", label:"Location"}
+										{type:"toggle", path:"isPublic", options:{true-text:"Profile is Public", false-text:"Profile is Public"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Custom Labels
+									children: [
+										{type:"text", path:"data.albumLabel", label:"Albums Label"}
+										{type:"text", path:"data.eventLabel", label:"Events Label"}
+									]
+								}
+								// {type:"text", path:"data.backgroundColor", label:"Background Color"}
+								// {type:"text", path:"data.textColor", label:"Text Color"}
+								// {type:"text", path:"data.highlightColor", label:"Highlight Color"}
+							]
+						}
+					}
+				]}
+			] 
+		}
+	}
+}

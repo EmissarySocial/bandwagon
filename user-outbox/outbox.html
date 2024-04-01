@@ -1,0 +1,106 @@
+{{- $isMyself := .IsMyself -}}
+{{- $albums := (.Outbox.Where "templateId" "arcadium-album").ByRank.Slice -}}
+{{- $events := (.Outbox.Where "templateId" "arcadium-event").ByRank.Slice -}}
+
+<!-- Page content -->
+<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
+
+	<title>{{.DisplayName}}</title>
+
+	<!-- Metadata -->
+	<link rel="icon" href="{{.ImageURL}}"/>
+
+	<!-- ActivityPub links -->
+	<link rel="http://webfinger.net/rel/profile-page" href="{{.ProfileURL}}"/>
+	<link rel="http://ostatus.org/schema/1.0/subscribe" href="{{.Host}}/.ostatus/tunnel?uri={uri}">
+	<link rel="self" type="application/activity+json" href="{{.ActivityPubURL}}"/>
+
+	<!-- RSS and WebSub Links -->
+	<link rel="hub" href="{{.Host}}/@{{.UserID}}/websub"/>
+	<link rel="alternate" type="application/rss+xml" href="{{.Host}}/@{{.UserID}}/feed?format=rss"/>
+	<link rel="alternate" type="application/atom+xml" href="{{.Host}}/@{{.UserID}}/feed?format=atom"/>
+	<link rel="alternate" type="application/feed+json" href="{{.Host}}/@{{.UserID}}/feed?format=json"/>
+	<link rel="canonical" class="u-url" href="{{.ProfileURL}}">
+
+	<!-- Banner Image -->
+	<div style="width:100%; height: 200px; background-color: #a0a0a0;"></div>
+
+	<div class="padding">
+
+		<!-- Band Name -->
+		<div class="flex-row margin-top">
+			<img src="{{.ImageURL}}" class="circle-48">
+			<div>
+				<h1 class="margin-none">{{.DisplayName}}</h1>
+				{{- if ne "" .Location -}}
+					<div class="text-sm text-gray">{{icon "location-fill"}} {{.Location}}</div>
+				{{- end -}}
+			</div>
+		</div>
+
+		<!-- Albums -->
+		{{- if or $isMyself $albums.NotEmpty -}}
+			<hr>
+			<h2>{{first (.Data "albumLabel") "Music"}}</h2>
+			<div class="margin-vertical columns-4">
+				{{- range $albums -}}
+					<div hx-get="/{{.StreamID}}" class="square card padding-none" role="button">
+						<img src="{{.ImageURL}}" class="square width-100-percent block" style="object-fit:cover">
+					</div>
+				{{- end -}}
+
+				{{- if .UserCan "add-album" -}}
+					<div class="square card link flex-column" hx-get="/@{{.UserID}}/add-album" role="button">
+						<div class="text-3xl align-center">{{icon "add-circle"}}</div>
+						<div class="align-center">Add Album</div>
+					</div>
+				{{- end -}}
+			</div>
+		{{- end -}}
+
+		<!-- Events -->
+		{{- if or $isMyself $events.NotEmpty -}}
+			<div class=" margin-top-xl flex-row">
+				<h2>{{first (.Data "eventLabel") "Calendar"}}</h2>
+			</div>
+
+			<div class="columns-3">
+				{{- range $events -}}
+					<div class="card flex-column padding">
+						<div>
+							<span class="bold">{{.Data.date}}</span>
+						</div>
+						<div class="text-xl margin-none bold">{{.Data.city}}</div>
+						<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
+						{{- if ne "" .Data.website -}}
+							<div class="margin-top">
+								<a href="{{.Data.website}}" target="_blank" class="button align-center primary width-100-percent">Get Tickets</a>
+							</div>
+						{{- end -}}
+						{{- if $isMyself -}}
+							<div class="pos-absolute" style="top:8px; right:8px;">
+								<button class="text-xs margin-left" hx-get="/{{.StreamID}}/edit">Edit</button>
+							</div>
+						{{- end -}}
+					</div>
+				{{- end -}}
+
+				{{- if .UserCan "add-event" -}}
+					<div class="card padding link flex-column flex-align-center flex-justify-center" hx-get="/@{{.UserID}}/add-event" role="button">
+						<div class="text-3xl align-center">{{icon "add-circle"}}</div>
+						<div class="align-center">Add Event</div>
+					</div>
+				{{- end -}}
+			</div>
+
+		{{- end -}}
+
+	</div>
+
+	{{- if .IsMyself -}}
+		<button type="button" hx-get="/@me/edit" class="text-xs pos-absolute" style="top:8px; right:8px;">Edit</button>
+	{{- end -}}
+
+</div>
+
+{{- template "colors" . -}}

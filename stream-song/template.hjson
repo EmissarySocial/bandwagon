@@ -1,0 +1,133 @@
+{
+	templateId: arcadium-song
+	templateRole: song
+	label: Song
+	containedBy: ["album"]
+	schema: {
+		type: object
+		properties: {
+			label: {type: "string", required: true}
+			data: {
+				type: object 
+				properties: {
+					length: {type: "string"}
+					artist: {type: "string"}
+					composer: {type: "string"}
+					producer: {type: "string"}
+					isrc: {type: "string"}
+					lyrics: {type: "string"}
+					streamURL: {type: "string", format:"url"}
+					featured: {type: "boolean"}
+					explicit: {type: "boolean"}
+				}
+			}
+		}
+	}
+	actions: {
+		create: {
+			roles: ["admin", "editor"]
+			steps: [
+				{do:"as-modal", steps:[
+					{
+						do:"edit", 
+						form:{
+							type: layout-tabs
+							label: + Add a Song
+							children: [
+								{
+									type: layout-vertical
+									label: Basics
+									children: [
+										{type: "text", label: "Song Title", path: "label"},
+										{type: "text", label: "Length", path: "data.length"},
+										{type: "toggle", path: "data.featured", options:{true-text:"Featured", false-text:"Featured"}}
+										{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Extras
+									children: [
+										{type: "text", label: "Artist", path: "data.artist"},
+										{type: "text", label: "Composer", path: "data.composer"},
+										{type: "text", label: "Producer", path: "data.producer"},
+										{type: "text", label: "ISRC", path: "data.isrc"},
+										{type: "text", label: "Video Stream URL", path: "data.streamURL"},
+									]
+								}
+								{
+									type: layout-vertical
+									label: Lyrics
+									children: [
+										{type: "textarea", path: "data.lyrics", options:{rows: 10}}
+									]
+								}
+							]
+						}
+					}
+				]}
+				{do:"save"}
+				{do:"refresh-page"}
+			]
+		}
+		view: {}
+		edit: {
+			roles: ["admin", "editor"]
+			steps: [
+				{
+					do:"as-modal",
+					steps:[
+						{
+							do:"edit", 
+							options: ["delete:/{{.StreamID}}/delete"]
+							form:{
+								type: layout-tabs
+								label: Edit Song
+								children: [
+									{
+										type: layout-vertical
+										label: Basics
+										children: [
+											{type: "text", label: "Song Title", path: "label"},
+											{type: "text", label: "Length", path: "data.length"},
+											{type: "toggle", path: "data.featured", options:{true-text:"Featured", false-text:"Featured"}}
+											{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
+										]
+									}
+									{
+										type: layout-vertical
+										label: Extras
+										children: [
+											{type: "text", label: "Artist", path: "data.artist"},
+											{type: "text", label: "Composer", path: "data.composer"},
+											{type: "text", label: "Producer", path: "data.producer"},
+											{type: "text", label: "ISRC", path: "data.isrc"},
+											{type: "text", label: "Video Stream URL", path: "data.streamURL"},
+										]
+									}
+									{
+										type: layout-vertical
+										label: Lyrics
+										children: [
+											{type: "textarea", path: "data.lyrics", options:{rows: 10}}
+										]
+									}
+								]
+							}
+						}
+					]
+				}
+				{do:"save"}
+				{do:"refresh-page"}
+			]
+		}
+
+		delete: {
+			roles: ["admin", "editor"]
+			steps: [
+				{do:"delete", title:"Delete this Song?"}
+				{do:"refresh-page"}
+			]
+		}
+	}
+}

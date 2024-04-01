@@ -1,0 +1,21 @@
+{{- $backgroundColor := .Data "backgroundColor" -}}
+{{- $highlightColor := .Data "highlightColor" -}}
+{{- $textColor := .Data "textColor" -}}
+
+<style>
+	:root {
+		{{- if ne "" $backgroundColor -}}
+			--page-background: {{ $backgroundColor }};
+		{{- end -}}
+
+		{{- if ne "" $textColor -}}
+			--text-color: {{ $textColor }};
+		{{- end -}}
+
+		{{- if ne "" $highlightColor -}}
+			--link-color: {{ $highlightColor }};
+			--link-color-hover: {{ $highlightColor }};
+			--button-background-color: {{ $highlightColor }};
+		{{- end -}}
+	}
+</style>

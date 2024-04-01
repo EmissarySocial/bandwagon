@@ -1,0 +1,102 @@
+{{- $tags := .Tags -}}
+{{- $songs := .Children.Top60.ByRank.Slice -}}
+{{- $canEdit := .UserCan "edit" -}}
+
+<div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false" hx-target="this" hx-swap="outerHTML">
+
+	<!-- First Row: Album Name and Artwork -->
+	<div class="flex-row-md width-100-percent align-center align-left-md">
+		<img src="{{.ImageURL}}" class="width-480 width-256-md aspect-square" style="border:solid 1px black; object-fit:cover;">
+		<div class="show-md width-32"></div>
+		<div class="flex-grow-1">
+			<h1 class="margin-top">{{.Label}}</h1>
+			<h2 class="margin-vertical-none">
+				<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
+				{{ if ne "" (.Data "year") -}}
+					&middot; {{.Data "year"}}
+				{{- end -}}
+			</h2>
+			<div>
+				{{- range $index, $tag := $tags -}}
+					{{- if eq "Hashtag" $tag.Type}}
+						{{- if ne 0 $index -}},&nbsp;{{- end -}}
+						<a href="{{$tag.Href}}">{{$tag.Name}}</a>
+					{{- end -}}
+				{{- end -}}
+			</div>
+			<div class="margin-vertical"></div>
+			<div class="margin-vertical-lg">
+				<button class="primary">{{icon "play"}} Play</button>
+				<button>{{icon "share"}} Share</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Second Row: -->
+	<div class="flex-row-reverse-md margin-top-lg">
+
+		<!-- Song List -->
+		<div class="flex-grow-1">
+			<table class="table">
+				{{- range $index, $song := $songs -}}
+					<tr class="hover-trigger">
+						<td nowrap class="align-right">
+							{{- if eq $song.Data.featured true -}}
+								<span class="margin-right text-gray">{{icon "star-fill"}}</span>
+							{{- end -}}
+							<span class="hide show-sm">{{add $index 1}}.</span>
+						</td>
+						<td class="width-100-percent">
+							{{$song.Label}}
+							{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
+						</td>
+						<td nowrap class="align-right"><span class="hide show-md">{{$song.Data.length}}</span></td>
+						{{- if $canEdit -}}
+							<td nowrap>
+								<button hx-get="/{{$song.StreamID}}/edit" class="text-xs margin-right-none margin-left-sm">Edit</button>
+							</td>
+						{{- end -}}
+					</tr>
+				{{- end -}}
+		
+			</table>
+			<div class="margin-vertical-lg text-sm">
+				{{- if .UserCan "add-song" -}}
+					<button hx-get="/{{.StreamID}}/add-song">{{icon "add"}} Add Song</button>
+				{{- end -}}
+			</div>
+		</div>
+
+		<!-- Album Notes and Manager Actions -->
+		<div class="width-256 margin-right-lg">
+
+			{{- if ne "" .Summary -}}
+				<div class="margin-bottom-lg">
+					<h3>Album Notes</h3>
+					{{.Summary }}
+				</div>
+			{{- end -}}
+
+			{{- if $canEdit -}}
+				<div class="margin-bottom-lg">
+					<h3>Manager</h3>
+					<div class="text-sm">
+						<button hx-get="/{{.StreamID}}/edit" class="width-3-5">{{icon "settings"}} Edit Album</button>
+					</div>
+
+					{{- if .UserCan "upload-image" -}}
+						<form hx-post="/{{.StreamID}}/upload-image" hx-encoding="multipart/form-data" hx-trigger="change" hx-swap="none" hx-target="this" class="hide">
+							<input type="file" name="file" class="hide" id="upload-image" accept="image/*">
+						</form>
+						<div class="text-sm">
+							<label for="upload-image" role="button">
+								<span class="button width-3-5">{{icon "upload"}} Upload Artwork</span>
+							</label>
+						</div>
+					{{- end -}}
+				</div>
+			{{- end -}}
+		</div>
+
+	</div>
+</div>

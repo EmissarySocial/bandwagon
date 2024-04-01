@@ -1,0 +1,137 @@
+{
+	templateId: arcadium-album
+	templateRole: album
+	socialRole: Article
+	model: Stream
+	containedBy: ["folder", "home", "outbox"]
+	icon: album
+	label: Album (Default)
+	description: Contains one or more songs
+	schema: {
+		type: object
+		properties: {
+			label: {type: "string", required: true}
+			summary: {type: "string", format:"html"}
+			imageUrl: {type: "string", format:"uri"}
+			data: {
+				type: object
+				properties: {
+					featured: {type: "boolean"}
+					tags: {type: "string"}
+					year: {type: "string", minvalue:"0000", maxvalue:"9999", required: false}
+				}
+			}
+		}
+	}
+	actions: {
+		create: {
+			roles:["editor"]
+			steps: [
+				{do: "as-modal", steps: [
+					{
+						do: edit
+						form: {
+							label: + Add an Album
+							type: layout-tabs
+							children: [
+								{
+									type: layout-vertical
+									label: General
+									children: [
+										{type: "text", path:"label", label:"Album Name"}
+										{type: "text", path:"data.year", label:"Year Released"}
+										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
+										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Album Notes
+									children: [
+										{type: "textarea", path:"summary", options:{rows:8}}
+									]
+								}
+							]
+						}
+					}
+				]}
+				{do: "process-tags", paths:"data.tags"}
+				{do: "save"}
+				{do: "publish"}
+				{do: "forward-to", url: "/{{.StreamID}}/view"}
+			]
+		}
+		view: {do: "view-html"}
+		edit: {
+			roles: ["editor"]
+			steps: [
+				{do: "as-modal", steps: [
+					{
+						do: edit
+						options: ["delete:/{{.StreamID}}/delete"]
+						form: {
+							label: Edit Album
+							type: layout-tabs
+							children: [
+								{
+									type: layout-vertical
+									label: General
+									children: [
+										{type: "text", path:"label", label:"Album Name"}
+										{type: "text", path:"data.year", label:"Year Released"}
+										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
+										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Album Notes
+									children: [
+										{type: "textarea", path:"summary", options:{rows:8}}
+									]
+								}
+							]
+						}
+					}
+				]}
+				{do: "process-tags", paths:"data.tags"}
+				{do: "save"}
+				{do: "publish"}
+				{do: "refresh-page"}
+			]
+		}
+
+		delete: {
+			roles: ["editor"]
+			steps: [
+				{do: "delete"}
+				{do: "forward-to", url: "/@{{.AttributedTo.UserID.Hex}}"}
+			]
+		}
+
+		add-song: {
+			roles: ["editor"]
+			steps: [
+				{
+					do: add-stream
+					style: inline
+					location: child
+					title: + Add a Song
+					type: arcadium-song
+				}
+				{do: "save"}
+				{do: "refresh-page"}
+			]
+		}
+
+		upload-image: {
+			roles: ["editor"]
+			steps: [
+				{do: "upload-attachments"}
+				{do: "set-thumbnail", path:"imageUrl"}
+				{do: "save"}
+				{do: "refresh-page"}
+			]
+		}
+	}
+}

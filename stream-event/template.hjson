@@ -1,0 +1,82 @@
+{
+	templateId: arcadium-event
+	templateRole: event
+	socialRole: Article
+	model: Stream
+	containedBy: ["outbox"]
+	icon: calendar
+	label: Event
+	description: Contains event details
+	schema: {
+		type: object
+		properties: {
+			data: {
+				type: object
+				properties: {
+					date: {type:"string", required: true}
+					city: {type: "string"}
+					venue: {type: "string"}
+					website: {type: "string", format:"uri"}
+				}
+			}
+		}
+	}
+	actions: {
+		create: {
+			roles:["editor"]
+			steps: [
+				{do: "as-modal", steps: [
+					{
+						do: edit
+						form: {
+							label: Add Event
+							type: layout-vertical
+							children: [
+								{type: "text", path:"data.date", label:"Date"}
+								{type: "text", path:"data.city", label:"City"}
+								{type: "text", path:"data.venue", label:"Venue"}
+								{type: "text", path:"data.website", label:"Ticket Website"}
+							]
+						}
+					}
+				]}
+				{do: "process-tags", paths:"data.tags"}
+				{do: "save"}
+				{do: "refresh-page"}
+			]
+		}
+		view: {do: "view-html"}
+		edit: {
+			roles: ["editor"]
+			steps: [
+				{do: "as-modal", steps: [
+					{
+						do: edit
+						options: ["delete:/{{.StreamID}}/delete"]
+						form: {
+							label: Edit Event
+							type: layout-vertical
+							children: [
+								{type: "text", path:"data.date", label:"Date"}
+								{type: "text", path:"data.city", label:"City"}
+								{type: "text", path:"data.venue", label:"Venue"}
+								{type: "text", path:"data.website", label:"Ticket Website"}
+							]
+						}
+					}
+				]}
+				{do: "process-tags", paths:"data.tags"}
+				{do: "save"}
+				{do: "refresh-page"}
+			]
+		}
+
+		delete: {
+			roles: ["editor"]
+			steps: [
+				{do: "delete"}
+				{do: "refresh-page"}
+			]
+		}
+	}
+}
