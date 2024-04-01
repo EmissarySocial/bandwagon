@@ -50,7 +50,7 @@
 							{{$song.Label}}
 							{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
 						</td>
-						<td nowrap class="align-right"><span class="hide show-md">{{$song.Data.length}}</span></td>
+						<td nowrap class="align-right">{{$song.Data.length}}</td>
 						{{- if $canEdit -}}
 							<td nowrap>
 								<button hx-get="/{{$song.StreamID}}/edit" class="text-xs margin-right-none margin-left-sm">Edit</button>
