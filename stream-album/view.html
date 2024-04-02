@@ -5,9 +5,9 @@
 <div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false" hx-target="this" hx-swap="outerHTML">
 
 	<!-- First Row: Album Name and Artwork -->
-	<div class="flex-row-md width-100-percent align-center align-left-md">
-		<img src="{{.ImageURL}}" class="width-480 width-256-md aspect-square" style="border:solid 1px black; object-fit:cover;">
-		<div class="show-md width-32"></div>
+	<div class="md:flex-row width-100-percent align-center md:align-left">
+		<img src="{{.ImageURL}}" class="width-480 md:width-256 aspect-square" style="border:solid 1px black; object-fit:cover;">
+		<div class="md:show width-32"></div>
 		<div class="flex-grow-1">
 			<h1 class="margin-top">{{.Label}}</h1>
 			<h2 class="margin-vertical-none">
@@ -33,7 +33,7 @@
 	</div>
 
 	<!-- Second Row: -->
-	<div class="flex-row-reverse-md margin-top-lg">
+	<div class="md:flex-row-reverse margin-top-lg">
 
 		<!-- Song List -->
 		<div class="flex-grow-1">
@@ -44,7 +44,7 @@
 							{{- if eq $song.Data.featured true -}}
 								<span class="margin-right text-gray">{{icon "star-fill"}}</span>
 							{{- end -}}
-							<span class="hide show-sm">{{add $index 1}}.</span>
+							<span class="hide sm:show">{{add $index 1}}.</span>
 						</td>
 						<td class="width-100-percent">
 							{{$song.Label}}
