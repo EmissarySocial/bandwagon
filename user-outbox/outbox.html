@@ -41,18 +41,16 @@
 		<!-- Albums -->
 		{{- if or $isMyself $albums.NotEmpty -}}
 			<hr>
-			<h2>{{first (.Data "albumLabel") "Music"}}</h2>
-			<div class="margin-vertical columns-4">
+			<h2>
+				{{first (.Data "albumLabel") "Music"}}
+				{{- if .UserCan "add-album" -}}
+					<span class="text-sm button margin-left" hx-get="/@{{.UserID}}/add-album" role="button">{{icon "add"}} Add an Album</span>
+				{{- end -}}
+			</h2>
+			<div class="margin-vertical columns-3">
 				{{- range $albums -}}
 					<div hx-get="/{{.StreamID}}" class="square card padding-none" role="button">
 						<img src="{{.ImageURL}}" class="square width-100-percent block" style="object-fit:cover">
-					</div>
-				{{- end -}}
-
-				{{- if .UserCan "add-album" -}}
-					<div class="square card link flex-column" hx-get="/@{{.UserID}}/add-album" role="button">
-						<div class="text-3xl align-center">{{icon "add-circle"}}</div>
-						<div class="align-center">Add Album</div>
 					</div>
 				{{- end -}}
 			</div>
@@ -61,7 +59,12 @@
 		<!-- Events -->
 		{{- if or $isMyself $events.NotEmpty -}}
 			<div class=" margin-top-xl flex-row">
-				<h2>{{first (.Data "eventLabel") "Calendar"}}</h2>
+				<h2>
+					{{first (.Data "eventLabel") "Calendar"}}
+					{{- if .UserCan "add-event" -}}
+						<span class="text-sm button margin-left" hx-get="/@{{.UserID}}/add-event" role="button">{{icon "add"}} Add an Event</span>
+					{{- end -}}
+				</h2>
 			</div>
 
 			<div class="columns-3">
@@ -82,13 +85,6 @@
 								<button class="text-xs margin-left" hx-get="/{{.StreamID}}/edit">Edit</button>
 							</div>
 						{{- end -}}
-					</div>
-				{{- end -}}
-
-				{{- if .UserCan "add-event" -}}
-					<div class="card padding link flex-column flex-align-center flex-justify-center" hx-get="/@{{.UserID}}/add-event" role="button">
-						<div class="text-3xl align-center">{{icon "add-circle"}}</div>
-						<div class="align-center">Add Event</div>
 					</div>
 				{{- end -}}
 			</div>

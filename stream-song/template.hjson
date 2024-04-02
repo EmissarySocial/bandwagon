@@ -67,6 +67,7 @@
 					}
 				]}
 				{do:"save"}
+				{do:"publish"}
 				{do:"refresh-page"}
 			]
 		}
@@ -118,6 +119,7 @@
 					]
 				}
 				{do:"save"}
+				{do:"publish"}
 				{do:"refresh-page"}
 			]
 		}

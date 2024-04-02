@@ -29,7 +29,7 @@
 					{
 						do: edit
 						form: {
-							label: Add Event
+							label: + Add an Event
 							type: layout-vertical
 							children: [
 								{type: "text", path:"data.date", label:"Date"}
