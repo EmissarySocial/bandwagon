@@ -16,6 +16,7 @@
 			data: {
 				type: object
 				properties: {
+					imageFilename: {type:"string", maxlength:255}
 					featured: {type: "boolean"}
 					tags: {type: "string"}
 					year: {type: "string", minvalue:"0000", maxvalue:"9999", required: false}
@@ -30,6 +31,7 @@
 				{do: "as-modal", steps: [
 					{
 						do: edit
+						options: ["encoding:multipart/form-data"]
 						form: {
 							label: + Add an Album
 							type: layout-tabs
@@ -41,7 +43,8 @@
 										{type: "text", path:"label", label:"Album Name"}
 										{type: "text", path:"data.year", label:"Year Released"}
 										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+										{type: "upload", path:"imageUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
+										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Feature"}}
 									]
 								}
 								{
@@ -55,6 +58,7 @@
 						}
 					}
 				]}
+				{do: "upload-attachments", fieldname:"imageUrl", category:"image", download-path:"imageUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
 				{do: "publish"}
@@ -68,7 +72,7 @@
 				{do: "as-modal", steps: [
 					{
 						do: edit
-						options: ["delete:/{{.StreamID}}/delete"]
+						options: ["encoding:multipart/form-data", "delete:/{{.StreamID}}/delete"]
 						form: {
 							label: Edit Album
 							type: layout-tabs
@@ -80,7 +84,8 @@
 										{type: "text", path:"label", label:"Album Name"}
 										{type: "text", path:"data.year", label:"Year Released"}
 										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+										{type: "upload", path:"imageUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
+										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Feature"}}
 									]
 								}
 								{
@@ -94,6 +99,7 @@
 						}
 					}
 				]}
+				{do: "upload-attachments", fieldname:"imageUrl", category:"image", download-path:"imageUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
 				{do: "publish"}
@@ -119,16 +125,6 @@
 					title: + Add a Song
 					type: arcadium-song
 				}
-				{do: "save"}
-				{do: "refresh-page"}
-			]
-		}
-
-		upload-image: {
-			roles: ["editor"]
-			steps: [
-				{do: "upload-attachments"}
-				{do: "set-thumbnail", path:"imageUrl"}
 				{do: "save"}
 				{do: "refresh-page"}
 			]

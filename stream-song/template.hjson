@@ -19,6 +19,8 @@
 					streamURL: {type: "string", format:"url"}
 					featured: {type: "boolean"}
 					explicit: {type: "boolean"}
+					attachmentId: {type: "string"}
+					attachmentFilename: {type: "string"}
 				}
 			}
 		}
@@ -30,6 +32,7 @@
 				{do:"as-modal", steps:[
 					{
 						do:"edit", 
+						options:["encoding:multipart/form-data"]
 						form:{
 							type: layout-tabs
 							label: + Add a Song
@@ -39,6 +42,7 @@
 									label: Basics
 									children: [
 										{type: "text", label: "Song Title", path: "label"},
+										{type: "upload", label: "Audio File", path: "data.attachmentId", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 										{type: "text", label: "Length", path: "data.length"},
 										{type: "toggle", path: "data.featured", options:{true-text:"Featured", false-text:"Featured"}}
 										{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
@@ -66,6 +70,7 @@
 						}
 					}
 				]}
+				{do:"upload-attachments", action:"replace", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save"}
 				{do:"publish"}
 				{do:"refresh-page"}
@@ -80,7 +85,7 @@
 					steps:[
 						{
 							do:"edit", 
-							options: ["delete:/{{.StreamID}}/delete"]
+							options: ["delete:/{{.StreamID}}/delete", "encoding:multipart/form-data"]
 							form:{
 								type: layout-tabs
 								label: Edit Song
@@ -90,6 +95,7 @@
 										label: Basics
 										children: [
 											{type: "text", label: "Song Title", path: "label"},
+											{type: "upload", label: "Audio File", path: "data.attachmentId", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 											{type: "text", label: "Length", path: "data.length"},
 											{type: "toggle", path: "data.featured", options:{true-text:"Featured", false-text:"Featured"}}
 											{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
@@ -118,6 +124,7 @@
 						}
 					]
 				}
+				{do:"upload-attachments", action:"replace", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save"}
 				{do:"publish"}
 				{do:"refresh-page"}

@@ -81,19 +81,8 @@
 				<div class="margin-bottom-lg">
 					<h3>Manager</h3>
 					<div class="text-sm">
-						<button hx-get="/{{.StreamID}}/edit" class="width-3-5">{{icon "settings"}} Edit Album</button>
+						<button hx-get="/{{.StreamID}}/edit">{{icon "settings"}} Edit Album</button>
 					</div>
-
-					{{- if .UserCan "upload-image" -}}
-						<form hx-post="/{{.StreamID}}/upload-image" hx-encoding="multipart/form-data" hx-trigger="change" hx-swap="none" hx-target="this" class="hide">
-							<input type="file" name="file" class="hide" id="upload-image" accept="image/*">
-						</form>
-						<div class="text-sm">
-							<label for="upload-image" role="button">
-								<span class="button width-3-5">{{icon "upload"}} Upload Artwork</span>
-							</label>
-						</div>
-					{{- end -}}
 				</div>
 			{{- end -}}
 		</div>
