@@ -24,6 +24,9 @@
 			}
 		}
 	}
+	bundles: {
+		javascript: {contentType: "text/javascript"}
+	}
 	actions: {
 		create: {
 			roles:["editor"]

@@ -4,6 +4,19 @@
 
 <div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false" hx-target="this" hx-swap="outerHTML">
 
+	<style>
+		#media-controls > .playing-show,
+		#media-controls.PLAYING > .playing-hide {
+			display: none;
+		}
+
+		#media-controls.PLAYING > .playing-show,
+		#media-controls > .playing-hide {
+			display: initial;
+		}
+
+	</style>
+
 	<!-- First Row: Album Name and Artwork -->
 	<div class="md:flex-row width-100-percent align-center md:align-left">
 		<img src="{{.ImageURL}}" class="width-480 md:width-256 aspect-square" style="border:solid 1px black; object-fit:cover;">
@@ -25,10 +38,14 @@
 				{{- end -}}
 			</div>
 			<div class="margin-vertical"></div>
-			<div class="margin-vertical-lg">
-				<button class="primary">{{icon "play"}} Play</button>
+			<div id="media-controls" class="margin-vertical-lg">
+				<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play</button>
+				<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none">{{icon "skip-backward-fill"}}</button>
+				<button hx-on:click="Pause()" class="primary playing-show margin-right-none">{{icon "pause-fill"}}</button>
+				<button hx-on:click="PlayNext()" class="primary playing-show">{{icon "skip-forward-fill"}}</button>
 				<button>{{icon "share"}} Share</button>
 			</div>
+
 		</div>
 	</div>
 
@@ -39,11 +56,27 @@
 		<div class="flex-grow-1">
 			<table class="table">
 				{{- range $index, $song := $songs -}}
-					<tr class="hover-trigger">
+					{{- $isplayable := ne nil $song.Data.attachmentId -}}
+					<tr id="track-{{$index}}" class="hover-trigger" 
+
+						{{ if $isplayable -}} 
+							hx-on:click="Toggle({{$index}})"
+							role="button"
+						{{- end -}}>
+
 						<td nowrap class="align-right">
-							{{- if eq $song.Data.featured true -}}
-								<span class="margin-right text-gray">{{icon "star-fill"}}</span>
-							{{- end -}}
+							<span class="margin-right text-gray">
+								{{- if $isplayable -}}
+									<span class="hover-show">{{icon "play-fill"}}</span>
+									{{- if eq $song.Data.featured true -}}
+										<span class="hover-hide">{{icon "star-fill"}}</span>
+									{{- end -}}
+								{{- else -}}
+									{{- if eq $song.Data.featured true -}}
+										{{icon "star-fill"}}
+									{{- end -}}
+								{{- end -}}
+							</span>
 							<span class="hide sm:show">{{add $index 1}}.</span>
 						</td>
 						<td class="width-100-percent">
@@ -65,10 +98,11 @@
 					<button hx-get="/{{.StreamID}}/add-song">{{icon "add"}} Add Song</button>
 				{{- end -}}
 			</div>
+
 		</div>
 
 		<!-- Album Notes and Manager Actions -->
-		<div class="width-256 margin-right-lg">
+		<div class="md:width-256 margin-right-lg">
 
 			{{- if ne "" .Summary -}}
 				<div class="margin-bottom-lg">
@@ -88,4 +122,24 @@
 		</div>
 
 	</div>
+
+	<audio hx-on:ended="PlayNext()">
+		<source id="source-mp3" type="audio/mp3">
+		<source id="source-aac" type="audio/aac">
+	</audio>
+
+	<script src="/.templates/arcadium-album/javascript" preload></script>
+	<script type="application/javascript">
+		var playlist = [
+		{{- $first := true -}}
+		{{- range $index, $song := $songs -}}
+			{{- if ne nil $song.Data.attachmentId -}}
+				{{- if not $first -}},{{- end -}}
+				{{- $first = false -}}
+				{"index":{{$index}}, "url":"/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}", "title":"{{$song.Label}}"}
+			{{ end -}}
+		{{- end -}}
+		]
+	</script>
+
 </div>
