@@ -14,6 +14,9 @@
 				properties: {
 					albumLabel: {type: "string"}
 					eventLabel: {type: "string"}
+					color-body: {type: "string", format:"color"},
+					color-page: {type: "string", format:"color"}, 
+					color-button: {type: "string", format:"color"}
 				}
 			}
 		}
@@ -70,18 +73,35 @@
 								}
 								{
 									type: layout-vertical
+									label: Images
+									children: [
+										{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*"}}
+										{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*"}}
+									]
+								}
+								{
+									type: layout-vertical
 									label: Custom Labels
 									children: [
 										{type:"text", path:"data.albumLabel", label:"Albums Label"}
 										{type:"text", path:"data.eventLabel", label:"Events Label"}
 									]
 								}
-								// {type:"text", path:"data.backgroundColor", label:"Background Color"}
-								// {type:"text", path:"data.textColor", label:"Text Color"}
-								// {type:"text", path:"data.highlightColor", label:"Highlight Color"}
+								{
+									type: layout-vertical
+									label: Colors
+									children: [
+										{type: "text", path:"data.color-body", label:"Window Background"}
+										{type: "text", path:"data.color-page", label:"Page Background"}
+										{type: "text", path:"data.color-button", label:"Links and Buttons"}
+									]
+								}
 							]
 						}
 					}
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId"}
+					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId"}
+					{do:"save"}
 				]}
 			] 
 		}

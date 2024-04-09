@@ -12,7 +12,7 @@
 		properties: {
 			label: {type: "string", required: true}
 			summary: {type: "string", format:"html"}
-			imageUrl: {type: "string", format:"uri"}
+			iconUrl: {type: "string", format:"uri"}
 			data: {
 				type: object
 				properties: {
@@ -20,6 +20,12 @@
 					featured: {type: "boolean"}
 					tags: {type: "string"}
 					year: {type: "string", minvalue:"0000", maxvalue:"9999", required: false}
+					links: {type: "object", wildcard: {type: "string", format:"uri"}}
+					color: {type: "object", properties: {
+						body: {type: "string", format:"color"},
+						page: {type: "string", format:"color"}, 
+						button: {type: "string", format:"color"}
+					}}
 				}
 			}
 		}
@@ -34,7 +40,6 @@
 				{do: "as-modal", steps: [
 					{
 						do: edit
-						options: ["encoding:multipart/form-data"]
 						form: {
 							label: + Add an Album
 							type: layout-tabs
@@ -44,24 +49,49 @@
 									label: General
 									children: [
 										{type: "text", path:"label", label:"Album Name"}
-										{type: "text", path:"data.year", label:"Year Released"}
-										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "upload", path:"imageUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
+										{type: "text", path:"data.year", label:"Release Date"}
+										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
 										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Feature"}}
 									]
 								}
 								{
 									type: layout-vertical
-									label: Album Notes
+									label: Metadata
 									children: [
-										{type: "textarea", path:"summary", options:{rows:8}}
+										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
+										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page"}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Links
+									children: [
+										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
+										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
+										{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
+										{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}
+										{type:"text", path:"data.links.TIDAL", options:{placeholder:"Tidal"}}
+										{type:"text", path:"data.links.YOUTUBE", options:{placeholder:"YouTube Music"}}
+										{type:"text", path:"data.links.OTHER1", options:{placeholder:"Other"}}
+										{type:"text", path:"data.links.OTHER2", options:{placeholder:"Other"}}
+										{type:"text", path:"data.links.OTHER3", options:{placeholder:"Other"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Colors
+									children: [
+										{type: "text", path:"data.color.body", label:"Window Background"}
+										{type: "text", path:"data.color.page", label:"Page Background"}
+										{type: "text", path:"data.color.button", label:"Links and Buttons"}
 									]
 								}
 							]
 						}
 					}
 				]}
-				{do: "upload-attachments", fieldname:"imageUrl", category:"image", download-path:"imageUrl", accept-type:"image/*", maximum:1}
+				{do: "upload-attachments", fieldname:"iconUrl", category:"image", download-path:"iconUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
 				{do: "publish"}
@@ -75,7 +105,7 @@
 				{do: "as-modal", steps: [
 					{
 						do: edit
-						options: ["encoding:multipart/form-data", "delete:/{{.StreamID}}/delete"]
+						options: ["delete:/{{.StreamID}}/delete"]
 						form: {
 							label: Edit Album
 							type: layout-tabs
@@ -85,24 +115,49 @@
 									label: General
 									children: [
 										{type: "text", path:"label", label:"Album Name"}
-										{type: "text", path:"data.year", label:"Year Released"}
-										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "upload", path:"imageUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
+										{type: "text", path:"data.year", label:"Release Date"}
+										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
 										{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Feature"}}
 									]
 								}
 								{
 									type: layout-vertical
-									label: Album Notes
+									label: Metadata
 									children: [
-										{type: "textarea", path:"summary", options:{rows:8}}
+										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
+										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page"}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Links
+									children: [
+										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
+										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
+										{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
+										{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}
+										{type:"text", path:"data.links.TIDAL", options:{placeholder:"Tidal"}}
+										{type:"text", path:"data.links.YOUTUBE", options:{placeholder:"YouTube Music"}}
+										{type:"text", path:"data.links.OTHER1", options:{placeholder:"Other"}}
+										{type:"text", path:"data.links.OTHER2", options:{placeholder:"Other"}}
+										{type:"text", path:"data.links.OTHER3", options:{placeholder:"Other"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Colors
+									children: [
+										{type: "text", path:"data.color.body", label:"Window Background"}
+										{type: "text", path:"data.color.page", label:"Page Background"}
+										{type: "text", path:"data.color.button", label:"Links and Buttons"}
 									]
 								}
 							]
 						}
 					}
 				]}
-				{do: "upload-attachments", fieldname:"imageUrl", category:"image", download-path:"imageUrl", accept-type:"image/*", maximum:1}
+				{do: "upload-attachments", fieldname:"iconUrl", category:"image", download-path:"iconUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
 				{do: "publish"}
@@ -130,6 +185,14 @@
 				}
 				{do: "save"}
 				{do: "refresh-page"}
+			]
+		}
+
+		links: {
+			steps:[
+				{do: "as-modal", steps:[
+					{do: "view-html"}
+				]}
 			]
 		}
 	}

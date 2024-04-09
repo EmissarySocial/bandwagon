@@ -1,10 +1,84 @@
 {{- $tags := .Tags -}}
+{{- $color := .Data "color" -}}
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
 
 <div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false" hx-target="this" hx-swap="outerHTML">
 
 	<style>
+
+		body {
+
+		{{ if ne nil $color.body -}}
+			--body-background: {{$color.body}};
+		{{- end }}
+
+		{{ if ne nil $color.page -}}
+			{{- $pageColor := parseColor $color.page -}}
+			--page-background: {{$color.page}};
+			--page-border: {{$pageColor.Darken 10}};
+			--heading-color: {{$pageColor.Text}};
+			--text-color: {{$pageColor.TextExt}};
+
+			{{if $pageColor.IsLight }}
+				--white:  rgb(255, 255, 255);
+				--gray00: rgb(255, 255, 255);
+				--gray01: rgba(0, 0, 0, 0.01);
+				--gray02: rgba(0, 0, 0, 0.02);
+				--gray03: rgba(0, 0, 0, 0.03);
+				--gray04: rgba(0, 0, 0, 0.04);
+				--gray05: rgba(0, 0, 0, 0.05);
+				--gray10: rgba(0, 0, 0, 0.10);
+				--gray15: rgba(0, 0, 0, 0.15);
+				--gray20: rgba(0, 0, 0, 0.20);
+				--gray30: rgba(0, 0, 0, 0.30);
+				--gray40: rgba(0, 0, 0, 0.40);
+				--gray50: rgba(0, 0, 0, 0.50);
+				--gray60: rgba(0, 0, 0, 0.60);
+				--gray70: rgba(0, 0, 0, 0.70);
+				--gray80: rgba(0, 0, 0, 0.80);
+				--gray90: rgba(0, 0, 0, 0.90);
+				--gray100: rgb(0, 0, 0);
+				--black:   rgb(0, 0, 0);
+			{{- else }}
+				--white:  rgb(0, 0, 0) ;
+				--gray00: rgb(0, 0, 0) ;
+				--gray01: rgba(255, 255, 255, 0.01);
+				--gray02: rgba(255, 255, 255, 0.02);
+				--gray03: rgba(255, 255, 255, 0.03);
+				--gray04: rgba(255, 255, 255, 0.04);
+				--gray05: rgba(255, 255, 255, 0.05);
+				--gray10: rgba(255, 255, 255, 0.10);
+				--gray15: rgba(255, 255, 255, 0.15);
+				--gray20: rgba(255, 255, 255, 0.20);
+				--gray30: rgba(255, 255, 255, 0.30);
+				--gray40: rgba(255, 255, 255, 0.40);
+				--gray50: rgba(255, 255, 255, 0.50);
+				--gray60: rgba(255, 255, 255, 0.60);
+				--gray70: rgba(255, 255, 255, 0.70);
+				--gray80: rgba(255, 255, 255, 0.80);
+				--gray90: rgba(255, 255, 255, 0.90);
+				--gray100: rgb(255, 255, 255);
+				--black:   rgb(255, 255, 255);
+			{{- end -}}
+
+		{{- end }}
+
+		{{ if ne nil $color.button -}}
+			{{- $buttonColor := parseColor $color.button -}}
+			{{- $buttonText := $buttonColor.Text }}
+			{{- $buttonColorHover := ($buttonColor.Lighten 10) -}}
+			{{- $buttonTextHover := $buttonColorHover.Text }}
+			{{- $buttonColor := $color.button -}}
+
+			--button-primary-background: {{$buttonColor}};
+			--button-primary-background-hover: {{$buttonColorHover}};
+			--button-primary-color: {{$buttonText}};
+			--button-primary-color-hover: {{$buttonTextHover}};
+			--link-color: {{$buttonColor}};
+			--link-color-hover: {{$buttonColorHover}};
+		{{- end }}
+
 		#media-controls > .playing-show,
 		#media-controls.PLAYING > .playing-hide {
 			display: none;
@@ -19,13 +93,13 @@
 
 	<!-- First Row: Album Name and Artwork -->
 	<div class="md:flex-row width-100-percent align-center md:align-left">
-		<img src="{{.ImageURL}}" class="width-480 md:width-256 aspect-square" style="border:solid 1px black; object-fit:cover;">
+		<img src="{{.IconURL}}" class="width-480 md:width-256 aspect-square" style="border:solid 1px var(--black); object-fit:cover;">
 		<div class="md:show width-32"></div>
 		<div class="flex-grow-1">
 			<h1 class="margin-top">{{.Label}}</h1>
 			<h2 class="margin-vertical-none">
 				<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
-				{{ if ne "" (.Data "year") -}}
+				{{ if ne nil (.Data "year") -}}
 					&middot; {{.Data "year"}}
 				{{- end -}}
 			</h2>
@@ -43,7 +117,9 @@
 				<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none">{{icon "skip-backward-fill"}}</button>
 				<button hx-on:click="Pause()" class="primary playing-show margin-right-none">{{icon "pause-fill"}}</button>
 				<button hx-on:click="PlayNext()" class="primary playing-show">{{icon "skip-forward-fill"}}</button>
-				<button>{{icon "share"}} Share</button>
+				{{- if (.Data "links").NotEmpty -}}
+					<button hx-get="/{{.StreamID}}/links">{{icon "cloud"}} Links</button>
+				{{- end -}}
 			</div>
 
 		</div>
@@ -60,11 +136,10 @@
 					<tr id="track-{{$index}}" class="hover-trigger" 
 
 						{{ if $isplayable -}} 
-							hx-on:click="Toggle({{$index}})"
 							role="button"
 						{{- end -}}>
 
-						<td nowrap class="align-right">
+						<td nowrap class="align-right" {{ if $isplayable}}hx-on:click="Toggle({{$index}})"{{end}}>
 							<span class="margin-right text-gray">
 								{{- if $isplayable -}}
 									<span class="hover-show">{{icon "play-fill"}}</span>
@@ -79,11 +154,18 @@
 							</span>
 							<span class="hide sm:show">{{add $index 1}}.</span>
 						</td>
-						<td class="width-100-percent">
+						<td class="width-100-percent" {{ if $isplayable}}hx-on:click="Toggle({{$index}})"{{end}}>
 							{{$song.Label}}
 							{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
 						</td>
-						<td nowrap class="align-right">{{$song.Data.length}}</td>
+						<td nowrap class="align-right" {{ if $isplayable}}hx-on:click="Toggle({{$index}})"{{end}}>
+							{{- $song.Data.length -}}
+						</td>
+						<td nowrap>
+							{{- if .Data.links.NotEmpty -}}
+								<button hx-get="/{{$song.StreamID}}/links">{{icon "cloud"}}</button>
+							{{- end -}}
+						</td>
 						{{- if $canEdit -}}
 							<td nowrap>
 								<button hx-get="/{{$song.StreamID}}/edit" class="text-xs margin-right-none margin-left-sm">Edit</button>
@@ -111,17 +193,15 @@
 				</div>
 			{{- end -}}
 
-			{{- if $canEdit -}}
-				<div class="margin-bottom-lg">
-					<h3>Manager</h3>
-					<div class="text-sm">
-						<button hx-get="/{{.StreamID}}/edit">{{icon "settings"}} Edit Album</button>
-					</div>
-				</div>
-			{{- end -}}
 		</div>
 
 	</div>
+
+	{{- if $canEdit -}}
+		<div class="pos-absolute-top-right text-sm">
+			<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+		</div>
+	{{- end -}}
 
 	<audio hx-on:ended="PlayNext()">
 		<source id="source-mp3" type="audio/mp3">

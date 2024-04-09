@@ -1,0 +1,68 @@
+{{- $album := .Parent "view" -}}
+{{- $links := .Data "links" -}}
+
+<div class="align-center">
+	<img src="{{$album.IconURL}}" class="width-60-percent">
+	<h1 class="margin-top margin-bottom-xs">{{ .Label }}</h1>
+	<div class="margin-bottom">
+		Album:
+		<a href="/{{$album.StreamID}}">{{ $album.Label }}</a> 
+		by:
+		<a href="/@{{$album.AttributedTo.UserID.Hex}}">{{$album.AttributedTo.Name}}</a> &middot; {{$album.Data "year"}}
+	</div>
+</div>
+
+<div class="margin-vertical-lg">
+	{{- range $key, $value := $links -}}
+		
+		{{- if ne "" $value -}}
+			{{- $icon := "music-note-beamed" -}}
+			{{- $label := $value -}}
+
+			{{- if eq "APPLE" $key -}}
+				{{- $icon = "apple" -}}
+				{{- $label = "Apple Music" -}}
+
+			{{- else if eq "SPOTIFY" $key -}}
+				{{- $label = "Spotify" -}}
+				{{- $icon = "spotify" -}}
+
+			{{- else if eq "YOUTUBE" $key -}}
+				{{- $label = "YouTube Music" -}}
+				{{- $icon = "youtube" -}}
+
+			{{- else if eq "SOUNDCLOUD" $key -}}
+				{{- $label = "SoundCloud" -}}
+				{{- $icon = "cloud" -}}
+
+			{{- else if eq "TIDAL" $key -}}
+				{{- $label = "Tidal" -}}
+
+			{{- else if eq "AMAZON" $key -}}
+				{{- $label = "Amazon Music" -}}
+				{{- $icon = "amazon" -}}
+
+			{{- else if eq "GOOGLE" $key -}}
+				{{- $label = "Google Play" -}}
+				{{- $icon = "google" -}}
+
+			{{- else if eq "PANDORA" $key -}}
+				{{- $label = "Pandora" -}}
+
+			{{- else if eq "IHEARTRADIO" $key -}}
+				{{- $label = "iHeartRadio" -}}
+
+			{{- else -}}
+				{{- $label = domainOnly $value -}}
+
+			{{- end -}}
+
+			<a href="{{$value}}" class="flex-row block margin-bottom-xs text-lg button" target="_blank">
+				<span class="flex-grow"><i class="bi bi-{{$icon}} margin-right-sm"></i> {{ $label }}</span>
+				<span><i class="bi bi-chevron-right"></i></span>
+			</a>
+		{{- end -}}
+	{{- end -}}
+</div>
+
+<button script="on click trigger closeModal">Close</button>

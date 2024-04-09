@@ -21,6 +21,10 @@
 					explicit: {type: "boolean"}
 					attachmentId: {type: "string"}
 					attachmentFilename: {type: "string"}
+					links: {
+						type: object
+						wildcard:{type: "string", format:"url"}
+					}
 				}
 			}
 		}
@@ -32,7 +36,6 @@
 				{do:"as-modal", steps:[
 					{
 						do:"edit", 
-						options:["encoding:multipart/form-data"]
 						form:{
 							type: layout-tabs
 							label: + Add a Song
@@ -66,6 +69,22 @@
 										{type: "textarea", path: "data.lyrics", options:{rows: 10}}
 									]
 								}
+								{
+									type: layout-vertical
+									label: Links
+									children: [
+										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
+										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
+										{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
+										{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}
+										{type:"text", path:"data.links.TIDAL", options:{placeholder:"Tidal"}}
+										{type:"text", path:"data.links.YOUTUBE", options:{placeholder:"YouTube Music"}}
+										{type:"text", path:"data.links.OTHER1", options:{placeholder:"Other"}}
+										{type:"text", path:"data.links.OTHER2", options:{placeholder:"Other"}}
+										{type:"text", path:"data.links.OTHER3", options:{placeholder:"Other"}}
+									]
+								}
 							]
 						}
 					}
@@ -85,7 +104,7 @@
 					steps:[
 						{
 							do:"edit", 
-							options: ["delete:/{{.StreamID}}/delete", "encoding:multipart/form-data"]
+							options: ["delete:/{{.StreamID}}/delete"]
 							form:{
 								type: layout-tabs
 								label: Edit Song
@@ -119,6 +138,22 @@
 											{type: "textarea", path: "data.lyrics", options:{rows: 10}}
 										]
 									}
+									{
+										type: layout-vertical
+										label: Links
+										children: [
+											{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
+											{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+											{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
+											{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
+											{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}
+											{type:"text", path:"data.links.TIDAL", options:{placeholder:"Tidal"}}
+											{type:"text", path:"data.links.YOUTUBE", options:{placeholder:"YouTube Music"}}
+											{type:"text", path:"data.links.OTHER1", options:{placeholder:"Other"}}
+											{type:"text", path:"data.links.OTHER2", options:{placeholder:"Other"}}
+											{type:"text", path:"data.links.OTHER3", options:{placeholder:"Other"}}
+										]
+									}
 								]
 							}
 						}
@@ -138,5 +173,12 @@
 				{do:"refresh-page"}
 			]
 		}
+
+		links: {
+			steps: [
+				{do:"as-modal", steps: [
+				{do:"view-html"}
+			]}
+		]}
 	}
 }
