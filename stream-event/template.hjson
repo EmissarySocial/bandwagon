@@ -17,6 +17,7 @@
 					city: {type: "string"}
 					venue: {type: "string"}
 					website: {type: "string", format:"uri"}
+					featured: {type: "boolean"}
 				}
 			}
 		}
@@ -36,12 +37,14 @@
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
 								{type: "text", path:"data.website", label:"Ticket Website"}
+								{type: "toggle", path:"data.featured", options:{true-text:"Featured on Homepage", false-text:"Featured"}}
 							]
 						}
 					}
 				]}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
+				{do: "publish", outbox:true}
 				{do: "refresh-page"}
 			]
 		}
@@ -61,12 +64,14 @@
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
 								{type: "text", path:"data.website", label:"Ticket Website"}
+								{type: "toggle", path:"data.featured", options:{true-text:"Featured on Homepage", false-text:"Featured"}}
 							]
 						}
 					}
 				]}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
+				{do: "publish", outbox:true}
 				{do: "refresh-page"}
 			]
 		}
@@ -75,6 +80,7 @@
 			roles: ["editor"]
 			steps: [
 				{do: "delete"}
+				{do: "unpublish", outbox:true}
 				{do: "refresh-page"}
 			]
 		}

@@ -1,0 +1,96 @@
+{
+	templateId: arcadium-news
+	model: Stream
+	templateRole: Note
+	socialRole: Note
+	label: News Item
+	containedBy: ["outbox"]
+	schema: {
+		type: object
+		properties: {
+			title: {type: "string"}
+			summary: {type: "string"}
+			content: {type: "object", properties:{
+				"type": {type: "string"}
+				"raw": {type: "string"}
+				"html": {type: "string"}
+			}}
+			data: {type: "object", properties:{
+				featured: {type: "boolean"}
+			}}
+		}
+	}
+
+	actions: {
+
+		create: {
+			roles: ["editor", "myself"]
+			steps: [
+				{do:"as-modal", options:["class:large"], steps:[
+					{
+						do: edit
+						form: {
+							type: layout-vertical
+							label:"+ Add a Post"
+							children: [
+								{type: "text", path: "label", label: "Title"}
+								{type: "textarea", path: "summary", label: "Summary", description:"Shows on summary listing"}
+								{type: "textarea", path: "content.raw", label: "Content", description:"Shows on news article page", options:{rows:12}}
+								{type: "toggle", path: "data.featured", options:{true-text:"Featured on Home Page", false-text:"Featured"}}
+							]
+						}
+					}
+					{do: "edit-content", field:"content.raw", format:"MARKDOWN"}
+					{do: "process-tags", paths:"data.tags"}
+					{do: "save"}
+					{do: "publish", outbox:true}
+					{do: "refresh-page"}
+				]}
+			]
+		}
+
+		edit: {
+			roles: ["editor", "myself"]
+			steps: [
+				{do: "as-modal", options:["class:large"], steps:[
+					{
+						do: "edit"
+						options: ["delete:/{{.StreamID}}/delete"]
+						form: {
+							type: layout-vertical
+							label:"Edit Post"
+							children: [
+								{type: "text", path: "label", label: "Title", description:"Shows everywhere"}
+								{type: "textarea", path: "summary", label: "Summary", description:"Shows on summary listing only"}
+								{type: "textarea", path: "content.raw", label: "Content", options:{rows:8}, description:"Shows on news article page only"}
+								{type: "toggle", path: "data.featured", options:{true-text:"Featured on Home Page", false-text:"Featured"}}
+							]
+						}
+					}
+					{do: "edit-content", field:"content.raw", format:"MARKDOWN"}
+					{do: "process-tags", paths:"data.tags"}
+					{do: "save"}
+					{do: "publish", outbox:true}
+					{do: "refresh-page"}
+				]}
+			] 
+		}
+
+		view: {
+			steps:[
+				{do: "as-modal", steps:[
+				{do: "view-html"}	
+			]}
+		]}
+
+		delete: {
+			roles: ["editor", "myself"]
+			steps: [
+				{do: "delete"}
+				{do: "unpublish", outbox:true}
+				{do: "refresh-page"}
+			]
+		}
+
+	}
+}

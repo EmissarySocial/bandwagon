@@ -3,7 +3,7 @@
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
 
-<div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false" hx-target="this" hx-swap="outerHTML">
+<div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false" hx-target="main" hx-swap="innerHTML">
 
 	<style>
 
@@ -98,7 +98,7 @@
 		<div class="flex-grow-1">
 			<h1 class="margin-top">{{.Label}}</h1>
 			<h2 class="margin-vertical-none">
-				<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
+				<a href="/@{{.ParentID}}/albums">{{.AttributedTo.Name}}</a> 
 				{{ if ne nil (.Data "year") -}}
 					&middot; {{.Data "year"}}
 				{{- end -}}

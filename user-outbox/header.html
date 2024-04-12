@@ -1,0 +1,130 @@
+<style>
+
+	body {
+	
+	{{ if ne "" (.Data "color-body") -}}
+		{{- $bodyColor := parseColor (.Data "color-body") -}}
+		--body-background: {{.Data "color-body"}};
+		--page-border: {{($bodyColor.Darken 10)}};
+	{{- end }}
+
+	{{ if ne "" (.Data "color-menu" )}}
+		{{$menu := parseColor (.Data "color-menu")}}
+		{{$menuHover := $menu.Contrast 15}}
+		{{$menuSelected := $menu.Contrast 30}}
+
+		--menu-background: {{$menu}};
+		--menu-text: {{$menu.TextExt}};
+		--menu-hover-background: {{$menuHover}};
+		--menu-hover-text: {{$menuHover.Text}};
+		--menu-selected-background: {{$menuSelected}};
+		--menu-selected-text: {{$menuSelected.Text}};
+	{{- end -}}
+
+	{{ if ne "" (.Data "color-page") -}}
+		{{- $pageColor := parseColor (.Data "color-page") -}}
+		{{- $textColor := $pageColor.Text -}}
+		--page-background: {{.Data "color-page"}};
+		--heading-color: {{$pageColor.Text}};
+		--text-color: {{$pageColor.TextExt}};
+
+		{{if $pageColor.IsLight }}
+			--white:  rgb(255, 255, 255);
+			--gray00: rgb(255, 255, 255);
+			--gray01: rgba(0, 0, 0, 0.01);
+			--gray02: rgba(0, 0, 0, 0.02);
+			--gray03: rgba(0, 0, 0, 0.03);
+			--gray04: rgba(0, 0, 0, 0.04);
+			--gray05: rgba(0, 0, 0, 0.05);
+			--gray10: rgba(0, 0, 0, 0.10);
+			--gray15: rgba(0, 0, 0, 0.15);
+			--gray20: rgba(0, 0, 0, 0.20);
+			--gray30: rgba(0, 0, 0, 0.30);
+			--gray40: rgba(0, 0, 0, 0.40);
+			--gray50: rgba(0, 0, 0, 0.50);
+			--gray60: rgba(0, 0, 0, 0.60);
+			--gray70: rgba(0, 0, 0, 0.70);
+			--gray80: rgba(0, 0, 0, 0.80);
+			--gray90: rgba(0, 0, 0, 0.90);
+			--gray100: rgb(0, 0, 0);
+			--black:   rgb(0, 0, 0);
+		{{- else }}
+			--white:  rgb(0, 0, 0) ;
+			--gray00: rgb(0, 0, 0) ;
+			--gray01: rgba(255, 255, 255, 0.01);
+			--gray02: rgba(255, 255, 255, 0.02);
+			--gray03: rgba(255, 255, 255, 0.03);
+			--gray04: rgba(255, 255, 255, 0.04);
+			--gray05: rgba(255, 255, 255, 0.05);
+			--gray10: rgba(255, 255, 255, 0.10);
+			--gray15: rgba(255, 255, 255, 0.15);
+			--gray20: rgba(255, 255, 255, 0.20);
+			--gray30: rgba(255, 255, 255, 0.30);
+			--gray40: rgba(255, 255, 255, 0.40);
+			--gray50: rgba(255, 255, 255, 0.50);
+			--gray60: rgba(255, 255, 255, 0.60);
+			--gray70: rgba(255, 255, 255, 0.70);
+			--gray80: rgba(255, 255, 255, 0.80);
+			--gray90: rgba(255, 255, 255, 0.90);
+			--gray100: rgb(255, 255, 255);
+			--black:   rgb(255, 255, 255);
+		{{- end -}}
+		
+	{{- end }}
+
+	{{ if ne "" (.Data "color-button") -}}
+		{{- $buttonColor := parseColor (.Data "color-button") -}}
+		{{- $buttonText := $buttonColor.Text }}
+		{{- $buttonColorHover := ($buttonColor.Lighten 10) -}}
+		{{- $buttonTextHover := $buttonColorHover.Text }}
+		{{- $buttonColor := .Data "color-button" -}}
+
+		--button-primary-background: {{$buttonColor}};
+		--button-primary-background-hover: {{$buttonColorHover}};
+		--button-primary-color: {{$buttonText}};
+		--button-primary-color-hover: {{$buttonTextHover}};
+		--link-color: {{$buttonColor}};
+		--link-color-hover: {{$buttonColorHover}};
+	{{- end }}
+
+	}
+
+	#band-menu {
+		background-color: var(--menu-background);
+		font-size: 1.25em;
+		text-align: center;
+	}
+
+	#band-menu > [role=menuitem] {
+		display: inline-block;
+		padding: var(--rhythm) calc(var(--rhythm) * 1.5) ;
+		color: var(--menu-text);
+	}
+
+	#band-menu > [role=menuitem]:hover {
+		background-color: var(--menu-hover-background);
+		color: var(--menu-hover-text);
+	}
+
+	#band-menu > [role=menuitem][aria-selected=true],
+	#band-menu > [role=menuitem][aria-selected=true]:hover {
+		background-color: var(--menu-selected-background);
+		color: var(--menu-selected-text);
+	}
+</style>
+
+<!-- Banner Image -->
+{{- if ne "" .ImageURL -}}
+	<div style="width:100%; height:256px; background-color: #a0a0a0; background-image:url('{{.ImageURL}}'); background-size:cover; background-position:center"></div>
+{{- end -}}
+
+<!-- Menu Bar -->
+<div id="band-menu" role="menubar" script='on load take [@aria-selected=true] with "false" from my children for first <a[href="{{.Path}}"]/>'>
+	<a href="/@{{.UserID}}" hx-get="/@{{.UserID}}" role="menuitem" class="turboclick">{{.DisplayName}}</a>
+	<a href="/@{{.UserID}}/albums" hx-get="/@{{.UserID}}/albums" role="menuitem" class="turboclick">{{first (.Data "albumLabel") "Albums"}}</a>
+	<a href="/@{{.UserID}}/events" hx-get="/@{{.UserID}}/events" role="menuitem" class="turboclick">{{first (.Data "eventLabel") "Shows"}}</a>
+	<a href="/@{{.UserID}}/news"  hx-get="/@{{.UserID}}/news" role="menuitem" class="turboclick">{{first (.Data "newsLabel") "News"}}</a>
+	{{- if ne "" (.Data "shopUrl") -}}
+		<a href="{{.Data `shopUrl`}}" target="_blank" role="menuitem" class="turboclick">{{first (.Data "shopLabel") "Shop"}}</a>
+	{{- end -}}
+</div>

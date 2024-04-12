@@ -1,0 +1,32 @@
+{{- $posts := (.Outbox.Where "templateId" "arcadium-news").ByPublishDate.Reverse.Slice -}}
+{{- $isMyself := .IsMyself -}}
+
+
+<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}/news" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
+
+	{{- template "header" . -}}
+
+	<div class="padding">
+	
+		{{- if .UserCan "add-news" -}}
+			<div class="margin-bottom align-right">
+				<button hx-get="/@{{.UserID}}/add-news" class="text-sm">{{icon "add"}} Add a Post</button>
+			</div>
+		{{- end -}}
+
+		<div class="margin-vertical columns-3">
+			{{- range $posts -}}
+				<div class="card padding-sm flex-column" script="install blockselect()">
+					<h2>{{.Label}}</h2>
+					<div class="flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
+					<a hx-get="/{{.StreamID}}">More</a>
+					{{- if $isMyself -}}
+						<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs">Edit</a>
+					{{- end -}}
+				</div>
+			{{- end -}}
+		</div>
+
+	</div>
+
+</div>

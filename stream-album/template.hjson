@@ -173,6 +173,15 @@
 			]
 		}
 
+		delete-icon: {
+			roles: ["editor"]
+			steps: [
+				{do: "delete-attachments"}
+				{do: "set-data", values:{"iconUrl": ""}}
+				{do: "save"}
+			]
+		}
+
 		add-song: {
 			roles: ["editor"]
 			steps: [

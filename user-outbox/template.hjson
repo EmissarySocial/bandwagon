@@ -12,9 +12,13 @@
 				type: object
 				wildcard: string
 				properties: {
-					albumLabel: {type: "string"}
-					eventLabel: {type: "string"}
+					albumLabel: {type: "string", default:"Albums"}
+					eventLabel: {type: "string", default:"Events"}
+					newsLabel: {type: "string", default:"News"}
+					shopLabel: {type: "string", default:"Shop"}
+					shopUrl: {type: "string", format:"url"}
 					color-body: {type: "string", format:"color"},
+					color-menu: {type: "string", format:"color"},
 					color-page: {type: "string", format:"color"}, 
 					color-button: {type: "string", format:"color"}
 				}
@@ -23,6 +27,11 @@
 	}
 
 	actions: {
+
+		view: {do:"view-html", file:"outbox"}
+		albums: {do:"view-html"}
+		events: {do:"view-html"}
+		news: {do:"view-html"}
 
 		add-album: {
 			roles: ["myself"]
@@ -46,6 +55,21 @@
 					location: outbox
 					template: arcadium-event
 					title: + Add a Song
+				}
+				{do: "save"}
+				{do: "refresh-page"}
+			]
+		}
+
+		add-news: {
+			roles: ["editor"]
+			steps: [
+				{
+					do: add-stream
+					style: inline
+					location: outbox
+					template: arcadium-news
+					title: + Add News
 				}
 				{do: "save"}
 				{do: "refresh-page"}
@@ -85,6 +109,9 @@
 									children: [
 										{type:"text", path:"data.albumLabel", label:"Albums Label"}
 										{type:"text", path:"data.eventLabel", label:"Events Label"}
+										{type:"text", path:"data.newsLabel", label:"News Label"}
+										{type:"text", path:"data.shopLabel", label:"Shop Label"}
+										{type:"text", path:"data.shopUrl", label:"Shop URL", description:"Web address of your third-party store."}
 									]
 								}
 								{
@@ -92,6 +119,7 @@
 									label: Colors
 									children: [
 										{type: "text", path:"data.color-body", label:"Window Background"}
+										{type: "text", path:"data.color-menu", label:"Menu Background"}
 										{type: "text", path:"data.color-page", label:"Page Background"}
 										{type: "text", path:"data.color-button", label:"Links and Buttons"}
 									]
@@ -104,6 +132,13 @@
 					{do:"save"}
 				]}
 			] 
+		}
+
+		sort-featured: {
+			roles: ["editor", "myself"]
+			steps: [
+				{do:"sort", model:"Stream", keys:"_id", values:"rank"}
+			]
 		}
 	}
 }

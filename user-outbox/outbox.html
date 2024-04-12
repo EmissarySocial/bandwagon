@@ -1,6 +1,6 @@
+{{- $featured := .Outbox.Where "data.featured" true -}}
+{{- $featured = $featured.ByRank.Slice -}}
 {{- $isMyself := .IsMyself -}}
-{{- $albums := (.Outbox.Where "templateId" "arcadium-album").ByRank.Slice -}}
-{{- $events := (.Outbox.Where "templateId" "arcadium-event").ByRank.Slice -}}
 
 <!-- Page content -->
 <div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
@@ -22,158 +22,103 @@
 	<link rel="alternate" type="application/feed+json" href="{{.Host}}/@{{.UserID}}/feed?format=json"/>
 	<link rel="canonical" class="u-url" href="{{.ProfileURL}}">
 
-	<style>
+	{{- template "header" . -}}
 
-		body {
-		
-		{{ if ne "" (.Data "color-body") -}}
-			--body-background: {{.Data "color-body"}};
-		{{- end }}
-
-		{{ if ne "" (.Data "color-page") -}}
-			{{- $pageColor := parseColor (.Data "color-page") -}}
-			{{- $textColor := $pageColor.Text -}}
-			--page-background: {{.Data "color-page"}};
-			--page-border: {{($pageColor.Darken 10)}};
-			--heading-color: {{$pageColor.Text}};
-			--text-color: {{$pageColor.TextExt}};
-
-			{{if $pageColor.IsLight }}
-				--white:  rgb(255, 255, 255);
-				--gray00: rgb(255, 255, 255);
-				--gray01: rgba(0, 0, 0, 0.01);
-				--gray02: rgba(0, 0, 0, 0.02);
-				--gray03: rgba(0, 0, 0, 0.03);
-				--gray04: rgba(0, 0, 0, 0.04);
-				--gray05: rgba(0, 0, 0, 0.05);
-				--gray10: rgba(0, 0, 0, 0.10);
-				--gray15: rgba(0, 0, 0, 0.15);
-				--gray20: rgba(0, 0, 0, 0.20);
-				--gray30: rgba(0, 0, 0, 0.30);
-				--gray40: rgba(0, 0, 0, 0.40);
-				--gray50: rgba(0, 0, 0, 0.50);
-				--gray60: rgba(0, 0, 0, 0.60);
-				--gray70: rgba(0, 0, 0, 0.70);
-				--gray80: rgba(0, 0, 0, 0.80);
-				--gray90: rgba(0, 0, 0, 0.90);
-				--gray100: rgb(0, 0, 0);
-				--black:   rgb(0, 0, 0);
-			{{- else }}
-				--white:  rgb(0, 0, 0) ;
-				--gray00: rgb(0, 0, 0) ;
-				--gray01: rgba(255, 255, 255, 0.01);
-				--gray02: rgba(255, 255, 255, 0.02);
-				--gray03: rgba(255, 255, 255, 0.03);
-				--gray04: rgba(255, 255, 255, 0.04);
-				--gray05: rgba(255, 255, 255, 0.05);
-				--gray10: rgba(255, 255, 255, 0.10);
-				--gray15: rgba(255, 255, 255, 0.15);
-				--gray20: rgba(255, 255, 255, 0.20);
-				--gray30: rgba(255, 255, 255, 0.30);
-				--gray40: rgba(255, 255, 255, 0.40);
-				--gray50: rgba(255, 255, 255, 0.50);
-				--gray60: rgba(255, 255, 255, 0.60);
-				--gray70: rgba(255, 255, 255, 0.70);
-				--gray80: rgba(255, 255, 255, 0.80);
-				--gray90: rgba(255, 255, 255, 0.90);
-				--gray100: rgb(255, 255, 255);
-				--black:   rgb(255, 255, 255);
-			{{- end -}}
-			
-		{{- end }}
-
-		{{ if ne "" (.Data "color-button") -}}
-			{{- $buttonColor := parseColor (.Data "color-button") -}}
-			{{- $buttonText := $buttonColor.Text }}
-			{{- $buttonColorHover := ($buttonColor.Lighten 10) -}}
-			{{- $buttonTextHover := $buttonColorHover.Text }}
-			{{- $buttonColor := .Data "color-button" -}}
-
-			--button-primary-background: {{$buttonColor}};
-			--button-primary-background-hover: {{$buttonColorHover}};
-			--button-primary-color: {{$buttonText}};
-			--button-primary-color-hover: {{$buttonTextHover}};
-			--link-color: {{$buttonColor}};
-			--link-color-hover: {{$buttonColorHover}};
-		{{- end }}
-
-	</style>
-
-	<!-- Banner Image -->
-	{{- if ne "" .ImageURL -}}
-		<div style="width:100%; height:256px; background-color: #a0a0a0; background-image:url('{{.ImageURL}}'); background-size:cover; background-position:center"></div>
-	{{- end -}}
-
-	<div class="padding">
+	<div class="padding pos-relative">
 
 		<!-- Band Name -->
 		<div class="flex-row margin-top">
 			<img src="{{.IconURL}}" class="circle-48">
 			<div>
 				<h1 class="margin-none">{{.DisplayName}}</h1>
-				{{- if ne "" .Location -}}
-					<div class="text-sm text-gray">{{icon "location-fill"}} {{.Location}}</div>
-				{{- end -}}
+				<div class="margin-top">
+					<button class="primary text-lg">{{icon "add-circle"}} Follow</button>
+				</div>
 			</div>
 		</div>
 
-		<!-- Albums -->
-		{{- if or $isMyself $albums.NotEmpty -}}
-			<hr>
-			<h2>
-				{{first (.Data "albumLabel") "Music"}}
-				{{- if .UserCan "add-album" -}}
-					<span class="text-sm button margin-left" hx-get="/@{{.UserID}}/add-album" role="button">{{icon "add"}} Add an Album</span>
-				{{- end -}}
-			</h2>
-			<div class="margin-vertical columns-3">
-				{{- range $albums -}}
-					<div hx-get="/{{.StreamID}}" class="square card padding-none" role="button">
-						<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover">
-					</div>
-				{{- end -}}
-			</div>
+		{{- if $isMyself -}}
+			<form hx-post="/@{{.UserID}}/sort-featured" hx-trigger="end" hx-swap="none" hx-push-url="false">
 		{{- end -}}
 
-		<!-- Events -->
-		{{- if or $isMyself $events.NotEmpty -}}
-			<div class=" margin-top-xl flex-row">
-				<h2>
-					{{first (.Data "eventLabel") "Calendar"}}
-					{{- if .UserCan "add-event" -}}
-						<span class="text-sm button margin-left" hx-get="/@{{.UserID}}/add-event" role="button">{{icon "add"}} Add an Event</span>
-					{{- end -}}
-				</h2>
-			</div>
-
-			<div class="columns-3">
-				{{- range $events -}}
-					<div class="card flex-column padding">
-						<div>
-							<span class="bold">{{.Data.date}}</span>
+		<div class="columns-4 margin-top sortable">
+			{{- range $featured -}}
+				<div class="card flex-column hover-trigger" script="install blockselect()">
+					{{- if eq  "arcadium-album" .TemplateID -}}
+						<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;">
+						<div class="margin-top-sm padding-sm text-uppercase text-plain">
+							<a href="/{{.StreamID}}">
+								<span class="bold">{{.Label}}</span>
+								<span>{{.Data.year}}</span>
+							</a>
 						</div>
-						<div class="text-xl margin-none bold">{{.Data.city}}</div>
-						<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
+					{{- else if eq "arcadium-event" .TemplateID -}}
+						<div class="padding bold">{{.Data.date}}</div>
+						<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
+						<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
 						{{- if ne "" .Data.website -}}
-							<div class="margin-top">
-								<a href="{{.Data.website}}" target="_blank" class="button align-center primary width-100-percent">Get Tickets</a>
+							<div class="padding">
+								<a href="{{.Data.website}}" target="_blank">GET TICKETS</a>
 							</div>
 						{{- end -}}
-						{{- if $isMyself -}}
-							<div class="pos-absolute" style="top:8px; right:8px;">
-								<button class="text-xs margin-left" hx-get="/{{.StreamID}}/edit">Edit</button>
-							</div>
-						{{- end -}}
-					</div>
-				{{- end -}}
-			</div>
+					{{- else if eq "arcadium-news" .TemplateID -}}
+						<h2 class="padding align-center">{{.Label}}</h2>
+						<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
+						<div class="padding">
+							<a hx-get="/{{.StreamID}}">MORE</a>
+						</div>
+					{{- end -}}
+
+					{{- if $isMyself -}}
+						<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
+						<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
+						<input type="hidden" name="keys" value="{{.StreamID}}">
+					{{- end -}}
+				</div>
+			{{- end -}}
+		</div>
+
+		{{- if $isMyself -}}
+			</form>
+
+			<button type="button" hx-get="/@me/edit" class="text-xs pos-absolute-top-right">Edit Profile</button>
+
+			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+
+			<script>
+				var sortables = document.querySelectorAll(".sortable");
+				for (var node of sortables) {
+					new Sortable(node, {
+						handle: ".drag-handle",
+						animation: 150,
+						whisperClass: 'draggable-whisper'
+					});
+				}
+			</script>
+
+			<style>
+				.draggable {
+					padding:10px 20px;
+					border: solid 1px var(--gray10);
+					background-color: var(--gray00);
+					color: var(--gray80);
+					margin-bottom: -1px;
+					cursor: grab;
+				}
+
+				.drag-handle {
+					cursor:grab;
+				}
+
+				.draggable-whisper {
+					background-color: var(--gray50);
+					color:var(--gray50);
+					cursor: grabbing;
+				}
+			</style>
 
 		{{- end -}}
 
 	</div>
-
-	{{- if .IsMyself -}}
-		<button type="button" hx-get="/@me/edit" class="text-xs pos-absolute-top-right">Edit Profile</button>
-	{{- end -}}
 
 </div>

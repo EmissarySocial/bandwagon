@@ -1,0 +1,40 @@
+{{- $events := (.Outbox.Where "templateId" "arcadium-event").ByRank.Slice -}}
+{{- $isMyself := .IsMyself -}}
+
+<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}/events" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
+
+	{{- template "header" . -}}
+
+	<div class="padding pos-relative">
+	
+		{{- if .UserCan "add-event" -}}
+			<div class="margin-bottom align-right">
+				<button hx-get="/@{{.UserID}}/add-event" class="text-sm">{{icon "add"}} Add an Event</button>
+			</div>
+		{{- end -}}
+
+		<div class="columns-3">
+			{{- range $events -}}
+				<div class="card flex-column padding" script="install blockselect()">
+					<div>
+						<span class="bold">{{.Data.date}}</span>
+					</div>
+					<div class="text-xl margin-none bold">{{.Data.city}}</div>
+					<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
+					{{- if ne "" .Data.website -}}
+						<div class="margin-top">
+							<a href="{{.Data.website}}" target="_blank" class="bold text-uppercase hover-underline">Get Tickets</a>
+						</div>
+					{{- end -}}
+					{{- if $isMyself -}}
+						<div class="pos-absolute-top-right">
+							<button class="text-xs margin-left" hx-get="/{{.StreamID}}/edit">Edit</button>
+						</div>
+					{{- end -}}
+				</div>
+			{{- end -}}
+		</div>
+
+	</div>
+
+</div>
