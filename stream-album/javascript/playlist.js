@@ -20,10 +20,11 @@ function Play() {
 
 	htmx.find("#source-mp3").src = song.url
 	audio.load()
+	audio.volume = 0.3
 	audio.play()
 
 	htmx.addClass(controls, "PLAYING")
-	htmx.takeClass(htmx.find("#track-" + playlistIndex), "selected")
+	htmx.takeClass(htmx.find("#track-" + playlistIndex), "PLAYING")
 }
 
 // PlayFirst jumps to the first song in the playlist and plays it

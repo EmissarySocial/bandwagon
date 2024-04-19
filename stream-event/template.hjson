@@ -37,7 +37,7 @@
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
 								{type: "text", path:"data.website", label:"Ticket Website"}
-								{type: "toggle", path:"data.featured", options:{true-text:"Featured on Homepage", false-text:"Featured"}}
+								{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
@@ -64,7 +64,7 @@
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
 								{type: "text", path:"data.website", label:"Ticket Website"}
-								{type: "toggle", path:"data.featured", options:{true-text:"Featured on Homepage", false-text:"Featured"}}
+								{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}

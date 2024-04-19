@@ -32,7 +32,7 @@
 			<div>
 				<h1 class="margin-none">{{.DisplayName}}</h1>
 				<div class="margin-top">
-					<button class="primary text-lg">{{icon "add-circle"}} Follow</button>
+					<button class="primary text-md" hx-get="/@{{.UserID}}/follow">{{icon "fediverse"}} Follow on the Fediverse</button>
 				</div>
 			</div>
 		</div>
@@ -46,26 +46,23 @@
 				<div class="card flex-column hover-trigger" script="install blockselect()">
 					{{- if eq  "arcadium-album" .TemplateID -}}
 						<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;">
-						<div class="margin-top-sm padding-sm text-uppercase text-plain">
-							<a href="/{{.StreamID}}">
-								<span class="bold">{{.Label}}</span>
-								<span>{{.Data.year}}</span>
-							</a>
+						<div class="padding text-uppercase text-plain">
+							<a href="/{{.StreamID}}">{{.Label}}</a>
 						</div>
 					{{- else if eq "arcadium-event" .TemplateID -}}
 						<div class="padding bold">{{.Data.date}}</div>
 						<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
 						<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
-						{{- if ne "" .Data.website -}}
-							<div class="padding">
-								<a href="{{.Data.website}}" target="_blank">GET TICKETS</a>
+						{{- if ne nil .Data.website -}}
+							<div class="padding text-uppercase">
+								<a href="{{.Data.website}}" target="_blank">Get Tickets</a>
 							</div>
 						{{- end -}}
 					{{- else if eq "arcadium-news" .TemplateID -}}
 						<h2 class="padding align-center">{{.Label}}</h2>
 						<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
-						<div class="padding">
-							<a hx-get="/{{.StreamID}}">MORE</a>
+						<div class="padding text-uppercase">
+							<a hx-get="/{{.StreamID}}">Read More</a>
 						</div>
 					{{- end -}}
 
@@ -81,7 +78,7 @@
 		{{- if $isMyself -}}
 			</form>
 
-			<button type="button" hx-get="/@me/edit" class="text-xs pos-absolute-top-right">Edit Profile</button>
+			<button type="button" hx-get="/@me/edit" class="text-sm pos-absolute-top-right">Edit Profile</button>
 
 			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
 

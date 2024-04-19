@@ -1,4 +1,5 @@
-{{- $events := (.Outbox.Where "templateId" "arcadium-event").ByRank.Slice -}}
+{{- $events := (.Outbox.Where "templateId" "arcadium-event").ByRankAlt.Slice -}}
+{{- $userCanSortChildren := .UserCan "sort-children" -}}
 {{- $isMyself := .IsMyself -}}
 
 <div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}/events" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
@@ -13,27 +14,69 @@
 			</div>
 		{{- end -}}
 
-		<div class="columns-3">
-			{{- range $events -}}
-				<div class="card flex-column padding" script="install blockselect()">
-					<div>
-						<span class="bold">{{.Data.date}}</span>
+		<form hx-post="/@{{.UserID}}/sort-children" hx-trigger="end" hx-swap="none" hx-push-url="false">
+			<div class="sortable columns-3">
+				{{- range $events -}}
+					<div class="card flex-column padding hover-trigger" script="install blockselect()">
+						<div>
+							<span class="bold">{{.Data.date}}</span>
+						</div>
+						<div class="text-xl margin-none bold">{{.Data.city}}</div>
+						<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
+						{{- if ne nil .Data.website -}}
+							<div class="margin-top">
+								<a href="{{.Data.website}}" target="_blank" class="bold text-uppercase hover-underline">Get Tickets</a>
+							</div>
+						{{- end -}}
+
+						{{- if $userCanSortChildren -}}
+							<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>
+							<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit</button>
+							<input type="hidden" name="keys" value="{{.StreamID}}">
+						{{- end -}}
+
 					</div>
-					<div class="text-xl margin-none bold">{{.Data.city}}</div>
-					<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
-					{{- if ne "" .Data.website -}}
-						<div class="margin-top">
-							<a href="{{.Data.website}}" target="_blank" class="bold text-uppercase hover-underline">Get Tickets</a>
-						</div>
-					{{- end -}}
-					{{- if $isMyself -}}
-						<div class="pos-absolute-top-right">
-							<button class="text-xs margin-left" hx-get="/{{.StreamID}}/edit">Edit</button>
-						</div>
-					{{- end -}}
-				</div>
-			{{- end -}}
-		</div>
+				{{- end -}}
+			</div>
+		</form>
+
+		{{- if $userCanSortChildren -}}
+
+			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+
+			<script>
+				var sortables = document.querySelectorAll(".sortable");
+				for (var node of sortables) {
+					new Sortable(node, {
+						handle: ".drag-handle",
+						animation: 150,
+						whisperClass: 'draggable-whisper'
+					});
+				}
+			</script>
+
+			<style>
+				.draggable {
+					padding:10px 20px;
+					border: solid 1px var(--gray10);
+					background-color: var(--gray00);
+					color: var(--gray80);
+					margin-bottom: -1px;
+					cursor: grab;
+				}
+
+				.drag-handle {
+					cursor:grab;
+				}
+
+				.draggable-whisper {
+					background-color: var(--gray50);
+					color:var(--gray50);
+					cursor: grabbing;
+				}
+			</style>
+
+		{{- end -}}
 
 	</div>
 

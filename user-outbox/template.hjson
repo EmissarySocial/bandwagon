@@ -140,5 +140,12 @@
 				{do:"sort", model:"Stream", keys:"_id", values:"rank"}
 			]
 		}
+
+		sort-children: {
+			roles: ["editor", "myself"]
+			steps: [
+				{do:"sort", model:"Stream", keys:"_id", values:"rankAlt"}
+			]
+		}
 	}
 }

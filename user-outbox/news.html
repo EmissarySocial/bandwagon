@@ -16,12 +16,12 @@
 
 		<div class="margin-vertical columns-3">
 			{{- range $posts -}}
-				<div class="card padding-sm flex-column" script="install blockselect()">
+				<div class="card hover-trigger padding-sm flex-column" script="install blockselect()">
 					<h2>{{.Label}}</h2>
-					<div class="flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
+					<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
 					<a hx-get="/{{.StreamID}}">More</a>
 					{{- if $isMyself -}}
-						<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs">Edit</a>
+						<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs hover-show">Edit</a>
 					{{- end -}}
 				</div>
 			{{- end -}}
