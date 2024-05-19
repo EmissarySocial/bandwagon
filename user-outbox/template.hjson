@@ -40,7 +40,7 @@
 					do: add-stream
 					style: inline
 					location: outbox
-					template: arcadium-album
+					template: planetary-album
 					label: + Add Album
 					set-permissions: {copy:true, editor:["self"]}
 				}
@@ -54,7 +54,7 @@
 					do: add-stream
 					style: inline
 					location: outbox
-					template: arcadium-event
+					template: planetary-event
 					title: + Add a Song
 					set-permissions: {copy:true, editor:["self"]}
 				}
@@ -70,7 +70,7 @@
 					do: add-stream
 					style: inline
 					location: outbox
-					template: arcadium-news
+					template: planetary-news
 					title: + Add News
 					set-permissions: {copy:true, editor:["self"]}
 				}

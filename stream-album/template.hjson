@@ -1,5 +1,5 @@
 {
-	templateId: arcadium-album
+	templateId: planetary-album
 	templateRole: album
 	socialRole: Article
 	model: Stream
@@ -191,7 +191,7 @@
 					style: inline
 					location: child
 					title: + Add a Song
-					type: arcadium-song
+					type: planetary-song
 				}
 				{do: "save"}
 				{do: "refresh-page"}

@@ -1,5 +1,5 @@
 {
-	templateId: arcadium-song
+	templateId: planetary-song
 	templateRole: song
 	label: Song
 	containedBy: ["album"]

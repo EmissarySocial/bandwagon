@@ -1,5 +1,5 @@
 {
-	templateId: arcadium-news
+	templateId: planetary-news
 	model: Stream
 	templateRole: Note
 	socialRole: Note

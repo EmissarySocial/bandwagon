@@ -1,4 +1,4 @@
-{{- $events := (.Outbox.Where "templateId" "arcadium-event").ByRankAlt.Slice -}}
+{{- $events := (.Outbox.Where "templateId" "planetary-event").ByRankAlt.Slice -}}
 {{- $userCanSortChildren := .UserCan "sort-children" -}}
 {{- $isMyself := .IsMyself -}}
 

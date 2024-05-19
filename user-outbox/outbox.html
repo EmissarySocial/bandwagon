@@ -44,12 +44,12 @@
 		<div class="columns-4 margin-top sortable">
 			{{- range $featured -}}
 				<div class="card flex-column hover-trigger" script="install blockselect()">
-					{{- if eq  "arcadium-album" .TemplateID -}}
+					{{- if eq  "planetary-album" .TemplateID -}}
 						<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;">
 						<div class="padding text-uppercase text-plain">
 							<a href="/{{.StreamID}}">{{.Label}}</a>
 						</div>
-					{{- else if eq "arcadium-event" .TemplateID -}}
+					{{- else if eq "planetary-event" .TemplateID -}}
 						<div class="padding bold">{{.Data.date}}</div>
 						<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
 						<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
@@ -58,7 +58,7 @@
 								<a href="{{.Data.website}}" target="_blank">Get Tickets</a>
 							</div>
 						{{- end -}}
-					{{- else if eq "arcadium-news" .TemplateID -}}
+					{{- else if eq "planetary-news" .TemplateID -}}
 						<h2 class="padding align-center">{{.Label}}</h2>
 						<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
 						<div class="padding text-uppercase">
