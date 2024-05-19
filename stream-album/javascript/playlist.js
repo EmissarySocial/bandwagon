@@ -18,9 +18,11 @@ function Play() {
 	var controls = htmx.find("#media-controls")
 	var song = playlist[playlistIndex]
 
-	htmx.find("#source-mp3").src = song.url
+	htmx.find("#source-mp3").src = song.url + ".mp3"
+	htmx.find("#source-aac").src = song.url + ".m4a"
+
 	audio.load()
-	audio.volume = 0.3
+	audio.volume = 0.7
 	audio.play()
 
 	htmx.addClass(controls, "PLAYING")

@@ -2,7 +2,8 @@
 {{- $userCanSortChildren := .UserCan "sort-children" -}}
 {{- $isMyself := .IsMyself -}}
 
-<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}/events" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
+<div class="framed page app padding-none" hx-get="/@{{.UserID}}/events" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
+	script="on load add [@aria-selected=true] to #events">
 
 	{{- template "header" . -}}
 

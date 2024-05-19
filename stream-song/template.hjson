@@ -31,7 +31,7 @@
 	}
 	actions: {
 		create: {
-			roles: ["admin", "editor"]
+			roles: ["admin", "author"]
 			steps: [
 				{do:"as-modal", steps:[
 					{
@@ -44,10 +44,10 @@
 									type: layout-vertical
 									label: Basics
 									children: [
-										{type: "text", label: "Song Title", path: "label"},
-										{type: "upload", label: "Audio File", path: "data.attachmentId", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
-										{type: "text", label: "Length", path: "data.length"},
-										{type: "toggle", path: "data.featured", options:{true-text:"Featured", false-text:"Featured"}}
+										{type: "text",   path: "label", label: "Song Title"},
+										{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
+										{type: "text",   path: "data.length", label: "Length"},
+										{type: "toggle", path: "isFeatured", options:{true-text:"Featured", false-text:"Featured"}}
 										{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
 									]
 								}
@@ -55,11 +55,11 @@
 									type: layout-vertical
 									label: Extras
 									children: [
-										{type: "text", label: "Artist", path: "data.artist"},
-										{type: "text", label: "Composer", path: "data.composer"},
-										{type: "text", label: "Producer", path: "data.producer"},
-										{type: "text", label: "ISRC", path: "data.isrc"},
-										{type: "text", label: "Video Stream URL", path: "data.streamURL"},
+										{type: "text", path: "data.artist", label: "Artist"},
+										{type: "text", path: "data.composer", label: "Composer"},
+										{type: "text", path: "data.producer", label: "Producer"},
+										{type: "text", path: "data.isrc", label: "ISRC"},
+										{type: "text", path: "data.streamURL", label: "Video Stream URL"},
 									]
 								}
 								{
@@ -97,7 +97,7 @@
 		}
 		view: {}
 		edit: {
-			roles: ["admin", "editor"]
+			roles: ["admin", "author"]
 			steps: [
 				{
 					do:"as-modal",
@@ -113,10 +113,10 @@
 										type: layout-vertical
 										label: Basics
 										children: [
-											{type: "text", label: "Song Title", path: "label"},
-											{type: "upload", label: "Audio File", path: "data.attachmentId", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
-											{type: "text", label: "Length", path: "data.length"},
-											{type: "toggle", path: "data.featured", options:{true-text:"Featured", false-text:"Featured"}}
+											{type: "text",   path: "label", label: "Song Title"},
+											{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
+											{type: "text",   path: "data.length", label: "Length"},
+											{type: "toggle", path: "isFeatured", options:{true-text:"Featured", false-text:"Featured"}}
 											{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
 										]
 									}
@@ -167,7 +167,7 @@
 		}
 
 		delete: {
-			roles: ["admin", "editor"]
+			roles: ["admin", "author"]
 			steps: [
 				{do:"delete", title:"Delete this Song?"}
 				{do:"refresh-page"}

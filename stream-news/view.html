@@ -1,8 +1,19 @@
-<h1>{{.Label}}</h1>
-<div>{{.PublishDate | shortDate}}</</div>
-<div class="margin-vertical">{{.ContentHTML}}</div>
-<button script="on click send closeModal">Close</button>
+<div class="framed page app padding-none" script="on htmx:load if #news is not null then add [@aria-selected=true] to #news">
 
-{{- if .UserCan "edit" -}}
-	<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-sm">Edit</button>
-{{- end -}}
+	<div hx-get="/@{{.ParentID}}/header" hx-swap="outerHTML" hx-target="this" hx-trigger="load" hx-push-url="false"></div>
+
+	<article class="content padding-lg">
+
+		<div>
+			<h1>{{.Label}}</h1>
+			<div>{{.PublishDate | shortDate}}</</div>
+			<div class="margin-vertical">{{.ContentHTML}}</div>
+		</div>
+
+		{{- if .UserCan "edit" -}}
+			<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-sm">Edit</button>
+		{{- end -}}
+
+	</article>
+
+</div>

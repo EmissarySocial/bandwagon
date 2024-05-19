@@ -1,8 +1,8 @@
 {{- $posts := (.Outbox.Where "templateId" "arcadium-news").ByPublishDate.Reverse.Slice -}}
 {{- $isMyself := .IsMyself -}}
 
-
-<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}/news" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
+<div class="framed page app padding-none" hx-get="/@{{.UserID}}/news" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
+	script="on load add [@aria-selected=true] to #news">
 
 	{{- template "header" . -}}
 
@@ -19,7 +19,7 @@
 				<div class="card hover-trigger padding-sm flex-column" script="install blockselect()">
 					<h2>{{.Label}}</h2>
 					<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
-					<a hx-get="/{{.StreamID}}">More</a>
+					<a hx-get="/{{.StreamID}}">READ MORE</a>
 					{{- if $isMyself -}}
 						<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs hover-show">Edit</a>
 					{{- end -}}

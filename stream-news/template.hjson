@@ -24,7 +24,7 @@
 	actions: {
 
 		create: {
-			roles: ["editor", "myself"]
+			roles: ["author"]
 			steps: [
 				{do:"as-modal", options:["class:large"], steps:[
 					{
@@ -36,7 +36,7 @@
 								{type: "text", path: "label", label: "Title"}
 								{type: "textarea", path: "summary", label: "Summary", description:"Shows on summary listing"}
 								{type: "textarea", path: "content.raw", label: "Content", description:"Shows on news article page", options:{rows:12}}
-								{type: "toggle", path: "data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type: "toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
@@ -50,7 +50,7 @@
 		}
 
 		edit: {
-			roles: ["editor", "myself"]
+			roles: ["author"]
 			steps: [
 				{do: "as-modal", options:["class:large"], steps:[
 					{
@@ -63,7 +63,7 @@
 								{type: "text", path: "label", label: "Title", description:"Shows everywhere"}
 								{type: "textarea", path: "summary", label: "Summary", description:"Shows on summary listing only"}
 								{type: "textarea", path: "content.raw", label: "Content", options:{rows:8}, description:"Shows on news article page only"}
-								{type: "toggle", path: "data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type: "toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
@@ -78,13 +78,12 @@
 
 		view: {
 			steps:[
-				{do: "as-modal", steps:[
 				{do: "view-html"}	
-			]}
-		]}
+			]
+		}
 
 		delete: {
-			roles: ["editor", "myself"]
+			roles: ["author"]
 			steps: [
 				{do: "delete"}
 				{do: "unpublish", outbox:true}

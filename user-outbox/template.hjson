@@ -34,7 +34,7 @@
 		news: {do:"view-html"}
 
 		add-album: {
-			roles: ["myself"]
+			roles: ["self", "editor"]
 			steps: [
 				{
 					do: add-stream
@@ -42,12 +42,13 @@
 					location: outbox
 					template: arcadium-album
 					label: + Add Album
+					set-permissions: {copy:true, editor:["self"]}
 				}
 			]
 		}
 
 		add-event: {
-			roles: ["myself"]
+			roles: ["self", "editor"]
 			steps: [
 				{
 					do: add-stream
@@ -55,6 +56,7 @@
 					location: outbox
 					template: arcadium-event
 					title: + Add a Song
+					set-permissions: {copy:true, editor:["self"]}
 				}
 				{do: "save"}
 				{do: "refresh-page"}
@@ -62,7 +64,7 @@
 		}
 
 		add-news: {
-			roles: ["editor"]
+			roles: ["self", "editor"]
 			steps: [
 				{
 					do: add-stream
@@ -70,6 +72,7 @@
 					location: outbox
 					template: arcadium-news
 					title: + Add News
+					set-permissions: {copy:true, editor:["self"]}
 				}
 				{do: "save"}
 				{do: "refresh-page"}
@@ -77,7 +80,7 @@
 		}
 
 		edit: {
-			roles: ["myself"]
+			roles: ["self"]
 			steps: [
 				{do: "as-modal", background:"view", steps:[
 					{
@@ -135,16 +138,28 @@
 		}
 
 		sort-featured: {
-			roles: ["editor", "myself"]
+			roles: ["editor", "self"]
 			steps: [
 				{do:"sort", model:"Stream", keys:"_id", values:"rank"}
 			]
 		}
 
 		sort-children: {
-			roles: ["editor", "myself"]
+			roles: ["editor", "self"]
 			steps: [
 				{do:"sort", model:"Stream", keys:"_id", values:"rankAlt"}
+			]
+		}
+
+		header: {
+			steps: [
+				{do:"view-html", file:"header"}
+			]
+		}
+
+		stylesheet: {
+			steps: [
+				{do:"view-css"}
 			]
 		}
 	}

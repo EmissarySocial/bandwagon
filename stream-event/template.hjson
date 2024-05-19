@@ -22,9 +22,10 @@
 			}
 		}
 	}
+
 	actions: {
 		create: {
-			roles:["editor"]
+			roles:["author"]
 			steps: [
 				{do: "as-modal", steps: [
 					{
@@ -37,7 +38,7 @@
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
 								{type: "text", path:"data.website", label:"Ticket Website"}
-								{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
@@ -50,7 +51,7 @@
 		}
 		view: {do: "view-html"}
 		edit: {
-			roles: ["editor"]
+			roles: ["author"]
 			steps: [
 				{do: "as-modal", steps: [
 					{
@@ -64,7 +65,7 @@
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
 								{type: "text", path:"data.website", label:"Ticket Website"}
-								{type: "toggle", path:"data.featured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
@@ -77,7 +78,7 @@
 		}
 
 		delete: {
-			roles: ["editor"]
+			roles: ["author"]
 			steps: [
 				{do: "delete"}
 				{do: "unpublish", outbox:true}

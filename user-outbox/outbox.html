@@ -1,9 +1,9 @@
-{{- $featured := .Outbox.Where "data.featured" true -}}
-{{- $featured = $featured.ByRank.Slice -}}
+{{- $featured := .Outbox.Featured.ByRank.Slice -}}
 {{- $isMyself := .IsMyself -}}
 
 <!-- Page content -->
-<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
+<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
+	script="on load add [@aria-selected=true] to #home">
 
 	<title>{{.DisplayName}}</title>
 
@@ -32,7 +32,7 @@
 			<div>
 				<h1 class="margin-none">{{.DisplayName}}</h1>
 				<div class="margin-top">
-					<button class="primary text-md" hx-get="/@{{.UserID}}/follow">{{icon "fediverse"}} Follow on the Fediverse</button>
+					<button class="primary text-md" hx-get="/@{{.UserID}}/follow">Follow for Updates</button>
 				</div>
 			</div>
 		</div>
@@ -62,7 +62,7 @@
 						<h2 class="padding align-center">{{.Label}}</h2>
 						<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
 						<div class="padding text-uppercase">
-							<a hx-get="/{{.StreamID}}">Read More</a>
+							<a href="/{{.StreamID}}">Read More</a>
 						</div>
 					{{- end -}}
 
@@ -78,7 +78,10 @@
 		{{- if $isMyself -}}
 			</form>
 
-			<button type="button" hx-get="/@me/edit" class="text-sm pos-absolute-top-right">Edit Profile</button>
+			<div class="text-sm pos-absolute-top-right">
+				<button hx-get="/@me/edit">Edit Profile</button>
+				<button hx-post="/signout" hx-target="body">Sign Out</button>
+			</div>
 
 			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
 
