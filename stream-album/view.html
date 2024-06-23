@@ -50,13 +50,15 @@
 			<table class="table">
 				{{- range $index, $song := $songs -}}
 					{{- $isplayable := ne nil $song.Data.attachmentId -}}
-					<tr id="track-{{$index}}" class="hover-trigger" 
+					<tr id="track-{{$index}}" class="hover-trigger" role="button">
 
-						{{ if $isplayable -}} 
-							role="button"
-						{{- end -}}>
-
-						<td nowrap class="align-right" {{ if $isplayable}}hx-on:click="Toggle({{$index}})"{{end}}>
+						<td nowrap class="align-right"
+							{{ if $isplayable -}}
+								hx-on:click="Toggle({{$index}})"
+							{{- else -}}
+								hx-get="/{{$song.StreamID}}"
+							{{- end -}}
+						>
 							<span class="margin-right text-gray">
 								{{- if $isplayable -}}
 									<span class="hover-show">{{icon "play-fill"}}</span>
@@ -71,23 +73,31 @@
 							</span>
 							<span class="hide sm:show">{{add $index 1}}.</span>
 						</td>
-						<td class="width-100-percent" {{ if $isplayable}}hx-on:click="Toggle({{$index}})"{{end}}>
+						<td class="width-100-percent"
+							{{ if $isplayable -}}
+								hx-on:click="Toggle({{$index}})"
+							{{- else -}}
+								hx-get="/{{$song.StreamID}}"
+							{{- end -}}
+						>
 							{{$song.Label}}
 							{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
 						</td>
-						<td nowrap class="align-right" {{ if $isplayable}}hx-on:click="Toggle({{$index}})"{{end}}>
+						<td nowrap class="align-right"
+							{{ if $isplayable -}}
+								hx-on:click="Toggle({{$index}})"
+							{{- else -}}
+								hx-get="/{{$song.StreamID}}"
+							{{- end -}}
+						>
 							{{- $song.Data.length -}}
 						</td>
-						<td nowrap>
-							{{- if .Data.links.NotEmpty -}}
-								<button hx-get="/{{$song.StreamID}}/links">{{icon "cloud"}}</button>
+						<td class="text-xs align-right" nowrap>
+							<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm">Song Info</button>
+							{{- if $canEdit -}}
+								<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
 							{{- end -}}
 						</td>
-						{{- if $canEdit -}}
-							<td nowrap>
-								<button hx-get="/{{$song.StreamID}}/edit" class="text-xs margin-right-none margin-left-sm">Edit</button>
-							</td>
-						{{- end -}}
 					</tr>
 				{{- end -}}
 		

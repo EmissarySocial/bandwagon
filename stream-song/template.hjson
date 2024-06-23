@@ -95,7 +95,12 @@
 				{do:"refresh-page"}
 			]
 		}
-		view: {}
+		view: {
+			steps: [
+				{do:"as-modal", steps: [
+				{do:"view-html"}
+			]}
+		]}
 		edit: {
 			roles: ["admin", "author"]
 			steps: [
