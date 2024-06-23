@@ -1,5 +1,5 @@
 {
-	templateId: planetary-song
+	templateId: bandwagon-song
 	templateRole: song
 	label: Song
 	containedBy: ["album"]

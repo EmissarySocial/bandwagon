@@ -40,7 +40,7 @@
 					do: add-stream
 					style: inline
 					location: outbox
-					template: planetary-album
+					template: bandwagon-album
 					label: + Add Album
 					set-permissions: {copy:true, editor:["self"]}
 				}
@@ -54,7 +54,7 @@
 					do: add-stream
 					style: inline
 					location: outbox
-					template: planetary-event
+					template: bandwagon-event
 					title: + Add a Song
 					set-permissions: {copy:true, editor:["self"]}
 				}
@@ -70,7 +70,7 @@
 					do: add-stream
 					style: inline
 					location: outbox
-					template: planetary-news
+					template: bandwagon-news
 					title: + Add News
 					set-permissions: {copy:true, editor:["self"]}
 				}

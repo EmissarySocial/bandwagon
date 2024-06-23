@@ -1,5 +1,5 @@
 {
-	templateId: planetary-album
+	templateId: bandwagon-album
 	templateRole: album
 	socialRole: Article
 	model: Stream
@@ -191,7 +191,7 @@
 					style: inline
 					location: child
 					title: + Add a Song
-					type: planetary-song
+					type: bandwagon-song
 				}
 				{do: "save"}
 				{do: "refresh-page"}

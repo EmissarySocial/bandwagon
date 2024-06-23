@@ -1,4 +1,4 @@
-{{- $posts := (.Outbox.Where "templateId" "planetary-news").ByPublishDate.Reverse.Slice -}}
+{{- $posts := (.Outbox.Where "templateId" "bandwagon-news").ByPublishDate.Reverse.Slice -}}
 {{- $isMyself := .IsMyself -}}
 
 <div class="framed page app padding-none" hx-get="/@{{.UserID}}/news" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"

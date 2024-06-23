@@ -1,5 +1,5 @@
 {
-	templateId: planetary-news
+	templateId: bandwagon-news
 	model: Stream
 	templateRole: Note
 	socialRole: Note
