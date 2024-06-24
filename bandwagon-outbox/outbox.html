@@ -1,5 +1,5 @@
 {{- $featured := .Outbox.Featured.ByRank.Slice -}}
-{{- $isMyself := .IsMyself -}}
+{{- $canEdit := .UserCan "edit" -}}
 
 <!-- Page content -->
 <div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
@@ -37,7 +37,7 @@
 			</div>
 		</div>
 
-		{{- if $isMyself -}}
+		{{- if .UserCan "sort-featured" -}}
 			<form hx-post="/@{{.UserID}}/sort-featured" hx-trigger="end" hx-swap="none" hx-push-url="false">
 		{{- end -}}
 
@@ -66,7 +66,7 @@
 						</div>
 					{{- end -}}
 
-					{{- if $isMyself -}}
+					{{- if $canEdit -}}
 						<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
 						<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
 						<input type="hidden" name="keys" value="{{.StreamID}}">
@@ -75,7 +75,7 @@
 			{{- end -}}
 		</div>
 
-		{{- if $isMyself -}}
+		{{- if $canEdit -}}
 			</form>
 
 			<div class="text-sm pos-absolute-top-right">

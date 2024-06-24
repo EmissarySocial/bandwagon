@@ -1,8 +1,8 @@
 {
-	templateId: music-outbox
-	model: User
+	templateId: bandwagon-outbox
 	templateRole: user-outbox
-	label: Arcadium Outbox
+	model: User
+	label: Bandwagon Outbox
 	extends: ["user-outbox"]
 	schema: {
 		type: object
@@ -34,7 +34,7 @@
 		news: {do:"view-html"}
 
 		add-album: {
-			roles: ["self", "editor"]
+			roles: ["self", "editor", "owner"]
 			steps: [
 				{
 					do: add-stream
@@ -48,7 +48,7 @@
 		}
 
 		add-event: {
-			roles: ["self", "editor"]
+			roles: ["self", "editor", "owner"]
 			steps: [
 				{
 					do: add-stream
@@ -64,7 +64,7 @@
 		}
 
 		add-news: {
-			roles: ["self", "editor"]
+			roles: ["self", "editor", "owner"]
 			steps: [
 				{
 					do: add-stream
@@ -80,7 +80,7 @@
 		}
 
 		edit: {
-			roles: ["self"]
+			roles: ["self", "editor", "owner"]
 			steps: [
 				{do: "as-modal", background:"view", steps:[
 					{
@@ -138,14 +138,14 @@
 		}
 
 		sort-featured: {
-			roles: ["editor", "self"]
+			roles: ["self", "editor", "owner"]
 			steps: [
 				{do:"sort", model:"Stream", keys:"_id", values:"rank"}
 			]
 		}
 
 		sort-children: {
-			roles: ["editor", "self"]
+			roles: ["self", "editor", "owner"]
 			steps: [
 				{do:"sort", model:"Stream", keys:"_id", values:"rankAlt"}
 			]
