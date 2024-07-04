@@ -86,6 +86,6 @@ function Pause() {
 
 	audio.pause()
 	htmx.removeClass(controls, "PLAYING")
-	htmx.removeClass(track, "selected")
+	htmx.removeClass(track, "PLAYING")
 }
 

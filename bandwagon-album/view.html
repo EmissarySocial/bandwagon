@@ -50,7 +50,7 @@
 			<table class="table">
 				{{- range $index, $song := $songs -}}
 					{{- $isplayable := ne nil $song.Data.attachmentId -}}
-					<tr id="track-{{$index}}" class="hover-trigger" role="button">
+					<tr id="track-{{$index}}" class="track hover-trigger" role="button">
 
 						<td nowrap class="align-right"
 							{{ if $isplayable -}}
