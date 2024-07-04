@@ -60,7 +60,7 @@
 									label: Metadata
 									children: [
 										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page"}
+										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
 									]
 								}
 								{
@@ -131,7 +131,7 @@
 									label: Metadata
 									children: [
 										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page"}
+										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
 									]
 								}
 								{

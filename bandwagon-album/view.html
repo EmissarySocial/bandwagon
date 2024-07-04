@@ -116,7 +116,7 @@
 			{{- if ne "" .Summary -}}
 				<div class="margin-bottom-lg">
 					<h3>Album Notes</h3>
-					{{.Summary }}
+					{{.Summary | markdown}}
 				</div>
 			{{- end -}}
 
