@@ -198,8 +198,6 @@
 					title: + Add a Song
 					type: bandwagon-song
 				}
-				{do: "save"}
-				{do: "refresh-page"}
 			]
 		}
 

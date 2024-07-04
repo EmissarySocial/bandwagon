@@ -2,7 +2,7 @@
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
 
-<div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false" hx-target="main" hx-swap="innerHTML">
+<div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML">
 
 	<style>
 		{{template "stylesheet" .}}
@@ -61,9 +61,9 @@
 						>
 							<span class="margin-right text-gray">
 								{{- if $isplayable -}}
-									<span class="hover-show">{{icon "play-fill"}}</span>
+									<span class="hover-visible">{{icon "play-fill"}}</span>
 									{{- if eq $song.IsFeatured true -}}
-										<span class="hover-hide">{{icon "star-fill"}}</span>
+										<span class="hover-invisible">{{icon "star-fill"}}</span>
 									{{- end -}}
 								{{- else -}}
 									{{- if eq $song.IsFeatured true -}}
