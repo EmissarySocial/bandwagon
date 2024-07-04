@@ -15,7 +15,7 @@
 		<div class="flex-grow-1">
 			<h1 class="margin-top">{{.Label}}</h1>
 			<h2 class="margin-vertical-none">
-				<a href="/@{{.ParentID}}/albums">{{.AttributedTo.Name}}</a> 
+				<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
 				{{ if ne nil (.Data "year") -}}
 					&middot; {{.Data "year"}}
 				{{- end -}}
