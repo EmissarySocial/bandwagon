@@ -93,7 +93,7 @@
 							{{- $song.Data.length -}}
 						</td>
 						<td class="text-xs align-right" nowrap>
-							<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm">Song Info</button>
+							<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm">Details</button>
 							{{- if $canEdit -}}
 								<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
 							{{- end -}}
