@@ -12,11 +12,17 @@
 				type: object
 				wildcard: string
 				properties: {
-					albumLabel: {type: "string", default:"Albums"}
-					eventLabel: {type: "string", default:"Events"}
-					newsLabel: {type: "string", default:"News"}
-					shopLabel: {type: "string", default:"Shop"}
-					shopUrl: {type: "string", format:"url"}
+					show-albums: {type: "string"}
+					show-events: {type: "string"}
+					show-news: {type: "string"}
+					shop-url: {type: "string", format:"url"}
+					label-albums: {type: "string", default:"Albums"}
+					label-events: {type: "string", default:"Events"}
+					label-news: {type: "string", default:"News"}
+					label-shop: {type: "string", default:"Shop"}
+					description-albums: {type: "string"}
+					description-events: {type: "string"}
+					description-news: {type: "string"}
 					color-body: {type: "string", format:"color"},
 					color-menu: {type: "string", format:"color"},
 					color-page: {type: "string", format:"color"}, 
@@ -28,13 +34,27 @@
 
 	actions: {
 
+		create: {
+			steps:[
+				{
+					do:"set-data", 
+					values:{
+						"data.label-albums":"Albums",
+						"data.label-events":"Events",
+						"data.label-news":"News",
+						"data.label-shop":"Shop",
+					}
+				}
+			]
+		}
+
 		view: {do:"view-html", file:"outbox"}
 		albums: {do:"view-html"}
 		events: {do:"view-html"}
 		news: {do:"view-html"}
 
 		add-album: {
-			roles: ["self", "editor", "owner"]
+			roles: ["self", "owner"]
 			steps: [
 				{
 					do: add-stream
@@ -48,7 +68,7 @@
 		}
 
 		add-event: {
-			roles: ["self", "editor", "owner"]
+			roles: ["self", "owner"]
 			steps: [
 				{
 					do: add-stream
@@ -64,7 +84,7 @@
 		}
 
 		add-news: {
-			roles: ["self", "editor", "owner"]
+			roles: ["self", "owner"]
 			steps: [
 				{
 					do: add-stream
@@ -80,7 +100,7 @@
 		}
 
 		edit: {
-			roles: ["self", "editor", "owner"]
+			roles: ["self", "owner"]
 			steps: [
 				{do: "as-modal", background:"view", steps:[
 					{
@@ -94,37 +114,40 @@
 									label: Basics
 									children: [
 										{type:"text", path:"displayName", label:"Name"}
+										{type:"textarea", path:"statusMessage", label:"Bio/Comment", description:"A brief statement about you"}
 										{type:"text", path:"location", label:"Location"}
-										{type:"toggle", path:"isPublic", options:{true-text:"Profile is Public", false-text:"Profile is Public"}}
 									]
 								}
 								{
 									type: layout-vertical
-									label: Images
+									label: Colors & Images
 									children: [
+										{type: "colorpicker", path:"data.color-body", label:"Window Background"}
+										{type: "colorpicker", path:"data.color-menu", label:"Menu Background"}
+										{type: "colorpicker", path:"data.color-page", label:"Page Background"}
+										{type: "colorpicker", path:"data.color-button", label:"Links and Buttons"}
 										{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*"}}
 										{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*"}}
 									]
 								}
 								{
 									type: layout-vertical
-									label: Custom Labels
+									label: Privacy
 									children: [
-										{type:"text", path:"data.albumLabel", label:"Albums Label"}
-										{type:"text", path:"data.eventLabel", label:"Events Label"}
-										{type:"text", path:"data.newsLabel", label:"News Label"}
-										{type:"text", path:"data.shopLabel", label:"Shop Label"}
-										{type:"text", path:"data.shopUrl", label:"Shop URL", description:"Web address of your third-party store."}
+										{type:"toggle", path:"isPublic", options:{text:"Publish Profile", false-text:"Publish Profile (will not be visible to others)"}}
+										{type:"toggle", path:"isDiscoverable", options:{text:"Show Profile in Search Results"}}
+										{type:"toggle", path:"isIndexable", options:{text:"Allow Indexing by Search Engines"}}
 									]
 								}
 								{
 									type: layout-vertical
-									label: Colors
+									label: Navigation
 									children: [
-										{type: "text", path:"data.color-body", label:"Window Background"}
-										{type: "text", path:"data.color-menu", label:"Menu Background"}
-										{type: "text", path:"data.color-page", label:"Page Background"}
-										{type: "text", path:"data.color-button", label:"Links and Buttons"}
+										{type:"toggle", path:"data.show-albums", options:{text:"Show Albums"}}
+										{type:"toggle", path:"data.show-events", options:{text:"Show Events"}}
+										{type:"toggle", path:"data.show-news", options:{text:"Show News"}}
+										{type:"text", path:"data.label-shop", label:"Shop Label"}
+										{type:"text", path:"data.shop-url", label:"Shop URL", description:"Web address of your third-party store."}
 									]
 								}
 							]
@@ -133,19 +156,83 @@
 					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId"}
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId"}
 					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-albums: {
+			roles: ["self", "owner"]
+			steps: [
+				{do: "as-modal", background:"albums", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Albums Page
+							type:layout-vertical
+							children: [
+								{type:"text", path:"data.label-albums", label:"Navigation Label"}
+								{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
+							]
+						}
+					}
+					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-events: {
+			roles: ["self", "owner"]
+			steps: [
+				{do: "as-modal", background:"events", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Events Page
+							type:layout-vertical
+							children: [
+								{type:"text", path:"data.label-events", label:"Navigation Label"}
+								{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
+							]
+						}
+					}
+					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-news: {
+			roles: ["self", "owner"]
+			steps: [
+				{do: "as-modal", background:"news", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit News Page
+							type:layout-vertical
+							children: [
+								{type:"text", path:"data.label-news", label:"Navigation Label"}
+								{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
+							]
+						}
+					}
+					{do:"save"}
+					{do:"refresh-page"}
 				]}
 			] 
 		}
 
 		sort-featured: {
-			roles: ["self", "editor", "owner"]
+			roles: ["self", "owner"]
 			steps: [
 				{do:"sort", model:"Stream", keys:"_id", values:"rank"}
 			]
 		}
 
 		sort-children: {
-			roles: ["self", "editor", "owner"]
+			roles: ["self", "owner"]
 			steps: [
 				{do:"sort", model:"Stream", keys:"_id", values:"rankAlt"}
 			]
@@ -160,6 +247,73 @@
 		stylesheet: {
 			steps: [
 				{do:"view-css"}
+			]
+		}
+
+		wizard-1: {
+			roles: ["self", "owner"]
+			steps: [
+				{
+					do:edit
+					form: {
+						type:layout-vertical
+						children: [
+							{type:"text", path:"displayName", label:"Band/Stage Name", description:"The name you want to be known by."}
+							{type:"text", path:"location", label:"Location", description:"City, State, or Country where you are based."}
+						]
+					}
+					options: ["endpoint:/@{{.UserID}}/wizard-1", "submit-label:Continue >>", "cancel-button:hide"]
+				},
+				{do:"set-state", state:"WIZARD-STEP-2"}
+				{do:"save"}
+				{do:"set-header", name:"HX-Refresh", value:"true"}
+			]
+		}
+
+		wizard-2: {
+			roles: ["self", "owner"]
+			steps: [
+				{
+					do:edit
+					form: {
+						type: layout-vertical
+						children: [
+							{type: "colorpicker", path:"data.color-body", label:"Window Background"}
+							{type: "colorpicker", path:"data.color-menu", label:"Menu Background"}
+							{type: "colorpicker", path:"data.color-page", label:"Page Background"}
+							{type: "colorpicker", path:"data.color-button", label:"Links and Buttons"}
+							{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*"}}
+							{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*"}}
+						]
+					}
+					options: ["endpoint:/@{{.UserID}}/wizard-2", "submit-label:Continue >>", "cancel-button:hide"]
+				},
+				{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId"}
+				{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId"}
+				{do: "set-state", state:"WIZARD-STEP-3"}
+				{do:"save"}
+				{do:"set-header", name:"HX-Refresh", value:"true"}
+			]
+		}
+
+		wizard-3: {
+			roles: ["self", "owner"]
+			steps: [
+				{
+					do:edit
+					form: {
+						type:layout-vertical
+						children: [
+							{type:"toggle", path:"isPublic", options:{text:"Publish Profile"}}
+							{type:"toggle", path:"isDiscoverable", options:{text:"Show Profile in Search Results"}}
+							{type:"toggle", path:"isIndexable", options:{text:"Allow Indexing by Search Engines"}}
+						]
+					}
+					options: ["endpoint:/@{{.UserID}}/wizard-3", "submit-label:Continue to Album Upload", "cancel-button:hide"]
+				},
+				{do:"set-state", state:"LIVE"}
+				{do:"save"}
+				{do:"set-header", name:"HX-Refresh", value:"true"}
 			]
 		}
 	}

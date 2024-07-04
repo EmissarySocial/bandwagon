@@ -8,10 +8,16 @@
 <!-- Menu Bar -->
 <div id="band-menu" role="menubar">
 	<a id="home" href="/@{{.UserID}}" hx-get="/@{{.UserID}}" role="menuitem" class="turboclick">{{.DisplayName}}</a>
-	<a id="albums" href="/@{{.UserID}}/albums" hx-get="/@{{.UserID}}/albums" role="menuitem" class="turboclick">{{first (.Data "albumLabel") "Albums"}}</a>
-	<a id="events" href="/@{{.UserID}}/events" hx-get="/@{{.UserID}}/events" role="menuitem" class="turboclick">{{first (.Data "eventLabel") "Shows"}}</a>
-	<a id="news" href="/@{{.UserID}}/news"  hx-get="/@{{.UserID}}/news" role="menuitem" class="turboclick">{{first (.Data "newsLabel") "News"}}</a>
-	{{- if ne "" (.Data "shopUrl") -}}
-		<a href="{{.Data `shopUrl`}}" target="_blank" role="menuitem" class="turboclick">{{first (.Data "shopLabel") "Shop"}}</a>
+	{{- if eq "true" (.Data "show-albums") -}}
+		<a id="albums" href="/@{{.UserID}}/albums" hx-get="/@{{.UserID}}/albums" role="menuitem" class="turboclick">{{first (.Data "label-albums") "Albums"}}</a>
+	{{- end -}}
+	{{- if eq "true" (.Data "show-events") -}}
+		<a id="events" href="/@{{.UserID}}/events" hx-get="/@{{.UserID}}/events" role="menuitem" class="turboclick">{{first (.Data "label-events") "Shows"}}</a>
+	{{- end -}}
+	{{- if eq "true" (.Data "show-news") -}}
+		<a id="news" href="/@{{.UserID}}/news"  hx-get="/@{{.UserID}}/news" role="menuitem" class="turboclick">{{first (.Data "label-news") "News"}}</a>
+	{{- end -}}
+	{{- if ne "" (.Data "shop-url") -}}
+		<a href="{{.Data `shop-url`}}" target="_blank" role="menuitem" class="turboclick">{{first (.Data "label-shop") "Shop"}}</a>
 	{{- end -}}
 </div>

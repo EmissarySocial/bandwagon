@@ -1,6 +1,7 @@
 {
 	templateId: bandwagon-song
 	templateRole: song
+	socialRole: Audio
 	label: Song
 	containedBy: ["album"]
 	schema: {

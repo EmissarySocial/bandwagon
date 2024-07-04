@@ -1,5 +1,6 @@
 {{- $posts := (.Outbox.Where "templateId" "bandwagon-news").ByPublishDate.Reverse.Slice -}}
 {{- $isMyself := .IsMyself -}}
+{{- $description := .Data "description-news" -}}
 
 <div class="framed page app padding-none" hx-get="/@{{.UserID}}/news" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
 	script="on load add [@aria-selected=true] to #news">
@@ -8,25 +9,48 @@
 
 	<div class="padding">
 	
-		{{- if .UserCan "add-news" -}}
-			<div class="margin-bottom align-right">
+		{{- if $isMyself -}}
+			<div class="button-group text-sm margin-bottom">
+				<button hx-get="/@{{.UserID}}/edit-news">Edit News Page</button>
 				<button hx-get="/@{{.UserID}}/add-news" class="text-sm">{{icon "add"}} Add a Post</button>
 			</div>
 		{{- end -}}
 
-		<div class="margin-vertical columns-3">
-			{{- range $posts -}}
-				<div class="card hover-trigger padding-sm flex-column" script="install blockselect()">
-					<h2>{{.Label}}</h2>
-					<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
-					<a hx-get="/{{.StreamID}}">READ MORE</a>
-					{{- if $isMyself -}}
-						<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs hover-show">Edit</a>
-					{{- end -}}
-				</div>
-			{{- end -}}
-		</div>
+		{{- if ne "" $description -}}
+			<div class="max-width-640">{{$description | markdown}}</div>
+		{{- end -}}
 
+		{{- if $posts.NotEmpty -}}
+
+			<div class="margin-vertical columns-3">
+				{{- range $posts -}}
+					<div class="card hover-trigger padding-sm flex-column" script="install blockselect()">
+						<h2>{{.Label}}</h2>
+						<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
+						<a hx-get="/{{.StreamID}}">READ MORE</a>
+						{{- if $isMyself -}}
+							<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs hover-show">Edit</a>
+						{{- end -}}
+					</div>
+				{{- end -}}
+			</div>
+
+		{{- else if $isMyself -}}
+			<div class="margin-top columns-3">
+				<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-news">
+					<div class="text-3xl margin-sm">{{icon "add"}}</div>
+					Click here to add your first post
+				</div>
+
+				{{- range seq 5 -}}
+					<div class="card card-dashed padding text-light-gray align-center">
+						<div class="text-3xl margin-sm">&hellip;</div>
+						Coming Soon...<br><br>
+					</div>
+				{{- end -}}
+			</div>
+
+		{{- end -}}
 	</div>
 
 </div>

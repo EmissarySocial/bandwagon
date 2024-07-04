@@ -52,7 +52,7 @@
 										{type: "text", path:"label", label:"Album Name"}
 										{type: "text", path:"data.year", label:"Release Date"}
 										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
-										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Feature"}}
+										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
 								{
@@ -67,6 +67,7 @@
 									type: layout-vertical
 									label: Links
 									children: [
+										{type:"label", label:"When you enter streaming links, your visitors will be able to jump right to your album on whichever services you've selected."}
 										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
 										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
@@ -95,6 +96,10 @@
 				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
+				# {do: "with-parent", steps: [
+				#	{do: "set-data", values:{"data.show-albums": "true"}}
+				#	{do: "save"}
+				#]}
 				{do: "publish"}
 				{do: "forward-to", url: "/{{.StreamID}}/view"}
 			]
@@ -118,7 +123,7 @@
 										{type: "text", path:"label", label:"Album Name"}
 										{type: "text", path:"data.year", label:"Release Date"}
 										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
-										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Feature"}}
+										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
 								{
@@ -205,5 +210,6 @@
 				]}
 			]
 		}
+
 	}
 }

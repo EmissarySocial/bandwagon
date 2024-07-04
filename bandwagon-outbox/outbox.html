@@ -1,124 +1,169 @@
-{{- $featured := .Outbox.Featured.ByRank.Slice -}}
-{{- $canEdit := .UserCan "edit" -}}
+{{- $isMyself := .IsMyself -}}
 
-<!-- Page content -->
-<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
-	script="on load add [@aria-selected=true] to #home">
+{{- if eq .StateID "LIVE" -}}
 
-	<title>{{.DisplayName}}</title>
+	{{- $featured := .Outbox.Featured.ByRank.Slice -}}
 
-	<!-- Metadata -->
-	<link rel="icon" href="{{.IconURL}}"/>
+	<!-- Page content -->
+	<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
+		script="on load add [@aria-selected=true] to #home">
 
-	<!-- ActivityPub links -->
-	<link rel="http://webfinger.net/rel/profile-page" href="{{.ProfileURL}}"/>
-	<link rel="http://ostatus.org/schema/1.0/subscribe" href="{{.Host}}/.ostatus/tunnel?uri={uri}">
-	<link rel="self" type="application/activity+json" href="{{.ActivityPubURL}}"/>
+		<title>{{.DisplayName}}</title>
 
-	<!-- RSS and WebSub Links -->
-	<link rel="hub" href="{{.Host}}/@{{.UserID}}/websub"/>
-	<link rel="alternate" type="application/rss+xml" href="{{.Host}}/@{{.UserID}}/feed?format=rss"/>
-	<link rel="alternate" type="application/atom+xml" href="{{.Host}}/@{{.UserID}}/feed?format=atom"/>
-	<link rel="alternate" type="application/feed+json" href="{{.Host}}/@{{.UserID}}/feed?format=json"/>
-	<link rel="canonical" class="u-url" href="{{.ProfileURL}}">
+		<!-- Metadata -->
+		<link rel="icon" href="{{.IconURL}}"/>
 
-	{{- template "header" . -}}
+		<!-- ActivityPub links -->
+		<link rel="http://webfinger.net/rel/profile-page" href="{{.ProfileURL}}"/>
+		<link rel="http://ostatus.org/schema/1.0/subscribe" href="{{.Host}}/.ostatus/tunnel?uri={uri}">
+		<link rel="self" type="application/activity+json" href="{{.ActivityPubURL}}"/>
 
-	<div class="padding pos-relative">
+		<!-- RSS and WebSub Links -->
+		<link rel="hub" href="{{.Host}}/@{{.UserID}}/websub"/>
+		<link rel="alternate" type="application/rss+xml" href="{{.Host}}/@{{.UserID}}/feed?format=rss"/>
+		<link rel="alternate" type="application/atom+xml" href="{{.Host}}/@{{.UserID}}/feed?format=atom"/>
+		<link rel="alternate" type="application/feed+json" href="{{.Host}}/@{{.UserID}}/feed?format=json"/>
+		<link rel="canonical" class="u-url" href="{{.ProfileURL}}">
 
-		<!-- Band Name -->
-		<div class="flex-row margin-top">
-			<img src="{{.IconURL}}" class="circle-48">
-			<div>
-				<h1 class="margin-none">{{.DisplayName}}</h1>
-				<div class="margin-top">
-					<button class="primary text-md" hx-get="/@{{.UserID}}/follow">Follow for Updates</button>
+		{{- template "header" . -}}
+
+		<div class="padding pos-relative">
+
+			{{- if $isMyself -}}
+
+				<div class="button-group text-sm margin-bottom">
+					<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
+					<button hx-get="/@{{.UserID}}/add-album" class="text-sm">{{icon "add"}} Album</button>
+					<button hx-get="/@{{.UserID}}/add-event" class="text-sm">{{icon "add"}} Event</button>
+					<button hx-get="/@{{.UserID}}/add-news" class="text-sm">{{icon "add"}} Post</button>
+
+					<button hx-post="/signout" hx-target="body">Sign Out</button>
 				</div>
-			</div>
-		</div>
 
-		{{- if .UserCan "sort-featured" -}}
-			<form hx-post="/@{{.UserID}}/sort-featured" hx-trigger="end" hx-swap="none" hx-push-url="false">
-		{{- end -}}
-
-		<div class="columns-4 margin-top sortable">
-			{{- range $featured -}}
-				<div class="card flex-column hover-trigger" script="install blockselect()">
-					{{- if eq  "bandwagon-album" .TemplateID -}}
-						<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;">
-						<div class="padding text-uppercase text-plain">
-							<a href="/{{.StreamID}}">{{.Label}}</a>
-						</div>
-					{{- else if eq "bandwagon-event" .TemplateID -}}
-						<div class="padding bold">{{.Data.date}}</div>
-						<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
-						<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
-						{{- if ne nil .Data.website -}}
-							<div class="padding text-uppercase">
-								<a href="{{.Data.website}}" target="_blank">Get Tickets</a>
-							</div>
-						{{- end -}}
-					{{- else if eq "bandwagon-news" .TemplateID -}}
-						<h2 class="padding align-center">{{.Label}}</h2>
-						<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
-						<div class="padding text-uppercase">
-							<a href="/{{.StreamID}}">Read More</a>
-						</div>
-					{{- end -}}
-
-					{{- if $canEdit -}}
-						<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
-						<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
-						<input type="hidden" name="keys" value="{{.StreamID}}">
-					{{- end -}}
-				</div>
+				<form hx-post="/@{{.UserID}}/sort-featured" hx-trigger="end" hx-swap="none" hx-push-url="false">
 			{{- end -}}
-		</div>
 
-		{{- if $canEdit -}}
-			</form>
-
-			<div class="text-sm pos-absolute-top-right">
-				<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
-				<button hx-post="/signout" hx-target="body">Sign Out</button>
+			<!-- Band Name -->
+			<div class="flex-row margin-top">
+				<img src="{{.IconURL}}" class="circle-48">
+				<div>
+					<h1 class="margin-none">{{.DisplayName}}</h1>
+					<div class="max-width-640 text-gray">{{.StatusMessage}}</div>
+					<div class="margin-top">
+						{{- if not .IsMyself -}}
+							<button class="primary text-md" hx-get="/@{{.UserID}}/follow">Follow for Updates</button>
+						{{- else if $featured.IsEmpty -}}
+							<div class="bold">Congratulations! You've set up your new Bandwagon profile.</div>
+							<div>1. Keep going by adding albums, events, and news to your page.</div>
+							<div>2. Mark items as "Featured" to show them on this home page.</div>
+							<div>3. Navigation menus will show all items of each type.</div>
+						{{- end -}}
+					</div>
+				</div>
 			</div>
 
-			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+			{{- if $featured.NotEmpty -}}
+				<div class="columns-4 margin-top sortable">
+					{{- range $featured -}}
+						<div class="card flex-column hover-trigger" script="install blockselect()">
+							{{- if eq  "bandwagon-album" .TemplateID -}}
+								<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;">
+								<div class="padding text-plain">
+									<a href="/{{.StreamID}}">{{.Label}}</a>
+								</div>
+							{{- else if eq "bandwagon-event" .TemplateID -}}
+								<div class="padding bold">{{.Data.date}}</div>
+								<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
+								<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
+								{{- if ne nil .Data.website -}}
+									<div class="padding text-uppercase">
+										<a href="{{.Data.website}}" target="_blank">Get Tickets</a>
+									</div>
+								{{- end -}}
+							{{- else if eq "bandwagon-news" .TemplateID -}}
+								<h2 class="padding align-center">{{.Label}}</h2>
+								<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
+								<div class="padding text-uppercase">
+									<a href="/{{.StreamID}}">Read More</a>
+								</div>
+							{{- end -}}
 
-			<script>
-				var sortables = document.querySelectorAll(".sortable");
-				for (var node of sortables) {
-					new Sortable(node, {
-						handle: ".drag-handle",
-						animation: 150,
-						whisperClass: 'draggable-whisper'
-					});
-				}
-			</script>
+							{{- if $isMyself -}}
+								<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
+								<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
+								<input type="hidden" name="keys" value="{{.StreamID}}">
+							{{- end -}}
+						</div>
+					{{- end -}}
+				</div>
 
-			<style>
-				.draggable {
-					padding:10px 20px;
-					border: solid 1px var(--gray10);
-					background-color: var(--gray00);
-					color: var(--gray80);
-					margin-bottom: -1px;
-					cursor: grab;
-				}
+			{{- else if $isMyself -}}
 
-				.drag-handle {
-					cursor:grab;
-				}
+				<div class="margin-top columns-4">
+					<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-album">
+						<div class="text-3xl margin-sm">{{icon "add"}}</div>
+						Click here to add your first album
+					</div>
 
-				.draggable-whisper {
-					background-color: var(--gray50);
-					color:var(--gray50);
-					cursor: grabbing;
-				}
-			</style>
+					{{- range seq 7 -}}
+						<div class="card card-dashed padding text-light-gray align-center">
+							<div class="text-3xl margin-sm">&hellip;</div>
+							Coming Soon...<br><br>
+						</div>
+					{{- end -}}
+				</div>
 
-		{{- end -}}
+			{{- end -}}
+
+			{{- if $isMyself -}}
+				</form>
+
+				<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+
+				<script>
+					var sortables = document.querySelectorAll(".sortable");
+					for (var node of sortables) {
+						new Sortable(node, {
+							handle: ".drag-handle",
+							animation: 150,
+							whisperClass: 'draggable-whisper'
+						});
+					}
+				</script>
+
+				<style>
+					.draggable {
+						padding:10px 20px;
+						border: solid 1px var(--gray10);
+						background-color: var(--gray00);
+						color: var(--gray80);
+						margin-bottom: -1px;
+						cursor: grab;
+					}
+
+					.drag-handle {
+						cursor:grab;
+					}
+
+					.draggable-whisper {
+						background-color: var(--gray50);
+						color:var(--gray50);
+						cursor: grabbing;
+					}
+				</style>
+
+			{{- end -}}
+
+		</div>
 
 	</div>
 
-</div>
+{{- else if not $isMyself -}}
+	{{- template "coming-soon" . -}}
+{{- else if eq .StateID "WIZARD-STEP-3" -}}
+	{{- template "wizard-3" . -}}
+{{- else if eq .StateID "WIZARD-STEP-2" -}}
+	{{- template "wizard-2" . -}}
+{{- else  -}}
+	{{- template "wizard-1" . -}}
+{{- end -}}

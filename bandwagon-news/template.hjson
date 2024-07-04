@@ -43,6 +43,10 @@
 					{do: "edit-content", field:"content.raw", format:"MARKDOWN"}
 					{do: "process-tags", paths:"data.tags"}
 					{do: "save"}
+					#{do: "with-parent", steps: [
+					#	{do: "set-data", values:{"data.show-news": "true"}}
+					#	{do: "save"}
+					#]}
 					{do: "publish", outbox:true}
 					{do: "refresh-page"}
 				]}
@@ -90,6 +94,5 @@
 				{do: "refresh-page"}
 			]
 		}
-
 	}
 }
