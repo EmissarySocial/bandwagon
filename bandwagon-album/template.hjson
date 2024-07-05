@@ -84,9 +84,9 @@
 									type: layout-vertical
 									label: Colors
 									children: [
-										{type: "text", path:"data.color.body", label:"Window Background"}
-										{type: "text", path:"data.color.page", label:"Page Background"}
-										{type: "text", path:"data.color.button", label:"Links and Buttons"}
+										{type: "colorpicker", path:"data.color.body", label:"Window Background"}
+										{type: "colorpicker", path:"data.color.page", label:"Page Background"}
+										{type: "colorpicker", path:"data.color.button", label:"Links and Buttons"}
 									]
 								}
 							]
