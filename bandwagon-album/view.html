@@ -124,12 +124,6 @@
 
 	</div>
 
-	{{- if $canEdit -}}
-		<div class="pos-absolute-top-right text-sm">
-			<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
-		</div>
-	{{- end -}}
-
 	<audio hx-on:ended="PlayNext()">
 		<source id="source-aac" type="audio/aac">
 		<source id="source-mp3" type="audio/mp3">
@@ -148,5 +142,11 @@
 		{{- end -}}
 		]
 	</script>
+
+	{{- if $canEdit -}}
+		<div class="pos-absolute-top-right text-sm">
+			<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+		</div>
+	{{- end -}}
 
 </div>

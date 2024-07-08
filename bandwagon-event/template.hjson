@@ -16,8 +16,8 @@
 					date: {type:"string", required: true}
 					city: {type: "string"}
 					venue: {type: "string"}
+					websiteLabel: {type: "string"}
 					website: {type: "string", format:"uri"}
-					featured: {type: "boolean"}
 				}
 			}
 		}
@@ -37,7 +37,8 @@
 								{type: "text", path:"data.date", label:"Date"}
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
-								{type: "text", path:"data.website", label:"Ticket Website"}
+								{type: "text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
+								{type: "text", path:"data.website", label:"Ticketing Website", description: "Link to the ticketing website"}
 								{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
@@ -68,7 +69,8 @@
 								{type: "text", path:"data.date", label:"Date"}
 								{type: "text", path:"data.city", label:"City"}
 								{type: "text", path:"data.venue", label:"Venue"}
-								{type: "text", path:"data.website", label:"Ticket Website"}
+								{type: "text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
+								{type: "text", path:"data.website", label:"Ticketing Website"}
 								{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}

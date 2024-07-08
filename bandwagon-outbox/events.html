@@ -34,8 +34,9 @@
 						<div class="text-xl margin-none bold">{{.Data.city}}</div>
 						<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
 						{{- if ne nil .Data.website -}}
+							{{ $websiteLabel := first .Data.websiteLabel "Get Tickets"}}
 							<div class="margin-top">
-								<a href="{{.Data.website}}" target="_blank" class="bold text-uppercase hover-underline">Get Tickets</a>
+								<a href="{{.Data.website}}" target="_blank" class="bold hover-underline">{{$websiteLabel}}</a>
 							</div>
 						{{- end -}}
 
