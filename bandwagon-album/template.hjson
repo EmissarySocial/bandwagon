@@ -201,6 +201,14 @@
 			]
 		}
 
+		sort-tracks: {
+			roles: ["author"]
+			steps: [
+				{do: "sort", model:"Stream", keys:"_id", values:"rank"}
+				{do: "refresh-page"}
+			]
+		}
+
 		links: {
 			steps:[
 				{do: "as-modal", steps:[

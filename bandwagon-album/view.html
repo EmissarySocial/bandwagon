@@ -47,61 +47,69 @@
 
 		<!-- Song List -->
 		<div class="flex-grow-1">
-			<table class="table">
-				{{- range $index, $song := $songs -}}
-					{{- $isplayable := ne nil $song.Data.attachmentId -}}
-					<tr id="track-{{$index}}" class="track hover-trigger" role="button">
-
-						<td nowrap class="align-right"
-							{{ if $isplayable -}}
-								hx-on:click="Toggle({{$index}})"
-							{{- else -}}
-								hx-get="/{{$song.StreamID}}"
-							{{- end -}}
-						>
-							<span class="margin-right text-gray">
-								{{- if $isplayable -}}
-									<span class="hover-visible">{{icon "play-fill"}}</span>
-									{{- if eq $song.IsFeatured true -}}
-										<span class="hover-invisible">{{icon "star-fill"}}</span>
-									{{- end -}}
+			<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end">
+				<table class="table">
+					<tbody id="track-list">
+					{{- range $index, $song := $songs -}}
+						{{- $isplayable := ne nil $song.Data.attachmentId -}}
+						<tr id="track-{{$index}}" class="track hover-trigger" role="button">
+							<input type="hidden" name="keys" value="{{.StreamID}}">
+							<td nowrap class="align-right"
+								{{ if $isplayable -}}
+									hx-on:click="Toggle({{$index}})"
 								{{- else -}}
-									{{- if eq $song.IsFeatured true -}}
-										{{icon "star-fill"}}
-									{{- end -}}
+									hx-get="/{{$song.StreamID}}"
 								{{- end -}}
-							</span>
-							<span class="hide sm:show">{{add $index 1}}.</span>
-						</td>
-						<td class="width-100-percent"
-							{{ if $isplayable -}}
-								hx-on:click="Toggle({{$index}})"
-							{{- else -}}
-								hx-get="/{{$song.StreamID}}"
-							{{- end -}}
-						>
-							{{$song.Label}}
-							{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
-						</td>
-						<td nowrap class="align-right"
-							{{ if $isplayable -}}
-								hx-on:click="Toggle({{$index}})"
-							{{- else -}}
-								hx-get="/{{$song.StreamID}}"
-							{{- end -}}
-						>
-							{{- $song.Data.length -}}
-						</td>
-						<td class="text-xs align-right" nowrap>
-							<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm">Details</button>
-							{{- if $canEdit -}}
-								<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
-							{{- end -}}
-						</td>
-					</tr>
-				{{- end -}}
-		
-			</table>
+							>
+
+								{{- if $canEdit -}}
+									<span class="drag-handle">{{icon "drag-handle"}}</span>
+								{{- end -}}
+
+								<span class="margin-right text-gray">
+									{{- if $isplayable -}}
+										<span class="hover-visible">{{icon "play-fill"}}</span>
+										{{- if eq $song.IsFeatured true -}}
+											<span class="hover-invisible">{{icon "star-fill"}}</span>
+										{{- end -}}
+									{{- else -}}
+										{{- if eq $song.IsFeatured true -}}
+											{{icon "star-fill"}}
+										{{- end -}}
+									{{- end -}}
+								</span>
+								<span class="hide sm:show">{{add $index 1}}.</span>
+							</td>
+							<td class="width-100-percent"
+								{{ if $isplayable -}}
+									hx-on:click="Toggle({{$index}})"
+								{{- else -}}
+									hx-get="/{{$song.StreamID}}"
+								{{- end -}}
+							>
+								{{$song.Label}}
+								{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
+							</td>
+							<td nowrap class="align-right"
+								{{ if $isplayable -}}
+									hx-on:click="Toggle({{$index}})"
+								{{- else -}}
+									hx-get="/{{$song.StreamID}}"
+								{{- end -}}
+							>
+								{{- $song.Data.length -}}
+							</td>
+							<td class="text-xs align-right" nowrap>
+								<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm">Details</button>
+								{{- if $canEdit -}}
+									<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
+								{{- end -}}
+							</td>
+						</tr>
+					{{- end -}}
+					</tbody>
+				</table>
+			</form>
 			<div class="margin-vertical-lg text-sm">
 				{{- if .UserCan "add-song" -}}
 					<button hx-get="/{{.StreamID}}/add-song">{{icon "add"}} Add Song</button>
@@ -147,6 +155,28 @@
 		<div class="pos-absolute-top-right text-sm">
 			<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
 		</div>
+
+		<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+
+		<script>
+			new Sortable(document.getElementById("track-list"), {
+				handle: ".drag-handle",
+				animation: 150,
+				whisperClass: 'draggable-whisper'
+			});
+		</script>
+
+		<style>
+			.drag-handle {
+				cursor:grab;
+			}
+
+			.draggable-whisper {
+				background-color: var(--gray50);
+				color:var(--gray50);
+				cursor: grabbing;
+			}
+		</style>
 	{{- end -}}
 
 </div>
