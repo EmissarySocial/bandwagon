@@ -31,11 +31,11 @@
 
 			{{- if $isMyself -}}
 
-				<div class="button-group text-sm margin-bottom" role="region" aria-label="Profile Controls">
+				<div class="button-group text-sm margin-bottom" role="group" aria-label="Profile Controls">
 					<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
-					<button hx-get="/@{{.UserID}}/add-album" class="text-sm">{{icon "add"}} Album</button>
-					<button hx-get="/@{{.UserID}}/add-event" class="text-sm">{{icon "add"}} Event</button>
-					<button hx-get="/@{{.UserID}}/add-news" class="text-sm">{{icon "add"}} Post</button>
+					<button hx-get="/@{{.UserID}}/add-album" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Album</button>
+					<button hx-get="/@{{.UserID}}/add-event" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Event</button>
+					<button hx-get="/@{{.UserID}}/add-news" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Post</button>
 
 					<button hx-post="/signout" hx-target="body">Sign Out</button>
 				</div>
@@ -45,7 +45,7 @@
 
 			<!-- Band Name -->
 			<div class="flex-row margin-top">
-				<img src="{{.IconURL}}" class="circle-48">
+				<img src="{{.IconURL}}" class="circle-48" aria-hidden="true">
 				<div>
 					<h1 class="margin-none">{{.DisplayName}}</h1>
 					<div class="max-width-640 text-gray">{{.StatusMessage}}</div>
@@ -67,7 +67,7 @@
 					{{- range $featured -}}
 						<div class="card flex-column hover-trigger" script="install blockselect()">
 							{{- if eq "bandwagon-album" .TemplateID -}}
-								<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;">
+								<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;" aria-hidden="true">
 								<div class="padding text-plain">
 									<a href="/{{.StreamID}}">{{.Label}}</a>
 								</div>
