@@ -122,7 +122,7 @@
 									children: [
 										{type: "text", path:"label", label:"Album Name"}
 										{type: "text", path:"data.year", label:"Release Date"}
-										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800, types:["webp"]}}}
+										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}

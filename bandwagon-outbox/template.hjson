@@ -126,8 +126,8 @@
 										{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
 										{type:"colorpicker", path:"data.color-page", label:"Page Background"}
 										{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
-										{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*"}}
-										{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*"}}
+										{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*", delete:"/@me/delete-icon"}}
+										{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*", delete:"/@me/delete-image"}}
 									]
 								}
 								{
@@ -314,6 +314,22 @@
 				{do:"set-state", state:"LIVE"}
 				{do:"save"}
 				{do:"set-header", name:"HX-Refresh", value:"true"}
+			]
+		}
+
+		delete-icon: {
+			roles: ["self", "owner"]
+			steps: [
+				{do:"delete-attachments", field:"iconId"}
+				{do:"save"}
+			]
+		}
+
+		delete-image: {
+			roles: ["self", "owner"]
+			steps: [
+				{do:"delete-attachments", field:"imageId"}
+				{do:"save"}
 			]
 		}
 	}
