@@ -33,6 +33,7 @@
 
 				<div class="button-group text-sm margin-bottom" role="group" aria-label="Profile Controls">
 					<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
+					<button hx-get="/@{{.UserID}}/links">Edit Links</button>
 					<button hx-get="/@{{.UserID}}/add-album" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Album</button>
 					<button hx-get="/@{{.UserID}}/add-event" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Event</button>
 					<button hx-get="/@{{.UserID}}/add-news" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Post</button>
@@ -49,6 +50,15 @@
 				<div>
 					<h1 class="margin-none">{{.DisplayName}}</h1>
 					<div class="max-width-640 text-gray">{{.StatusMessage}}</div>
+
+					{{- if .Links.NotEmpty -}}
+						<div class="margin-top max-width-640">
+							{{- range .Links -}}
+								<a href="{{.ProfileURL}}" class="block" rel="me" target="_blank">{{icon "link"}} {{.Name}}</a>
+							{{- end -}}
+							</div>
+					{{- end -}}
+
 					<div class="margin-top">
 						{{- if not .IsMyself -}}
 							<button class="primary text-md" hx-get="/@{{.UserID}}/follow">Follow for Updates</button>
