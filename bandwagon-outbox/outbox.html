@@ -31,7 +31,7 @@
 
 			{{- if $isMyself -}}
 
-				<div class="button-group text-sm margin-bottom">
+				<div class="button-group text-sm margin-bottom" role="region" aria-label="Profile Controls">
 					<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
 					<button hx-get="/@{{.UserID}}/add-album" class="text-sm">{{icon "add"}} Album</button>
 					<button hx-get="/@{{.UserID}}/add-event" class="text-sm">{{icon "add"}} Event</button>

@@ -67,7 +67,7 @@
 									type: layout-vertical
 									label: Lyrics
 									children: [
-										{type: "textarea", path: "data.lyrics", options:{rows: 16}}
+										{type: "textarea", path: "data.lyrics", description:"Enter lyrics to display on a song's detail page", options:{rows: 16}}
 									]
 								}
 								{
