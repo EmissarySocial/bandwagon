@@ -7,26 +7,26 @@
 	schema: {
 		type: object
 		properties: {
-			location: {type: "string"}
+			location: {type:"string"}
 			data: {
 				type: object
 				wildcard: string
 				properties: {
-					show-albums: {type: "string"}
-					show-events: {type: "string"}
-					show-news: {type: "string"}
-					shop-url: {type: "string", format:"url"}
-					label-albums: {type: "string", default:"Albums"}
-					label-events: {type: "string", default:"Events"}
-					label-news: {type: "string", default:"News"}
-					label-shop: {type: "string", default:"Shop"}
-					description-albums: {type: "string"}
-					description-events: {type: "string"}
-					description-news: {type: "string"}
-					color-body: {type: "string", format:"color"},
-					color-menu: {type: "string", format:"color"},
-					color-page: {type: "string", format:"color"}, 
-					color-button: {type: "string", format:"color"}
+					show-albums: {type:"string"}
+					show-events: {type:"string"}
+					show-news: {type:"string"}
+					shop-url: {type:"string", format:"url"}
+					label-albums: {type:"string", default:"Albums"}
+					label-events: {type:"string", default:"Events"}
+					label-news: {type:"string", default:"News"}
+					label-shop: {type:"string", default:"Shop"}
+					description-albums: {type:"string"}
+					description-events: {type:"string"}
+					description-news: {type:"string"}
+					color-body: {type:"string", format:"color"},
+					color-menu: {type:"string", format:"color"},
+					color-page: {type:"string", format:"color"}, 
+					color-button: {type:"string", format:"color"}
 				}
 			}
 		}
@@ -122,10 +122,10 @@
 									type: layout-vertical
 									label: Colors & Images
 									children: [
-										{type: "colorpicker", path:"data.color-body", label:"Window Background"}
-										{type: "colorpicker", path:"data.color-menu", label:"Menu Background"}
-										{type: "colorpicker", path:"data.color-page", label:"Page Background"}
-										{type: "colorpicker", path:"data.color-button", label:"Links and Buttons"}
+										{type:"colorpicker", path:"data.color-body", label:"Window Background"}
+										{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
+										{type:"colorpicker", path:"data.color-page", label:"Page Background"}
+										{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
 										{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*"}}
 										{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*"}}
 									]
@@ -153,8 +153,8 @@
 							]
 						}
 					}
-					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId"}
-					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId"}
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
+					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
 					{do:"save"}
 					{do:"refresh-page"}
 				]}
@@ -278,19 +278,19 @@
 					form: {
 						type: layout-vertical
 						children: [
-							{type: "colorpicker", path:"data.color-body", label:"Window Background"}
-							{type: "colorpicker", path:"data.color-menu", label:"Menu Background"}
-							{type: "colorpicker", path:"data.color-page", label:"Page Background"}
-							{type: "colorpicker", path:"data.color-button", label:"Links and Buttons"}
+							{type:"colorpicker", path:"data.color-body", label:"Window Background"}
+							{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
+							{type:"colorpicker", path:"data.color-page", label:"Page Background"}
+							{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
 							{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*"}}
 							{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*"}}
 						]
 					}
 					options: ["endpoint:/@{{.UserID}}/wizard-2", "submit-label:Continue >>", "cancel-button:hide"]
 				},
-				{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId"}
-				{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId"}
-				{do: "set-state", state:"WIZARD-STEP-3"}
+				{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
+				{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
+				{do:"set-state", state:"WIZARD-STEP-3"}
 				{do:"save"}
 				{do:"set-header", name:"HX-Refresh", value:"true"}
 			]

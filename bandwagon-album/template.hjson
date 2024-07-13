@@ -51,7 +51,7 @@
 									children: [
 										{type: "text", path:"label", label:"Album Name"}
 										{type: "text", path:"data.year", label:"Release Date"}
-										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
+										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800, types:["webp"]}}}
 										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
@@ -93,7 +93,7 @@
 						}
 					}
 				]}
-				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1}
+				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
 				# {do: "with-parent", steps: [
@@ -122,7 +122,7 @@
 									children: [
 										{type: "text", path:"label", label:"Album Name"}
 										{type: "text", path:"data.year", label:"Release Date"}
-										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename"}}
+										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800, types:["webp"]}}}
 										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
