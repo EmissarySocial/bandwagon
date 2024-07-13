@@ -66,7 +66,7 @@
 				<div class="columns-4 margin-top sortable">
 					{{- range $featured -}}
 						<div class="card flex-column hover-trigger" script="install blockselect()">
-							{{- if eq  "bandwagon-album" .TemplateID -}}
+							{{- if eq "bandwagon-album" .TemplateID -}}
 								<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;">
 								<div class="padding text-plain">
 									<a href="/{{.StreamID}}">{{.Label}}</a>
