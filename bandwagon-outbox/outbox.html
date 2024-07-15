@@ -51,14 +51,6 @@
 					<h1 class="margin-none">{{.DisplayName}}</h1>
 					<div class="max-width-640 text-gray">{{.StatusMessage}}</div>
 
-					{{- if .Links.NotEmpty -}}
-						<div class="margin-top max-width-640">
-							{{- range .Links -}}
-								<a href="{{.ProfileURL}}" class="block" rel="me" target="_blank">{{icon "link"}} {{.Name}}</a>
-							{{- end -}}
-							</div>
-					{{- end -}}
-
 					<div class="margin-top">
 						{{- if not .IsMyself -}}
 							<button class="primary text-md" hx-get="/@{{.UserID}}/follow">Follow for Updates</button>
@@ -154,6 +146,16 @@
 				</style>
 
 			{{- end -}}
+
+		
+			{{- if .Links.NotEmpty -}}
+				<div class="margin-top-xl">
+					{{- range .Links -}}
+						<a href="{{.ProfileURL}}" class="block" rel="me" target="_blank">{{icon "link"}} {{.Name}}</a>
+					{{- end -}}
+				</div>
+			{{- end -}}
+
 
 		</div>
 
