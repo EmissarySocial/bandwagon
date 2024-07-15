@@ -150,8 +150,9 @@
 		
 			{{- if .Links.NotEmpty -}}
 				<div class="margin-top-xl">
-					{{- range .Links -}}
-						<a href="{{.ProfileURL}}" class="block" rel="me" target="_blank">{{icon "link"}} {{.Name}}</a>
+					{{- range  $index, $link := .Links -}}
+						{{ if gt $index 0 }} &middot; {{ end }}
+						<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
 					{{- end -}}
 				</div>
 			{{- end -}}
