@@ -53,7 +53,7 @@
 					{{- if .Links.NotEmpty -}}
 						<div class="max-width-640">
 							{{- range  $index, $link := .Links -}}
-								{{ if gt $index 0 }} &middot; {{ end }}
+								{{ if gt $index 0 }} <span aira-hidden="true">&middot;</span> {{ end }}
 								<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
 							{{- end -}}
 						</div>

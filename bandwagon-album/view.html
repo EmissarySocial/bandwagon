@@ -17,7 +17,7 @@
 			<h2 class="margin-vertical-none">
 				<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
 				{{ if ne nil (.Data "year") -}}
-					&middot; {{.Data "year"}}
+					<span aira-hidden="true">&middot;</span> {{.Data "year"}}
 				{{- end -}}
 			</h2>
 			<div>
