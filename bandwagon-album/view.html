@@ -15,9 +15,9 @@
 		</div>
 		<div class="md:width-32"></div>
 		<div class="flex-grow-1">
-			<h2 class="margin-top-none">
-				<a hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
-			</h2>
+			<div class="text-lg margin-top-none">
+				<a hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}" aria-label="Artist: {{.AttributedTo.Name}}">{{.AttributedTo.Name}}</a> 
+			</div>
 			<h1 class="margin-vertical-none">{{.Label}}</h1>
 			{{ if ne nil (.Data "year") -}}
 				<div class="margin-bottom text-gray">{{.Data "year"}}</div>

@@ -15,14 +15,13 @@
 
 		<div class="md:width-32"></div>
 		<div class="flex-grow-1">
-			<h2 class="margin-top-none">
-				<a href="/@{{$album.AttributedTo.UserID.Hex}}">{{$album.AttributedTo.Name}}</a> 
-				
+			<div class="text-lg margin-top-none">
+				<a href="/@{{$album.AttributedTo.UserID.Hex}}" aria-label="Artist: $album.AttributedTo.Name">{{$album.AttributedTo.Name}}</a> 
 				<span aria-hidden="true">&middot;</span>
-				<a href="/{{$album.StreamID}}">{{ $album.Label }}</a>
-			</h2>
+				<a href="/{{$album.StreamID}}" aria-label="Album: $album.Label">{{ $album.Label }}</a>
+			</div>
 			<h1 class="margin-vertical-none">
-				{{- .Label -}}
+				<span aria-label="Track: {{.Label}}">{{.Label}}</span>
 				{{- if eq true (.Data "explicit") -}}
 					<span class="text-light-gray text-xl margin-left" title="Explicit Lyrics" aria-label="Explicit Lyrics">{{icon "explicit-fill"}}</span>
 				{{- end -}}
@@ -31,7 +30,7 @@
 			<div class="margin-bottom text-gray">
 				{{ if ne nil ($album.Data "year") -}}
 					{{$album.Data "year"}}
-					{{- if ne nil (.Data "length") -}}
+					{{ if ne nil (.Data "length") -}}
 						<span aria-hidden="true">&middot;</span>
 					{{ end }} 
 				{{- end -}}
