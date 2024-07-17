@@ -3,8 +3,7 @@
 {{- $description := .Data "description-albums" -}}
 
 <!-- Page content -->
-<div class="framed page app padding-none" hx-get="/@{{.UserID}}/albums" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
-	script="on load add [@aria-selected=true] to #albums">
+<div class="framed page app padding-none" script="on load add [@aria-selected=true] to #albums">
 
 	{{- template "header" . -}}
 
@@ -22,7 +21,7 @@
 		{{- end -}}
 
 		{{- if $isMyself -}}
-			<form hx-post="/@{{.UserID}}/sort-children" hx-trigger="end" hx-swap="none" hx-push-url="false">
+			<form hx-post="/@{{.UserID}}/sort-children" hx-trigger="end" hx-push-url="false">
 		{{- end -}}
 
 			{{- if $albums.NotEmpty -}}
@@ -31,7 +30,7 @@
 					{{- range $albums -}}
 						<div class="card hover-trigger" script="install blockselect()">
 							<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover">
-							<a href="/{{.StreamID}}" class="block">
+							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block">
 								<div class="block padding">
 									<div class="bold">{{.Label}}</div>
 									<div>{{.Data.year}}</div>
@@ -104,5 +103,7 @@
 		{{- end -}}
 
 	</div>
+
+	<div hx-get="/@{{.UserID}}/albums" hx-trigger="refreshPage from:window"></div>
 
 </div>

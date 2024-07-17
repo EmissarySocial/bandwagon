@@ -16,6 +16,7 @@
 					composer: {type: "string"}
 					producer: {type: "string"}
 					isrc: {type: "string"}
+					musicBrainzId: {type: "string"}
 					lyrics: {type: "string"}
 					streamURL: {type: "string", format:"url"}
 					featured: {type: "boolean"}
@@ -43,37 +44,31 @@
 							children: [
 								{
 									type: layout-vertical
-									label: Basics
+									label: General
 									children: [
 										{type: "text",   path: "label", label: "Song Title"},
-										{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 										{type: "text",   path: "data.length", label: "Length"},
+										{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 										{type: "toggle", path: "isFeatured", options:{true-text:"Featured", false-text:"Featured"}}
 										{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
 									]
 								}
 								{
 									type: layout-vertical
-									label: Extras
+									label: Metadata
 									children: [
 										{type: "text", path: "data.artist", label: "Artist"},
 										{type: "text", path: "data.composer", label: "Composer"},
 										{type: "text", path: "data.producer", label: "Producer"},
 										{type: "text", path: "data.isrc", label: "ISRC"},
-										{type: "text", path: "data.streamURL", label: "Video Stream URL"},
-									]
-								}
-								{
-									type: layout-vertical
-									label: Lyrics
-									children: [
-										{type: "textarea", path: "data.lyrics", description:"Enter lyrics to display on a song's detail page", options:{rows: 16}}
+										{type: "text", path: "data.musicBrainzId", label: "MusicBrainz ID"},
 									]
 								}
 								{
 									type: layout-vertical
 									label: Links
 									children: [
+										{type: "text", path: "data.streamURL", label: "Video Stream URL"},
 										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
 										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
@@ -86,6 +81,13 @@
 										{type:"text", path:"data.links.OTHER3", options:{placeholder:"Other"}}
 									]
 								}
+								{
+									type: layout-vertical
+									label: Lyrics
+									children: [
+										{type: "textarea", path: "data.lyrics", description:"Enter lyrics to display on a song's detail page", options:{rows: 16}}
+									]
+								}
 							]
 						}
 					}
@@ -93,15 +95,14 @@
 				{do:"upload-attachments", action:"replace", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save"}
 				{do:"publish"}
-				{do:"refresh-page"}
+				{do:"forward-to", url:"/{{.StreamID}}"}
 			]
 		}
 		view: {
 			steps: [
-				{do:"as-modal", steps: [
 				{do:"view-html"}
-			]}
-		]}
+			]
+		}
 		edit: {
 			roles: ["admin", "author"]
 			steps: [
@@ -117,37 +118,31 @@
 								children: [
 									{
 										type: layout-vertical
-										label: Basics
+										label: General
 										children: [
 											{type: "text",   path: "label", label: "Song Title"},
-											{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 											{type: "text",   path: "data.length", label: "Length"},
+											{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 											{type: "toggle", path: "isFeatured", options:{true-text:"Featured", false-text:"Featured"}}
 											{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
 										]
 									}
 									{
 										type: layout-vertical
-										label: Extras
+										label: Metadata
 										children: [
 											{type: "text", label: "Artist", path: "data.artist"},
 											{type: "text", label: "Composer", path: "data.composer"},
 											{type: "text", label: "Producer", path: "data.producer"},
 											{type: "text", label: "ISRC", path: "data.isrc"},
-											{type: "text", label: "Video Stream URL", path: "data.streamURL"},
-										]
-									}
-									{
-										type: layout-vertical
-										label: Lyrics
-										children: [
-											{type: "textarea", path: "data.lyrics", options:{rows: 16}}
+											{type: "text", path: "data.musicBrainzId", label: "MusicBrainz ID"},
 										]
 									}
 									{
 										type: layout-vertical
 										label: Links
 										children: [
+											{type: "text", path: "data.streamURL", label: "Video Stream URL"},
 											{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 											{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
 											{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
@@ -158,6 +153,13 @@
 											{type:"text", path:"data.links.OTHER1", options:{placeholder:"Other"}}
 											{type:"text", path:"data.links.OTHER2", options:{placeholder:"Other"}}
 											{type:"text", path:"data.links.OTHER3", options:{placeholder:"Other"}}
+										]
+									}
+									{
+										type: layout-vertical
+										label: Lyrics
+										children: [
+											{type: "textarea", path: "data.lyrics", options:{rows: 16}}
 										]
 									}
 								]
@@ -180,11 +182,20 @@
 			]
 		}
 
-		links: {
-			steps: [
-				{do:"as-modal", steps: [
-				{do:"view-html"}
-			]}
-		]}
+		prev: {
+			steps:[
+				{do:"with-prev-sibling", steps:[
+					{do:"redirect-to", url:"/{{.StreamID}}"}
+				]}
+			]
+		}
+
+		next: {
+			steps:[
+				{do:"with-next-sibling", steps:[
+					{do:"redirect-to", url:"/{{.StreamID}}"}
+				]}
+			]
+		}
 	}
 }

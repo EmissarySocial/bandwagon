@@ -5,8 +5,7 @@
 	{{- $featured := .Outbox.Featured.ByRank.Slice -}}
 
 	<!-- Page content -->
-	<div class="framed page app h-card padding-none" hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-target="this" hx-swap="outerHTML"
-		script="on load add [@aria-selected=true] to #home">
+	<div class="framed page app h-card padding-none" script="on load add [@aria-selected=true] to #home">
 
 		<title>{{.DisplayName}}</title>
 
@@ -41,7 +40,8 @@
 					<button hx-post="/signout" hx-target="body">Sign Out</button>
 				</div>
 
-				<form hx-post="/@{{.UserID}}/sort-featured" hx-trigger="end" hx-swap="none" hx-push-url="false">
+				<form hx-post="/@{{.UserID}}/sort-featured" hx-trigger="end">
+					<div hx-push-url="true">
 			{{- end -}}
 
 			<!-- Band Name -->
@@ -79,7 +79,7 @@
 							{{- if eq "bandwagon-album" .TemplateID -}}
 								<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover;" aria-hidden="true">
 								<div class="padding text-plain">
-									<a href="/{{.StreamID}}">{{.Label}}</a>
+									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
 								</div>
 							{{- else if eq "bandwagon-event" .TemplateID -}}
 								<div class="padding bold">{{.Data.date}}</div>
@@ -94,7 +94,7 @@
 								<h2 class="padding align-center">{{.Label}}</h2>
 								<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
 								<div class="padding">
-									<a href="/{{.StreamID}}">{{first .Data.linkText "Read More"}}</a>
+									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
 								</div>
 							{{- end -}}
 
@@ -126,6 +126,7 @@
 			{{- end -}}
 
 			{{- if $isMyself -}}
+					</div>
 				</form>
 
 				<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
@@ -156,6 +157,8 @@
 			{{- end -}}
 
 		</div>
+
+		<div hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window"></div>
 
 	</div>
 

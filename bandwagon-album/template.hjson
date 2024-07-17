@@ -217,5 +217,11 @@
 			]
 		}
 
+		stylesheet: {
+			steps: [
+				{do:"view-css"}
+			]
+		}
+
 	}
 }
