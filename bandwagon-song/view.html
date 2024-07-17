@@ -9,14 +9,12 @@
 	<link rel="stylesheet" href="/{{.ParentID}}/stylesheet">
 
 	<div class="md:flex-row margin-bottom">
-		<div class="width-100-percent md:width-256 flex-shrink-0">
-			<div>
-				<img src="{{$album.IconURL}}" class="width-100-percent aspect-square" style="object-fit:cover;">
-			</div>
+		<div class="md:width-256 flex-shrink-0">
+			<img src="{{$album.IconURL}}" class="width-100-percent aspect-square" aria-hidden="true" style="object-fit:cover;">
 		</div>
 
 		<div class="md:width-32"></div>
-		<div class="md:width-100-percent">
+		<div class="flex-grow-1">
 			<h2 class="margin-top-none">
 				<a href="/@{{$album.AttributedTo.UserID.Hex}}">{{$album.AttributedTo.Name}}</a> 
 				
@@ -64,7 +62,7 @@
 
 	<div class="md:flex-row-reverse">
 
-		<div class="md:width-100-percent">
+		<div class="flex-grow-1">
 
 			{{- if ne nil $lyrics -}}
 				<div class="margin-bottom-xl padding-right-xl">{{$lyrics | markdown}}</div>
@@ -72,8 +70,8 @@
 	
 		</div>
 
-		<div class="md:width-32"></div>
-		<div class="width-100-percent md:width-256 flex-shrink-0">
+		<div class="md:width-32 flex-shrink-0 flex-grow-0"></div>
+		<div class="md:width-256 flex-shrink-0">
 
 			{{- if $links.NotEmpty -}}
 

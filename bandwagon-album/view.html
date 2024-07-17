@@ -9,9 +9,11 @@
 	</style>
 
 	<!-- First Row: Album Name and Artwork -->
-	<div class="width-100-percent md:flex-row align-center md:align-left">
-		<img src="{{.IconURL}}" class="width-100-percent md:width-256 aspect-square" aria-hidden="true" style="object-fit:cover;">
-		<div class="md:show width-32"></div>
+	<div class="md:flex-row margin-bottom">
+		<div class="md:width-256 flex-shrink-0">
+			<img src="{{.IconURL}}" class="width-100-percent aspect-square" aria-hidden="true" style="object-fit:cover;">
+		</div>
+		<div class="md:width-32"></div>
 		<div class="flex-grow-1">
 			<h2 class="margin-top-none">
 				<a hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
@@ -42,7 +44,7 @@
 	</div>
 
 	<!-- Second Row: -->
-	<div class="md:flex-row-reverse margin-top-lg">
+	<div class="md:flex-row-reverse">
 
 		<!-- Song List -->
 		<div class="flex-grow-1">
@@ -114,8 +116,8 @@
 
 		</div>
 
-		<!-- Album Notes and Manager Actions -->
-		<div class="md:width-256 margin-right-lg">
+		<div class="md:width-32 flex-shrink-0 flex-grow-0"></div>
+		<div class="md:width-256 flex-shrink-0">
 
 			{{- if ne "" .Summary -}}
 				<div class="margin-bottom-lg">
