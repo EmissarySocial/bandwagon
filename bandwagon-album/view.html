@@ -17,11 +17,11 @@
 		<div class="flex-grow-1">
 			<h2 class="margin-top-none">
 				<a hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a> 
-				{{ if ne nil (.Data "year") -}}
-					<span aira-hidden="true">&middot;</span> {{.Data "year"}}
-				{{- end -}}
 			</h2>
 			<h1 class="margin-vertical-none">{{.Label}}</h1>
+			{{ if ne nil (.Data "year") -}}
+				<div class="margin-bottom text-gray">{{.Data "year"}}</div>
+			{{- end -}}
 			<!--div>
 				{{- range $index, $tag := $tags -}}
 					{{- if eq "Hashtag" $tag.Type}}

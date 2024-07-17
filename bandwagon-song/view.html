@@ -20,11 +20,6 @@
 				
 				<span aria-hidden="true">&middot;</span>
 				<a href="/{{$album.StreamID}}">{{ $album.Label }}</a>
-
-				{{- if ne nil ($album.Data "year") }}
-					<span aria-hidden="true">&middot;</span>
-					{{$album.Data "year"}}
-				{{- end -}}
 			</h2>
 			<h1 class="margin-vertical-none">
 				{{- .Label -}}
@@ -32,6 +27,16 @@
 					<span class="text-light-gray text-xl margin-left" title="Explicit Lyrics" aria-label="Explicit Lyrics">{{icon "explicit-fill"}}</span>
 				{{- end -}}
 			</h1>
+
+			<div class="margin-bottom text-gray">
+				{{ if ne nil ($album.Data "year") -}}
+					{{$album.Data "year"}}
+					{{- if ne nil (.Data "length") -}}
+						<span aria-hidden="true">&middot;</span>
+					{{ end }} 
+				{{- end -}}
+				{{.Data "length"}}
+			</div>
 
 			<div class="margin-vertical"></div>
 			<div class="margin-vertical-lg">
