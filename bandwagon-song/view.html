@@ -16,7 +16,9 @@
 		<div class="md:width-32"></div>
 		<div class="flex-grow-1">
 			<div class="text-lg margin-top-none">
-				<a href="/@{{$album.AttributedTo.UserID.Hex}}" aria-label="Artist: $album.AttributedTo.Name">{{$album.AttributedTo.Name}}</a> 
+				<a href="/@{{$album.AttributedTo.UserID.Hex}}" aria-label="Artist: $album.AttributedTo.Name">
+					{{$album.AttributedTo.Name}}
+				</a> 
 				<span aria-hidden="true">&middot;</span>
 				<a href="/{{$album.StreamID}}" aria-label="Album: $album.Label">{{ $album.Label }}</a>
 			</div>
@@ -168,8 +170,11 @@
 
 	{{- if .UserCan "edit" -}}
 		<div class="pos-absolute-top-right text-xs">
-			<button hx-get="/{{.ParentID}}/edit">Edit Album</button>
-			<button hx-get="/{{.StreamID}}/edit">Edit Song</button>
+			<div class="button-group">
+				<button hx-get="/@{{.AttributedTo.UserID.Hex}}/edit">Edit Profile</button>
+				<button hx-get="/{{.ParentID}}/edit">Edit Album</button>
+				<button hx-get="/{{.StreamID}}/edit">Edit Song</button>
+			</div>
 			<button hx-get="/{{.ParentID}}/add-song"><span aria-label="Add">{{icon "add"}}</span> Song</button>
 		</div>
 	{{- end -}}

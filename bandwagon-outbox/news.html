@@ -11,7 +11,7 @@
 		{{- if $isMyself -}}
 			<div class="button-group text-sm margin-bottom">
 				<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
-				<button hx-get="/@{{.UserID}}/add-news" class="text-sm">{{icon "add"}} Add a Post</button>
+				<button hx-get="/@{{.UserID}}/add-news" class="text-sm" aria-label="Add a Post">{{icon "add"}} Post</button>
 			</div>
 		{{- end -}}
 

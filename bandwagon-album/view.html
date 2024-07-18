@@ -17,9 +17,6 @@
 		<div class="flex-grow-1">
 			<div class="text-lg margin-top-none">
 				<a hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}" aria-label="Artist: {{.AttributedTo.Name}}">
-					{{- if ne "" .AttributedTo.IconURL -}}
-						<img src="{{.AttributedTo.IconURL}}" class="square margin-right-xs" style="object-fit:cover; height:1em; width:1em;" aria-hidden="true">
-					{{- end -}}
 					{{.AttributedTo.Name}}
 				</a> 
 			</div>
