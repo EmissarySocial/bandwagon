@@ -10,7 +10,7 @@
 	
 		{{- if $isMyself -}}
 			<div class="button-group text-sm margin-bottom">
-				<button hx-get="/@{{.UserID}}/edit-news">Edit News Page</button>
+				<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
 				<button hx-get="/@{{.UserID}}/add-news" class="text-sm">{{icon "add"}} Add a Post</button>
 			</div>
 		{{- end -}}

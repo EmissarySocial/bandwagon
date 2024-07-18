@@ -64,6 +64,9 @@
 					label: + Add Album
 					set-permissions: {copy:true, editor:["self"]}
 				}
+				{do:"set-data", values:{"data.show-albums":"true"}}
+				{do:"save"}
+				{do:"refresh-page"}
 			]
 		}
 
@@ -78,6 +81,7 @@
 					title: + Add a Song
 					set-permissions: {copy:true, editor:["self"]}
 				}
+				{do:"set-data", values:{"data.show-events":"true"}}
 				{do: "save"}
 				{do: "refresh-page"}
 			]
@@ -94,6 +98,7 @@
 					title: + Add News
 					set-permissions: {copy:true, editor:["self"]}
 				}
+				{do:"set-data", values:{"data.show-news":"true"}}
 				{do: "save"}
 				{do: "refresh-page"}
 			]
@@ -106,7 +111,7 @@
 					{
 						do: "edit"
 						form:{
-							label: Edit Profile Settings
+							label: Edit Profile
 							type:layout-tabs
 							children: [
 								{
@@ -116,6 +121,9 @@
 										{type:"text", path:"displayName", label:"Name"}
 										{type:"textarea", path:"statusMessage", label:"Bio/Comment", description:"A brief statement about you"}
 										{type:"text", path:"location", label:"Location"}
+										{type:"toggle", path:"isPublic", options:{text:"Publish Profile", false-text:"Publish Profile (will not be visible to others)"}}
+										{type:"toggle", path:"isDiscoverable", options:{text:"Show Profile in Search Results"}}
+										{type:"toggle", path:"isIndexable", options:{text:"Allow Indexing by Search Engines"}}
 									]
 								}
 								{
@@ -132,22 +140,38 @@
 								}
 								{
 									type: layout-vertical
-									label: Privacy
+									label: Albums
 									children: [
-										{type:"toggle", path:"isPublic", options:{text:"Publish Profile", false-text:"Publish Profile (will not be visible to others)"}}
-										{type:"toggle", path:"isDiscoverable", options:{text:"Show Profile in Search Results"}}
-										{type:"toggle", path:"isIndexable", options:{text:"Allow Indexing by Search Engines"}}
+										{type:"toggle", path:"data.show-albums", options:{text:"Display 'Albums' in Navigation Bar"}}
+										{type:"text", path:"data.label-albums", label:"Label", options:{placeholder:"Albums"}}
+										{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
 								{
 									type: layout-vertical
-									label: Navigation
+									label: Events
 									children: [
-										{type:"toggle", path:"data.show-albums", options:{text:"Show Albums"}}
-										{type:"toggle", path:"data.show-events", options:{text:"Show Events"}}
-										{type:"toggle", path:"data.show-news", options:{text:"Show News"}}
-										{type:"text", path:"data.label-shop", label:"Shop Label"}
-										{type:"text", path:"data.shop-url", label:"Shop URL", description:"Web address of your third-party store."}
+										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Navigation Bar"}}
+										{type:"text", path:"data.label-events", label:"Label", options:{placeholder:"Shows"}}
+										{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: News
+									children: [
+										{type:"toggle", path:"data.show-news", options:{text:"Display 'News' in Navigation Bar"}}
+										{type:"text", path:"data.label-news", label:"Label", options:{placeholder:"News"}}
+										{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Shop
+									children: [
+										{type:"label", label:"The 'Shop' link is displayed automatically when you enter the shop URL below"}
+										{type:"text", path:"data.shop-url", label:"Shop URL"}
+										{type:"text", path:"data.label-shop", label:"Shop Label", options:{placeholder:"Shop"}}
 									]
 								}
 							]
@@ -155,69 +179,6 @@
 					}
 					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
-					{do:"save"}
-					{do:"refresh-page"}
-				]}
-			] 
-		}
-
-		edit-albums: {
-			roles: ["self", "owner"]
-			steps: [
-				{do: "as-modal", background:"albums", steps:[
-					{
-						do: "edit"
-						form:{
-							label: Edit Albums Page
-							type:layout-vertical
-							children: [
-								{type:"text", path:"data.label-albums", label:"Navigation Label"}
-								{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
-							]
-						}
-					}
-					{do:"save"}
-					{do:"refresh-page"}
-				]}
-			] 
-		}
-
-		edit-events: {
-			roles: ["self", "owner"]
-			steps: [
-				{do: "as-modal", background:"events", steps:[
-					{
-						do: "edit"
-						form:{
-							label: Edit Events Page
-							type:layout-vertical
-							children: [
-								{type:"text", path:"data.label-events", label:"Navigation Label"}
-								{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
-							]
-						}
-					}
-					{do:"save"}
-					{do:"refresh-page"}
-				]}
-			] 
-		}
-
-		edit-news: {
-			roles: ["self", "owner"]
-			steps: [
-				{do: "as-modal", background:"news", steps:[
-					{
-						do: "edit"
-						form:{
-							label: Edit News Page
-							type:layout-vertical
-							children: [
-								{type:"text", path:"data.label-news", label:"Navigation Label"}
-								{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
-							]
-						}
-					}
 					{do:"save"}
 					{do:"refresh-page"}
 				]}

@@ -1,3 +1,8 @@
+{{- $showAlbums := eq "true" (.Data "show-albums") -}}
+{{- $showEvents := eq "true" (.Data "show-events") -}}
+{{- $showNews := eq "true" (.Data "show-news") -}}
+{{- $showShop := ne "" (.Data "shop-url") -}}
+
 <style>{{- template "stylesheet" . -}}</style>
 
 <!-- Banner Image -->
@@ -6,18 +11,21 @@
 {{- end -}}
 
 <!-- Menu Bar -->
+
+{{- if or $showAlbums $showEvents $showNews $showShop -}}
 <div id="band-menu" role="menubar">
-	<a id="home" href="/@{{.UserID}}" hx-get="/@{{.UserID}}" role="menuitem" class="turboclick">{{.DisplayName}}</a>
-	{{- if eq "true" (.Data "show-albums") -}}
+	<a id="home" href="/@{{.UserID}}" hx-get="/@{{.UserID}}" role="menuitem" class="turboclick" aria-label="Home">{{icon "home-fill"}}</a>
+	{{- if $showAlbums -}}
 		<a id="albums" href="/@{{.UserID}}/albums" hx-get="/@{{.UserID}}/albums" role="menuitem" class="turboclick">{{first (.Data "label-albums") "Albums"}}</a>
 	{{- end -}}
-	{{- if eq "true" (.Data "show-events") -}}
+	{{- if $showEvents -}}
 		<a id="events" href="/@{{.UserID}}/events" hx-get="/@{{.UserID}}/events" role="menuitem" class="turboclick">{{first (.Data "label-events") "Shows"}}</a>
 	{{- end -}}
-	{{- if eq "true" (.Data "show-news") -}}
+	{{- if $showNews -}}
 		<a id="news" href="/@{{.UserID}}/news"  hx-get="/@{{.UserID}}/news" role="menuitem" class="turboclick">{{first (.Data "label-news") "News"}}</a>
 	{{- end -}}
-	{{- if ne "" (.Data "shop-url") -}}
+	{{- if $showShop -}}
 		<a href="{{.Data `shop-url`}}" target="_blank" role="menuitem" class="turboclick">{{first (.Data "label-shop") "Shop"}}</a>
 	{{- end -}}
 </div>
+{{- end -}}
