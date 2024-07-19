@@ -63,7 +63,7 @@
 								</td>
 							{{- end -}}
 
-							<td nowrap class="align-right"
+							<td nowrap
 								{{ if $isplayable -}}
 									hx-on:click="Toggle({{$index}})"
 								{{- else -}}
@@ -73,16 +73,26 @@
 
 								<span class="margin-right text-gray">
 									{{- if $isplayable -}}
-										<span class="hover-visible">{{icon "play-fill"}}</span>
+									<span class="hover-show">{{icon "play-fill"}}</span>
 										{{- if eq $song.IsFeatured true -}}
-											<span class="hover-invisible">{{icon "star-fill"}}</span>
-										{{- end -}}
+											<span class="hover-hide">{{icon "star-fill"}}</span>
+										{{- else -}}
+											<span class="invisible hover-hide">{{icon "play-fill"}}</span>
+											{{- end -}}
 									{{- else -}}
 										{{- if eq $song.IsFeatured true -}}
 											{{icon "star-fill"}}
 										{{- end -}}
 									{{- end -}}
 								</span>
+							</td>
+							<td nowrap class="align-right"
+								{{ if $isplayable -}}
+									hx-on:click="Toggle({{$index}})"
+								{{- else -}}
+									hx-get="/{{$song.StreamID}}"
+								{{- end -}}
+							>
 								<span class="hide sm:show">{{add $index 1}}.</span>
 							</td>
 							<td class="width-100-percent"
