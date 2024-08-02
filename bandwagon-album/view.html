@@ -11,7 +11,13 @@
 	<!-- First Row: Album Name and Artwork -->
 	<div class="md:flex-row margin-bottom">
 		<div class="md:width-256 flex-shrink-0">
-			<img src="{{.IconURL}}" class="width-100-percent aspect-square" aria-hidden="true" style="object-fit:cover;">
+			{{- if ne "" .IconURL -}}
+				<img src="{{.IconURL}}" class="width-100-percent aspect-square" aria-hidden="true" style="object-fit:cover;">
+			{{- else if $canEdit -}}
+				<div class="aspect-square text-center flex-column flex-justify-center flex-align-center" style="border:solid 1px var(--black)" script="install blockselect()">
+					<a hx-get="/{{.StreamID}}/edit" class="text-plain">Click here to add album art</a>
+				</div>
+			{{- end -}}
 		</div>
 		<div class="md:width-32"></div>
 		<div class="flex-grow-1">
@@ -121,6 +127,11 @@
 								{{- end -}}
 							</td>
 						</tr>
+
+					{{- else -}}
+						{{- if $canEdit -}}
+							<tr role="button" hx-get="/{{.StreamID}}/add-song"><td><span role="presentation">{{icon "plus"}}</span> Add the first song to this album</td></tr>
+						{{- end -}}
 					{{- end -}}
 					</tbody>
 				</table>
