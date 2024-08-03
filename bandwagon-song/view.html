@@ -71,7 +71,7 @@
 		<div class="flex-grow-1">
 
 			{{- if ne nil $lyrics -}}
-				<div class="margin-bottom-xl padding-right-xl">{{$lyrics | markdown}}</div>
+				<div class="margin-bottom-xl padding-right-xl">{{$lyrics | text}}</div>
 			{{- end -}}
 	
 		</div>
@@ -175,7 +175,7 @@
 				<button hx-get="/{{.ParentID}}/edit">Edit Album</button>
 				<button hx-get="/{{.StreamID}}/edit">Edit Song</button>
 			</div>
-			<button hx-get="/{{.ParentID}}/add-song"><span aria-label="Add">{{icon "add"}}</span> Song</button>
+			<button hx-get="/{{.ParentID}}/add-song" class="primary"><span aria-label="Add">{{icon "add"}}</span> Another Song</button>
 		</div>
 	{{- end -}}
 	

@@ -1,6 +1,14 @@
 {{- $tags := .Tags -}}
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
+{{- $isPlayable := false -}}
+{{- $links := .Data "links" -}}
+
+{{- range $index, $song := $songs -}}
+	{{- if ne nil $song.Data.attachmentId -}}
+		{{- $isPlayable = true -}}
+	{{- end -}}
+{{- end -}}
 
 <div class="page">
 
@@ -39,15 +47,24 @@
 				{{- end -}}
 			</div-->
 			<div class="margin-vertical"></div>
-			<div id="media-controls" class="margin-vertical-lg">
-				<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
-				<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none">{{icon "skip-backward-fill"}}</button>
-				<button hx-on:click="Pause()" class="primary playing-show margin-right-none">{{icon "pause-fill"}}</button>
-				<button hx-on:click="PlayNext()" class="primary playing-show">{{icon "skip-forward-fill"}}</button>
-				{{- if (.Data "links").NotEmpty -}}
-					<button hx-get="/{{.StreamID}}/links">{{icon "cloud"}} Links</button>
-				{{- end -}}
-			</div>
+ 
+			{{- if $isPlayable -}}
+				<div id="media-controls" class="margin-vertical-lg">
+					<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
+					<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none">{{icon "skip-backward-fill"}}</button>
+					<button hx-on:click="Pause()" class="primary playing-show margin-right-none">{{icon "pause-fill"}}</button>
+					<button hx-on:click="PlayNext()" class="primary playing-show">{{icon "skip-forward-fill"}}</button>
+				</div>
+			{{- else if $canEdit -}}
+				<div class="margin-vertical-lg" role="presentation">
+					<div>
+						<button disabled>{{icon "skip-backward-fill"}}</button>
+						<button disabled>{{icon "play-fill"}} Play Album</button>
+						<button disabled>{{icon "skip-forward-fill"}}</button>
+					</div>
+					<div class="text-sm text-gray margin-top">** Upload audio files to enable playback</div>
+				</div>
+			{{- end -}}
 		</div>
 	</div>
 
@@ -56,86 +73,101 @@
 
 		<!-- Song List -->
 		<div class="flex-grow-1">
-			<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end">
-				<table class="table">
-					<tbody id="track-list">
-					{{- range $index, $song := $songs -}}
-						{{- $isplayable := ne nil $song.Data.attachmentId -}}
-						<tr id="track-{{$index}}" class="track hover-trigger" role="button">
-							<input type="hidden" name="keys" value="{{.StreamID}}">
-							{{- if $canEdit -}}
-								<td class="">
-									<span class="drag-handle">{{icon "drag-handle"}}</span>
-								</td>
+
+			{{- if $songs.IsEmpty -}}
+			
+				{{- if $canEdit -}}
+					<div class="margin-vertical-lg">
+						<button class="primary" hx-get="/{{.StreamID}}/add-song"><td><span role="presentation">{{icon "plus"}}</span> Add the first song to this album</button>
+					</div>
+				{{- end -}}
+			{{- else -}}
+				<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end">
+					<table class="table">
+						<tbody id="track-list">
+							{{- range $index, $song := $songs -}}
+								{{- $isplayable := ne nil $song.Data.attachmentId -}}
+								<tr id="track-{{$index}}" class="track hover-trigger" role="button">
+									<input type="hidden" name="keys" value="{{.StreamID}}">
+									{{- if and $canEdit (gt $songs.Length 1) -}}
+										<td class="">
+											<span class="drag-handle">{{icon "drag-handle"}}</span>
+										</td>
+									{{- end -}}
+
+									<td nowrap
+										{{ if $isplayable -}}
+											hx-on:click="Toggle({{$index}})"
+										{{- else -}}
+											hx-get="/{{$song.StreamID}}"
+										{{- end -}}
+									>
+
+										<span class="margin-right text-gray">
+											{{- if $isplayable -}}
+											<span class="hover-show">{{icon "play-fill"}}</span>
+												{{- if eq $song.IsFeatured true -}}
+													<span class="hover-hide">{{icon "star-fill"}}</span>
+												{{- else -}}
+													<span class="invisible hover-hide">{{icon "play-fill"}}</span>
+													{{- end -}}
+											{{- else -}}
+												{{- if eq $song.IsFeatured true -}}
+													{{icon "star-fill"}}
+												{{- end -}}
+											{{- end -}}
+										</span>
+									</td>
+									<td nowrap class="align-right"
+										{{ if $isplayable -}}
+											hx-on:click="Toggle({{$index}})"
+										{{- else -}}
+											hx-get="/{{$song.StreamID}}"
+										{{- end -}}
+									>
+										<span class="hide sm:show">{{add $index 1}}.</span>
+									</td>
+									<td class="width-100-percent"
+										{{ if $isplayable -}}
+											hx-on:click="Toggle({{$index}})"
+										{{- else -}}
+											hx-get="/{{$song.StreamID}}"
+										{{- end -}}
+									>
+										{{$song.Label}}
+										{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
+									</td>
+									<td nowrap class="align-right"
+										{{ if $isplayable -}}
+											hx-on:click="Toggle({{$index}})"
+										{{- else -}}
+											hx-get="/{{$song.StreamID}}"
+										{{- end -}}
+									>
+										{{- $song.Data.length -}}
+									</td>
+									<td class="text-xs align-right" nowrap>
+										<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm" aria-label="Song Details">{{icon "more-horizontal"}}</button>
+										{{- if $canEdit -}}
+											<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
+										{{- end -}}
+									</td>
+								</tr>
 							{{- end -}}
 
-							<td nowrap
-								{{ if $isplayable -}}
-									hx-on:click="Toggle({{$index}})"
-								{{- else -}}
-									hx-get="/{{$song.StreamID}}"
-								{{- end -}}
-							>
+							{{- if $canEdit -}}
+								<tr hx-get="/{{.StreamID}}/add-song" role="button">
+									<td colspan="6" class="link">
+										<span role="presentation">{{icon "add"}}</span> Add Another Song
+									</td>
+								</tr>
+							{{- end -}}
 
-								<span class="margin-right text-gray">
-									{{- if $isplayable -}}
-									<span class="hover-show">{{icon "play-fill"}}</span>
-										{{- if eq $song.IsFeatured true -}}
-											<span class="hover-hide">{{icon "star-fill"}}</span>
-										{{- else -}}
-											<span class="invisible hover-hide">{{icon "play-fill"}}</span>
-											{{- end -}}
-									{{- else -}}
-										{{- if eq $song.IsFeatured true -}}
-											{{icon "star-fill"}}
-										{{- end -}}
-									{{- end -}}
-								</span>
-							</td>
-							<td nowrap class="align-right"
-								{{ if $isplayable -}}
-									hx-on:click="Toggle({{$index}})"
-								{{- else -}}
-									hx-get="/{{$song.StreamID}}"
-								{{- end -}}
-							>
-								<span class="hide sm:show">{{add $index 1}}.</span>
-							</td>
-							<td class="width-100-percent"
-								{{ if $isplayable -}}
-									hx-on:click="Toggle({{$index}})"
-								{{- else -}}
-									hx-get="/{{$song.StreamID}}"
-								{{- end -}}
-							>
-								{{$song.Label}}
-								{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
-							</td>
-							<td nowrap class="align-right"
-								{{ if $isplayable -}}
-									hx-on:click="Toggle({{$index}})"
-								{{- else -}}
-									hx-get="/{{$song.StreamID}}"
-								{{- end -}}
-							>
-								{{- $song.Data.length -}}
-							</td>
-							<td class="text-xs align-right" nowrap>
-								<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm" aria-label="Song Details">{{icon "more-horizontal"}}</button>
-								{{- if $canEdit -}}
-									<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
-								{{- end -}}
-							</td>
-						</tr>
+						</tbody>
+					</table>
+				</form>
 
-					{{- else -}}
-						{{- if $canEdit -}}
-							<tr role="button" hx-get="/{{.StreamID}}/add-song"><td><span role="presentation">{{icon "plus"}}</span> Add the first song to this album</td></tr>
-						{{- end -}}
-					{{- end -}}
-					</tbody>
-				</table>
-			</form>
+			{{- end -}}
 
 		</div>
 
@@ -147,6 +179,63 @@
 					<h3>Album Notes</h3>
 					{{.Summary | markdown}}
 				</div>
+			{{- end -}}
+
+
+			{{- if $links.NotEmpty -}}
+
+				<h3>Listen on Streaming Services</h3>
+				{{- range $key, $value := $links -}}
+					
+					{{- if ne "" $value -}}
+						{{- $icon := "music-note-beamed" -}}
+						{{- $label := $value -}}
+
+						{{- if eq "APPLE" $key -}}
+							{{- $icon = "apple" -}}
+							{{- $label = "Apple Music" -}}
+
+						{{- else if eq "SPOTIFY" $key -}}
+							{{- $label = "Spotify" -}}
+							{{- $icon = "spotify" -}}
+
+						{{- else if eq "YOUTUBE" $key -}}
+							{{- $label = "YouTube Music" -}}
+							{{- $icon = "youtube" -}}
+
+						{{- else if eq "SOUNDCLOUD" $key -}}
+							{{- $label = "SoundCloud" -}}
+							{{- $icon = "cloud" -}}
+
+						{{- else if eq "TIDAL" $key -}}
+							{{- $label = "Tidal" -}}
+
+						{{- else if eq "AMAZON" $key -}}
+							{{- $label = "Amazon Music" -}}
+							{{- $icon = "amazon" -}}
+
+						{{- else if eq "GOOGLE" $key -}}
+							{{- $label = "Google Play" -}}
+							{{- $icon = "google" -}}
+
+						{{- else if eq "PANDORA" $key -}}
+							{{- $label = "Pandora" -}}
+
+						{{- else if eq "IHEARTRADIO" $key -}}
+							{{- $label = "iHeartRadio" -}}
+
+						{{- else -}}
+							{{- $label = domainOnly $value -}}
+
+						{{- end -}}
+
+						<a href="{{$value}}" target="_blank">
+							<i class="bi bi-{{$icon}}"></i> {{ $label }}
+						</a><br>
+					{{- end -}}
+
+				{{- end -}}
+				<br>
 			{{- end -}}
 
 		</div>

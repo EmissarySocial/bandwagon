@@ -30,12 +30,14 @@
 
 			{{- if $isMyself -}}
 
-				<div class="button-group text-sm margin-bottom" role="group" aria-label="Profile Controls">
+				<div class="button-group text-sm margin-bottom" role="group" aria-label="Profile Controls" style="overflow-x:scroll;">
 					<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
 					<button hx-get="/@{{.UserID}}/links">Edit Links</button>
-					<button hx-get="/@{{.UserID}}/add-album" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Album</button>
-					<button hx-get="/@{{.UserID}}/add-event" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Event</button>
-					<button hx-get="/@{{.UserID}}/add-news" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Post</button>
+					<span class="hide md:show">
+						<button hx-get="/@{{.UserID}}/add-album" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Album</button>
+						<button hx-get="/@{{.UserID}}/add-event" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Event</button>
+						<button hx-get="/@{{.UserID}}/add-news" class="text-sm"><span aria-label="Add">{{icon "add"}}</span> Post</button>
+					</span>
 
 					<button hx-post="/signout" hx-target="body">Sign Out</button>
 				</div>
