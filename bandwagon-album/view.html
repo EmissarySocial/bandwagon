@@ -267,7 +267,7 @@
 			<button hx-get="/{{.StreamID}}/add-song"><span aria-label="Add">{{icon "add"}}</span> Song</button>
 		</div>
 
-		<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+		<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js" preload></script>
 
 		<script>
 			new Sortable(document.getElementById("track-list"), {
@@ -292,4 +292,5 @@
 
 	<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window"></div>
 
+	<script src="/.templates/intents/intents.js" preload></script>
 </div>
