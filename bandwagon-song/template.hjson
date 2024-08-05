@@ -3,6 +3,7 @@
 	templateRole: song
 	socialRole: Audio
 	label: Song
+	extends: ["base-intent"]
 	containedBy: ["album"]
 	schema: {
 		type: object

@@ -4,6 +4,7 @@
 	socialRole: Article
 	model: Stream
 	containedBy: ["folder", "home", "outbox"]
+	extends: ["base-intent"]
 	icon: album
 	label: Album (Default)
 	description: Contains one or more songs

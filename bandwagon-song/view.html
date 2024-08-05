@@ -57,8 +57,14 @@
 							<source id="source-aac" type="audio/aac">
 							<source id="source-mp3" type="audio/mp3">
 						</audio>
+					{{ else }}
+						<button disabled aria-label="Play Track">{{icon "play-fill"}} Play</button>
 					{{ end }}
 					<button hx-get="/{{.StreamID}}/next" role="link" aria-label="Next Track">Next {{icon "skip-forward-fill"}}</button>
+				</div>
+
+				<div>
+					<span class="link" role="button" hx-get="{{.StreamID}}/share?content={{.Label}} {{.Permalink}}">Share Song <span role="presentation" class="margin-left-xs">{{icon "share"}}</span></span>
 				</div>
 	
 			</div>
@@ -163,7 +169,6 @@
 				<a href="https://musicbrainz.org/recording/{{.Data `musicBrainzId`}}" target="_blank">MusicBrainz {{icon "link-outbound"}}</a><br>
 			{{- end -}}
 		
-
 		</div>
 
 	</div>

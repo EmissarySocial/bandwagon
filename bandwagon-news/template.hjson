@@ -4,6 +4,7 @@
 	templateRole: Note
 	socialRole: Note
 	label: News Item
+	extends: ["base-intent"]
 	containedBy: ["outbox"]
 	schema: {
 		type: object

@@ -4,6 +4,7 @@
 	socialRole: Article
 	model: Stream
 	containedBy: ["outbox"]
+	extends: ["base-intent"]
 	icon: calendar
 	label: Event
 	description: Contains event details

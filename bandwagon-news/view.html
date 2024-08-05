@@ -10,7 +10,10 @@
 
 		<div>
 			<h1>{{.Label}}</h1>
-			<div>{{.PublishDate | shortDate}}</</div>
+			<div>
+				{{.PublishDate | shortDate}} <span role="presentation">&middot</span>
+				<span hx-get="{{.StreamID}}/share?content={{.Label}}%0A{{.Summary}}%0A{{.Permalink}}" class="link" role="button">Share <span role="presentation" class="margin-left-xs">{{icon "share"}}</span></span>
+			</div>
 			<div class="margin-vertical">{{.ContentHTML}}</div>
 		</div>
 
