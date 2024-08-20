@@ -29,7 +29,7 @@
 				<div class="sortable margin-vertical-lg columns-3">
 					{{- range $albums -}}
 						<div class="card hover-trigger" script="install blockselect()">
-							<img src="{{.IconURL}}" class="square width-100-percent block" style="object-fit:cover">
+							<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover">
 							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block turboclick">
 								<div class="block padding">
 									<div class="bold">{{.Label}}</div>

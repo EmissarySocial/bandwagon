@@ -10,7 +10,7 @@
 
 	<div class="md:flex-row margin-bottom">
 		<div class="md:width-256 flex-shrink-0">
-			<img src="{{$album.IconURL}}" class="width-100-percent aspect-square" aria-hidden="true" style="object-fit:cover;">
+			<img src="{{$album.IconURL}}" class="width-100% aspect-square" aria-hidden="true" style="object-fit:cover;">
 		</div>
 
 		<div class="md:width-32"></div>
@@ -63,8 +63,9 @@
 					<button hx-get="/{{.StreamID}}/next" role="link" aria-label="Next Track">Next {{icon "skip-forward-fill"}}</button>
 				</div>
 
-				<div>
-					<span class="link" role="button" hx-get="/{{.StreamID}}/share?content={{.Label}} {{.Permalink}}">Share Song <span role="presentation" class="margin-left-xs">{{icon "share"}}</span></span>
+				<div class="text-sm">
+					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
 				</div>
 	
 			</div>

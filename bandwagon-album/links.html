@@ -1,7 +1,7 @@
 {{- $links := .Data "links" -}}
 
 <div class="align-center">
-	<img src="{{.IconURL}}" class="width-60-percent aspect-square inline-block" style="object-fit:cover; border:solid 1px var(--black);">
+	<img src="{{.IconURL}}" class="-width-60% aspect-square inline-block" style="object-fit:cover; border:solid 1px var(--black);">
 	<h1 class="margin-top margin-bottom-xs">{{ .Label }}</h1>
 	<div class="margin-bottom">
 		<a href="/@{{.AttributedTo.UserID.Hex}}">{{.AttributedTo.Name}}</a> &middot; {{.Data "year"}}

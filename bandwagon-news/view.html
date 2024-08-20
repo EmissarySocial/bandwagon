@@ -11,8 +11,12 @@
 		<div>
 			<h1>{{.Label}}</h1>
 			<div>
-				{{.PublishDate | shortDate}} <span role="presentation">&middot</span>
-				<span hx-get="{{.StreamID}}/share?content={{.Label}}%0A{{.Summary}}%0A{{.Permalink}}" class="link" role="button">Share <span role="presentation" class="margin-left-xs">{{icon "share"}}</span></span>
+				{{.PublishDate | shortDate}}
+				<span class="text-sm margin-left">
+					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=dislike&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-down"}}</span> Dislike</button>
+				</span>
 			</div>
 			<div class="margin-vertical">{{.ContentHTML}}</div>
 		</div>
