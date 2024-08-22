@@ -45,10 +45,14 @@
 			{{- end -}}
 
 			<!-- Band Name -->
-			<div class="flex-row margin-top">
-				<img src="{{.IconURL}}" class="circle-48" aria-hidden="true">
+			<div class="flex-row flex-align-center margin-top">
+				<img src="{{.IconURL}}" class="circle-48 flex-shrink-0" aria-hidden="true">
+				<h1 class="margin-none flex-grow-1">{{.DisplayName}}</h1>
+			</div>
+
+			<div class="flex-row">
+				<div class="width-48"></div>
 				<div>
-					<h1 class="margin-none">{{.DisplayName}}</h1>
 					<div class="max-width-640 text-gray">{{.StatusMessage}}</div>
 					{{- if .Links.NotEmpty -}}
 						<div class="max-width-640">
@@ -61,7 +65,8 @@
 		
 					<div class="margin-top">
 						{{- if not .IsMyself -}}
-							<button class="primary text-md" hx-get="/@{{.UserID}}/follow">Follow for Updates</button>
+						<button class="primary text-md" hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
+						<button class="text-md" hx-get="/@{{.UserID}}/intent">{{icon "more-horizontal"}}</button>
 						{{- else if $featured.IsEmpty -}}
 							<div class="bold">Congratulations! You've set up your new Bandwagon profile.</div>
 							<div>1. Keep going by adding albums, events, and news to your page.</div>
