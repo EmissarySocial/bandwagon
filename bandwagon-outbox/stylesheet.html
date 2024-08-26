@@ -1,10 +1,20 @@
 body {
 
+{{ if ne "" (.Data "background-body" )}}
+	background-image:url("{{.Data "background-body"}}");
+	background-repeat: no-repeat;
+	background-size: cover;
+{{ end }}
+
 {{ if ne "" (.Data "color-body") -}}
 	{{- $bodyColor := parseColor (.Data "color-body") -}}
 	--body-background: {{.Data "color-body"}};
 	--page-border: {{($bodyColor.Darken 10)}};
 {{- end }}
+
+{{ if ne "" (.Data "image-body" )}}
+
+{{ end }}
 
 {{ if ne "" (.Data "color-menu" )}}
 	{{$menu := parseColor (.Data "color-menu")}}

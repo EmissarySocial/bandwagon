@@ -220,6 +220,7 @@
 
 		stylesheet: {
 			steps: [
+				{do:"cache-url"}
 				{do:"view-css"}
 			]
 		}

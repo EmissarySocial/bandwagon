@@ -1,19 +1,28 @@
-{{- $color := .Data "color" -}}
+{{- $artist := .ParentOutbox "view" -}}
+{{- $albumColors := .Data "color" -}}
+
+{{- $bodyColor := first $albumColors.body ($artist.Data "color-body") -}}
+{{- $pageColor := first $albumColors.page ($artist.Data "color-page") -}}
+{{- $buttonColor := first $albumColors.button ($artist.Data "color-button") -}}
+
+{{- dump $bodyColor -}}
+{{- dump $pageColor -}}
+{{- dump $buttonColor -}}
 
 body {
 
-{{ if ne nil $color.body -}}
-	--body-background: {{$color.body}};
+{{ if ne nil $bodyColor -}}
+	--body-background: {{$bodyColor}};
 {{- end }}
 
-{{ if ne nil $color.page -}}
-	{{- $pageColor := parseColor $color.page -}}
-	--page-background: {{$color.page}};
-	--page-border: {{$pageColor.Darken 10}};
-	--heading-color: {{$pageColor.Text}};
-	--text-color: {{$pageColor.TextExt}};
+{{ if ne nil $pageColor -}}
+	{{- $pageColorParsed := parseColor $pageColor -}}
+	--page-background: {{$pageColorParsed}};
+	--page-border: {{$pageColorParsed.Darken 10}};
+	--heading-color: {{$pageColorParsed.Text}};
+	--text-color: {{$pageColorParsed.TextExt}};
 
-	{{if $pageColor.IsLight }}
+	{{if $pageColorParsed.IsLight }}
 		--white:  rgb(255, 255, 255);
 		--gray00: rgb(255, 255, 255);
 		--gray01: rgba(0, 0, 0, 0.01);
@@ -57,12 +66,11 @@ body {
 
 {{- end }}
 
-{{ if ne nil $color.button -}}
-	{{- $buttonColor := parseColor $color.button -}}
-	{{- $buttonText := $buttonColor.Text }}
-	{{- $buttonColorHover := ($buttonColor.Lighten 10) -}}
+{{ if ne nil $buttonColor -}}
+	{{- $buttonColorParsed := parseColor $buttonColor -}}
+	{{- $buttonText := $buttonColorParsed.Text }}
+	{{- $buttonColorHover := ($buttonColorParsed.Lighten 10) -}}
 	{{- $buttonTextHover := $buttonColorHover.Text }}
-	{{- $buttonColor := $color.button -}}
 
 	--button-primary-background: {{$buttonColor}};
 	--button-primary-background-hover: {{$buttonColorHover}};
@@ -71,6 +79,8 @@ body {
 	--link-color: {{$buttonColor}};
 	--link-color-hover: {{$buttonColorHover}};
 {{- end }}
+
+}
 
 #media-controls > .playing-show,
 #media-controls.PLAYING > .playing-hide {

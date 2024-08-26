@@ -12,9 +12,7 @@
 
 <div class="page">
 
-	<style>
-		{{template "stylesheet" .}}
-	</style>
+	<link rel="stylesheet" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
 
 	<!-- First Row: Album Name and Artwork -->
 	<div class="md:flex-row margin-bottom">

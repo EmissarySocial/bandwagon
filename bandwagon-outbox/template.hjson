@@ -23,6 +23,7 @@
 					description-albums: {type:"string"}
 					description-events: {type:"string"}
 					description-news: {type:"string"}
+					background-body: {type:"string", format:"uri"}
 					color-body: {type:"string", format:"color"},
 					color-menu: {type:"string", format:"color"},
 					color-page: {type:"string", format:"color"}, 
@@ -128,14 +129,21 @@
 								}
 								{
 									type: layout-vertical
-									label: Colors & Images
+									label: Images
+									children: [
+										{type:"upload", path:"data.background-body", label:"Background Image", description:"Displays instead of the window's background color", options:{accept:"image/*", delete:"/@me/delete-background"}}
+										{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page.", options:{accept:"image/*", delete:"/@me/delete-image"}}
+										{type:"upload", path:"iconUrl", label:"Avatar / Icon", description:"Displays next to your name as an icon.", options:{accept:"image/*", delete:"/@me/delete-icon"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Colors
 									children: [
 										{type:"colorpicker", path:"data.color-body", label:"Window Background"}
 										{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
 										{type:"colorpicker", path:"data.color-page", label:"Page Background"}
 										{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
-										{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*", delete:"/@me/delete-icon"}}
-										{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*", delete:"/@me/delete-image"}}
 									]
 								}
 								{
@@ -143,7 +151,7 @@
 									label: Albums
 									children: [
 										{type:"toggle", path:"data.show-albums", options:{text:"Display 'Albums' in Navigation Bar"}}
-										{type:"text", path:"data.label-albums", label:"Label", options:{placeholder:"Albums"}}
+										{type:"text", path:"data.label-albums", label:"Navigation Bar Text", options:{placeholder:"Albums"}}
 										{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
@@ -152,7 +160,7 @@
 									label: Events
 									children: [
 										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Navigation Bar"}}
-										{type:"text", path:"data.label-events", label:"Label", options:{placeholder:"Shows"}}
+										{type:"text", path:"data.label-events", label:"Navigation Bar Text", options:{placeholder:"Shows"}}
 										{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
@@ -161,7 +169,7 @@
 									label: News
 									children: [
 										{type:"toggle", path:"data.show-news", options:{text:"Display 'News' in Navigation Bar"}}
-										{type:"text", path:"data.label-news", label:"Label", options:{placeholder:"News"}}
+										{type:"text", path:"data.label-news", label:"Navigation Bar Text", options:{placeholder:"News"}}
 										{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
@@ -170,8 +178,8 @@
 									label: Shop
 									children: [
 										{type:"label", label:"The 'Shop' link is displayed automatically when you enter the shop URL below"}
+										{type:"text", path:"data.label-shop", label:"Navigation Bar Text", options:{placeholder:"Shop"}}
 										{type:"text", path:"data.shop-url", label:"Shop URL"}
-										{type:"text", path:"data.label-shop", label:"Shop Label", options:{placeholder:"Shop"}}
 									]
 								}
 							]
@@ -179,6 +187,7 @@
 					}
 					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
+					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
 					{do:"save"}
 					{do:"refresh-page"}
 				]}
@@ -290,6 +299,15 @@
 			roles: ["self", "owner"]
 			steps: [
 				{do:"delete-attachments", field:"imageId"}
+				{do:"save"}
+			]
+		}
+
+		delete-background: {
+			roles: ["self", "owner"]
+			steps: [
+				{do:"set-data", values:{"data.background-body":""}}
+				{do:"delete-attachments", category:"body-background"}
 				{do:"save"}
 			]
 		}
