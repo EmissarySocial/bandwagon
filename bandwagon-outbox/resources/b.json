@@ -1,0 +1,26 @@
+{
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/v1",
+      {
+        "discoverable": "toot:discoverable",
+        "indexable": "toot:indexable",
+        "toot": "https://joinmastodon.org/ns#"
+      }
+    ],
+    "discoverable": false,
+    "followers": "https://bandwagon.fm/@service/followers",
+    "following": "https://bandwagon.fm/@service/following",
+    "id": "https://bandwagon.fm/@service",
+    "inbox": "https://bandwagon.fm/@service/inbox",
+    "indexable": false,
+    "liked": "https://bandwagon.fm/@service/liked",
+    "name": "bandwagon.fm",
+    "outbox": "https://bandwagon.fm/@service/outbox",
+    "publicKey": {
+      "id": "https://bandwagon.fm/@service#main-key",
+      "owner": "https://bandwagon.fm/@service",
+      "publicKeyPem": "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAw/81HiWn+sO15B/1HE0j/B2X3n8Y8CyE6SX1EG5gw4eEa8LPygGi\nJ8AsOsJ2WIsjLwbGIJAjYV0YucMkF9BDRkztOVL37EQQdBtm7fo6u+1Y4V4Mox8h\nbSVxQW8VruhCPhym3R8E95w0lFkfiGnorENcXYNMlnmWWtKCsrC5oi9wLGFv9vtI\nKooyQLma3U+Ne2/u1ABIS0jNK1sQR3yYfZRnzFsDu22mbHFi3L/j51uYZjcQ7XgV\n6oJn0oEwvqzn1OuDz8u9bwC5rgbnNquE6bGV7hpxDactPrxFbVctXaJt0O8w4/bZ\nca25nK3x0vAVfU8DqSmXRZL5mXyYZJ2JkQIDAQAB\n-----END RSA PUBLIC KEY-----\n"
+    },
+    "type": "Service"
+  }

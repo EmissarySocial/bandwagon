@@ -1,0 +1,46 @@
+{
+    "@context": [
+      "https:\/\/w3id.org\/security\/v1",
+      "https:\/\/www.w3.org\/ns\/activitystreams",
+      {
+        "toot": "http:\/\/joinmastodon.org\/ns#",
+        "manuallyApprovesFollowers": "as:manuallyApprovesFollowers",
+        "alsoKnownAs": {
+          "@id": "as:alsoKnownAs",
+          "@type": "@id"
+        },
+        "movedTo": {
+          "@id": "as:movedTo",
+          "@type": "@id"
+        },
+        "indexable": "toot:indexable",
+        "suspended": "toot:suspended"
+      }
+    ],
+    "id": "https:\/\/pixelfed.social\/users\/benpate",
+    "type": "Person",
+    "following": "https:\/\/pixelfed.social\/users\/benpate\/following",
+    "followers": "https:\/\/pixelfed.social\/users\/benpate\/followers",
+    "inbox": "https:\/\/pixelfed.social\/users\/benpate\/inbox",
+    "outbox": "https:\/\/pixelfed.social\/users\/benpate\/outbox",
+    "preferredUsername": "benpate",
+    "name": "Ben Pate",
+    "summary": null,
+    "url": "https:\/\/pixelfed.social\/benpate",
+    "manuallyApprovesFollowers": false,
+    "indexable": false,
+    "published": "2023-04-27T00:00:00Z",
+    "publicKey": {
+      "id": "https:\/\/pixelfed.social\/users\/benpate#main-key",
+      "owner": "https:\/\/pixelfed.social\/users\/benpate",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsuI80UzaF1gQinBAZnz7\nCtqH4Rr6Booyii2ik+6Dw6nyuu\/\/1VJVgWkck9xzGP1e0h2pqHNlqvsPxwjxw22o\nJ31+hdU9mSOrK3C0k6nBT+RPEgfyj1UCXGk1lzfpKmgriftMGQ2kOQokRLqyKfXJ\nP7tizc3YUAGHw7pBWn\/yV6SqMDyztvTF8Bzqx1zG4dvRLDpRWdVOZQkpZ+mrczt7\nTaYiZWkxSjZw0fsnoDXiDHX7cljq67Yrzu0WmeAR7fYAJgCxlC++557w95xY58Z9\nkIbcWXx0AExo\/ed1GFNqFwg9Rdx58PzmA8dT9UpBOo9z6lu4KlbuWFYHz7b8HHGs\nrwIDAQAB\n-----END PUBLIC KEY-----\n"
+    },
+    "icon": {
+      "type": "Image",
+      "mediaType": "image\/jpeg",
+      "url": "https:\/\/pxscdn.com\/cache\/avatars\/557052427230233844\/avatar_6s92.png"
+    },
+    "endpoints": {
+      "sharedInbox": "https:\/\/pixelfed.social\/f\/inbox"
+    }
+  }

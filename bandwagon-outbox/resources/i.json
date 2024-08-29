@@ -1,0 +1,34 @@
+{
+    "@context": [
+      "https:\/\/www.w3.org\/ns\/activitystreams",
+      "https:\/\/w3id.org\/security\/v1",
+      {
+        "discoverable": "toot:discoverable",
+        "indexable": "toot:indexable",
+        "toot": "https:\/\/joinmastodon.org\/ns#"
+      }
+    ],
+    "discoverable": true,
+    "followers": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7\/pub\/followers",
+    "following": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7\/pub\/following",
+    "icon": {
+      "mediaType": "image\/webp",
+      "type": "Image",
+      "url": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7\/attachments\/66b4ddb4671158e3deeb0179"
+    },
+    "id": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7",
+    "inbox": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7\/pub\/inbox",
+    "indexable": true,
+    "liked": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7\/pub\/liked",
+    "name": "Hurphendale",
+    "outbox": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7\/pub\/outbox",
+    "preferredUsername": "hurphendale",
+    "publicKey": {
+      "id": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7#main-key",
+      "owner": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7",
+      "publicKeyPem": "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAsfyZAEzPGQKJCERgZJf8mBcYLACLiCKdLZ8Q4A2ALEUZnNjp70He\nXG294K4Bva\/GVBg5uoyOBbicye9TlLKzF65Db7nX6U0X9MzYnw0hNw\/4A\/WIUnJ9\n8r+7eeLIf78I9aCOx5SZDf1tWM\/CQoIlZK00C+GqaR4lrBuRxpgGYl7rsx8XC+Rb\nFYEUWczF1XmGPA9pJULcrWeLuFarz7qVNnnc9aRKMkBQd1IG2IVhMqCPkB8rXCNc\nV2EKWXfl0H3PUHcTxZ\/Q8Yap1JpYl+VZCJpNp9Lnh0aVsq1VzW45DkNI1ejvcc66\njsH9xWD5OMyFuGdeiwEkxGda39zlkexDWwIDAQAB\n-----END RSA PUBLIC KEY-----\n",
+      "type": "Key"
+    },
+    "type": "Person",
+    "url": "https:\/\/bandwagon.fm\/@66b2ab6afa7abb0c02b940a7"
+  }
