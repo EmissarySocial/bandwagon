@@ -123,7 +123,6 @@
 										{type:"textarea", path:"statusMessage", label:"Bio/Comment", description:"A brief statement about you"}
 										{type:"text", path:"location", label:"Location"}
 										{type:"toggle", path:"isPublic", options:{text:"Publish Profile", false-text:"Publish Profile (will not be visible to others)"}}
-										{type:"toggle", path:"isDiscoverable", options:{text:"Show Profile in Search Results"}}
 										{type:"toggle", path:"isIndexable", options:{text:"Allow Indexing by Search Engines"}}
 									]
 								}
@@ -275,7 +274,6 @@
 						type:layout-vertical
 						children: [
 							{type:"toggle", path:"isPublic", options:{text:"Publish Profile"}}
-							{type:"toggle", path:"isDiscoverable", options:{text:"Show Profile in Search Results"}}
 							{type:"toggle", path:"isIndexable", options:{text:"Allow Indexing by Search Engines"}}
 						]
 					}
