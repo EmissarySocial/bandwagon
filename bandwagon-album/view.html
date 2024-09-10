@@ -233,12 +233,12 @@
 				<br>
 			{{- end -}}
 
-			{{- $uploads := .Attachments -}}
+			{{- $uploads := .AttachmentsByCategory "other" -}}
 			{{- if or $uploads.NotEmpty (.UserCan "upload") -}}
 				<div class="flex-row margin-bottom-sm">
 					<h3 class="flex-grow margin-none">Downloads</h3>
 					{{- if $canEdit -}}
-						<button hx-get="/{{$streamID}}/upload" class="text-xs" aria-label="Upload a File" title="Upload a File">{{icon "upload"}}</button>
+						<button hx-get="/{{$streamID}}/upload" class="text-xs" aria-label="Upload a File" title="Upload a File">{{icon "add"}}</button>
 					{{- end -}}
 				</div>
 
