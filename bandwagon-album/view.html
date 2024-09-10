@@ -1,3 +1,4 @@
+{{- $streamID := .StreamID -}}
 {{- $tags := .Tags -}}
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
@@ -10,7 +11,7 @@
 	{{- end -}}
 {{- end -}}
 
-<div class="page">
+<div class="page" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false">
 
 	<link rel="stylesheet" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
 
@@ -178,7 +179,7 @@
 
 			{{- if $links.NotEmpty -}}
 
-				<h3>Listen on Streaming Services</h3>
+				<h3>Stream Online</h3>
 				{{- range $key, $value := $links -}}
 					
 					{{- if ne "" $value -}}
@@ -232,6 +233,31 @@
 				<br>
 			{{- end -}}
 
+			{{- $uploads := .Attachments -}}
+			{{- if or $uploads.NotEmpty (.UserCan "upload") -}}
+				<div class="flex-row margin-bottom-sm">
+					<h3 class="flex-grow margin-none">Downloads</h3>
+					{{- if $canEdit -}}
+						<button hx-get="/{{$streamID}}/upload" class="text-xs" aria-label="Upload a File" title="Upload a File">{{icon "upload"}}</button>
+					{{- end -}}
+				</div>
+				<div class="table">
+					{{- range $index, $upload := $uploads -}}
+						<div class="flex-row padding-vertical-sm">
+							<div class="flex-grow">
+								<a href="/{{$streamID}}/attachments/{{.AttachmentID.Hex}}" target="_blank" class="ellipsis">{{.Label}}</a><br>
+								<span class="text-sm text-gray">{{.Description}}</span>
+							</div>
+							{{- if $canEdit -}}
+								<div>
+									<button hx-get="/{{$streamID}}/edit-upload?attachmentId={{.AttachmentID.Hex}}" title="Edit Attachment" aria-label="Edit Attachment" class="text-xs margin-left-sm">{{icon "more-horizontal"}}</button>
+								</div>
+							{{- end -}}
+						</div>
+					{{- end -}}
+				</div>
+			{{- end -}}
+
 		</div>
 
 	</div>
@@ -243,8 +269,7 @@
 		</audio>
 
 		<script src="/.templates/bandwagon-album/javascript" preload></script>
-		<script type="application/javascript">
-			var playlist = [
+		<script id="playlist" type="application/javascript" data-json='[
 			{{- $first := true -}}
 			{{- range $index, $song := $songs -}}
 				{{- if ne nil $song.Data.attachmentId -}}
@@ -253,7 +278,8 @@
 					{"index":{{$index}}, "url":"/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}", "title":"{{$song.Label}}"}
 				{{ end -}}
 			{{- end -}}
-			]
+			]'>
+			var playlist = JSON.parse(document.getElementById('playlist').dataset.json);
 		</script>
 
 		{{- if $canEdit -}}

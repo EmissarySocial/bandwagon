@@ -1,0 +1,30 @@
+<h1>{{icon "upload"}} Attach a File</h1>
+
+<p>Attached files are public, and downloadable by anyone who can see this Album.</p>
+
+<form hx-post="/{{.StreamID}}/upload" hx-encoding="multipart/form-data" hx-push-url="false">
+
+    <div class="layout layout-vertical">
+        <div class="layout-vertical-elements">
+            <div class="layout-element layout-vertical-element">
+                <label>Label</label>
+                <input type="text" name="label" tabindex="0">
+            </div>
+            <div class="layout-element layout-vertical-element">
+                <label>Description</label>
+                <textarea name="description" tabindex="0"></textarea>
+            </div>
+            <div class="layout-element layout-vertical-element">
+                <label>File</label>
+                <input type="file" name="file" tabindex="0">
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" id="inline-save-button" class="primary" tabIndex="0" data-script="install SaveButton">Save Changes</button>
+        <button type="button" data-script="on click trigger closeModal" tabIndex="0">Cancel</button>
+        <span id="htmx-response-message"></span>
+    </div>
+
+</form>

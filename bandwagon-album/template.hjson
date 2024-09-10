@@ -97,10 +97,6 @@
 				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
-				# {do: "with-parent", steps: [
-				#	{do: "set-data", values:{"data.show-albums": "true"}}
-				#	{do: "save"}
-				#]}
 				{do: "publish"}
 				{do: "forward-to", url: "/{{.StreamID}}/view"}
 			]
@@ -225,5 +221,48 @@
 			]
 		}
 
+		upload: {
+			steps: [
+				{do: "as-modal", steps:[
+					{do:"view-html"}
+					{do:"upload-attachments", category:"other", maximum:8, fieldname:"file", label-fieldname:"label", description-fieldname:"description"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
+		edit-upload: {
+			steps: [
+				{do: "as-modal", steps:[
+					{do:"with-attachment", steps:[
+						{
+							do:"edit", 
+							options:[
+								"endpoint:/{{.ObjectID}}/edit-upload?attachmentId={{.AttachmentID}}", 
+								"delete:/{{.ObjectID}}/delete-upload?attachmentId={{.AttachmentID}}"
+							]
+							form:{
+								type:"layout-vertical"
+								label:"Edit Attachment",
+								children:[
+									{type:"text", path:"label", label:"Label"}
+									{type:"textarea", path:"description", label:"Description"}
+								]
+							}
+						}
+						{do:"save"}
+						{do:"refresh-page"}
+					]}
+				]}
+			]
+		}
+
+		delete-upload: {
+			steps: [
+				{do:"as-confirmation", title:"Delete this Attachment?", message:"Are you sure you want to delete this attachment? There is NO UNDO.", submit:"DELETE"}
+				{do:"delete-attachments"}
+				{do:"refresh-page"}
+			]
+		}
 	}
 }
