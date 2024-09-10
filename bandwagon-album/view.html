@@ -241,21 +241,24 @@
 						<button hx-get="/{{$streamID}}/upload" class="text-xs" aria-label="Upload a File" title="Upload a File">{{icon "upload"}}</button>
 					{{- end -}}
 				</div>
-				<div class="table">
-					{{- range $index, $upload := $uploads -}}
-						<div class="flex-row padding-vertical-sm">
-							<div class="flex-grow">
-								<a href="/{{$streamID}}/attachments/{{.AttachmentID.Hex}}" target="_blank" class="ellipsis">{{.Label}}</a><br>
-								<span class="text-sm text-gray">{{.Description}}</span>
-							</div>
-							{{- if $canEdit -}}
-								<div>
-									<button hx-get="/{{$streamID}}/edit-upload?attachmentId={{.AttachmentID.Hex}}" title="Edit Attachment" aria-label="Edit Attachment" class="text-xs margin-left-sm">{{icon "more-horizontal"}}</button>
+
+				{{- if $uploads.NotEmpty -}}
+					<div class="table">
+						{{- range $index, $upload := $uploads -}}
+							<div class="flex-row padding-vertical-sm">
+								<div class="flex-grow">
+									<a href="/{{$streamID}}/attachments/{{.AttachmentID.Hex}}" target="_blank" class="ellipsis">{{.Label}}</a><br>
+									<span class="text-sm text-gray">{{.Description}}</span>
 								</div>
-							{{- end -}}
-						</div>
-					{{- end -}}
-				</div>
+								{{- if $canEdit -}}
+									<div>
+										<button hx-get="/{{$streamID}}/edit-upload?attachmentId={{.AttachmentID.Hex}}" title="Edit Attachment" aria-label="Edit Attachment" class="text-xs margin-left-sm">{{icon "more-horizontal"}}</button>
+									</div>
+								{{- end -}}
+							</div>
+						{{- end -}}
+					</div>
+				{{- end -}}
 			{{- end -}}
 
 		</div>
