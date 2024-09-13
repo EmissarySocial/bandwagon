@@ -23,7 +23,8 @@
 		{{- if $isMyself -}}
 			<form hx-post="/@{{.UserID}}/sort-children" hx-trigger="end" hx-push-url="false">
 		{{- end -}}
-
+	
+		<div hx-push-url="true">
 			{{- if $albums.NotEmpty -}}
 
 				<div class="sortable margin-vertical-lg columns-3">
@@ -37,6 +38,12 @@
 										<div>{{.Data.year}}</div>
 									</div>
 								</a>
+
+								{{- if not .IsPublished -}}
+									<div class="pos-absolute-four-corners bg-stripes flex-center">
+										<span class="text-xl bold">UNPUBLISHED</span>
+									</div>
+								{{- end -}}
 
 								{{- if $isMyself -}}
 									<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>
@@ -64,7 +71,8 @@
 				</div>
 
 			{{- end -}}
-
+		</div>
+		
 		{{- if $isMyself -}}
 		</form>
 

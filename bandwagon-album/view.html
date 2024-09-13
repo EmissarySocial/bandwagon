@@ -11,7 +11,7 @@
 	{{- end -}}
 {{- end -}}
 
-<div class="page padding-none" hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false">
+<div class="page padding-none">
 
 	<link rel="stylesheet" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
 
@@ -27,12 +27,18 @@
 			
 		<!-- First Row: Album Name and Artwork -->
 		<div class="md:flex-row margin-bottom">
-			<div class="md:width-256 flex-shrink-0">
+			<div class="md:width-256 flex-shrink-0 pos-relative">
 				{{- if ne "" .IconURL -}}
 					<img src="{{.IconURL}}" class="width-100% aspect-square" aria-hidden="true" style="object-fit:cover;">
 				{{- else if $canEdit -}}
 					<div class="aspect-square text-center flex-column flex-justify-center flex-align-center" style="border:solid 1px var(--black)" script="install blockselect()">
 						<a hx-get="/{{.StreamID}}/edit" class="text-plain">Click here to add album art</a>
+					</div>
+				{{- end -}}
+
+				{{- if not .IsPublished -}}
+					<div class="pos-absolute-four-corners bg-stripes flex-center">
+						<span class="text-xl bold">UNPUBLISHED</span>
 					</div>
 				{{- end -}}
 			</div>
@@ -340,4 +346,6 @@
 		<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window"></div>
 
 	</div>
+
+	<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
 </div>

@@ -31,6 +31,16 @@
 			}
 		}
 	}
+	states: {
+		unpublished: {
+			label:"Default State"
+			description:"Visible only to Authors and Owners"
+		}
+		published: {
+			label:"Published"
+			description:"Visible to all people with permissions"
+		}
+	}
 	bundles: {
 		javascript: {contentType: "text/javascript"}
 	}
@@ -100,7 +110,13 @@
 				{do: "forward-to", url: "/{{.StreamID}}/view"}
 			]
 		}
-		view: {do: "view-html"}
+		view: {
+			roles: ["editor", "owner"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
+			do: "view-html"
+		}
 		edit: {
 			roles: ["author"]
 			steps: [

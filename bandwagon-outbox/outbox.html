@@ -112,6 +112,12 @@
 									</div>
 								{{- end -}}
 
+								{{- if not .IsPublished -}}
+									<div class="pos-absolute-four-corners bg-stripes flex-center">
+										<span class="text-xl bold">UNPUBLISHED</span>
+									</div>
+								{{- end -}}
+
 								{{- if $isMyself -}}
 									<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
 									<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
@@ -173,7 +179,7 @@
 
 		</div>
 
-		<div hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window"></div>
+		<div hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
 
 	</div>
 
