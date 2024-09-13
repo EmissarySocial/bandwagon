@@ -283,6 +283,7 @@
 			roles: ["author"]
 			steps: [
 				{do: "as-confirmation", title:"Publish this Album?", message:"Publishing this album will make it visible to everyone online.", submit:"Publish to Website"}
+				{do: "set-state", state:"published"}
 				{do: "publish", outbox:true}
 				{do: "refresh-page"}
 			]
@@ -292,6 +293,7 @@
 			roles: ["author"]
 			steps: [
 				{do: "as-confirmation", title:"Un-Publish this Album?", message:"Un-Publishing this album will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Unpublish from Website "}
+				{do: "set-state", state:"unpublished"}
 				{do: "unpublish", outbox:true}
 				{do: "refresh-page"}
 			]
