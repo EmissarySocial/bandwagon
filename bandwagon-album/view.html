@@ -192,7 +192,6 @@
 					</div>
 				{{- end -}}
 
-
 				{{- if $links.NotEmpty -}}
 
 					<h3>Stream Online</h3>
@@ -240,9 +239,9 @@
 
 							{{- end -}}
 
-							<a href="{{$value}}" target="_blank">
+							<a href="{{$value}}" class="block ellipsis-block" target="_blank" style="height:1.5em;">
 								<i class="bi bi-{{$icon}}"></i> {{ $label }}
-							</a><br>
+							</a>
 						{{- end -}}
 
 					{{- end -}}

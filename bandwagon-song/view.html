@@ -88,7 +88,7 @@
 
 			{{- if $links.NotEmpty -}}
 
-				<h3>Listen on Streaming Services</h3>
+				<h3>Stream Online</h3>
 				{{- range $key, $value := $links -}}
 					
 					{{- if ne "" $value -}}
@@ -143,7 +143,7 @@
 			{{- end -}}
 
 			{{- if ne nil $streamURL -}}
-				<a href="{{$streamURL}}" target="_blank">
+				<a href="{{$streamURL}}" target="_blank" class="block ellipsis-block" style="height:1.5em;">
 					<i class="bi bi-camera-video-fill"></i> Music Video
 				</a><br>
 			{{- end -}}
