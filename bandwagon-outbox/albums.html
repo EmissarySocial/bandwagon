@@ -28,21 +28,23 @@
 
 				<div class="sortable margin-vertical-lg columns-3">
 					{{- range $albums -}}
-						<div class="card hover-trigger" script="install blockselect()">
-							<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover">
-							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block turboclick">
-								<div class="block padding">
-									<div class="bold">{{.Label}}</div>
-									<div>{{.Data.year}}</div>
-								</div>
-							</a>
+						{{- if or .IsPublished $isMyself -}}
+							<div class="card hover-trigger" script="install blockselect()">
+								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover">
+								<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block turboclick">
+									<div class="block padding">
+										<div class="bold">{{.Label}}</div>
+										<div>{{.Data.year}}</div>
+									</div>
+								</a>
 
-							{{- if $isMyself -}}
-								<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>
-								<button hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</button>
-								<input type="hidden" name="keys" value="{{.StreamID}}">
-							{{- end -}}
-						</div>
+								{{- if $isMyself -}}
+									<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>
+									<button hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</button>
+									<input type="hidden" name="keys" value="{{.StreamID}}">
+								{{- end -}}
+							</div>
+						{{- end -}}
 
 					{{- end -}}
 				</div>

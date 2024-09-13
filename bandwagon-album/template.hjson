@@ -97,7 +97,6 @@
 				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
-				{do: "publish"}
 				{do: "forward-to", url: "/{{.StreamID}}/view"}
 			]
 		}
@@ -163,7 +162,6 @@
 				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
 				{do: "save"}
-				{do: "publish"}
 				{do: "refresh-page"}
 			]
 		}
@@ -262,6 +260,24 @@
 				{do:"as-confirmation", title:"Delete this Attachment?", message:"Are you sure you want to delete this attachment? There is NO UNDO.", submit:"DELETE"}
 				{do:"delete-attachments"}
 				{do:"refresh-page"}
+			]
+		}
+
+		publish: {
+			roles: ["author"]
+			steps: [
+				{do: "as-confirmation", title:"Publish this Album?", message:"Publishing this album will make it visible to everyone online.", submit:"Publish to Website"}
+				{do: "publish", outbox:true}
+				{do: "refresh-page"}
+			]
+		}
+
+		unpublish: {
+			roles: ["author"]
+			steps: [
+				{do: "as-confirmation", title:"Un-Publish this Album?", message:"Un-Publishing this album will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Unpublish from Website "}
+				{do: "unpublish", outbox:true}
+				{do: "refresh-page"}
 			]
 		}
 	}

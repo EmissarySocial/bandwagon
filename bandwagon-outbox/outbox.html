@@ -26,6 +26,14 @@
 
 		{{- template "header" . -}}
 
+		{{- if not .IsPublic -}}
+			<div class="clickable alert-red" hx-get="/@{{.UserID}}/edit" role="button">
+				{{icon "alert-fill"}} 
+				Your profile is NOT public and won't be seen by others.
+				<span class="text-underline">Click here to make it public</span>
+			</div>
+		{{- end -}}
+
 		<div class="padding pos-relative">
 
 			{{- if $isMyself -}}
@@ -80,35 +88,37 @@
 			{{- if $featured.NotEmpty -}}
 				<div class="columns-4 margin-top sortable">
 					{{- range $featured -}}
-						<div class="card flex-column hover-trigger" script="install blockselect()">
-							{{- if eq "bandwagon-album" .TemplateID -}}
-								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true">
-								<div class="padding text-plain">
-									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
-								</div>
-							{{- else if eq "bandwagon-event" .TemplateID -}}
-								<div class="padding bold">{{.Data.date}}</div>
-								<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
-								<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
-								{{- if ne nil .Data.website -}}
+						{{- if or .IsPublished $isMyself -}}
+							<div class="card flex-column hover-trigger" script="install blockselect()">
+								{{- if eq "bandwagon-album" .TemplateID -}}
+									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true">
+									<div class="padding text-plain">
+										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
+									</div>
+								{{- else if eq "bandwagon-event" .TemplateID -}}
+									<div class="padding bold">{{.Data.date}}</div>
+									<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
+									<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
+									{{- if ne nil .Data.website -}}
+										<div class="padding">
+											<a href="{{.Data.website}}" target="_blank">{{first .Data.websiteLabel "Get Tickets"}}</a>
+										</div>
+									{{- end -}}
+								{{- else if eq "bandwagon-news" .TemplateID -}}
+									<h2 class="padding align-center">{{.Label}}</h2>
+									<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
 									<div class="padding">
-										<a href="{{.Data.website}}" target="_blank">{{first .Data.websiteLabel "Get Tickets"}}</a>
+										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
 									</div>
 								{{- end -}}
-							{{- else if eq "bandwagon-news" .TemplateID -}}
-								<h2 class="padding align-center">{{.Label}}</h2>
-								<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
-								<div class="padding">
-									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
-								</div>
-							{{- end -}}
 
-							{{- if $isMyself -}}
-								<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
-								<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
-								<input type="hidden" name="keys" value="{{.StreamID}}">
+								{{- if $isMyself -}}
+									<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
+									<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
+									<input type="hidden" name="keys" value="{{.StreamID}}">
+								{{- end -}}
+							</div>
 							{{- end -}}
-						</div>
 					{{- end -}}
 				</div>
 
