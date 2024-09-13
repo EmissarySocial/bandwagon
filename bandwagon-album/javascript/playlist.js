@@ -24,6 +24,7 @@ function Play() {
 	audio.load()
 	audio.volume = 0.7
 	audio.play()
+	audio.onended = PlayNext
 
 	htmx.addClass(controls, "PLAYING")
 	htmx.takeClass(htmx.find("#track-" + playlistIndex), "PLAYING")
