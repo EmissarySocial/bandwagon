@@ -22,9 +22,8 @@ function Play() {
 	htmx.find("#source-aac").src = song.url + ".m4a"
 
 	audio.load()
-	audio.volume = 0.7
+	audio.volume = 0.8
 	audio.play()
-	audio.onended = PlayNext
 
 	htmx.addClass(controls, "PLAYING")
 	htmx.takeClass(htmx.find("#track-" + playlistIndex), "PLAYING")
