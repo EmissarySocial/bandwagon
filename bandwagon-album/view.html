@@ -249,7 +249,7 @@
 				{{- end -}}
 
 				{{- $uploads := .AttachmentsByCategory "other" -}}
-				{{- if or $uploads.NotEmpty (.UserCan "upload") -}}
+				{{- if or $uploads.NotEmpty $canEdit -}}
 					<div class="flex-row margin-bottom-sm">
 						<h3 class="flex-grow margin-none">Downloads</h3>
 						{{- if $canEdit -}}
