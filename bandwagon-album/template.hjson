@@ -298,5 +298,11 @@
 				{do: "refresh-page"}
 			]
 		}
+
+		zip9348103752: {
+			steps: [
+				{do: "export", depth:1, attachments:true}
+			]
+		}
 	}
 }
