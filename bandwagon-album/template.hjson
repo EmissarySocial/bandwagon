@@ -1,7 +1,6 @@
 {
 	templateId: bandwagon-album
 	templateRole: album
-	socialRole: Article
 	model: Stream
 	containedBy: ["folder", "home", "outbox"]
 	extends: ["base-intent"]
@@ -17,8 +16,8 @@
 			data: {
 				type: object
 				properties: {
+					musicBrainzId: {type: "string"}
 					imageFilename: {type:"string", maxlength:255}
-					featured: {type: "boolean"}
 					tags: {type: "string"}
 					year: {type: "string", minvalue:"0000", maxvalue:"9999", required: false}
 					links: {type: "object", wildcard: {type: "string", format:"uri"}}
@@ -31,6 +30,22 @@
 			}
 		}
 	}
+
+	socialRole: Article
+	socialRules: [
+		{target:"type", value:["Album","Article"]}
+		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
+		{target:"attributedTo.name", path:"attributedTo.name"},
+		{target:"links", forEach:"data.links", rules:[
+			{target:"label", path:"key"}
+			{target:"rel", value:"alternate"}
+			{target:"href", path:"value"}
+		]}
+		{if:"{{ne \"\" .data.musicBrainzId}}", then:[
+			{target:"musicBrainzId", path:"data.musicBrainzId"}
+		]}
+	]
+
 	states: {
 		unpublished: {
 			label:"Default State"
@@ -72,6 +87,7 @@
 									children: [
 										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
 										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
+										{type: "text", path:"data.musicBrainzId", label:"Music Brainz ID"}
 									]
 								}
 								{
@@ -144,6 +160,7 @@
 									children: [
 										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
 										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
+										{type: "text", path:"data.musicBrainzId", label:"Music Brainz ID"}
 									]
 								}
 								{

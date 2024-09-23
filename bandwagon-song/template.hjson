@@ -1,7 +1,6 @@
 {
 	templateId: bandwagon-song
 	templateRole: song
-	socialRole: Audio
 	label: Song
 	extends: ["base-intent"]
 	containedBy: ["album"]
@@ -32,6 +31,24 @@
 			}
 		}
 	}
+
+	socialRole: Audio
+	socialRules: [
+		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
+		{target:"attributedTo.name", path:"attributedTo.name"},
+		{target:"links", forEach:"data.links", rules:[
+			{target:"label", path:"key"}
+			{target:"rel", value:"alternate"}
+			{target:"href", path:"value"}
+		]}
+		{target:"track.type", value:"Track"}
+		{target:"track.id", path:"url"}
+		{target:"track.name", path:"label"}
+		{target:"track.position", path:"rank"}
+		{target:"summary", path:"data.lyrics"}
+		{target:"album", expression:"{{.ParentURL}}"}
+	]
+
 	actions: {
 		create: {
 			roles: ["admin", "author"]
