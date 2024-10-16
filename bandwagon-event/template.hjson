@@ -1,7 +1,6 @@
 {
 	templateId: bandwagon-event
 	templateRole: event
-	socialRole: Article
 	model: Stream
 	containedBy: ["outbox"]
 	extends: ["base-intent"]
@@ -23,6 +22,15 @@
 			}
 		}
 	}
+
+	socialRole: Event
+	socialRules: [
+		{target:"type", value:["Event","Article"]}
+		{target:"name", expression:"{{.Data.city}} {{.Data.date}}"},
+		{target:"summary", expression:"{{.Data.venue}}"},
+		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
+		{target:"attributedTo.name", path:"attributedTo.name"},
+	]
 
 	actions: {
 		create: {
