@@ -62,14 +62,14 @@
 				<div class="width-48"></div>
 				<div>
 					<div class="max-width-640 text-gray">{{.StatusMessage}}</div>
-					{{- if .Links.NotEmpty -}}
-						<div class="max-width-640">
-							{{- range  $index, $link := .Links -}}
-								{{ if gt $index 0 }} <span aira-hidden="true">&middot;</span> {{ end }}
-								<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
-							{{- end -}}
-						</div>
-					{{- end -}}
+					<div class="max-width-640">
+						<span class="bold" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
+
+						{{- range  $index, $link := .Links }}
+							<span aira-hidden="true">&middot;</span>
+							<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
+						{{- end -}}
+					</div>
 		
 					<div class="margin-top">
 						{{- if not .IsMyself -}}
