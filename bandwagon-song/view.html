@@ -165,10 +165,6 @@
 			{{- if ne nil (.Data "isrc") -}}
 				ISRC: {{.Data "isrc"}}<br>
 			{{- end -}}
-
-			{{- if ne nil (.Data "musicBrainzId") -}}
-				<a href="https://musicbrainz.org/recording/{{.Data `musicBrainzId`}}" target="_blank">MusicBrainz {{icon "link-outbound"}}</a><br>
-			{{- end -}}
 		
 		</div>
 

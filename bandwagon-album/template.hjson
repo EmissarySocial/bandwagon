@@ -8,23 +8,24 @@
 	label: Album (Default)
 	description: Contains one or more songs
 	schema: {
-		type: object
+		type:object
 		properties: {
-			label: {type: "string", required: true}
-			summary: {type: "string", format:"html"}
-			iconUrl: {type: "string", format:"uri"}
+			label: {type:"string", required: true}
+			summary: {type:"string", format:"html"}
+			iconUrl: {type:"string", format:"uri"}
+			isSyndicated: {type:"boolean"}
 			data: {
-				type: object
+				type:object
 				properties: {
-					musicBrainzId: {type: "string"}
+					license: {type:"string"}
 					imageFilename: {type:"string", maxlength:255}
-					tags: {type: "string"}
-					year: {type: "string", minvalue:"0000", maxvalue:"9999", required: false}
-					links: {type: "object", wildcard: {type: "string", format:"uri"}}
-					color: {type: "object", properties: {
-						body: {type: "string", format:"color"},
-						page: {type: "string", format:"color"}, 
-						button: {type: "string", format:"color"}
+					tags: {type:"string"}
+					year: {type:"string", minvalue:"0000", maxvalue:"9999", required: false}
+					links: {type:"object", wildcard: {type:"string", format:"uri"}}
+					color: {type:"object", properties: {
+						body: {type:"string", format:"color"},
+						page: {type:"string", format:"color"}, 
+						button: {type:"string", format:"color"}
 					}}
 				}
 			}
@@ -34,15 +35,13 @@
 	socialRole: Article
 	socialRules: [
 		{target:"type", value:["Album","Article"]}
+		{target:"license", path:"data.license"}
 		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
 		{target:"attributedTo.name", path:"attributedTo.name"},
 		{target:"links", forEach:"data.links", rules:[
 			{target:"label", path:"key"}
 			{target:"rel", value:"alternate"}
 			{target:"href", path:"value"}
-		]}
-		{if:"{{ne \"\" .data.musicBrainzId}}", then:[
-			{target:"musicBrainzId", path:"data.musicBrainzId"}
 		]}
 	]
 
@@ -60,6 +59,24 @@
 		javascript: {contentType: "text/javascript"}
 	}
 
+	datasets: {
+		"licenses": [
+			{value:"COPYRIGHT", label:"Copyright. All Rights Reserved", icon:"copyright"},
+			{value:"CC-BY", label:"Creative Commons - Attribution", href:"https://creativecommons.org/licenses/by/4.0/", icon:"cc-by"}
+			{value:"CC-BY-NC", label:"Creative Commons - Attribution - Non Commercial", href:"https://creativecommons.org/licenses/by-nc/4.0/", icon:"cc-by-nc"}
+			{value:"CC-BY-NC-ND", label:"Creative Commons - Attribution - Non Commercial - No Derivatives", href:"https://creativecommons.org/licenses/by-nc-nd/4.0/", icon:"cc-by-nc-nd"}
+			{value:"CC-BY-NC-SA", label:"Creative Commons - Attribution - Non Commercial - Share Alike", href:"https://creativecommons.org/licenses/by-nc-sa/4.0/", icon:"cc-by-nc-sa"}
+			{value:"CC-BY-ND", label:"Creative Commons - Attribution - No Derivatives ", href:"https://creativecommons.org/licenses/by-nd/4.0/", icon:"cc-by-nd"}
+			{value:"CC-BY-SA", label:"Creative Commons - Attribution - Share Alike", href:"https://creativecommons.org/licenses/by-sa/4.0/", icon:"cc-by-sa"}
+			{value:"CC0", label:"Creative Commons Zero - No Rights Reserved", href:"https://creativecommons.org/public-domain/cc0/", icon:"cc0"},
+			{value:"PUBLIC-DOMAIN", label:"Public Domain", href:"https://creativecommons.org/publicdomain/mark/1.0/", icon:"public-domain"}
+		]
+		"distribution": [
+			{value:"false", label:"No. Do not distribute this album"}
+			{value:"true", label:"Yes. Distribute this album to select Internet Radio Stations"}
+		]
+	}
+
 	actions: {
 		create: {
 			roles:["author"]
@@ -72,26 +89,33 @@
 							type: layout-tabs
 							children: [
 								{
-									type: layout-vertical
+									type:layout-vertical
 									label: General
 									children: [
-										{type: "text", path:"label", label:"Album Name"}
-										{type: "text", path:"data.year", label:"Release Date"}
-										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800, types:["webp"]}}}
-										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+										{type:"text", path:"label", label:"Album Name"}
+										{type:"text", path:"data.year", label:"Release Date"}
+										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800, types:["webp"]}}}
+										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
 								{
-									type: layout-vertical
+									type:layout-vertical
+									label: Legal
+									children: [
+										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
+										{type:"select", path:"isSyndicated", label:"Distribute?", options:{provider:"bandwagon-album.distribution"}}
+									]
+								}
+								{
+									type:layout-vertical
 									label: Metadata
 									children: [
-										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
-										{type: "text", path:"data.musicBrainzId", label:"Music Brainz ID"}
+										{type:"textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
+										{type:"textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
 									]
 								}
 								{
-									type: layout-vertical
+									type:layout-vertical
 									label: Links
 									children: [
 										{type:"label", label:"When you enter streaming links, your visitors will be able to jump right to your album on whichever services you've selected."}
@@ -108,12 +132,12 @@
 									]
 								}
 								{
-									type: layout-vertical
+									type:layout-vertical
 									label: Colors
 									children: [
-										{type: "colorpicker", path:"data.color.body", label:"Window Background"}
-										{type: "colorpicker", path:"data.color.page", label:"Page Background"}
-										{type: "colorpicker", path:"data.color.button", label:"Links and Buttons"}
+										{type:"colorpicker", path:"data.color.body", label:"Window Background"}
+										{type:"colorpicker", path:"data.color.page", label:"Page Background"}
+										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
 									]
 								}
 							]
@@ -142,29 +166,36 @@
 						options: ["delete:/{{.StreamID}}/delete"]
 						form: {
 							label: Edit Album
-							type: layout-tabs
+							type:layout-tabs
 							children: [
 								{
-									type: layout-vertical
+									type:layout-vertical
 									label: General
 									children: [
-										{type: "text", path:"label", label:"Album Name"}
-										{type: "text", path:"data.year", label:"Release Date"}
-										{type: "upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
-										{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+										{type:"text", path:"label", label:"Album Name"}
+										{type:"text", path:"data.year", label:"Release Date"}
+										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
+										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
 								{
-									type: layout-vertical
+									type:layout-vertical
+									label: Legal
+									children: [
+										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
+										{type:"select", path:"isSyndicated", label:"Distribute?", options:{provider:"bandwagon-album.distribution"}}
+									]
+								}
+								{
+									type:layout-vertical
 									label: Metadata
 									children: [
-										{type: "textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type: "textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
-										{type: "text", path:"data.musicBrainzId", label:"Music Brainz ID"}
+										{type:"textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
+										{type:"textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
 									]
 								}
 								{
-									type: layout-vertical
+									type:layout-vertical
 									label: Links
 									children: [
 										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
@@ -180,12 +211,12 @@
 									]
 								}
 								{
-									type: layout-vertical
+									type:layout-vertical
 									label: Colors
 									children: [
-										{type: "colorpicker", path:"data.color.body", label:"Window Background"}
-										{type: "colorpicker", path:"data.color.page", label:"Page Background"}
-										{type: "colorpicker", path:"data.color.button", label:"Links and Buttons"}
+										{type:"colorpicker", path:"data.color.body", label:"Window Background"}
+										{type:"colorpicker", path:"data.color.page", label:"Page Background"}
+										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
 									]
 								}
 							]
@@ -224,7 +255,7 @@
 					style: inline
 					location: child
 					title: + Add a Song
-					type: bandwagon-song
+					type:bandwagon-song
 				}
 			]
 		}
@@ -299,10 +330,21 @@
 		publish: {
 			roles: ["author"]
 			steps: [
-				{do: "as-confirmation", title:"Publish this Album?", message:"Publishing this album will make it visible to everyone online.", submit:"Publish to Website"}
-				{do: "set-state", state:"published"}
-				{do: "publish", outbox:true}
-				{do: "refresh-page"}
+				{do:"as-modal", steps:[
+					{do:"edit", form: {
+						type:"layout-vertical"
+						label:"Publish this Album?"
+						children:[
+							{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
+							{type:"select", path:"isSyndicated", label:"Distribute?", options:{provider:"bandwagon-album.distribution"}}
+						]
+					}}
+					// {do:"as-confirmation", title:"Publish this Album?", message:"Publishing this album will make it visible to everyone online.", submit:"Publish to Website"}
+					{do:"set-state", state:"published"}
+					{do:"save"}
+					{do:"publish", outbox:true}
+					{do:"refresh-page"}
+				]}
 			]
 		}
 

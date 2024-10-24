@@ -16,7 +16,6 @@
 					composer: {type: "string"}
 					producer: {type: "string"}
 					isrc: {type: "string"}
-					musicBrainzId: {type: "string"}
 					lyrics: {type: "string"}
 					streamURL: {type: "string", format:"url"}
 					featured: {type: "boolean"}
@@ -79,7 +78,6 @@
 										{type: "text", path: "data.composer", label: "Composer"},
 										{type: "text", path: "data.producer", label: "Producer"},
 										{type: "text", path: "data.isrc", label: "ISRC"},
-										{type: "text", path: "data.musicBrainzId", label: "MusicBrainz ID"},
 									]
 								}
 								{
@@ -110,7 +108,7 @@
 						}
 					}
 				]}
-				{do:"upload-attachments", action:"replace", category:"Audio" fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
+				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save"}
 				{do:"publish"}
 				{do:"forward-to", url:"/{{.StreamID}}"}
@@ -153,7 +151,6 @@
 											{type: "text", label: "Composer", path: "data.composer"},
 											{type: "text", label: "Producer", path: "data.producer"},
 											{type: "text", label: "ISRC", path: "data.isrc"},
-											{type: "text", path: "data.musicBrainzId", label: "MusicBrainz ID"},
 										]
 									}
 									{
