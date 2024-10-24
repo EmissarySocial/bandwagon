@@ -261,7 +261,7 @@
 				{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
 				{do:"set-state", state:"WIZARD-STEP-3"}
 				{do:"save"}
-				{do:"set-header", name:"HX-Refresh", value:"true"}
+				{do:"set-header", name:"Hx-Refresh", value:"true"}
 			]
 		}
 
@@ -281,7 +281,7 @@
 				},
 				{do:"set-state", state:"LIVE"}
 				{do:"save"}
-				{do:"set-header", name:"HX-Refresh", value:"true"}
+				{do:"set-header", name:"Hx-Refresh", value:"true"}
 			]
 		}
 
