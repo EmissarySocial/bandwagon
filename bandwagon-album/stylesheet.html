@@ -5,10 +5,6 @@
 {{- $pageColor := first $albumColors.page ($artist.Data "color-page") -}}
 {{- $buttonColor := first $albumColors.button ($artist.Data "color-button") -}}
 
-{{- dump $bodyColor -}}
-{{- dump $pageColor -}}
-{{- dump $buttonColor -}}
-
 body {
 
 {{ if ne nil $bodyColor -}}
