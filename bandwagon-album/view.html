@@ -253,30 +253,32 @@
 
 				{{- $uploads := .AttachmentsByCategory "other" -}}
 				{{- if or $uploads.NotEmpty $canEdit -}}
-					<div class="flex-row margin-bottom-lg">
-						<h3 class="flex-grow margin-none">Downloads</h3>
-						{{- if $canEdit -}}
-							<button hx-get="/{{$streamID}}/upload" class="text-xs" aria-label="Upload a File" title="Upload a File">{{icon "add"}}</button>
-						{{- end -}}
-					</div>
-
-					{{- if $uploads.NotEmpty -}}
-						<div class="table">
-							{{- range $index, $upload := $uploads -}}
-								<div class="flex-row padding-vertical-sm">
-									<div class="flex-grow">
-										<a href="/{{$streamID}}/attachments/{{.AttachmentID.Hex}}" target="_blank" class="ellipsis">{{.Label}}</a><br>
-										<span class="text-sm text-gray">{{.Description}}</span>
-									</div>
-									{{- if $canEdit -}}
-										<div>
-											<button hx-get="/{{$streamID}}/edit-upload?attachmentId={{.AttachmentID.Hex}}" title="Edit Attachment" aria-label="Edit Attachment" class="text-xs margin-left-sm">{{icon "more-horizontal"}}</button>
-										</div>
-									{{- end -}}
-								</div>
+					<div class="margin-bottom-lg">
+						<div class="flex-row">
+							<h3 class="flex-grow margin-none">Downloads</h3>
+							{{- if $canEdit -}}
+								<button hx-get="/{{$streamID}}/upload" class="text-xs" aria-label="Upload a File" title="Upload a File">{{icon "add"}}</button>
 							{{- end -}}
 						</div>
-					{{- end -}}
+
+						{{- if $uploads.NotEmpty -}}
+							<div class="table">
+								{{- range $index, $upload := $uploads -}}
+									<div class="flex-row padding-vertical-sm">
+										<div class="flex-grow">
+											<a href="/{{$streamID}}/attachments/{{.AttachmentID.Hex}}" target="_blank" class="ellipsis">{{.Label}}</a><br>
+											<span class="text-sm text-gray">{{.Description}}</span>
+										</div>
+										{{- if $canEdit -}}
+											<div>
+												<button hx-get="/{{$streamID}}/edit-upload?attachmentId={{.AttachmentID.Hex}}" title="Edit Attachment" aria-label="Edit Attachment" class="text-xs margin-left-sm">{{icon "more-horizontal"}}</button>
+											</div>
+										{{- end -}}
+									</div>
+								{{- end -}}
+							</div>
+						{{- end -}}
+					</div>
 				{{- end -}}
 
 				<div class="margin-bottom-lg">

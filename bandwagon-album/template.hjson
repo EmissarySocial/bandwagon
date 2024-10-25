@@ -43,6 +43,7 @@
 			{target:"rel", value:"alternate"}
 			{target:"href", path:"value"}
 		]}
+		{target:"library", expression:"{{.URL}}/pub/children"}
 	]
 
 	states: {
@@ -73,7 +74,7 @@
 		]
 		"distribution": [
 			{value:"false", label:"No. Do not distribute this album"}
-			{value:"true", label:"Yes. Distribute this album to select Internet Radio Stations"}
+			{value:"true", label:"Yes. Distribute this album to streaming and distribution services"}
 		]
 	}
 
@@ -103,7 +104,7 @@
 									label: Legal
 									children: [
 										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-										{type:"select", path:"isSyndicated", label:"Distribute?", options:{provider:"bandwagon-album.distribution"}}
+										{type:"select", path:"isSyndicated", label:"Distribute?", description:"Notifies external services when this album is published", options:{provider:"bandwagon-album.distribution"}}
 									]
 								}
 								{
@@ -183,7 +184,7 @@
 									label: Legal
 									children: [
 										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-										{type:"select", path:"isSyndicated", label:"Distribute?", options:{provider:"bandwagon-album.distribution"}}
+										{type:"select", path:"isSyndicated", label:"Distribute?", description:"Notifies external services when this album is published", options:{provider:"bandwagon-album.distribution"}}
 									]
 								}
 								{
@@ -331,18 +332,20 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
-					{do:"edit", form: {
-						type:"layout-vertical"
-						label:"Publish this Album?"
-						children:[
-							{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-							{type:"select", path:"isSyndicated", label:"Distribute?", options:{provider:"bandwagon-album.distribution"}}
-						]
-					}}
-					// {do:"as-confirmation", title:"Publish this Album?", message:"Publishing this album will make it visible to everyone online.", submit:"Publish to Website"}
+					{
+						do: edit
+						form: {
+							type: layout-vertical
+							label: Publish this Album?
+							children:[
+								{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
+								{type:"select", path:"isSyndicated", label:"Distribute?", description:"Notifies external services when this album is published", options:{provider:"bandwagon-album.distribution"}}
+							]
+						},
+						options:["submit-label:Publish Album"]
+					}
 					{do:"set-state", state:"published"}
-					{do:"save"}
-					{do:"publish", outbox:true}
+					{do:"save-and-publish", outbox:true}
 					{do:"refresh-page"}
 				]}
 			]

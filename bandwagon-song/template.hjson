@@ -43,10 +43,11 @@
 		{target:"track.type", value:"Track"}
 		{target:"track.id", path:"url"}
 		{target:"track.name", path:"label"}
+		{target:"track.album", expression:"{{.ParentURL}}"}
 		{target:"track.position", path:"rank"}
-		{target:"summary", path:"data.lyrics"}
+		{target:"content", path:"data.lyrics"}
 		{target:"album", expression:"{{.ParentURL}}"}
-	]
+		{target:"library", expression:"{{.ParentURL}}/pub/children"}	]
 
 	actions: {
 		create: {
@@ -109,8 +110,7 @@
 					}
 				]}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
-				{do:"save"}
-				{do:"publish"}
+				{do:"save-and-publish"}
 				{do:"forward-to", url:"/{{.StreamID}}"}
 			]
 		}
@@ -183,8 +183,7 @@
 					]
 				}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
-				{do:"save"}
-				{do:"publish"}
+				{do:"save-and-publish"}
 				{do:"refresh-page"}
 			]
 		}
