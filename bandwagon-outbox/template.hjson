@@ -197,6 +197,7 @@
 			roles: ["self", "owner"]
 			steps: [
 				{do:"sort", model:"Stream", keys:"_id", values:"rank"}
+				{do:"set-header", name:"Hx-Push-Url", value:"false"}
 			]
 		}
 
