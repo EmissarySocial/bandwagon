@@ -13,7 +13,7 @@
 			label: {type:"string", required: true}
 			summary: {type:"string", format:"html"}
 			iconUrl: {type:"string", format:"uri"}
-			isSyndicated: {type:"boolean"}
+			syndication: {type:"array", items:{type:"string"}}
 			data: {
 				type:object
 				properties: {
@@ -72,10 +72,6 @@
 			{value:"CC0", label:"Creative Commons Zero - No Rights Reserved", href:"https://creativecommons.org/public-domain/cc0/", icon:"cc0"},
 			{value:"PUBLIC-DOMAIN", label:"Public Domain", href:"https://creativecommons.org/publicdomain/mark/1.0/", icon:"public-domain"}
 		]
-		"distribution": [
-			{value:"false", label:"No. Do not distribute this album"}
-			{value:"true", label:"Yes. Distribute this album to streaming and distribution services"}
-		]
 	}
 
 	actions: {
@@ -95,16 +91,9 @@
 									children: [
 										{type:"text", path:"label", label:"Album Name"}
 										{type:"text", path:"data.year", label:"Release Date"}
+										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
 										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800, types:["webp"]}}}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
-									]
-								}
-								{
-									type:layout-vertical
-									label: Legal
-									children: [
-										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-										{type:"select", path:"isSyndicated", label:"Distribute?", description:"Notifies external services when this album is published", options:{provider:"bandwagon-album.distribution"}}
 									]
 								}
 								{
@@ -175,16 +164,9 @@
 									children: [
 										{type:"text", path:"label", label:"Album Name"}
 										{type:"text", path:"data.year", label:"Release Date"}
+										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
 										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
-									]
-								}
-								{
-									type:layout-vertical
-									label: Legal
-									children: [
-										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-										{type:"select", path:"isSyndicated", label:"Distribute?", description:"Notifies external services when this album is published", options:{provider:"bandwagon-album.distribution"}}
 									]
 								}
 								{
@@ -218,6 +200,13 @@
 										{type:"colorpicker", path:"data.color.body", label:"Window Background"}
 										{type:"colorpicker", path:"data.color.page", label:"Page Background"}
 										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
+									]
+								}
+								{
+									type:"layout-vertical"
+									label:"Distribution"
+									children:[
+										{type:"multiselect", path:"syndication", label:"Distribute to these online partners", description:"These services will be notified when this album is published", options:{provider:"syndication-targets"}}
 									]
 								}
 							]
@@ -339,7 +328,7 @@
 							label: Publish this Album?
 							children:[
 								{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-								{type:"select", path:"isSyndicated", label:"Distribute?", description:"Notifies external services when this album is published", options:{provider:"bandwagon-album.distribution"}}
+								{type:"multiselect", path:"syndication", label:"Distribute?", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}
 							]
 						},
 						options:["submit-label:Publish Album"]
