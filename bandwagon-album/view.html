@@ -49,21 +49,16 @@
 						{{.AttributedTo.Name}}
 					</a> 
 				</div>
-				<h1 class="margin-vertical-none">{{.Label}}</h1>
-				{{ if ne nil (.Data "year") -}}
-					<div class="text-gray">
-						{{.Data "year"}}
-					</div>
-				{{- end -}}
+				<h1 class="margin-top-none">{{.Label}}</h1>
 
-				<!--div>
+				<div>
 					{{- range $index, $tag := $tags -}}
 						{{- if eq "Hashtag" $tag.Type}}
-							{{- if ne 0 $index -}},&nbsp;{{- end -}}
-							<a href="{{$tag.Href}}">{{$tag.Name}}</a>
+							<span class="inline-block margin-right-xs" style="font-size:12px; padding:0px 8px; border:solid 1px var(--gray05); background-color:var(--gray05); border-radius:8px;">{{$tag.Name}}</span>
 						{{- end -}}
 					{{- end -}}
-				</div-->
+				</div>
+
 				<div class="margin-vertical"></div>
 	
 				{{- if $isPlayable -}}
@@ -285,17 +280,30 @@
 					{{- $license := .DataString "license"}}
 					{{- if eq "COPYRIGHT" $license -}}
 						<h3 class="margin-none">License</h3>
-						<div>&copy; Copyright.  All Rights Reserved.</div>
+						<div>
+							&copy;
+							{{ if ne nil (.Data "year") }}
+								{{.Data "year"}}
+							{{- end }}
+							Copyright.  All Rights Reserved.
+						</div>
 					{{- else if ne "" $license -}}
-						<h3 class="margin-none">License</h3>
 						{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
 						{{- $licenseInfo := $licenses.Value $license -}}
-						<div>{{$licenseInfo.Label}}</div>
-						<div><a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">{{icon $licenseInfo.Icon}}</a></div>
+						<h3 class="margin-none">License</h3>
+						<div>
+							<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
+								{{icon $licenseInfo.Icon}} 
+								{{ if ne nil (.Data "year") }}
+									{{.Data "year"}}
+								{{- end }}
+								{{$licenseInfo.Label}}
+							</a>
+						</div>
 					{{- end -}}
 				</div>
 
-
+	
 			</div>
 
 		</div>
