@@ -18,8 +18,8 @@ function Play() {
 	var controls = htmx.find("#media-controls")
 	var song = playlist[playlistIndex]
 
-	htmx.find("#source-mp3").src = song.url + ".mp3"
-	htmx.find("#source-aac").src = song.url + ".m4a"
+	htmx.find("#source-mp3").src = song.url + ".mp3?bitrate=128"
+	htmx.find("#source-aac").src = song.url + ".m4a?bitrate=128"
 
 	audio.load()
 	audio.volume = 0.8
