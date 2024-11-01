@@ -202,13 +202,13 @@
 										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
 									]
 								}
-								{
+								/*{
 									type:"layout-vertical"
 									label:"Distribution"
 									children:[
 										{type:"multiselect", path:"syndication", label:"Distribute to these online partners", description:"These services will be notified when this album is published", options:{provider:"syndication-targets"}}
 									]
-								}
+								}*/
 							]
 						}
 					}
@@ -328,7 +328,7 @@
 							label: Publish this Album?
 							children:[
 								{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-								{type:"multiselect", path:"syndication", label:"Distribute?", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}
+								/*{type:"multiselect", path:"syndication", label:"Distribute?", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}*/
 							]
 						},
 						options:["submit-label:Publish Album"]
