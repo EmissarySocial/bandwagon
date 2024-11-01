@@ -352,7 +352,29 @@
 
 		zip9348103752: {
 			steps: [
-				{do: "export", depth:1, attachments:true}
+				{do: "export", depth:1, attachments:true, metadata: [
+					
+					// metadata for album attachments
+					[],
+					
+					// metadata for song attachments
+					[
+						{target:"title", path:"stream.label"},
+						{target:"author", path:"parent.attributedTo.name"}
+						{target:"artist", path:"parent.attributedTo.name"}
+						{target:"album_artist", path:"parent.attributedTo.name"},
+						{target:"album", path:"parent.label"},
+						{target:"composer", path:"stream.data.composer"},
+						{target:"producer", path:"stream.data.producer"},
+						{target:"publisher", path:"stream.data.publisher"},
+						{target:"year", path:"parent.data.year"},
+						{target:"track", path:"stream.rank"},
+						{target:"genre", path:"stream.data.genre"}
+						{target:"copyright", path:"parent.data.license"},
+						{target:"lyrics", path:"stream.data.lyrics"},
+						{target:"TISRC", path:"stream.data.isrc"},
+					]
+				]}
 			]
 		}
 	}

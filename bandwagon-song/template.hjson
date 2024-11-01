@@ -12,9 +12,11 @@
 				type: object 
 				properties: {
 					length: {type: "string"}
+					genre: {type: "string"}
 					artist: {type: "string"}
 					composer: {type: "string"}
 					producer: {type: "string"}
+					publisher: {type: "string"}
 					isrc: {type: "string"}
 					lyrics: {type: "string"}
 					streamURL: {type: "string", format:"url"}
@@ -75,9 +77,11 @@
 									type: layout-vertical
 									label: Metadata
 									children: [
+										{type: "text", path: "data.genre", label: "Genre"},
 										{type: "text", path: "data.artist", label: "Artist"},
 										{type: "text", path: "data.composer", label: "Composer"},
 										{type: "text", path: "data.producer", label: "Producer"},
+										{type: "text", path: "data.publisher", label: "Publisher"},
 										{type: "text", path: "data.isrc", label: "ISRC"},
 									]
 								}
@@ -147,9 +151,11 @@
 										type: layout-vertical
 										label: Metadata
 										children: [
+											{type: "text", path: "data.genre", label: "Genre"},
 											{type: "text", label: "Artist", path: "data.artist"},
 											{type: "text", label: "Composer", path: "data.composer"},
 											{type: "text", label: "Producer", path: "data.producer"},
+											{type: "text", path: "data.publisher", label: "Publisher"},
 											{type: "text", label: "ISRC", path: "data.isrc"},
 										]
 									}
