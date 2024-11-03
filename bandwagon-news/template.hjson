@@ -2,7 +2,6 @@
 	templateId: bandwagon-news
 	model: Stream
 	templateRole: Note
-	socialRole: Note
 	label: News Item
 	extends: ["base-intent"]
 	containedBy: ["outbox"]
@@ -21,6 +20,11 @@
 			}}
 		}
 	}
+
+	socialRole: Article
+	socialRules: [
+		{target:"content", expression:"<div><b>{{.Label}}</b></div>{{.Content.HTML}}"}
+	]
 
 	actions: {
 
