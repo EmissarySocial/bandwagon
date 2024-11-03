@@ -23,6 +23,7 @@
 
 	socialRole: Article
 	socialRules: [
+		{target:"title", value:""}, // remove the title because we're gonna stuff it into the content instead.
 		{target:"content", expression:"<div><b>{{.Label}}</b></div>{{.Content.HTML}}"}
 	]
 
