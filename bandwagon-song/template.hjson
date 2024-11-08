@@ -49,7 +49,8 @@
 		{target:"track.position", path:"rank"}
 		{target:"content", path:"data.lyrics"}
 		{target:"album", expression:"{{.ParentURL}}"}
-		{target:"library", expression:"{{.ParentURL}}/pub/children"}	]
+		{target:"library", expression:"{{.ParentURL}}/pub/children"}
+	]
 
 	actions: {
 		create: {
