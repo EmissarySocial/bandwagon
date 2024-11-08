@@ -359,6 +359,8 @@
 					
 					// metadata for song attachments
 					[
+						{target:"cover", path:"parent.iconUrl"},
+						{target:"comment", path:"parent.attributedTo.profileUrl"}
 						{target:"title", path:"stream.label"},
 						{target:"author", path:"parent.attributedTo.name"}
 						{target:"artist", path:"parent.attributedTo.name"}
