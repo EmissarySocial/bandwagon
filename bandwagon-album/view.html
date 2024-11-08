@@ -13,7 +13,9 @@
 
 <div class="page padding-none">
 
-	<link rel="stylesheet" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
+	<link rel="stylesheet" type="text/css" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
+	<link rel="alternate" type="application/json+oembed" href="{{.OEmbedJSON}}">
+	<link rel="alternate" type="text/xml+oembed" href="{{.OEmbedXML}}">
 
 	{{- if not .IsPublished -}}
 		<div class="clickable alert-red" hx-get="/{{.StreamID}}/publish" role="button">
