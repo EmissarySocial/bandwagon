@@ -1,0 +1,82 @@
+{{- $album := .Parent "view" -}}
+{{- $albumColors := $album.Data "color" -}}
+{{- $bodyColor := first $albumColors.body "#eeeeee" -}}
+{{- $pageColor := parseColor (first $albumColors.page "#ffffff") -}}
+{{- $buttonColor := parseColor (first $albumColors.button "#0f62fe") -}}
+{{- $titleColor := $pageColor.Text -}}
+{{- $textColor := $pageColor.TextExt -}}
+
+<div style="box-sizing:border-box; line-height:100%; max-width:600px; width:100%; padding:8px; background-color:{{$bodyColor}};">
+    <div style="max-height:300px; width:100%; color:{{$textColor}}; background-color:{{$pageColor}};">
+        <table style="border:none; border-collapse:collapse;">
+            <tr>
+                {{- if ne "" $album.IconURL -}}
+                    <td style="padding:16px;" valign="top" aria-hidden="true">
+                        <img src="{{$album.IconURL}}?height=256&width=256" style="height:128px; width:128px;">
+                    </td>
+                {{- end -}}
+                <td style="padding:16px 16px 16px 0px;" width="100%">
+                    <div style="margin:0px; font-size:24px; font-weight:600; color:{{$titleColor}};">{{.Label}}</div>
+                    <div style="margin: 16px 0px;">
+                        <a href="{{.AttributedTo.ProfileURL}}" target="_blank" style="text-decoration:none;" aria-label="Artist: {{.AttributedTo.Name}}">
+                            {{.AttributedTo.Name}}
+                        </a> 
+                        &middot;
+                        <a href="{{.Host}}/{{.ParentID}}" target="_blank" style="text-decoration:none;" aria-label="Artist: {{.AttributedTo.Name}}">
+                            {{$album.Label}}
+                        </a> 
+                        {{ if ne nil ($album.Data "year") }}
+                            &middot;
+                            {{$album.Data "year"}}
+                        {{- end }}
+                    </div>
+                    <div style="margin:16px 0px 24px 0px;">
+                        <a href="{{.Host}}/{{.StreamID}}" target="_blank" style="
+appearance:button;
+-webkit-appearance:button;
+text-decoration:none;
+font-size:16px;
+line-height:100%;
+font-weight:400;
+margin:0px;
+width:auto;
+display:inline-block;
+cursor:pointer;
+padding-top: 12px;
+padding-bottom: 12px;
+padding-left: 16px;
+padding-right: 16px;
+border-radius: 4px;
+border:none;
+text-align:left;
+user-select:none;
+-moz-user-select: none;
+-webkit-user-select: none;
+white-space:nowrap;
+background-color: {{$buttonColor}};
+color: {{$buttonColor.Text}};">&#9658; Play on Bandwagon</a>
+                    </div>
+                    
+                    {{- if ne "" .Summary -}}
+                        <div style="margin-top:16px; margin-bottom:8px; line-height:120%; max-height:3.6em; overflow:hidden; text-overflow:ellipsis;">
+                            {{.Summary}}
+                        </div>
+                    {{- end -}}
+
+                    <div style="margin-bottom:16px; opacity:0.6;">
+                        {{- $license := $album.DataString "license"}}
+                        {{- if eq "COPYRIGHT" $license -}}
+                            &copy;
+                            Copyright.  All Rights Reserved.
+                        {{- else if ne "" $license -}}
+                            {{- $licenses := .Dataset "bandwagon-album.licenses" -}}
+                            {{- $licenseInfo := $licenses.Value $license -}}
+                                {{icon $licenseInfo.Icon}} 
+                                {{$licenseInfo.Label}}
+                        {{- end -}}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
