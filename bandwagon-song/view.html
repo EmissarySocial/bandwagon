@@ -3,12 +3,27 @@
 {{- $streamURL := .Data "streamURL" -}}
 {{- $lyrics := .Data "lyrics" -}}
 {{- $attachmentID := .Data "attachmentId" -}}
+{{- $duration := .Data "length"}}
 
 <div class="page">
 
 	<link rel="stylesheet" href="/{{.ParentID}}/stylesheet">
 	<link rel="alternate" type="application/json+oembed" href="{{.OEmbedJSON}}">
 	<link rel="alternate" type="text/xml+oembed" href="{{.OEmbedXML}}">
+
+	<!-- Open Graph: https://developers.facebook.com/docs/opengraph/music/ -->
+	<!-- https://ogp.me/#type_music.song -->
+	<meta property="og.type" content="music.song">
+	<meta property="og:title" content="{{.Label}}">
+	<meta property="og:url" content="{{.Permalink}}">
+	<meta property="og:image" content="{{$album.IconURL}}">
+	<meta property="og:site_name" content="{{.DomainLabel}}">
+	<meta property="og:description" content="{{.Summary}}">
+	<meta property="og:audio" content="{{.Host}}/{{.StreamID}}/attachments/{{$attachmentID}}">
+	<meta property="og:music:duration" content="{{$duration}}">
+	<meta property="og:music:album" content="{{$album.URL}}">
+	<meta property="og:music:album:track" content="{{.Rank}}">
+	<meta property="og:music:musician" content="{{.AttributedTo.ProfileURL}}">
 
 	<div class="md:flex-row margin-bottom">
 		<div class="md:width-256 flex-shrink-0">

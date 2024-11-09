@@ -11,7 +11,9 @@
 
 		<!-- Metadata -->
 		<link rel="icon" href="{{.IconURL}}"/>
-
+		<link rel="alternate" type="application/json+oembed" href="{{.OEmbedJSON}}">
+		<link rel="alternate" type="text/xml+oembed" href="{{.OEmbedXML}}">
+			
 		<!-- ActivityPub links -->
 		<link rel="http://webfinger.net/rel/profile-page" href="{{.ProfileURL}}"/>
 		<link rel="http://ostatus.org/schema/1.0/subscribe" href="{{.Host}}/.ostatus/tunnel?uri={uri}">
@@ -23,6 +25,13 @@
 		<link rel="alternate" type="application/atom+xml" href="{{.Host}}/@{{.UserID}}/feed?format=atom"/>
 		<link rel="alternate" type="application/feed+json" href="{{.Host}}/@{{.UserID}}/feed?format=json"/>
 		<link rel="canonical" class="u-url" href="{{.ProfileURL}}">
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="profile">
+		<meta property="og:title" content="{{.DisplayName}}">
+		<meta property="og:url" content="{{.Permalink}}">
+		<meta property="og:image" content="{{.IconURL}}">
+		<meta property="profile:username" content="{{.Username}}">
 
 		{{- template "header" . -}}
 

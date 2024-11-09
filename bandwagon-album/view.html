@@ -17,6 +17,23 @@
 	<link rel="alternate" type="application/json+oembed" href="{{.OEmbedJSON}}">
 	<link rel="alternate" type="text/xml+oembed" href="{{.OEmbedXML}}">
 
+	<!-- Open Graph: https://developers.facebook.com/docs/opengraph/music/ -->
+	<!-- https://ogp.me/#type_music.album -->
+	<meta property="og:type" content="music.album">
+	<meta property="og:title" content="{{.Label}}">
+	<meta property="og:url" content="{{.Permalink}}">
+	<meta property="og:image" content="{{.IconURL}}">
+	<meta property="og:description" content="{{.Summary}}">
+	<meta property="og:site_name" content="{{.DomainLabel}}">
+	<meta property="music:release_date" content="{{.Data `year`}}">
+	<meta property="music:musician" content="{{.AttributedTo.ProfileURL}}">
+
+	{{- $year := .Data "year" -}}
+		{{- range $index, $song := $songs -}}
+		<meta property="music:song" content="{{$song.URL}}">
+		<meta property="music:song:track" content="{{$index}}">
+	{{- end -}}
+
 	{{- if not .IsPublished -}}
 		<div class="clickable alert-red" hx-get="/{{.StreamID}}/publish" role="button">
 			{{icon "alert-fill"}} 
