@@ -14,11 +14,13 @@
 <div class="page padding-none">
 
 	<link rel="stylesheet" type="text/css" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
+
+	<!-- oEmbed: https://oembed.com -->
 	<link rel="alternate" type="application/json+oembed" href="{{.OEmbedJSON}}">
 	<link rel="alternate" type="text/xml+oembed" href="{{.OEmbedXML}}">
 
-	<!-- Open Graph: https://developers.facebook.com/docs/opengraph/music/ -->
-	<!-- https://ogp.me/#type_music.album -->
+	<!-- Open Graph: https://ogp.me/ -->
+	<!-- https://developers.facebook.com/docs/opengraph/music/ -->
 	<meta property="og:type" content="music.album">
 	<meta property="og:title" content="{{.Label}}">
 	<meta property="og:url" content="{{.Permalink}}">

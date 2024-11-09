@@ -8,9 +8,9 @@
 	<div class="framed page app h-card padding-none" script="on load add [@aria-selected=true] to #home">
 
 		<title>{{.DisplayName}}</title>
-
-		<!-- Metadata -->
 		<link rel="icon" href="{{.IconURL}}"/>
+
+		<!-- oEmbed: https://oembed.com -->
 		<link rel="alternate" type="application/json+oembed" href="{{.OEmbedJSON}}">
 		<link rel="alternate" type="text/xml+oembed" href="{{.OEmbedXML}}">
 			
@@ -26,7 +26,7 @@
 		<link rel="alternate" type="application/feed+json" href="{{.Host}}/@{{.UserID}}/feed?format=json"/>
 		<link rel="canonical" class="u-url" href="{{.ProfileURL}}">
 
-		<!-- Open Graph -->
+		<!-- Open Graph: https://ogp.me -->
 		<meta property="og:type" content="profile">
 		<meta property="og:title" content="{{.DisplayName}}">
 		<meta property="og:url" content="{{.Permalink}}">
