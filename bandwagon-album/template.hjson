@@ -335,6 +335,31 @@
 					}
 					{do:"set-state", state:"published"}
 					{do:"save-and-publish", outbox:true}
+					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
+					
+						// metadata for album attachments
+						[],
+						
+						// metadata for song attachments
+						[
+							{target:"cover", path:"parent.iconUrl"},
+							{target:"comment", path:"parent.attributedTo.profileUrl"}
+							{target:"title", path:"stream.label"},
+							{target:"author", path:"parent.attributedTo.name"}
+							{target:"artist", path:"parent.attributedTo.name"}
+							{target:"album_artist", path:"parent.attributedTo.name"},
+							{target:"album", path:"parent.label"},
+							{target:"composer", path:"stream.data.composer"},
+							{target:"producer", path:"stream.data.producer"},
+							{target:"publisher", path:"stream.data.publisher"},
+							{target:"year", path:"parent.data.year"},
+							{target:"track", path:"stream.rank"},
+							{target:"genre", path:"stream.data.genre"}
+							{target:"copyright", path:"parent.data.license"},
+							{target:"lyrics", path:"stream.data.lyrics"},
+							{target:"TISRC", path:"stream.data.isrc"},
+						]
+					]}
 					{do:"refresh-page"}
 				]}
 			]
@@ -346,13 +371,14 @@
 				{do: "as-confirmation", title:"Un-Publish this Album?", message:"Un-Publishing this album will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Unpublish from Website "}
 				{do: "set-state", state:"unpublished"}
 				{do: "unpublish", outbox:true}
+				{do: "delete-archive", token:"FULL-ALBUM"}
 				{do: "refresh-page"}
 			]
 		}
 
 		zip9348103752: {
 			steps: [
-				{do: "export", depth:1, attachments:true, metadata: [
+				{do:"get-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
 					// metadata for album attachments
 					[],
