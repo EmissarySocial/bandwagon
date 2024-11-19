@@ -92,7 +92,7 @@
 										{type:"text", path:"label", label:"Album Name"}
 										{type:"text", path:"data.year", label:"Release Date"}
 										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800, types:["webp"]}}}
+										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800}}}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
