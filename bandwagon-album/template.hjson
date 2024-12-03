@@ -166,7 +166,7 @@
 										{type:"text", path:"data.year", label:"Release Date"}
 										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
 										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
-										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured?"}}
 									]
 								}
 								{
@@ -206,7 +206,7 @@
 									type:"layout-vertical"
 									label:"Distribution"
 									children:[
-										{type:"multiselect", path:"syndication", label:"Distribute to these online partners", description:"These services will be notified when this album is published", options:{provider:"syndication-targets"}}
+										{type:"multiselect", path:"syndication", label:"Distribute to these indie streaming services", description:"These services will be notified when this album is published", options:{provider:"syndication-targets"}}
 									]
 								}
 							]
@@ -328,7 +328,8 @@
 							label: Publish this Album?
 							children:[
 								{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-								{type:"multiselect", path:"syndication", label:"Distribute?", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}
+								{type:"select", path:"isFeatured", label:"Feature on Home Page", options:{enum:[{value:"false", label:"NO. Do not show on my home page"}, {value:"true", label:"YES. Show on my home page"}]}}
+								{type:"multiselect", path:"syndication", label:"Distribute to Streaming Stations", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}
 							]
 						},
 						options:["submit-label:Publish Album"]
