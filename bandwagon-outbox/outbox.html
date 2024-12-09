@@ -70,7 +70,7 @@
 			<div class="flex-row">
 				<div class="width-48"></div>
 				<div>
-					<div class="max-width-640 text-gray">{{.StatusMessage}}</div>
+					<div class="max-width-640 text-gray">{{.StatusMessage | markdown}}</div>
 					<div class="max-width-640">
 						<span class="bold" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
 
