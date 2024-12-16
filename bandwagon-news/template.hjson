@@ -6,17 +6,17 @@
 	extends: ["base-intent"]
 	containedBy: ["outbox"]
 	schema: {
-		type: object
+		type:object
 		properties: {
-			title: {type: "string"}
-			summary: {type: "string"}
-			content: {type: "object", properties:{
-				"type": {type: "string"}
-				"raw": {type: "string"}
-				"html": {type: "string"}
+			title: {type:"string"}
+			summary: {type:"string"}
+			content: {type:"object", properties:{
+				"type": {type:"string"}
+				"raw": {type:"string"}
+				"html": {type:"string"}
 			}}
-			data: {type: "object", properties:{
-				linkText: {type: "string"}
+			data: {type:"object", properties:{
+				linkText: {type:"string"}
 			}}
 		}
 	}
@@ -34,23 +34,24 @@
 			steps: [
 				{do:"as-modal", options:["class:large"], steps:[
 					{
-						do: edit
+						do:edit
 						form: {
-							type: layout-vertical
+							type:layout-vertical
 							label:"+ Add a Post"
 							children: [
-								{type: "text", path: "label", label: "Title"}
-								{type: "textarea", path: "summary", label: "Summary", description:"Shows on summary listing"}
-								{type: "textarea", path: "content.raw", label: "Content", description:"Shows on news article page", options:{rows:12}}
-								{type: "text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article"}
-								{type: "toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type:"text", path: "label", label: "Title"}
+								{type:"textarea", path: "summary", label: "Summary", description:"Shows on summary listing"}
+								{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page", options:{rows:12}}
+								{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article"}
+								{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
-					{do: "edit-content", field:"content.raw", format:"MARKDOWN"}
-					{do: "process-tags", paths:"data.tags"}
-					{do: "save-and-publish", outbox:true}
-					{do: "refresh-page"}
+					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
+					{do:"process-tags", paths:"data.tags"}
+					{do:"save-and-publish", outbox:"true"}
+					{do:"search-index"}
+					{do:"refresh-page"}
 				]}
 			]
 		}
@@ -58,42 +59,43 @@
 		edit: {
 			roles: ["author"]
 			steps: [
-				{do: "as-modal", options:["class:large"], steps:[
+				{do:"as-modal", options:["class:large"], steps:[
 					{
-						do: "edit"
+						do:"edit"
 						options: ["delete:/{{.StreamID}}/delete"]
 						form: {
-							type: layout-vertical
+							type:layout-vertical
 							label:"Edit Post"
 							children: [
-								{type: "text", path: "label", label: "Title", description:"Shows everywhere"}
-								{type: "textarea", path: "summary", label: "Summary", description:"Shows on summary listing only"}
-								{type: "textarea", path: "content.raw", label: "Content", options:{rows:8}, description:"Shows on news article page only"}
-								{type: "text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article"}
-								{type: "toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type:"text", path: "label", label: "Title", description:"Shows everywhere"}
+								{type:"textarea", path: "summary", label: "Summary", description:"Shows on summary listing only"}
+								{type:"textarea", path: "content.raw", label: "Content", options:{rows:8}, description:"Shows on news article page only"}
+								{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article"}
+								{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
-					{do: "edit-content", field:"content.raw", format:"MARKDOWN"}
-					{do: "process-tags", paths:"data.tags"}
-					{do: "save-and-publish", outbox:true}
-					{do: "refresh-page"}
+					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
+					{do:"process-tags", paths:"data.tags"}
+					{do:"save-and-publish", outbox:"true"}
+					{do:"search-index"}
+					{do:"refresh-page"}
 				]}
 			] 
 		}
 
 		view: {
 			steps:[
-				{do: "view-html"}	
+				{do:"view-html"}	
 			]
 		}
 
 		delete: {
 			roles: ["author"]
 			steps: [
-				{do: "delete"}
-				{do: "unpublish", outbox:true}
-				{do: "refresh-page"}
+				{do:"delete"}
+				{do:"unpublish", outbox:"true"}
+				{do:"refresh-page"}
 			]
 		}
 	}

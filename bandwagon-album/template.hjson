@@ -32,9 +32,9 @@
 		}
 	}
 
-	socialRole: Article
+	socialRole: Album
 	socialRules: [
-		{target:"type", value:["Album","Article"]}
+		{target:"@context", append:"https://funkwhale.audio/ns"}
 		{target:"license", path:"data.license"}
 		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
 		{target:"attributedTo.name", path:"attributedTo.name"},
@@ -335,7 +335,8 @@
 						options:["submit-label:Publish Album"]
 					}
 					{do:"set-state", state:"published"}
-					{do:"save-and-publish", outbox:true}
+					{do:"save-and-publish", outbox:"true"}
+					{do:"search-index"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
 						// metadata for album attachments
@@ -369,9 +370,9 @@
 		unpublish: {
 			roles: ["author"]
 			steps: [
-				{do: "as-confirmation", title:"Un-Publish this Album?", message:"Un-Publishing this album will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Unpublish from Website "}
+				{do: "as-confirmation", title:"Un-Publish this Album?", message:"Un-Publishing this album will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish from Website "}
 				{do: "set-state", state:"unpublished"}
-				{do: "unpublish", outbox:true}
+				{do: "unpublish", outbox:"true"}
 				{do: "delete-archive", token:"FULL-ALBUM"}
 				{do: "refresh-page"}
 			]

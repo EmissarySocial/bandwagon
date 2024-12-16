@@ -188,6 +188,7 @@
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
 					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
 					{do:"save"}
+					{do:"search-index", if:"{{.IsIndexable}}"}
 					{do:"refresh-page"}
 				]}
 			] 
@@ -282,6 +283,7 @@
 				},
 				{do:"set-state", state:"LIVE"}
 				{do:"save"}
+				{do:"search-index", if:"{{.IsIndexable}}"}
 				{do:"set-header", name:"Hx-Refresh", value:"true"}
 			]
 		}

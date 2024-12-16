@@ -8,16 +8,16 @@
 	label: Event
 	description: Contains event details
 	schema: {
-		type: object
+		type:object
 		properties: {
 			data: {
-				type: object
+				type:object
 				properties: {
 					date: {type:"string", required: true}
-					city: {type: "string"}
-					venue: {type: "string"}
-					websiteLabel: {type: "string"}
-					website: {type: "string", format:"uri"}
+					city: {type:"string"}
+					venue: {type:"string"}
+					websiteLabel: {type:"string"}
+					website: {type:"string", format:"uri"}
 				}
 			}
 		}
@@ -36,62 +36,64 @@
 		create: {
 			roles:["author"]
 			steps: [
-				{do: "as-modal", steps: [
+				{do:"as-modal", steps: [
 					{
-						do: edit
+						do:edit
 						form: {
 							label: + Add an Event
-							type: layout-vertical
+							type:layout-vertical
 							children: [
-								{type: "text", path:"data.date", label:"Date"}
-								{type: "text", path:"data.city", label:"City"}
-								{type: "text", path:"data.venue", label:"Venue"}
-								{type: "text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
-								{type: "text", path:"data.website", label:"Ticketing Website", description: "Link to the ticketing website"}
-								{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type:"text", path:"data.date", label:"Date"}
+								{type:"text", path:"data.city", label:"City"}
+								{type:"text", path:"data.venue", label:"Venue"}
+								{type:"text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
+								{type:"text", path:"data.website", label:"Ticketing Website", description: "Link to the ticketing website"}
+								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
 				]}
-				{do: "process-tags", paths:"data.tags"}
-				{do: "save-and-publish", outbox:true}
-				{do: "refresh-page"}
+				{do:"process-tags", paths:"data.tags"}
+				{do:"save-and-publish", outbox:"true"}
+				{do:"search-index"}
+				{do:"refresh-page"}
 			]
 		}
-		view: {do: "view-html"}
+		view: {do:"view-html"}
 		edit: {
 			roles: ["author"]
 			steps: [
-				{do: "as-modal", steps: [
+				{do:"as-modal", steps: [
 					{
-						do: edit
-						options: ["delete:/{{.StreamID}}/delete"]
+						do:edit
+						options:["delete:/{{.StreamID}}/delete"]
 						form: {
-							label: Edit Event
-							type: layout-vertical
+							label:Edit Event
+							type:layout-vertical
 							children: [
-								{type: "text", path:"data.date", label:"Date"}
-								{type: "text", path:"data.city", label:"City"}
-								{type: "text", path:"data.venue", label:"Venue"}
-								{type: "text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
-								{type: "text", path:"data.website", label:"Ticketing Website"}
-								{type: "toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{type:"text", path:"data.date", label:"Date"}
+								{type:"text", path:"data.city", label:"City"}
+								{type:"text", path:"data.venue", label:"Venue"}
+								{type:"text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
+								{type:"text", path:"data.website", label:"Ticketing Website"}
+								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
 						}
 					}
 				]}
-				{do: "process-tags", paths:"data.tags"}
-				{do: "save-and-publish", outbox:true}
-				{do: "refresh-page"}
+				{do:"process-tags", paths:"data.tags"}
+				{do:"save-and-publish", outbox:"true"}
+				{do:"search-index"}
+				{do:"refresh-page"}
 			]
 		}
 
 		delete: {
 			roles: ["author"]
 			steps: [
-				{do: "delete"}
-				{do: "unpublish", outbox:true}
-				{do: "refresh-page"}
+				{do:"delete"}
+				{do:"unpublish", outbox:"true"}
+				{do:"refresh-page"}
 			]
 		}
 	}
