@@ -35,6 +35,7 @@
 
 	socialRole: Audio
 	socialRules: [
+		{target:"@context", append:"https://funkwhale.audio/ns"}
 		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
 		{target:"attributedTo.name", path:"attributedTo.name"},
 		{target:"links", forEach:"data.links", rules:[

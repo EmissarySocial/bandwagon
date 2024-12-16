@@ -34,16 +34,19 @@
 
 	socialRole: Album
 	socialRules: [
+		
 		{target:"@context", append:"https://funkwhale.audio/ns"}
 		{target:"license", path:"data.license"}
-		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
-		{target:"attributedTo.name", path:"attributedTo.name"},
 		{target:"links", forEach:"data.links", rules:[
 			{target:"label", path:"key"}
 			{target:"rel", value:"alternate"}
 			{target:"href", path:"value"}
 		]}
 		{target:"library", expression:"{{.URL}}/pub/children"}
+		{target:"artists", value:[]}
+		{target:"artists", append:{type:"Artist"}}
+		{target:"artists.0.id", path:"attributedTo.profileUrl"}
+		{target:"artists.0.name", path:"attributedTo.name"}
 	]
 
 	states: {
