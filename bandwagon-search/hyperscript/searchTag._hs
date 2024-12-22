@@ -1,0 +1,42 @@
+behavior SearchTag
+    
+    init
+        add .tag 
+        add .nowrap 
+        add .margin-sm 
+        add .margin-right-none 
+        add .clickable
+        add .flex-align-self-center
+        add [@tabIndex=0]
+        
+        set my innerHTML to my @data-tag + ` <i class="bi bi-x-lg"></i>`
+    end
+
+    on click or keydown[key=="Backspace"]
+        set newTag to the previous <[data-tag]/> within #search-widget
+        if newTag is not null then
+            focus() the newTag
+        else 
+            focus() the #search-input
+        end
+        remove me
+    end
+
+    on keydown[key=="ArrowLeft"]
+        set newTag to the previous <[data-tag]/> within #search-widget
+        if newTag is not null then
+            focus() the newTag
+        end
+    end
+
+    on keydown[key=="ArrowRight"]
+        halt the event
+        set newTag to the next <[data-tag]/> within #search-widget
+        if newTag is not null then
+            focus() the newTag
+        else 
+            focus() the #search-input
+        end
+    end
+
+end

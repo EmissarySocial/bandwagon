@@ -1,0 +1,61 @@
+behavior SearchWidget
+
+	on click from #search-submit or keydown[key=="Enter"] from #search-input
+		set the #search-query's value to ""
+		repeat for tag in <[data-tag]/> in me
+			append "#" + the tag's @data-tag + " " to the #search-query's value
+		end
+	
+		append the #search-input's value to the #search-query's value
+		log #search-query
+		send submit to #search-form
+	end
+
+	on keydown[key=="Backspace"] from #search-input
+		if the #search-input's selectionStart > 0 then
+			exit
+		end
+
+		if the #search-input's selectionEnd > 0 then
+			exit
+		end
+
+		set tag to the last <[data-tag]/> in me
+		if tag is not null then 
+			remove the tag
+		end
+	end
+
+	on keydown[key=="ArrowLeft"] from #search-input
+		if the #search-input's selectionStart > 0 then
+			exit
+		end
+
+		if the #search-input's selectionEnd > 0 then
+			exit
+		end
+
+		set tag to the last <[data-tag]/> in me
+		if tag is not null then 
+			focus() the tag
+		end
+	end
+
+	on load or blur from #search-input or keyup[key==" "] or keyup[key=="Enter"] from #search-input
+		set result to parseTags(#search-input's value)
+		log the #search-input's value
+
+		set the #search-input's value to result.remainder
+
+		for tag in result.tags
+			set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
+			put newTag before the #search-input
+		end
+	end
+end
+
+def addTag(tag)
+	set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
+	put newTag before the #search-input
+	send click to the #search-submit
+end

@@ -1,0 +1,7 @@
+{{- $query := .QueryParam "q" -}}
+{{- $tags := .AllowedSearchTags.WhereBeginsWith "name" $query -}}
+{{- $tags := $tags.ByName.Slice -}}
+
+{{- range $tag := $tags -}}
+	<option value="#{{$tag.Name}}">
+{{- end -}}

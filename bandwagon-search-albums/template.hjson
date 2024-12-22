@@ -1,0 +1,24 @@
+{
+	templateId: bandwagon-search-albums
+	templateRole: search
+	extends: ["bandwagon-search"]
+	model: Stream
+	containedBy: ["top"]
+	icon: book
+	label: Bandwagon Album Search
+	description: Search Engine for Albums
+	schema: {
+		type:object
+		properties: {
+			label: {type:"string"}
+			summary: {type:"string"}
+			data: {
+				type:object
+				properties: {
+					searchText: {type:"string"}
+					content: {type:"string"}
+				}
+			}
+		}    
+	}
+}

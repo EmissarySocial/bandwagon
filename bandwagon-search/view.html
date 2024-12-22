@@ -1,0 +1,78 @@
+{{- $queryString := .QueryParam "q" -}}
+
+<script src="/.templates/bandwagon-search/javascript"></script>
+<script type="text/hyperscript" src="/.templates/bandwagon-search/hyperscript"></script>
+
+<div class="page">
+
+	<form id="search-form" hx-get="/{{.Token}}/view-results">
+		<input type="hidden" id="search-query" name="q">
+	</form>
+
+	<div id="search-widget" script="install SearchWidget" class="input margin-bottom">
+		<input 
+			type="text"
+			id="search-input"
+			placeholder="{{.Data `searchText`}}"
+			value="{{$queryString | trim}}"
+			autofocus
+			class="margin-left-sm"
+			/>
+		<button id="search-submit" class="primary">Search</button>
+
+		<!--
+		list="search-suggestions"
+		hx-get="/{{.Token}}/search-suggestions"
+		hx-trigger="input changed delay:500ms"
+		hx-target="#search-suggestions"
+		hx-swap="innerHTML"
+		hx-push-url="false"
+		<datalist id="search-suggestions" style="width:100%;"></datalist>
+		-->
+	</div>
+
+	<div class="margin-bottom">
+		{{.Data "content" | markdown }}
+	</div>
+	
+	<div id="search-results" class="margin-top-lg">
+		{{.View "view-results"}}
+	</div>
+
+	{{- if .UserCan "edit" -}}
+	<br>
+	<br>
+	<div class="pos-absolute-bottom-right text-sm">
+			Admins:
+			<button hx-get="/{{.Token}}/edit">Edit</button>
+			<button hx-get="/{{.Token}}/sharing">Sharing</button>
+		</div>
+	{{- end -}}
+
+</div>
+
+<style>
+	#search-widget {
+		display:flex;
+		flex-direction:row;
+		flex-wrap:nowrap;
+		margin:0px;
+		padding:0px;
+	}
+
+	#search-widget:has(input:focus) {
+		outline:solid;
+		outline-color: -webkit-focus-ring-color;
+	}
+
+	#search-widget > input {
+		border:none;
+		outline:none;
+		flex-grow:1;
+	}
+
+	#search-widget > button {
+		font-size:calc(var(--rhythm) * 1.75);
+		margin:4px;
+	}
+</style>

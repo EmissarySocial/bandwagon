@@ -1,0 +1,14 @@
+{{- $token := .Token -}}
+{{- $tags := .FeaturedSearchTags.ByRank.Slice -}}
+
+<div class="columns-4 no-gap">
+	{{- range $index, $tag := $tags -}}
+		<div class="turboclick aspect-4-3 flex-column hover-trigger" script="install blockselect()" role="link" style="background-color: {{$tag.BackgroundColor}}; color:{{$tag.TextColor}};">
+			<!--img src="{{$tag.Name}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true" loading="lazy"-->
+			<div class="padding padding">
+				<a href="/{{$token}}/view?q=%23{{$tag.Name}}" class="text-xxl bold turboclick text-plain" style="color:{{$tag.TextColor}};">{{$tag.Name}}</a><br>
+				<div class="text-sm text-gray">{{$tag.Description}}</div>	
+			</div>
+		</div>
+	{{- end -}}
+</div>

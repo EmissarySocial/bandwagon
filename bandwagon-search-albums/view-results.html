@@ -1,0 +1,37 @@
+{{- $queryString := .QueryParam "q" -}}
+{{- if eq "" $queryString -}}
+
+	{{template "view-tags" .}}
+
+{{- else -}}
+    
+	{{- $results := .Search.Top120 -}}
+	{{- $results := $results.WhereType "Album" -}}
+	{{- $results := $results.Slice.Shuffle -}}
+
+    <div class="text-md">
+        <button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
+        <button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
+    </div>
+    <hr>
+    <div class="columns-4">
+        {{- range $result := $results -}}
+			<div class="card flex-column hover-trigger">
+				<div script="install blockselect()" role="link">
+					<img src="{{$result.IconURL}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true" loading="lazy">
+					<div class="padding padding-bottom-xs text-plain">
+						<a href="{{$result.URL}}" class="turboclick">{{$result.Name}}</a><br>
+					</div>
+				</div>
+				<div class="padding padding-top-xs text-plain">
+					<div class="text-sm">
+						{{- range $tag := $result.Tags -}}
+							<div class="clickable inline-block tag" hx-on:click="addTag('{{$tag}}')">#{{$tag}}</div>
+						{{- end -}}
+					</div>
+				</div>
+			</div>
+		{{- end -}}
+    </div>
+	
+{{- end -}}

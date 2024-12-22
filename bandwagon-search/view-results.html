@@ -1,0 +1,25 @@
+{{- $queryString := .QueryParam "q" -}}
+{{- $token := .Token -}}
+
+{{- if eq "" $queryString -}}
+
+	{{- template "view-tags" . -}}
+
+{{- else -}}
+    
+	{{- $results := .Search.Slice -}}
+
+    <div class="text-md">
+        <button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
+        <button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
+    </div>
+    <hr>
+    <div class="columns-4">
+        {{- range $result := $results -}}
+            <div class="card" style="overflow-x:hidden;">
+                <pre>{{- $result | jsonIndent -}}</pre>
+            </div>
+        {{- end -}}
+    </div>
+
+{{- end -}}

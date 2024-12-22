@@ -1,0 +1,25 @@
+{{- $users := .Users.Indexable.Slice -}}
+{{- $users := $users.Shuffle -}}
+
+<div class="columns-4">
+	{{- range $index, $user := $users -}}
+		<div class="padding align-center turboclick" role="link" hx-get="/@{{$user.Username}}">
+
+			{{- if eq "" $user.IconURL -}}
+				<div class="circle-128 margin-horizontal-auto"></div>
+			{{- else -}}
+				<img src="{{$user.IconURL}}" class="block circle-128 margin-horizontal-auto" loading="lazy">
+			{{- end -}}
+			<div class="text-center margin-top" style="max-width:100%;">
+				<div class="bold ellipsis">{{$user.DisplayName}}</div>
+				<div class="text-gray text-sm ellipsis-block" style="height:4.5em;">
+					{{if eq "" $user.StatusMessage -}}
+						@{{$user.Username}}
+					{{- else -}}
+						{{$user.StatusMessage}}
+					{{- end -}}
+				</div>
+			</div>
+		</div>
+	{{- end -}}
+</div>
