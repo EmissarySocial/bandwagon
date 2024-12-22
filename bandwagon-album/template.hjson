@@ -218,7 +218,13 @@
 				]}
 				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
-				{do: "save"}
+				{do: "if", "condition": "{{.IsPublished}}", 
+					then: [
+						{do:"search-index", text:"{{.Label}} {{.Summary}}"}
+						{do:"save-and-publish"}
+					], 
+					else: [{do:"save"}]
+				}
 				{do: "refresh-page"}
 			]
 		}
@@ -339,7 +345,7 @@
 					}
 					{do:"set-state", state:"published"}
 					{do:"save-and-publish", outbox:"true"}
-					{do:"search-index"}
+					{do:"search-index", text:"{{.Label}} {{.Summary}}"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
 						// metadata for album attachments
