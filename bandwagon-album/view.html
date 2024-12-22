@@ -75,7 +75,7 @@
 				<div>
 					{{- range $index, $tag := $tags -}}
 						{{- if eq "Hashtag" $tag.Type}}
-							<span class="inline-block margin-right-xs" style="font-size:12px; padding:0px 8px; border:solid 1px var(--gray05); background-color:var(--gray05); border-radius:8px;">{{$tag.Name}}</span>
+							<a href="/search?q={{$tag.Name}}" class="inline-block tag margin-right-xs text-sm">{{$tag.Name}}</a>
 						{{- end -}}
 					{{- end -}}
 				</div>
