@@ -12,7 +12,12 @@ behavior SearchTag
         set my innerHTML to my @data-tag + ` <i class="bi bi-x-lg"></i>`
     end
 
-    on click or keydown[key=="Backspace"]
+    on click
+		trigger removeTag
+		send click to #search-submit
+	end
+
+	on removeTag or keydown[key=="Backspace"]
         set newTag to the previous <[data-tag]/> within #search-widget
         if newTag is not null then
             focus() the newTag
