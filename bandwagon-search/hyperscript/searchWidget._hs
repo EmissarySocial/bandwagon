@@ -1,9 +1,15 @@
-behavior SearchWidget
+behavior SearchWidget(value, hint)
 
-	set :lastSearchValue to ""
+	init
+		set :lastSearchValue to ""
+		set the #search-input's value to value
+		set the #search-input's placeholder to hint
+		focus() the #search-input
+		replaceTags()
+	end
 
 	-- submit the search
-	on click from #search-submit or keydown[key=="Enter"] from #search-input
+	on click from #search-submit
 
 		-- prepare the input to send to the server
 		set the #search-query's value to ""
@@ -12,23 +18,7 @@ behavior SearchWidget
 		end
 	
 		-- special case for tag suggestions
-		if the #search-suggestions's *visibility is not "hidden" then
-
-			-- remove partial tags
-			set currentValue to the #search-input's value
-			log the currentValue
-			make a RegExp from "#[^ ]*" called findTag
-			set the #search-input's value to currentValue.replace(findTag, "")
-			log the #search-input's value
-			
-			-- insert the 
-			set suggestion to the first <div.selected /> in #search-suggestions
-			log the suggestion
-			if suggestion is not null then
-				append " #" + suggestion's innerHTML to the #search-input's value
-				log the #search-input's value
-			end
-		end
+		addSuggestion()
 
 		-- finalize and submit
 		append the #search-input's value to the #search-query's value
@@ -38,15 +28,18 @@ behavior SearchWidget
 	---------------------------
 	-- Tags
 
-	-- Maybe add Tags
-	on load or blur from #search-input or keyup[key==" "] from #search-input or keyup[key=="Enter"] from #search-input
-		set result to parseTags(#search-input's value)
-		set the #search-input's value to result.remainder
-		hide the #search-suggestions with visibility
-
-		for tag in result.tags
-			addTag(tag)
+	-- Add tags (if suggestions are visible) or submit the form
+	on keydown[key=="Enter"] from #search-input
+		if the #search-suggestions's *visibility is "hidden" then
+			send click to the #search-submit
+		else
+			addSuggestion()
 		end
+	end
+
+	-- Maybe add Tags
+	on blur from #search-input or keyup[key==" "] from #search-input
+		replaceTags()
 	end
 
 	-- remove a tag
@@ -89,50 +82,49 @@ behavior SearchWidget
 		if the #search-input's value == :lastSearchValue then
 			exit
 		end
-
 		set :lastSearchValue to the #search-input's value
 
 		if the #search-input's value contains "#" then 
-			set parsed to parseTags(:lastSearchValue)
-			set tags to parsed.tags
-
-			if tags.length == 0 then
-				set #search-suggestion-query.value to ""
-			else 
-				set queryString to tags[0]
-				set #search-suggestion-query.value to queryString
-			end
-
-			send search to the #search-suggestions-form
-			show the #search-suggestions with visibility
+			trigger showSuggestions on me
 		else
 			hide the #search-suggestions with visibility
 		end
 	end
 
-	-- show search suggestions
-	on keyup[key=="#"] from #search-input
+	on showSuggestions
+		set parsed to parseTags(:lastSearchValue)
+		set tags to parsed.tags
+
+		if tags.length == 0 then
+			set #search-suggestion-query.value to ""
+		else 
+			set queryString to tags[0]
+			set #search-suggestion-query.value to queryString
+		end
+
+		send search to the #search-suggestions-form
 		show the #search-suggestions with visibility
 	end
 
 	-- hide search suggestions
-	on blur from #search-input or keyup[key=="Escape"] from #search-input
+	on hideSuggestions 
 		hide the #search-suggestions with visibility
+	end
+		
+	on blur from #search-input or keyup[key=="Escape"] from #search-input
+		trigger hideSuggestions
 	end
 
 	on click from #search-input
-		if the #search-suggestions's *visibility is not "hidden" then
-			hide the #search-suggestions with visibility
-		end
+		trigger hideSuggestions
 	end
 
 	-- keyboard navigation
-	on keyup[key=="ArrowDown"] from #search-input
+	on keydown[key=="ArrowDown"] from #search-input
 		halt the event
 
 		if the #search-suggestions's *visibility is "hidden" then
-			send search to the #search-suggestions-form
-			show the #search-suggestions with visibility
+			trigger showSuggestions
 			exit
 		end
 
@@ -150,7 +142,7 @@ behavior SearchWidget
 		take .selected for the next <div /> from currentLabel
 	end
 
-	on keyup[key=="ArrowUp"] from #search-input
+	on keydown[key=="ArrowUp"] from #search-input
 		halt the event
 		set currentLabel to the first <div.selected /> in #search-suggestions
 		
@@ -167,18 +159,4 @@ behavior SearchWidget
 		take .selected for the previous <div /> from currentLabel
 	end
 
-end
-
-def addTag(tag)
-	if tag != "" then
-		set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
-		put newTag before the #search-input
-	end
-end
-
-def addTagAndSubmit(tag)
-	if tag != "" then
-		addTag(tag)
-		send click to the #search-submit
-	end
 end

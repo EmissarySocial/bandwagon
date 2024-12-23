@@ -3,5 +3,5 @@
 {{- $tags := $tags.ByName.Slice -}}
 
 {{- range $tag := $tags -}}
-	<div script="on mouseover log my innerHTML then take .selected">{{$tag.Name}}</div>
+	<div script="install SearchSuggestion">{{$tag.Name}}</div>
 {{- end -}}

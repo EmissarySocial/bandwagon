@@ -10,13 +10,10 @@
 	</form>
 
 	<div class="pos-relative margin-bottom">
-		<div id="search-widget" script="install SearchWidget" class="input">
+		<div id="search-widget" script="install SearchWidget(value:'{{$queryString | trim}}', hint:'{{.Data `searchText`}}')" class="input">
 			<input 
 				type="text"
 				id="search-input"
-				placeholder="{{.Data `searchText`}}"
-				value="{{$queryString | trim}}"
-				autofocus
 				class="margin-left-sm"
 			/>
 			<button class="primary htmx-request-hide" style="width:6em; text-align:center;" id="search-submit">Search</button>

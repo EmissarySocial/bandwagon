@@ -1,0 +1,11 @@
+behavior SearchSuggestion
+
+	on mouseover 
+		take .selected 
+	end
+
+	on mousedown 
+		addSuggestion()
+		send click to #search-submit
+	end
+end

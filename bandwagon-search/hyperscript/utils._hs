@@ -1,0 +1,44 @@
+def replaceTags
+	set value to the #search-input's value
+	set result to parseTags(value)
+	log result
+	set the #search-input's value to result.remainder
+	hide the #search-suggestions with visibility
+
+	for tag in result.tags
+		addTag(tag)
+	end
+end
+
+def addTag(tag)
+	if tag != "" then
+		set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
+		put newTag before the #search-input
+	end
+end
+
+def addTagAndSubmit(tag)
+	if tag != "" then
+		addTag(tag)
+		send click to the #search-submit
+	end
+end
+
+def addSuggestion()
+	if the #search-suggestions's *visibility is not "hidden" then
+
+		-- remove partial tags
+		set currentValue to the #search-input's value
+		make a RegExp from "#[^ ]*" called findTag
+		set the #search-input's value to currentValue.replace(findTag, "")
+		
+		-- insert the 
+		set suggestion to the first <div.selected /> in #search-suggestions
+		if suggestion is not null then
+			addTag(suggestion.innerHTML)
+		end
+
+		hide the #search-suggestions with visibility
+	end
+end
+
