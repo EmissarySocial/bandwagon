@@ -1,7 +1,7 @@
 {{- $query := .QueryParam "q" -}}
-{{- $tags := .AllowedSearchTags.WhereBeginsWith "name" $query -}}
+{{- $tags := .AllowedSearchTags.WhereContains "name" $query -}}
 {{- $tags := $tags.ByName.Slice -}}
 
 {{- range $tag := $tags -}}
-	<option value="#{{$tag.Name}}">
+	<div script="on mouseover log my innerHTML then take .selected">{{$tag.Name}}</div>
 {{- end -}}

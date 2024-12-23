@@ -1,16 +1,55 @@
 behavior SearchWidget
 
+	set :lastSearchValue to ""
+
+	-- submit the search
 	on click from #search-submit or keydown[key=="Enter"] from #search-input
+
+		-- prepare the input to send to the server
 		set the #search-query's value to ""
 		repeat for tag in <[data-tag]/> in me
-			append "#" + the tag's @data-tag + " " to the #search-query's value
+			append " #" + the tag's @data-tag to the #search-query's value
 		end
 	
+		-- special case for tag suggestions
+		if the #search-suggestions's *visibility is not "hidden" then
+
+			-- remove partial tags
+			set currentValue to the #search-input's value
+			log the currentValue
+			make a RegExp from "#[^ ]*" called findTag
+			set the #search-input's value to currentValue.replace(findTag, "")
+			log the #search-input's value
+			
+			-- insert the 
+			set suggestion to the first <div.selected /> in #search-suggestions
+			log the suggestion
+			if suggestion is not null then
+				append " #" + suggestion's innerHTML to the #search-input's value
+				log the #search-input's value
+			end
+		end
+
+		-- finalize and submit
 		append the #search-input's value to the #search-query's value
-		log #search-query
 		send submit to #search-form
 	end
 
+	---------------------------
+	-- Tags
+
+	-- Maybe add Tags
+	on load or blur from #search-input or keyup[key==" "] from #search-input or keyup[key=="Enter"] from #search-input
+		set result to parseTags(#search-input's value)
+		set the #search-input's value to result.remainder
+		hide the #search-suggestions with visibility
+
+		for tag in result.tags
+			addTag(tag)
+		end
+	end
+
+	-- remove a tag
 	on keydown[key=="Backspace"] from #search-input
 		if the #search-input's selectionStart > 0 then
 			exit
@@ -26,6 +65,7 @@ behavior SearchWidget
 		end
 	end
 
+	-- navigate tags
 	on keydown[key=="ArrowLeft"] from #search-input
 		if the #search-input's selectionStart > 0 then
 			exit
@@ -41,21 +81,104 @@ behavior SearchWidget
 		end
 	end
 
-	on load or blur from #search-input or keyup[key==" "] or keyup[key=="Enter"] from #search-input
-		set result to parseTags(#search-input's value)
-		log the #search-input's value
+	---------------------------
+	-- Search Suggestions
 
-		set the #search-input's value to result.remainder
+	-- show the search suggestions
+	on focus from #search-input or keyup from #search-input 
+		if the #search-input's value == :lastSearchValue then
+			exit
+		end
 
-		for tag in result.tags
-			set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
-			put newTag before the #search-input
+		set :lastSearchValue to the #search-input's value
+
+		if the #search-input's value contains "#" then 
+			set parsed to parseTags(:lastSearchValue)
+			set tags to parsed.tags
+
+			if tags.length == 0 then
+				set #search-suggestion-query.value to ""
+			else 
+				set queryString to tags[0]
+				set #search-suggestion-query.value to queryString
+			end
+
+			send search to the #search-suggestions-form
+			show the #search-suggestions with visibility
+		else
+			hide the #search-suggestions with visibility
 		end
 	end
+
+	-- show search suggestions
+	on keyup[key=="#"] from #search-input
+		show the #search-suggestions with visibility
+	end
+
+	-- hide search suggestions
+	on blur from #search-input or keyup[key=="Escape"] from #search-input
+		hide the #search-suggestions with visibility
+	end
+
+	on click from #search-input
+		if the #search-suggestions's *visibility is not "hidden" then
+			hide the #search-suggestions with visibility
+		end
+	end
+
+	-- keyboard navigation
+	on keyup[key=="ArrowDown"] from #search-input
+		halt the event
+
+		if the #search-suggestions's *visibility is "hidden" then
+			send search to the #search-suggestions-form
+			show the #search-suggestions with visibility
+			exit
+		end
+
+		set currentLabel to the first <div.selected /> in #search-suggestions
+		
+		if currentLabel is null then
+			take .selected for the first <div /> in #search-suggestions
+			exit
+		end
+
+		if currentLabel is the last <div /> in #search-suggestions then
+			exit
+		end
+
+		take .selected for the next <div /> from currentLabel
+	end
+
+	on keyup[key=="ArrowUp"] from #search-input
+		halt the event
+		set currentLabel to the first <div.selected /> in #search-suggestions
+		
+		if currentLabel is the first <div /> in #search-suggestions then
+			hide the #search-suggestions with visibility
+			remove .selected from currentLabel
+			exit
+		end
+
+		if currentLabel is null then
+			exit
+		end
+
+		take .selected for the previous <div /> from currentLabel
+	end
+
 end
 
 def addTag(tag)
-	set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
-	put newTag before the #search-input
-	send click to the #search-submit
+	if tag != "" then
+		set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
+		put newTag before the #search-input
+	end
+end
+
+def addTagAndSubmit(tag)
+	if tag != "" then
+		addTag(tag)
+		send click to the #search-submit
+	end
 end

@@ -24,7 +24,6 @@ function parseTags(value) {
 		// This is the end of a tag
 		switch (char) {
 
-			// Delimiters
 			case " ":
 				tags.push(foundTag)
 				inTag = false

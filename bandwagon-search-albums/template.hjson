@@ -21,4 +21,16 @@
 			}
 		}    
 	}
+
+	actions: {
+		view-results: {
+			steps:[
+				{do:"set-header", name:"Hx-Reswap", value:"innerHTML"}
+				{do:"set-header", name:"Hx-Retarget", value:"#search-results"}
+				{do:"set-header", name:"Hx-Push-Url", value:"/{{.Token}}?{{.QueryString}}"}
+				{do:"view-html"}
+			]
+		}
+	}
+
 }
