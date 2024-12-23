@@ -1,3 +1,4 @@
+{{- $token := .Token -}}
 {{- $queryString := .QueryParam "q" -}}
 {{- if eq "" $queryString -}}
 
@@ -26,7 +27,7 @@
 				<div class="padding padding-top-xs text-plain">
 					<div class="text-sm">
 						{{- range $tag := $result.Tags -}}
-							<div class="clickable inline-block tag" hx-on:click="addTagAndSubmit('{{$tag}}')">#{{$tag}}</div>
+							<a class="clickable inline-block tag" href="/{{$token}}?q=%23{{$tag}}" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">#{{$tag}}</a>
 						{{- end -}}
 					</div>
 				</div>
