@@ -6,33 +6,115 @@
 
 {{- else -}}
     
+	<!-- Browse Tags -->
+	{{- $tags := parseTags $queryString -}}
+	{{- $last := $tags.Last -}}
+	{{- if ne "" $last -}}
+
+		{{- $tag := .SearchTag $last -}}
+		{{- if $tag.IsCustomBanner -}}
+
+			{{- $background00 :=  $tag.Colors.At 0 | parseColor -}}
+			{{- $background01 :=  $tag.Colors.At 1 | parseColor -}}
+
+			{{- $textColor := $background00.TextExt -}}
+			{{- $backgroundImage := concat "linear-gradient(135deg, " $background00.RGBA ", " $background01.RGBA ")" -}} 
+
+			<style>
+
+				body {
+					background-image: {{$backgroundImage | css}};
+				}
+
+				#search, #search a {
+					color: {{$textColor}};
+				}
+
+				#search .clearTag {
+					border: solid 1px {{$textColor}};
+					color: {{$textColor}};
+				}
+
+				.album {
+					border-radius:8px;
+					background-color:rgba(255, 255, 255, 0.1);
+				}
+
+				.album img {
+					object-fit:cover;
+					border-top-left-radius: 8px;
+					border-top-right-radius: 8px;
+				}
+			</style>
+
+			<div class="flex-center">
+				<div class="search-container margin-bottom">
+
+					<a href="/{{.Token}}" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i></a>
+
+					{{- $relatedTags := $tag.RelatedTags -}}
+					{{- if $relatedTags.IsEmpty -}}
+						<a href="/{{.Token}}" aria-hidden>Tag Menu</a>
+					{{- else -}}
+						<div class="inline-block margin-right-sm"></div>
+						{{- range $index, $relatedTag := $relatedTags -}}
+							<div class="clearTag text-sm" role="button" hx-on:click="addTagAndSubmit('{{$relatedTag}}')">{{$relatedTag}}</div>
+						{{- end -}}
+					{{- end -}}
+
+				</div>
+			</div>
+		{{- end -}}
+	{{- end -}}
+
+	<div class="flex-center margin-bottom-xl">
+		<div class="search-container">
+			<button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">{{icon "plus-circle"}} Follow for Updates</button>
+			<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
+		</div>
+	</div>
+
+	<!-- Search Albums Here -->
 	{{- $results := .Search.Top120 -}}
 	{{- $results := $results.WhereType "Album" -}}
 	{{- $results := $results.Slice.Shuffle -}}
 
-    <div class="text-md">
-        <button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
-        <button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
-    </div>
-    <hr>
-    <div class="columns-4">
+	<div class="columns-6 margin-vertical">
         {{- range $result := $results -}}
-			<div class="card flex-column hover-trigger">
+			<div class="album flex-column hover-trigger margin-bottom-lg">
 				<div script="install blockselect()" role="link">
-					<img src="{{$result.IconURL}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true" loading="lazy">
-					<div class="padding padding-bottom-xs text-plain">
-						<a href="{{$result.URL}}" class="turboclick">{{$result.Name}}</a><br>
+					<img src="{{$result.IconURL}}" class="margin-bottom-xs square width-100% block" aria-hidden="true" loading="lazy">
+					<div class="padding-sm padding-bottom-xs text-plain">
+						<a href="{{$result.URL}}" class="bold turboclick">{{$result.Name}}</a><br>
 					</div>
 				</div>
-				<div class="padding padding-top-xs text-plain">
-					<div class="text-sm">
+				<div class="padding-sm padding-top-xs text-plain">
+					<div class="text-sm" style="white-space:nowrap; overflow-x:hidden;">
 						{{- range $tag := $result.Tags -}}
-							<a class="clickable inline-block tag" href="/{{$token}}?q=%23{{$tag}}" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">#{{$tag}}</a>
+							{{- if ne $last $tag -}}
+							<a class="clickable inline-block clearTag" href="/{{$token}}?q=%23{{$tag}}" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">{{$tag}}</a>
+							{{- end -}}
 						{{- end -}}
 					</div>
 				</div>
 			</div>
 		{{- end -}}
     </div>
-	
+
+	<style>
+		.clearTag {
+			display:inline-block;
+			background-color:rgba(0,0,0,0);
+			border: solid 1px rgba(0,0,0, 0.5);
+			color: rgba(0,0,0, 0.75);
+			padding:4px 12px;
+			border-radius: 8px;
+			margin-right:8px;
+		}
+
+		.clearTag:hover {
+			background-color:rgba(255, 255, 255, 0.1);
+		}
+	</style>
+
 {{- end -}}

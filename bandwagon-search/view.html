@@ -3,46 +3,44 @@
 <script src="/.templates/bandwagon-search/javascript"></script>
 <script type="text/hyperscript" src="/.templates/bandwagon-search/hyperscript"></script>
 
-<div class="page">
+<div id="search" class="fullscreen padding-top-lg">
 
 	<form id="search-form" hx-get="/{{.Token}}/view-results" hx-indicator="#search-widget">
 		<input type="hidden" id="search-query" name="q">
 	</form>
 
-	<div class="pos-relative margin-bottom">
-		<div id="search-widget" script="install SearchWidget(value:'{{$queryString | trim}}', hint:'{{.Data `searchText`}}')" class="input">
-			<input 
-				type="text"
-				id="search-input"
-				class="margin-left-sm"
-			/>
-			<button class="primary htmx-request-hide" style="width:6em; text-align:center;" id="search-submit">Search</button>
-			<button class="primary htmx-request-show" style="width:6em; text-align:center;"><span class="spin">{{icon "loading"}}</span></button>
+	<div class="flex-center">
+		<div class="search-container pos-relative margin-bottom">
+			<div id="search-widget" script="install SearchWidget(value:'{{$queryString | trim}}', hint:'{{.Data `searchText`}}')" class="input">
+				<input 
+					type="text"
+					id="search-input"
+					class="margin-left-sm"
+				/>
+				<button class="primary htmx-request-hide" style="width:6em; text-align:center;" id="search-submit">Search</button>
+				<button class="primary htmx-request-show" style="width:6em; text-align:center;"><span class="spin">{{icon "loading"}}</span></button>
+			</div>
+			<form 
+				id="search-suggestions-form"
+				hx-get="/{{.Token}}/view-suggestions" 
+				hx-trigger="search"
+				hx-target="#search-suggestions" 
+				hx-swap="innerHTML" 
+				hx-push-url="false">
+				<input type="hidden" id="search-suggestion-query" name="q"/>
+				<div id="search-suggestions"></div>
+			</form>
 		</div>
-		<form 
-			id="search-suggestions-form"
-			hx-get="/{{.Token}}/view-suggestions" 
-			hx-trigger="search"
-			hx-target="#search-suggestions" 
-			hx-swap="innerHTML" 
-			hx-push-url="false">
-			<input type="hidden" id="search-suggestion-query" name="q"/>
-			<div id="search-suggestions"></div>
-		</form>
 	</div>
 
-	<div class="margin-bottom">
-		{{.Data "content" | markdown }}
-	</div>
-	
-	<div id="search-results" class="margin-top-lg">
+	<div id="search-results">
 		{{.View "view-results"}}
 	</div>
 
 	{{- if .UserCan "edit" -}}
-	<br>
-	<br>
-	<div class="pos-absolute-bottom-right text-sm">
+		<br>
+		<br>
+		<div class="pos-absolute-bottom-right text-sm">
 			Admins:
 			<button hx-get="/{{.Token}}/edit">Edit</button>
 			<button hx-get="/{{.Token}}/sharing">Sharing</button>
@@ -52,6 +50,10 @@
 </div>
 
 <style>
+	.search-container {
+		width:90%;
+		max-width: 640px;
+	}
 	#search-widget {
 		display:flex;
 		flex-direction:row;
@@ -93,9 +95,11 @@
 	#search-suggestions > div {
 		cursor:pointer;
 		padding: 4px 8px;
+		color:var(--black);
 	}
 
 	#search-suggestions > div.selected {
 		background-color:var(--gray20);
 	}
+
 </style>
