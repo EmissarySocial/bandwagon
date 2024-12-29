@@ -129,7 +129,7 @@
 						</div>
 					</div>
 					<div class="padding-sm padding-top-xs text-plain">
-						<div class="text-sm" style="white-space:nowrap; overflow-x:hidden;">
+						<div class="text-xs" style="white-space:nowrap; overflow-x:hidden;">
 							{{- range $tag := $result.Tags -}}
 								{{- if ne $last $tag -}}
 								<a class="clickable inline-block clearTag turboclick" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag}}')" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">{{$tag}}</a>
@@ -147,7 +147,7 @@
 				background-color:rgba(0,0,0,0);
 				border: solid 1px rgba(0,0,0, 0.5);
 				color: rgba(0,0,0, 0.75);
-				padding:4px 12px;
+				padding:4px 8px;
 				border-radius: 8px;
 				margin-right:8px;
 			}
