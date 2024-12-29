@@ -345,7 +345,7 @@
 					}
 					{do:"set-state", state:"published"}
 					{do:"save-and-publish", outbox:"true"}
-					{do:"search-index", text:"{{.Label}} {{.Summary}}"}
+					{do:"include", action:"add-to-search-results"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
 						// metadata for album attachments
@@ -384,6 +384,12 @@
 				{do: "unpublish", outbox:"true"}
 				{do: "delete-archive", token:"FULL-ALBUM"}
 				{do: "refresh-page"}
+			]
+		}
+
+		search-index: {
+			steps: [
+				{do:"search-index", text:"{{.Label}} {{.Summary}}"}
 			]
 		}
 
