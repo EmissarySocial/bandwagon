@@ -26,13 +26,15 @@ end
 
 def addSuggestion()
 	if the #search-suggestions's *visibility is not "hidden" then
-
-		set currentValue to the #search-input's value
-		make a RegExp from "#[^ ]*" called findTag
-		set the #search-input's value to currentValue.replace(findTag, "")
 		
 		set suggestion to the first <div.selected /> in #search-suggestions
-		if suggestion is not null then
+
+		if suggestion is undefined then
+			replaceTags()
+		else
+			make a RegExp from "#[^ ]*" called findTag
+			set currentValue to the #search-input's value
+			set the #search-input's value to currentValue.replace(findTag, "")
 			addTag(suggestion.innerHTML)
 		end
 
