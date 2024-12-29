@@ -10,6 +10,17 @@ def replaceTags
 	end
 end
 
+def clearSearch()
+	set the #search-input's value to ""
+	tell <div [data-tag] /> 
+		remove yourself
+	end	
+end
+
+def submitSearch()
+	send click to the #search-submit
+end
+
 def addTag(tag)
 	if tag is not "" then
 		set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`

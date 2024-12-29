@@ -26,7 +26,7 @@
 		<div class="flex-center margin-top-lg">
 			<div class="table search-container">
 				{{- range $index, $tag := $tags -}}
-					<div class="link" role="link" script="on click go to url /{{$token}}?q=%23{{$tag.Name}}">
+					<div class="link turboclick" role="link" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag.Name}}')">
 						{{icon "tag"}} {{$tag.Name}}
 					</div>
 				{{- end -}}
@@ -91,15 +91,15 @@
 				<div class="flex-center margin-bottom-lg">
 					<div class="search-container">
 
-						<a href="/{{.Token}}" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i></a>
+						<a hx-on:click="clearSearch(); submitSearch()" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i></a>
 
 						{{- $relatedTags := $tag.RelatedTags -}}
 						{{- if $relatedTags.IsEmpty -}}
-							<a href="/{{.Token}}" aria-hidden>Tag Menu</a>
+							<a hx-on:click="clearSearch(); submitSearch()" class="turboclick" aria-hidden>Tag Menu</a>
 						{{- else -}}
 							<div class="inline-block margin-right-sm"></div>
 							{{- range $index, $relatedTag := $relatedTags -}}
-								<div class="clearTag text-sm" role="button" hx-on:click="addTagAndSubmit('{{$relatedTag}}')">{{$relatedTag}}</div>
+								<div class="clearTag text-sm turboclick" role="button" hx-on:click="addTagAndSubmit('{{$relatedTag}}')">{{$relatedTag}}</div>
 							{{- end -}}
 						{{- end -}}
 
@@ -121,9 +121,9 @@
 
 		<div class="columns-6 margin">
 			{{- range $result := $results -}}
-				<div class="album flex-column hover-trigger margin-bottom-lg">
+				<div class="album flex-column hover-trigger hover-swell margin-bottom-lg">
 					<div script="install blockselect()" role="link">
-						<img src="{{$result.IconURL}}" class="margin-bottom-xs square width-100% block" aria-hidden="true" loading="lazy">
+						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" aria-hidden="true" loading="lazy">
 						<div class="padding-sm padding-bottom-xs text-plain">
 							<a href="{{$result.URL}}" class="bold turboclick">{{$result.Name}}</a><br>
 						</div>
@@ -132,7 +132,7 @@
 						<div class="text-sm" style="white-space:nowrap; overflow-x:hidden;">
 							{{- range $tag := $result.Tags -}}
 								{{- if ne $last $tag -}}
-								<a class="clickable inline-block clearTag" href="/{{$token}}?q=%23{{$tag}}" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">{{$tag}}</a>
+								<a class="clickable inline-block clearTag turboclick" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag}}')" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">{{$tag}}</a>
 								{{- end -}}
 							{{- end -}}
 						</div>
