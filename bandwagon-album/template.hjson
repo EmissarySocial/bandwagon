@@ -345,7 +345,7 @@
 					}
 					{do:"set-state", state:"published"}
 					{do:"save-and-publish", outbox:"true"}
-					{do:"include", action:"add-to-search-results"}
+					{do:"include", action:"search-index"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
 						// metadata for album attachments
