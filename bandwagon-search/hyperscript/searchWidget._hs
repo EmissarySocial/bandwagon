@@ -29,7 +29,7 @@ behavior SearchWidget(value, hint)
 	-- Tags
 
 	-- Add tags (if suggestions are visible) or submit the form
-	on keydown[key=="Enter"] from #search-input
+	on keyup[key=="Enter"] from #search-input
 		if the #search-suggestions's *visibility is "hidden" then
 			send click to the #search-submit
 		else
