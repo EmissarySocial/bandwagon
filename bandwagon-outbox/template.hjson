@@ -7,11 +7,13 @@
 	schema: {
 		type: object
 		properties: {
+			statusMessage: {type:"string"}
 			location: {type:"string"}
 			data: {
 				type: object
 				wildcard: string
 				properties: {
+					tags: {type:"string"}
 					show-albums: {type:"string"}
 					show-events: {type:"string"}
 					show-news: {type:"string"}
@@ -121,6 +123,7 @@
 									children: [
 										{type:"text", path:"displayName", label:"Name"}
 										{type:"textarea", path:"statusMessage", label:"Bio/Comment", description:"A brief statement about you. Markdown is allowed."}
+										{type:"textarea", path:"data.tags", label:"Tags", description:"Use #Hashtags separated by spaces"}
 										{type:"text", path:"location", label:"Location"}
 										{type:"toggle", path:"isPublic", options:{text:"Public (visible to people)"}}
 										{type:"toggle", path:"isIndexable", options:{text:"Indexable (request inclusion in search engines)"}}
@@ -187,6 +190,7 @@
 					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
 					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
+					{do:"process-tags", paths:["data.tags"]}
 					{do:"save"}
 					{do:"search-index", if:"{{.IsIndexable}}"}
 					{do:"refresh-page"}

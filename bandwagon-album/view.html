@@ -72,10 +72,10 @@
 				</div>
 				<h1 class="margin-top-none">{{.Label}}</h1>
 
-				<div>
+				<div class="text-sm">
 					{{- range $index, $tag := $tags -}}
 						{{- if eq "Hashtag" $tag.Type}}
-							<a href="/search?q={{$tag.Name}}" class="inline-block tag margin-right-xs text-sm">{{$tag.Name}}</a>
+							<a href="/albums?q=%23{{$tag.Name}}" class="tag">#{{$tag.Name}}</a>
 						{{- end -}}
 					{{- end -}}
 				</div>

@@ -71,16 +71,23 @@
 				<div class="width-48"></div>
 				<div>
 					<div class="max-width-640 text-gray">{{.StatusMessage | markdown}}</div>
-					<div class="max-width-640">
+					<div class="max-width-640 margin-top-sm">
 						<span class="bold" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
-
 						{{- range  $index, $link := .Links }}
 							<span aira-hidden="true">&middot;</span>
 							<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
 						{{- end -}}
 					</div>
 		
-					<div class="margin-top">
+					{{- if .Tags.NotEmpty -}}
+						<div class="margin-top max-width-640">
+							{{- range .Tags -}}
+								<a href="/artists?q=%23{{.Name}}" role="link" class="tag">#{{.Name}}</a>
+							{{- end -}}
+						</div>
+					{{- end -}}
+
+					<div class="margin-top-lg">
 						{{- if not .IsMyself -}}
 						<button class="primary text-md" hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
 						<button class="text-md" hx-get="/@{{.UserID}}/intent">{{icon "more-horizontal"}}</button>
@@ -91,6 +98,7 @@
 							<div>3. Navigation menus will show all items of each type.</div>
 						{{- end -}}
 					</div>
+
 				</div>
 			</div>
 

@@ -1,25 +1,80 @@
-{{- $users := .Users.Indexable.Slice -}}
-{{- $users := $users.Shuffle -}}
+{{- $query := .QueryParam "q" -}}
+{{- $tags := parseTags $query -}}
 
-<div class="columns-4">
-	{{- range $index, $user := $users -}}
-		<div class="padding align-center turboclick" role="link" hx-get="/@{{$user.Username}}">
+{{- $results := .Search.ByName -}}
+{{- $results := $results.WhereType "Person" -}}
 
-			{{- if eq "" $user.IconURL -}}
-				<div class="circle-128 margin-horizontal-auto"></div>
-			{{- else -}}
-				<img src="{{$user.IconURL}}" class="block circle-128 margin-horizontal-auto" loading="lazy">
-			{{- end -}}
-			<div class="text-center margin-top" style="max-width:100%;">
-				<div class="bold ellipsis">{{$user.DisplayName}}</div>
-				<div class="text-gray text-sm ellipsis-block" style="height:4.5em;">
-					{{if eq "" $user.StatusMessage -}}
-						@{{$user.Username}}
-					{{- else -}}
-						{{$user.StatusMessage}}
+{{- if eq "" $query -}}
+	{{- $results = $results.Top600.Slice.Shuffle -}}
+{{- else -}}
+	{{- $results = $results.Top120.Slice -}}
+{{- end -}}
+
+<!-- No Results -->
+{{- if $results.IsEmpty -}}
+
+	{{- $tags := .FeaturedSearchTags.Slice -}}
+
+	<div class="align-center flex-center text-lg text-gray">
+		<br>
+		Sorry. There are no musicians that match your criteria.
+		<br>
+		<br>
+		Please try different search terms.
+	</div>
+
+{{- else -}}
+
+	{{- $token := .Token -}}
+
+	{{- if ne "" $query -}}
+		{{- template "tag-header" . -}}
+	{{- end -}}
+
+	<div class="page">
+
+		{{- if eq 1 $tags.Length -}}
+			<h1 class="margin-top-none margin-bottom">{{$tags.First}}</h1>
+		{{- end -}}
+
+		<div class="columns-4 margin-vertical">
+			{{- range $index, $result := $results -}}
+				<div class="align-center">
+					<div role="link" script="install blockselect()">
+
+						{{- if eq "" $result.IconURL -}}
+							<div class="circle-128 margin-right-sm"></div>
+						{{- else -}}
+							<img src="{{$result.IconURL}}" class="circle-128 margin-right-sm" loading="lazy">
+						{{- end -}}
+
+						<div class="flex-grow">
+							<div class="margin-none ellipsis">
+								<a href="{{$result.URL}}" tabIndex="none" class="bold text-plain text-black">{{$result.Name}}</a>
+							</div>
+							<div class="text-gray text-sm">
+								{{- $result.AttributedTo -}}
+							</div>
+						</div>
+					</div>
+					{{- if $result.Tags.NotEmpty -}}
+						<div class="margin-top align-center">
+							{{- range $index, $tag := $result.Tags.FirstN 3 -}}
+								<span hx-on:click="clearSearch(); addTagAndSubmit('{{$tag}}')" class="tag margin-horizontal-xs" role="button">{{$tag}}</span>
+							{{- end -}}
+						</div>
 					{{- end -}}
 				</div>
-			</div>
+			{{- end -}}
 		</div>
-	{{- end -}}
-</div>
+	</div>
+
+	<style>
+		#search-results h1,
+		#search-results .page {
+			margin-right:auto!important;
+			margin-left:auto!important;
+		}
+	</style>
+
+{{- end -}}

@@ -1,7 +1,5 @@
-{{- $query := .QueryParam "q" -}}
-{{- $tags := .AllowedSearchTags.WhereContains "name" $query -}}
-{{- $tags := $tags.ByName.Slice -}}
+{{- $searchTags := .AllowedSearchTags.Top12.ByName.Slice -}}
 
-{{- range $tag := $tags -}}
-	<div script="install SearchSuggestion">{{$tag.Name}}</div>
+{{- range $searchTag := $searchTags -}}
+	<div script="install SearchSuggestion">{{$searchTag.Name}}</div>
 {{- end -}}

@@ -1,6 +1,8 @@
 {{- $token := .Token -}}
-{{- $queryString := .QueryParam "q" -}}
-{{- if eq "" $queryString -}}
+{{- $query := .QueryParam "q" -}}
+{{- $tags := parseTags $query -}}
+
+{{- if eq "" $query -}}
 
 	{{template "view-tags" .}}
 
@@ -34,86 +36,13 @@
 		</div>
 
 	{{- else -}}
-
-		<!-- Browse Tags -->
-		{{- $tags := parseTags $queryString -}}
-		{{- $first := $tags.First -}}
-		{{- $last := $tags.Last -}}
-
-		{{- if ne "" $last -}}
-
-			{{- $tag := .SearchTag $last -}}
-			{{- if $tag.IsCustomBanner -}}
-
-				{{- $background00 :=  $tag.Colors.At 0 | parseColor -}}
-				{{- $background01 :=  $tag.Colors.At 1 | parseColor -}}
-
-				{{- $textColor := $background00.TextExt -}}
-				{{- $menuColor := $textColor.Text -}}
-				{{- $backgroundImage := concat "linear-gradient(120deg, " $background00.RGBA ", " $background01.RGBA ")" -}} 
-
-				<style>
-					body {
-						background-image: {{$backgroundImage | css}};
-					}
-
-					nav {
-						background-color: {{$menuColor}};
-						border-bottom:none;
-					}
-
-					nav a {
-						background-color: {{$menuColor}};
-						color: {{$textColor}};
-					}
-
-					#search, #search a {
-						color: {{$textColor}};
-					}
-
-					#search .clearTag {
-						border: solid 1px {{$textColor}};
-						color: {{$textColor}};
-					}
-
-					.album {
-						border-radius:8px;
-						background-color:rgba(255, 255, 255, 0.1);
-					}
-
-					.album img {
-						object-fit:cover;
-						border-top-left-radius: 8px;
-						border-top-right-radius: 8px;
-					}
-				</style>
-
-				<div class="flex-center margin-bottom-lg">
-					<div class="search-container">
-
-						<a hx-on:click="clearSearch(); submitSearch()" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i></a>
-
-						{{- $relatedTags := $tag.RelatedTags -}}
-						{{- if $relatedTags.IsEmpty -}}
-							<a hx-on:click="clearSearch(); submitSearch()" class="turboclick" aria-hidden>Tag Menu</a>
-						{{- else -}}
-							<div class="inline-block margin-right-sm"></div>
-							{{- range $index, $relatedTag := $relatedTags -}}
-								<div class="clearTag text-sm turboclick" role="button" hx-on:click="addTagAndSubmit('{{$relatedTag}}')">{{$relatedTag}}</div>
-							{{- end -}}
-						{{- end -}}
-
-					</div>
-				</div>
-
-				{{- if eq 1 $tags.Length -}}
-					<h1 class="margin margin-bottom-sm" style="color:{{$textColor}};">{{$tag.Name}}</h1>
-				{{- end -}}
-
-			{{- end -}}
-
-		{{- end -}}
+	
+		{{- template "tag-header" . -}}
 		
+		{{- if eq 1 $tags.Length -}}
+			<h1 class="margin margin-bottom-sm">{{$tags.First}}</h1>
+		{{- end -}}
+
 		<div class="margin-horizontal text-sm">
 			<button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">{{icon "plus-circle"}} Follow for Updates</button>
 			<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
@@ -131,8 +60,8 @@
 					<div class="padding-sm padding-top-xs text-plain">
 						<div class="text-xs" style="white-space:nowrap; overflow-x:hidden;">
 							{{- range $tag := $result.Tags -}}
-								{{- if ne $last $tag -}}
-								<a class="clickable inline-block clearTag turboclick" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag}}')" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">{{$tag}}</a>
+								{{- if not ($tags.Contains $tag) -}}
+									<a class="clickable inline-block clearTag turboclick" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag}}')" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">{{$tag}}</a>
 								{{- end -}}
 							{{- end -}}
 						</div>
@@ -142,6 +71,17 @@
 		</div>
 
 		<style>
+			.album {
+				border-radius:8px;
+				background-color:rgba(255, 255, 255, 0.1);
+			}
+
+			.album img {
+				object-fit:cover;
+				border-top-left-radius: 8px;
+				border-top-right-radius: 8px;
+			}
+
 			.clearTag {
 				display:inline-block;
 				background-color:rgba(0,0,0,0);

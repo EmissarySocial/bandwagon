@@ -14,7 +14,7 @@ behavior SearchWidget(value, hint)
 		-- prepare the input to send to the server
 		set the #search-query's value to ""
 		repeat for tag in <[data-tag]/> in me
-			append " #" + the tag's @data-tag to the #search-query's value
+			append "#" + the tag's @data-tag + " " to the #search-query's value
 		end
 	
 		-- special case for tag suggestions
