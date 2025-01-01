@@ -33,6 +33,7 @@
 	}
 
 	socialRole: Album
+	searchText: "{{.Label}} {{.Summary}} {{index .Data `year`}}"
 	socialRules: [
 		
 		{target:"@context", append:"https://funkwhale.audio/ns"}
@@ -47,7 +48,9 @@
 		{target:"artists", append:{type:"Artist"}}
 		{target:"artists.0.id", path:"attributedTo.profileUrl"}
 		{target:"artists.0.name", path:"attributedTo.name"}
+		{target:"tracks", expression:"{{.URL}}/pub/children"}
 	]
+
 
 	states: {
 		unpublished: {
@@ -233,6 +236,7 @@
 			roles: ["author"]
 			steps: [
 				{do: "delete"}
+				{do:"search-index", action:"delete"}
 				{do: "forward-to", url: "/@{{.AttributedTo.UserID.Hex}}"}
 			]
 		}
@@ -345,7 +349,7 @@
 					}
 					{do:"set-state", state:"published"}
 					{do:"save-and-publish", outbox:"true"}
-					{do:"include", action:"search-index"}
+					{do:"search-index"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
 						// metadata for album attachments
@@ -384,12 +388,6 @@
 				{do: "unpublish", outbox:"true"}
 				{do: "delete-archive", token:"FULL-ALBUM"}
 				{do: "refresh-page"}
-			]
-		}
-
-		search-index: {
-			steps: [
-				{do:"search-index", text:"{{.Label}} {{.Summary}}"}
 			]
 		}
 

@@ -34,6 +34,7 @@
 	}
 
 	socialRole: Audio
+	searchText: "{{.Label}} {{index .Data `lyrics`}}"
 	socialRules: [
 		{target:"@context", append:"https://funkwhale.audio/ns"}
 		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
