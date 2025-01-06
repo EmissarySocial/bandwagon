@@ -1,38 +1,40 @@
-def replaceTags
-	set value to the #search-input's value
-	set result to parseTags(value)
+def replaceTags(value)
 
-	set the #search-input's value to result.remainder
+	if value is undefined then
+		set value to the #seardch-input's value
+	end
+
 	hide the #search-suggestions with visibility
+	set result to parseTags(value)	
+	set the #search-input's value to result.remainder
 
 	for tag in result.tags
 		addTag(tag)
 	end
 end
 
-def clearSearch()
-	set the #search-input's value to ""
-	tell <div [data-tag] /> 
+def clearTags()
+	tell <div [data-tag] /> in the #search-widget
 		remove yourself
 	end	
 end
 
-def submitSearch()
-	send click to the #search-submit
-end
-
 def addTag(tag)
-	if tag is not "" then
-		set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
-		put newTag before the #search-input
-	end
-end
 
-def addTagAndSubmit(tag)
-	if tag is not "" then
-		addTag(tag)
-		send click to the #search-submit
+	-- Guarantee that the tag is not empty
+	if tag is "" then
+		exit
 	end
+
+	-- Guarantee that the tag is unique
+	set exists to <div [data-tag=${tag}] /> in #search-widget
+	if exists.length is greater than 0 then
+		exit
+	end
+
+	-- Add the tag to the collection
+	set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
+	put newTag before the #search-input
 end
 
 def addSuggestion()

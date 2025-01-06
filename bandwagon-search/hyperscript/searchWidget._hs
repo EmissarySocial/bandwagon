@@ -2,10 +2,10 @@ behavior SearchWidget(value, hint)
 
 	init
 		set :lastSearchValue to ""
-		set the #search-input's value to value
 		set the #search-input's placeholder to hint
 		focus() the #search-input
-		replaceTags()
+		clearTags()
+		replaceTags(value)
 	end
 
 	-- submit the search
@@ -30,11 +30,11 @@ behavior SearchWidget(value, hint)
 
 	-- Add tags (if suggestions are visible) or submit the form
 	on keyup[key=="Enter"] from #search-input
-		if the #search-suggestions's *visibility is "hidden" then
-			send click to the #search-submit
-		else
+		if the #search-suggestions's *visibility is not "hidden" then
 			addSuggestion()
 		end
+
+		send click to the #search-submit
 	end
 
 	-- Maybe add Tags
@@ -56,6 +56,8 @@ behavior SearchWidget(value, hint)
 		if tag is not null then 
 			remove the tag
 		end
+
+		send click to the #search-submit
 	end
 
 	-- navigate tags
@@ -68,7 +70,7 @@ behavior SearchWidget(value, hint)
 			exit
 		end
 
-		set tag to the last <[data-tag]/> in me
+		set tag to the last <[data-tag]/> in #search-widget
 		if tag is not null then 
 			focus() the tag
 		end
@@ -87,7 +89,7 @@ behavior SearchWidget(value, hint)
 		if the #search-input's value contains "#" then 
 			trigger showSuggestions on me
 		else
-			hide the #search-suggestions with visibility
+			trigger hideSuggestions on me
 		end
 	end
 

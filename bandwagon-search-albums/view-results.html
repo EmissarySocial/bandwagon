@@ -28,7 +28,7 @@
 		<div class="flex-center margin-top-lg">
 			<div class="table search-container">
 				{{- range $index, $tag := $tags -}}
-					<div class="link turboclick" role="link" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag.Name}}')">
+					<div class="link turboclick" role="link" hx-get="/{{$token}}?q=%23{{$tag.Name}}">
 						{{icon "tag"}} {{$tag.Name}}
 					</div>
 				{{- end -}}
@@ -61,7 +61,7 @@
 						<div class="text-xs" style="white-space:nowrap; overflow-x:hidden;">
 							{{- range $tag := $result.Tags -}}
 								{{- if not ($tags.Contains $tag) -}}
-									<a class="clickable inline-block clearTag turboclick" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag}}')" hx-target="main" hx-swap="innerHTML" hx-push-url="false" xhx-on:click="addTagAndSubmit('{{$tag}}')">{{$tag}}</a>
+									<a hx-get="/{{$token}}?q=%23{{$tag}}" class="clickable inline-block clearTag turboclick">{{$tag}}</a>
 								{{- end -}}
 							{{- end -}}
 						</div>

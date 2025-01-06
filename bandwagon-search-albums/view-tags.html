@@ -5,7 +5,7 @@
 	{{- range $index, $tag := $tags -}}
 		{{- $backgroundColor := $tag.Colors.At 0 -}}
 		{{- $textColor := (parseColor $backgroundColor).TextExt.Hex -}}
-		<div class="flex-center turboclick aspect-4-3 flex-column hover-trigger turboclick" hx-on:click="clearSearch(); addTagAndSubmit('{{$tag.Name}}')" role="link" style="background-color: {{$backgroundColor}}; color:{{$textColor}};">
+		<div hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="flex-center turboclick aspect-4-3 flex-column hover-trigger turboclick" role="link" style="background-color: {{$backgroundColor}}; color:{{$textColor}};">
 			<!--img src="{{$tag.Name}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true" loading="lazy"-->
 			<div class="padding padding text-xxl bold text-plain" style="color:{{$textColor}};">{{$tag.Name}}</div>
 		</div>

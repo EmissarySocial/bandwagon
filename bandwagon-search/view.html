@@ -1,37 +1,6 @@
-{{- $queryString := .QueryParam "q" -}}
-
-<script src="/.templates/bandwagon-search/javascript"></script>
-<script type="text/hyperscript" src="/.templates/bandwagon-search/hyperscript"></script>
-
 <div id="search" class="fullscreen padding-top-lg">
 
-	<form id="search-form" hx-get="/{{.Token}}/view-results" hx-indicator="#search-widget">
-		<input type="hidden" id="search-query" name="q">
-	</form>
-
-	<div class="flex-center">
-		<div class="search-container pos-relative margin-bottom">
-			<div id="search-widget" script="install SearchWidget(value:'{{$queryString | trim}}', hint:'{{.Data `searchText`}}')" class="input">
-				<input 
-					type="text"
-					id="search-input"
-					class="margin-left-sm"
-				/>
-				<button class="primary htmx-request-hide" style="width:3em; text-align:center;" aria-label="Search" id="search-submit">{{icon "search"}}</button>
-				<button class="primary htmx-request-show" style="width:3em; text-align:center;"><span class="spin">{{icon "loading"}}</span></button>
-			</div>
-			<form 
-				id="search-suggestions-form"
-				hx-get="/{{.Token}}/view-suggestions" 
-				hx-trigger="search"
-				hx-target="#search-suggestions" 
-				hx-swap="innerHTML" 
-				hx-push-url="false">
-				<input type="hidden" id="search-suggestion-query" name="q"/>
-				<div id="search-suggestions"></div>
-			</form>
-		</div>
-	</div>
+	{{- template "view-widget" . -}}
 
 	<div id="search-results">
 		{{.View "view-results"}}
@@ -101,5 +70,4 @@
 	#search-suggestions > div.selected {
 		background-color:var(--gray20);
 	}
-
 </style>

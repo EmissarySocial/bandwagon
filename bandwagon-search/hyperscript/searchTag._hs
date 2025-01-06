@@ -25,6 +25,7 @@ behavior SearchTag
             focus() the #search-input
         end
         remove me
+		send click to the #search-submit
     end
 
     on keydown[key=="ArrowLeft"]

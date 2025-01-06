@@ -1,3 +1,4 @@
+{{- $token := .Token -}}
 {{- $query := .QueryParam "q" -}}
 
 {{- if ne "" $query -}}
@@ -7,7 +8,7 @@
 	<div class="flex-center margin-bottom-lg">
 		<div class="search-container">
 
-			<a hx-on:click="clearSearch(); submitSearch()" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
+			<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
 
 			{{- if $tags.NotEmpty -}}
 
@@ -57,7 +58,7 @@
 				{{- if $tag.RelatedTags.NotEmpty -}}
 					<div class="inline-block margin-right-sm"></div>
 					{{- range $index, $relatedTag := $tag.RelatedTags -}}
-						<div class="clearTag text-sm turboclick" role="button" hx-on:click="addTagAndSubmit('{{$relatedTag}}')">{{$relatedTag}}</div>
+						<div class="clearTag text-sm turboclick" role="button" hx-get="/{{$token}}?q={{$query | queryEscape }}+%23{{$relatedTag}}">{{$relatedTag}}</div>
 					{{- end -}}
 				{{- end -}}
 
