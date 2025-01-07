@@ -51,7 +51,6 @@
 		{target:"tracks", expression:"{{.URL}}/pub/children"}
 	]
 
-
 	states: {
 		unpublished: {
 			label:"Default State"
@@ -221,12 +220,14 @@
 				]}
 				{do: "upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1}
 				{do: "process-tags", paths:"data.tags"}
-				{do: "if", "condition": "{{.IsPublished}}", 
+				{do: "if", condition: "{{.IsPublished}}", 
 					then: [
 						{do:"search-index", text:"{{.Label}} {{.Summary}}"}
 						{do:"save-and-publish"}
 					], 
-					else: [{do:"save"}]
+					else: [
+						{do:"save"}
+					]
 				}
 				{do: "refresh-page"}
 			]
