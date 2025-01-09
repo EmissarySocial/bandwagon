@@ -330,8 +330,9 @@
 
 		{{- if $songs.NotEmpty -}}
 			<audio hx-on:ended="PlayNext()">
-				<source id="source-aac" type="audio/aac">
+				<!--source id="source-aac" type="audio/aac"-->
 				<source id="source-mp3" type="audio/mp3">
+				<source id="source-ogg" type="audio/ogg">
 			</audio>
 
 			<script src="/.templates/bandwagon-album/javascript" preload></script>
