@@ -1,7 +1,7 @@
 {{- $token := .Token -}}
 {{- $tags := .FeaturedSearchTags.ByRank.Slice -}}
 
-<div class="columns-6 no-gap margin-top">
+<div class="columns-6 xno-gap margin-top">
 	{{- range $index, $tag := $tags -}}
 
 		{{- $background00 :=  $tag.Colors.At 0 | parseColor -}}
@@ -10,10 +10,10 @@
 		{{- $textColor := $background00.Text -}}
 		{{- $shadowColor := $textColor.Text -}}
 
-		<div hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="flex-center pos-relative padding-sm turboclick aspect-4-3 flex-column hover-trigger" role="link" style="background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}};">
-			<div style="height:100%; width:100%; overflow:hidden;">
+		<div hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="flex-center pos-relative turboclick flex-column hover-trigger" role="link" style="padding:6px; background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}}; border-radius:8px;">
+			<div class="aspect-square" style="height:100%; width:100%; overflow:hidden; border-radius:6px;">
 				{{- if ne ""  $tag.ImageURL }}
-					<img src="{{$tag.ImageURL}}" class="width-100% block" style="object-fit:cover;" aria-label="{{$tag.Name}}" loading="lazy">
+					<img src="{{$tag.ImageURL}}" class="block" style="width:100%; height:100%; object-fit:cover;" aria-label="{{$tag.Name}}" loading="lazy">
 				{{- end -}}
 				<div class="align-center pos-absolute-bottom margin-none text-xxxl bold text-plain" style="color:{{$textColor}}; text-shadow:0px 0px 5px {{$shadowColor}};">{{$tag.Name}}</div>
 			</div>
