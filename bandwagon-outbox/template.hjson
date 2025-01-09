@@ -163,7 +163,7 @@
 									children: [
 										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Navigation Bar"}}
 										{type:"text", path:"data.label-events", label:"Navigation Bar Text", options:{placeholder:"Shows"}}
-										{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
+										{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Events' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
 								{
@@ -172,7 +172,7 @@
 									children: [
 										{type:"toggle", path:"data.show-news", options:{text:"Display 'News' in Navigation Bar"}}
 										{type:"text", path:"data.label-news", label:"Navigation Bar Text", options:{placeholder:"News"}}
-										{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
+										{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'News' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
 								{
