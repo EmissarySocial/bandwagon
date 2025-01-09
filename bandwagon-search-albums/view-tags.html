@@ -1,16 +1,22 @@
 {{- $token := .Token -}}
 {{- $tags := .FeaturedSearchTags.ByRank.Slice -}}
 
-<div class="columns-6 no-gap">
+<div class="columns-6 no-gap margin-top">
 	{{- range $index, $tag := $tags -}}
+
 		{{- $background00 :=  $tag.Colors.At 0 | parseColor -}}
 		{{- $background01 :=  $tag.Colors.At 1 | parseColor -}}
 		{{- $backgroundImage := concat "linear-gradient(120deg, " $background00.RGBA ", " $background01.RGBA ")" -}} 
+		{{- $textColor := $background00.Text -}}
+		{{- $shadowColor := $textColor.Text -}}
 
-		{{- $textColor := $background00.TextExt.Hex -}}
-		<div hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="flex-center turboclick aspect-4-3 flex-column hover-trigger turboclick" role="link" style="background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}};">
-			<!--img src="{{$tag.Name}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true" loading="lazy"-->
-			<div class="padding padding text-xxl bold text-plain" style="color:{{$textColor}};">{{$tag.Name}}</div>
+		<div hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="flex-center pos-relative padding-sm turboclick aspect-4-3 flex-column hover-trigger" role="link" style="background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}};">
+			<div style="height:100%; width:100%; overflow:hidden;">
+				{{- if ne ""  $tag.ImageURL }}
+					<img src="{{$tag.ImageURL}}" class="width-100% block" style="object-fit:cover;" aria-label="{{$tag.Name}}" loading="lazy">
+				{{- end -}}
+				<div class="align-center pos-absolute-bottom margin-none text-xxxl bold text-plain" style="color:{{$textColor}}; text-shadow:0px 0px 5px {{$shadowColor}};">{{$tag.Name}}</div>
+			</div>
 		</div>
 	{{- end -}}
 </div>

@@ -5,55 +5,61 @@
 
 	{{- $tags := parseTags $query -}}
 
-	<div class="flex-center margin-bottom-lg">
-		<div class="search-container">
+	{{- if $tags.NotEmpty -}}
 
-			<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
+		{{- $tag := .SearchTag ($tags.Last) -}}
+		{{- $imageURL := $tag.ImageURL -}}
+		{{- if ne "" $imageURL -}}
+			<img src="{{$imageURL}}" class="pos-absolute-four-corners width-100%" style="object-fit:cover; opacity:0.3; z-index:-1; filter:blur(6px);" aria-hidden="true" loading="lazy">
+		{{- end -}}
 
-			{{- if $tags.NotEmpty -}}
+		{{- $background00 := $tag.Colors.At 0 -}}
 
-				{{- $tag := .SearchTag ($tags.Last) -}}
+		{{- if ne "" $background00 -}}
 
-				{{- if $tag.IsCustomBanner -}}
+			{{- $background00 :=  $background00 | parseColor -}}
+			{{- $background01 :=  $tag.Colors.At 1 | parseColor -}}
+			{{- $backgroundImage := concat "linear-gradient(120deg, " $background00.RGBA ", " $background01.RGBA ")" -}} 
 
-					{{- $background00 :=  $tag.Colors.At 0 | parseColor -}}
-					{{- $background01 :=  $tag.Colors.At 1 | parseColor -}}
-					{{- $backgroundImage := concat "linear-gradient(120deg, " $background00.RGBA ", " $background01.RGBA ")" -}} 
+			{{- $textColor := $background00.TextExt -}}
+			{{- $menuColor := $textColor.Text -}}
 
-					{{- $textColor := $background00.TextExt -}}
-					{{- $menuColor := $textColor.Text -}}
+			<style>
+				body {
+					background-image: {{$backgroundImage | css}};
+					color: {{$textColor}};
+				}
 
-					<style>
-						body {
-							background-image: {{$backgroundImage | css}};
-							color: {{$textColor}};
-						}
+				h1 {
+					color: {{$textColor}};
+				}
+		
+				nav {
+					background-color: {{$menuColor}};
+					border-bottom:none;
+				}
 
-						h1 {
-							color: {{$textColor}};
-						}
-				
-						nav {
-							background-color: {{$menuColor}};
-							border-bottom:none;
-						}
+				nav a {
+					background-color: {{$menuColor}};
+					color: {{$textColor}};
+				}
 
-						nav a {
-							background-color: {{$menuColor}};
-							color: {{$textColor}};
-						}
+				#search, #search a {
+					color: {{$textColor}};
+				}
 
-						#search, #search a {
-							color: {{$textColor}};
-						}
+				#search .clearTag {
+					border: solid 1px {{$textColor}};
+					color: {{$textColor}};
+				}
 
-						#search .clearTag {
-							border: solid 1px {{$textColor}};
-							color: {{$textColor}};
-						}
+			</style>
+		{{- end -}}
 
-					</style>
-				{{- end -}}
+		<div class="flex-center margin-bottom-lg">
+			<div class="search-container">
+
+				<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
 
 				{{- if $tag.RelatedTags.NotEmpty -}}
 					<div class="inline-block margin-right-sm"></div>
@@ -62,10 +68,18 @@
 					{{- end -}}
 				{{- end -}}
 
-			{{- end -}}
+			</div>
 
 		</div>
 
+	{{- else -}}
+
+	<div class="flex-center margin-bottom-lg">
+		<div class="search-container">
+			<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
+		</div>
 	</div>
+
+{{- end -}}
 
 {{- end -}}

@@ -226,6 +226,7 @@
 						{do:"save-and-publish"}
 					], 
 					else: [
+						{do:"search-index", action:"delete"}
 						{do:"save"}
 					]
 				}
