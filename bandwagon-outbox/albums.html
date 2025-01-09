@@ -27,10 +27,10 @@
 		<div hx-push-url="true">
 			{{- if $albums.NotEmpty -}}
 
-				<div class="sortable margin-vertical-lg columns-3">
+				<div class="sortable margin-vertical-lg columns-4">
 					{{- range $albums -}}
 						{{- if or .IsPublished $isMyself -}}
-							<div class="card hover-trigger" script="install blockselect()">
+							<div class="card hover-trigger hover-swell" script="install blockselect()">
 								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover">
 								<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block turboclick">
 									<div class="block padding">
@@ -56,13 +56,13 @@
 					{{- end -}}
 				</div>
 			{{- else if $isMyself -}}
-				<div class="margin-vertical-lg columns-3">
+				<div class="margin-vertical-lg columns-4">
 					<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-album">
 						<div class="text-3xl margin-sm">{{icon "add"}}</div>
 						Click here to add your first album
 					</div>
 
-					{{- range seq 5 -}}
+					{{- range seq 3 -}}
 						<div class="card card-dashed padding text-light-gray align-center">
 							<div class="text-3xl margin-sm">&hellip;</div>
 							Coming Soon...<br><br>

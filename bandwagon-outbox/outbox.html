@@ -106,7 +106,7 @@
 				<div class="columns-4 margin-top sortable">
 					{{- range $featured -}}
 						{{- if or .IsPublished $isMyself -}}
-							<div class="card flex-column hover-trigger" script="install blockselect()">
+							<div class="card flex-column hover-trigger hover-swell" script="install blockselect()">
 								{{- if eq "bandwagon-album" .TemplateID -}}
 									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true">
 									<div class="padding text-plain">

@@ -20,7 +20,7 @@
 		{{- end -}}
 
 		{{- if $posts.NotEmpty -}}
-			<div class="margin-vertical columns-3">
+			<div class="margin-vertical columns-4">
 				{{- range $posts -}}
 					<div class="card hover-trigger padding-sm flex-column" script="install blockselect()">
 						<h2>{{.Label}}</h2>
@@ -34,13 +34,13 @@
 			</div>
 
 		{{- else if $isMyself -}}
-			<div class="margin-top columns-3">
+			<div class="margin-top columns-4">
 				<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-news">
 					<div class="text-3xl margin-sm">{{icon "add"}}</div>
 					Click here to add your first post
 				</div>
 
-				{{- range seq 5 -}}
+				{{- range seq 3 -}}
 					<div class="card card-dashed padding text-light-gray align-center">
 						<div class="text-3xl margin-sm">&hellip;</div>
 						Coming Soon...<br><br>
