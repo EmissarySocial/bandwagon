@@ -9,14 +9,11 @@
 
 <div class="flex-center">
 	<div class="search-container pos-relative margin-bottom">
-		<div id="search-widget" script="install SearchWidget(value:'{{$queryString}}', hint:'{{.Data `searchText`}}')" class="input">
-			<input 
-				type="text"
-				id="search-input"
-				class="margin-left-sm"
-			/>
-			<button class="primary htmx-request-hide" style="width:3em; text-align:center;" aria-label="Search" id="search-submit">{{icon "search"}}</button>
-			<button class="primary htmx-request-show" style="width:3em; text-align:center;"><span class="spin">{{icon "loading"}}</span></button>
+		<div id="search-widget" script="install SearchWidget(value:{{$queryString |json}}, hint:{{.Data `searchText` |json}})" class="input">
+			<div id="search-tags"></div>
+			<input type="text" id="search-input"/>
+			<button class="primary align-center htmx-request-hide" style="width:3em;" aria-label="Search" id="search-submit">{{icon "search"}}</button>
+			<button class="primary align-center htmx-request-show" style="width:3em;"><span class="spin">{{icon "loading"}}</span></button>
 		</div>
 		<form 
 			id="search-suggestions-form"
@@ -26,7 +23,7 @@
 			hx-swap="innerHTML" 
 			hx-push-url="false">
 			<input type="hidden" id="search-suggestion-query" name="q"/>
-			<div id="search-suggestions"></div>
+			<div id="search-suggestions" script="install Popup install Listbox" style="visibility:hidden;"></div>
 		</form>
 	</div>
 </div>

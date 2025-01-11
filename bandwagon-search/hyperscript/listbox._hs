@@ -1,0 +1,41 @@
+behavior Listbox
+
+	init
+		add .list-box
+		add [@role="listbox"]
+	end
+
+	on ArrowDown
+
+		set selection to the first <[role=option].selected /> in me
+		
+		if selection is null then
+			take .selected for the first <[role=option] /> in me
+			exit
+		end
+
+		if selection is the last <[role=option] /> in me then
+			exit
+		end
+
+		take .selected for the next <[role=option] /> from selection
+	end
+
+	on ArrowUp
+		set selection to the first <[role=option].selected /> in me
+		
+		if selection is the first <[role=option] /> in me then
+			send hide to me
+			remove .selected from selection
+			exit
+		end
+
+		if selection is null then
+			send hide to me
+			exit
+		end
+
+		take .selected for the previous <[role=option] /> from selection
+	end
+
+end

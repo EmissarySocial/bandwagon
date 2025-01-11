@@ -12,24 +12,18 @@ behavior SearchTag
         set my innerHTML to my @data-tag + ` <i class="bi bi-x-lg"></i>`
     end
 
-    on click
-		trigger removeTag
-		send click to #search-submit
-	end
-
-	on removeTag or keydown[key=="Backspace"]
-        set newTag to the previous <[data-tag]/> within #search-widget
+	on click or keydown[key=="Backspace"]
+        set newTag to the previous <[data-tag]/> within #search-tags
         if newTag is not null then
             focus() the newTag
         else 
             focus() the #search-input
         end
         remove me
-		send click to the #search-submit
     end
 
     on keydown[key=="ArrowLeft"]
-        set newTag to the previous <[data-tag]/> within #search-widget
+        set newTag to the previous <[data-tag]/> within #search-tags
         if newTag is not null then
             focus() the newTag
         end
@@ -37,12 +31,17 @@ behavior SearchTag
 
     on keydown[key=="ArrowRight"]
         halt the event
-        set newTag to the next <[data-tag]/> within #search-widget
+        set newTag to the next <[data-tag]/> within #search-tags
         if newTag is not null then
             focus() the newTag
         else 
             focus() the #search-input
         end
     end
+
+	on keydown[key=="Enter"]
+		halt the event
+		send click to the #search-submit
+	end
 
 end

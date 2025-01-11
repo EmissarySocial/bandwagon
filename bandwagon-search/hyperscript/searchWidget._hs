@@ -12,9 +12,10 @@ behavior SearchWidget(value, hint)
 	on click from #search-submit
 
 		-- prepare the input to send to the server
-		set the #search-query's value to ""
-		repeat for tag in <[data-tag]/> in me
-			append "#" + the tag's @data-tag + " " to the #search-query's value
+		remove the #search-query's value
+		repeat for tag in <[data-tag]/> in #search-tags
+			set tagValue to "#" + the tag's @data-tag
+			append the tagValue + " " to the #search-query's value
 		end
 	
 		-- special case for tag suggestions
@@ -32,45 +33,43 @@ behavior SearchWidget(value, hint)
 	on keyup[key=="Enter"] from #search-input
 		if the #search-suggestions's *visibility is not "hidden" then
 			addSuggestion()
+			exit
 		end
 
 		send click to the #search-submit
 	end
 
 	-- Maybe add Tags
-	on blur from #search-input or keyup[key==" "] from #search-input
-		replaceTags()
+	on blur from #search-input
+		replaceTags(#search-input.value)
+	end
+
+	on keyup[key==" "] from #search-input
+		replaceTags(#search-input.value)
 	end
 
 	-- remove a tag
 	on keydown[key=="Backspace"] from #search-input
-		if the #search-input's selectionStart > 0 then
+
+		if not isCursorAtStart(#search-input) then
 			exit
 		end
 
-		if the #search-input's selectionEnd > 0 then
-			exit
-		end
-
-		set tag to the last <[data-tag]/> in me
+		set tag to the last <[data-tag]/> in #search-tags
 		if tag is not null then 
 			remove the tag
 		end
 
-		send click to the #search-submit
 	end
 
 	-- navigate tags
 	on keydown[key=="ArrowLeft"] from #search-input
-		if the #search-input's selectionStart > 0 then
+
+		if not isCursorAtStart(#search-input) then
 			exit
 		end
 
-		if the #search-input's selectionEnd > 0 then
-			exit
-		end
-
-		set tag to the last <[data-tag]/> in #search-widget
+		set tag to the last <[data-tag]/> in #search-tags
 		if tag is not null then 
 			focus() the tag
 		end
@@ -81,15 +80,16 @@ behavior SearchWidget(value, hint)
 
 	-- show the search suggestions
 	on focus from #search-input or keyup from #search-input 
+
 		if the #search-input's value == :lastSearchValue then
 			exit
 		end
 		set :lastSearchValue to the #search-input's value
 
 		if the #search-input's value contains "#" then 
-			trigger showSuggestions on me
+			trigger showSuggestions
 		else
-			trigger hideSuggestions on me
+			send hide to #search-suggestions
 		end
 	end
 
@@ -100,25 +100,24 @@ behavior SearchWidget(value, hint)
 		if tags.length == 0 then
 			set #search-suggestion-query.value to ""
 		else 
-			set queryString to tags[0]
-			set #search-suggestion-query.value to queryString
+			set #search-suggestion-query.value to tags[0]
 		end
 
 		send search to the #search-suggestions-form
-		show the #search-suggestions with visibility
+		send show to #search-suggestions
 	end
 
 	-- hide search suggestions
-	on hideSuggestions 
-		hide the #search-suggestions with visibility
+	on blur from #search-input
+		send hide to #search-suggestions
 	end
-		
-	on blur from #search-input or keyup[key=="Escape"] from #search-input
-		trigger hideSuggestions
+
+	on keyup[key=="Escape"] from #search-input
+		send hide to #search-suggestions
 	end
 
 	on click from #search-input
-		trigger hideSuggestions
+		send hide to #search-suggestions
 	end
 
 	-- keyboard navigation
@@ -127,38 +126,15 @@ behavior SearchWidget(value, hint)
 
 		if the #search-suggestions's *visibility is "hidden" then
 			trigger showSuggestions
-			exit
+		else
+			send ArrowDown to #search-suggestions
 		end
 
-		set currentLabel to the first <div.selected /> in #search-suggestions
-		
-		if currentLabel is null then
-			take .selected for the first <div /> in #search-suggestions
-			exit
-		end
-
-		if currentLabel is the last <div /> in #search-suggestions then
-			exit
-		end
-
-		take .selected for the next <div /> from currentLabel
 	end
 
 	on keydown[key=="ArrowUp"] from #search-input
 		halt the event
-		set currentLabel to the first <div.selected /> in #search-suggestions
-		
-		if currentLabel is the first <div /> in #search-suggestions then
-			hide the #search-suggestions with visibility
-			remove .selected from currentLabel
-			exit
-		end
-
-		if currentLabel is null then
-			exit
-		end
-
-		take .selected for the previous <div /> from currentLabel
+		send ArrowUp to #search-suggestions
 	end
 
 end

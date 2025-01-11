@@ -1,0 +1,16 @@
+behavior Popup
+
+	init
+		hide with visibility
+		add .pop-up
+	end
+
+	on show
+		show with visibility
+	end
+
+	on hide
+		hide with visibility
+	end
+
+end
