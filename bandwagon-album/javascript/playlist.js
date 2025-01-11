@@ -5,12 +5,10 @@ var playlistIndex = -1
 function Play() {
 
 	if (playlistIndex < 0) {
-		console.log("Underflow")
 		return
 	}
 
 	if (playlistIndex >= playlist.length) {
-		console.log("Overflow")
 		return
 	}
 
