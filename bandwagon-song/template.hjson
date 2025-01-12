@@ -118,6 +118,7 @@
 				]}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save-and-publish"}
+				{do:"search-index"}
 				{do:"forward-to", url:"/{{.StreamID}}"}
 			]
 		}
@@ -193,6 +194,7 @@
 				}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save-and-publish"}
+				{do:"search-index"}
 				{do:"refresh-page"}
 			]
 		}
