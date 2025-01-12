@@ -10,7 +10,7 @@
 
 	<!-- Search Albums Here -->
 	{{- $results := .Search.Top120 -}}
-	{{- $results := $results.WhereType "Album" -}}
+	{{- $results := $results.WhereType "Album" "Audio" -}}
 	{{- $results := $results.Slice.Shuffle -}}
 
 	<!-- No Results -->
@@ -57,7 +57,14 @@
 						<div class="padding-sm padding-bottom-xs text-plain ellipsis">
 							<a href="{{$result.URL}}" class="bold turboclick">{{$result.Name}}</a><br>
 						</div>
-						<div class="padding-left-sm text-sm text-gray">{{$result.AttributedTo}}</div>
+						<div class="padding-left-sm text-sm text-gray">
+							{{- if eq "Album" $result.Type -}}
+								Album &middot;
+							{{- else if eq "Audio" $result.Type -}}
+								Track &middot;
+							{{- end }}
+							{{$result.AttributedTo}}
+						</div>
 					</div>
 					<div class="padding-sm padding-top-xs text-plain">
 						<div class="text-xs" style="white-space:nowrap; overflow-x:hidden;">
