@@ -35,6 +35,8 @@
 		}
 	}
 
+	tagPaths: ["data.tags"]
+
 	actions: {
 
 		create: {

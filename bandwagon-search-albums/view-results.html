@@ -18,6 +18,13 @@
 
 		{{- $tags := .FeaturedSearchTags.Slice -}}
 
+		<div class="flex-center margin-bottom-lg">
+			<div class="search-container">
+				<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> Genres</a>
+				<a hx-get="/{{.Token}}/all" class="turboclick padding-right-sm"><i class="bi bi-list"></i> Albums</a>
+			</div>
+		</div>	
+
 		<div class="align-center flex-center text-lg text-gray">
 			<br>
 			Sorry. There are no results that match your criteria.
@@ -40,7 +47,7 @@
 		{{- template "tag-header" . -}}
 		
 		{{- if eq 1 $tags.Length -}}
-			<h1 class="margin margin-bottom-sm">{{$tags.First}}</h1>
+			<h1 class="margin margin-bottom-sm">#{{$tags.First}}</h1>
 		{{- end -}}
 
 		<div class="margin-horizontal text-sm">
@@ -61,17 +68,15 @@
 							{{- if eq "Album" $result.Type -}}
 								Album &middot;
 							{{- else if eq "Audio" $result.Type -}}
-								Track &middot;
+								Song &middot;
 							{{- end }}
 							{{$result.AttributedTo}}
 						</div>
 					</div>
-					<div class="padding-sm padding-top-xs text-plain">
-						<div class="text-xs" style="white-space:nowrap; overflow-x:hidden;">
-							{{- range $tag := $result.Tags -}}
-								{{- if not ($tags.Contains $tag) -}}
-									<a hx-get="/{{$token}}?q=%23{{$tag}}" class="clickable inline-block clearTag turboclick">{{$tag}}</a>
-								{{- end -}}
+					<div class="padding-bottom padding-horizontal-sm padding-top-xs text-plain">
+						<div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:scroll;">
+							{{- range $tagName := $result.TagNames -}}
+								<a hx-get="/{{$token}}?q=%23{{$tagName}}" class="clickable inline-block clearTag turboclick">{{$tagName}}</a>
 							{{- end -}}
 						</div>
 					</div>

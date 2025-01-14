@@ -75,7 +75,7 @@
 				<div class="text-sm">
 					{{- range $index, $tag := $tags -}}
 						{{- if eq "Hashtag" $tag.Type}}
-							<a href="/albums?q=%23{{$tag.Name}}" class="tag">#{{$tag.Name}}</a>
+							<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
 						{{- end -}}
 					{{- end -}}
 				</div>

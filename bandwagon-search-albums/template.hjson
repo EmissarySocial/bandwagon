@@ -21,4 +21,13 @@
 			}
 		}    
 	}
+
+	actions: {
+		all: {
+			steps: [{do:"view-html", file:"view-albums"}]
+		}
+		view-albums-list: {
+			steps: [{do:"view-html"}]
+		}
+	}
 }

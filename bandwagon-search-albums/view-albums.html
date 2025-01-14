@@ -1,0 +1,23 @@
+{{- $token := .Token -}}
+
+<div id="search" class="fullscreen padding-top-lg">
+
+	{{- template "view-widget" . -}}
+
+	<div class="flex-center margin-bottom-lg">
+		<div class="search-container">
+			<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> Genres</a>
+			<span class="bold black"><i class="bi bi-list"></i> Albums</span>
+		</div>
+	</div>
+		
+	<div class="flex-center">
+		<div>
+			<h1>All Albums</h1>
+			<div id="search-container search-results" class="table">
+				{{- .View "view-albums-list" -}}
+			</div>
+		</div>
+	</div>
+
+</div>

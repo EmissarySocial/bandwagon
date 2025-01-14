@@ -27,3 +27,76 @@
 		</form>
 	</div>
 </div>
+
+<style>
+	.search-container {
+		width:90%;
+		max-width: 640px;
+	}
+
+	#search-widget {
+		display:flex;
+		flex-direction:row;
+		flex-wrap:nowrap;
+		margin:0px;
+		padding:0px;
+	}
+
+	#search-widget:has(input:focus) {
+		outline:solid;
+		outline-color: -webkit-focus-ring-color;
+	}
+
+	#search-widget > input {
+		border:none;
+		outline:none;
+		flex-grow:1;
+	}
+
+	#search-widget > button {
+		font-size:calc(var(--rhythm) * 1.75);
+		margin:4px;
+	}
+
+	#search-tags {
+		display:flex;
+		flex-direction:row;
+		flex-wrap:nowrap;
+	}
+
+	#search-input {
+		flex-grow:1;
+		margin-left:(--rhythm);
+	}
+
+	#search-suggestions {
+		margin-top:3px;
+	}
+
+	.list-box {
+		width:100%;
+		border:solid 2px var(--gray40);
+	}
+
+	.pop-up {
+		position:absolute;
+		visibility:hidden;
+		z-index:10;
+		background-color:var(--input-background);
+		box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+		border-top:none;
+		border-bottom-left-radius: 8px;
+		border-bottom-right-radius:8px;
+	}
+
+	#search-suggestions > [role=option] {
+		display:block;
+		cursor:pointer;
+		padding: 4px 8px;
+		color:var(--black);
+	}
+
+	#search-suggestions > [role=option].selected {
+		background-color:var(--gray20);
+	}
+</style>

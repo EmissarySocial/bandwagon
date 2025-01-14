@@ -59,8 +59,8 @@
 		<div class="flex-center margin-bottom-lg">
 			<div class="search-container">
 
-				<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
-
+				<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i></a>
+				<a hx-get="/{{.Token}}/all" hx-target="main" class="turboclick padding-right-sm" aria-label="View Album Directory"><i class="bi bi-list"></i></a>
 				{{- if $tag.RelatedTags.NotEmpty -}}
 					<div class="inline-block margin-right-sm"></div>
 					{{- range $index, $relatedTag := $tag.RelatedTags -}}

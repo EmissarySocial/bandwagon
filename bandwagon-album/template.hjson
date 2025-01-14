@@ -33,7 +33,6 @@
 	}
 
 	socialRole: Album
-	searchText: "{{.Label}} {{.Summary}} {{index .Data `year`}}"
 	socialRules: [
 		
 		{target:"@context", append:"https://funkwhale.audio/ns"}
@@ -50,6 +49,15 @@
 		{target:"artists.0.name", path:"attributedTo.name"}
 		{target:"tracks", expression:"{{.URL}}/pub/children"}
 	]
+
+	tagPaths: ["data.tags"]
+
+	search: {
+		type: "Album"
+		iconUrl:""
+		summary:""
+		text: "{{.Label}} {{.Summary}} {{index .Data `year`}}"
+	}
 
 	states: {
 		unpublished: {

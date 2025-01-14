@@ -37,6 +37,7 @@
 	searchText: "{{.Label}} {{index .Data `lyrics`}}"
 	socialRules: [
 		{target:"@context", append:"https://funkwhale.audio/ns"}
+		{target:"type", value:"Audio"}
 		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
 		{target:"attributedTo.name", path:"attributedTo.name"},
 		{target:"links", forEach:"data.links", rules:[
@@ -52,6 +53,12 @@
 		{target:"content", path:"data.lyrics"}
 		{target:"album", expression:"{{.ParentURL}}"}
 		{target:"library", expression:"{{.ParentURL}}/pub/children"}
+	]
+
+	searchRules: [
+		{target:"type", value:"Audio"}
+		{target:"fullText", expression:"{{.Label}} {{index .Data `lyrics`}}"}
+		{target:"icon", expression:""}
 	]
 
 	actions: {
