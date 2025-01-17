@@ -258,7 +258,7 @@
 					form: {
 						type: layout-vertical
 						children: [
-							{type:"textarea", path:"statusText", label:"About You", description:"A brief description of you and your music. Markdown is okay."}
+							{type:"textarea", path:"statusMessage", label:"About You", description:"A brief description of you and your music. Markdown is okay."}
 							{type:"textarea", path:"data.tags", label:"Tags", description:"Use #Hashtags separated by spaces to describe your music."}
 							{type:"text", path:"location", label:"Location", description:"City, State, or Country where you are based."}
 							{type:"upload", path:"iconUrl", label:"Avatar Image", description:"Displayed publicly next to your name, often on other websites, too.", options:{accept:"image/*"}}
