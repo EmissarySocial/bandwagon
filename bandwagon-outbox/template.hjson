@@ -235,13 +235,16 @@
 					form: {
 						type:layout-vertical
 						children: [
-							{type:"text", path:"displayName", label:"Band/Stage Name", description:"The name you want to be known by."}
-							{type:"text", path:"location", label:"Location", description:"City, State, or Country where you are based."}
+							{type:"text", path:"displayName", label:"Artist/Band Name", description:"Displayed publicly. The name you want to be known by.", options:{autocomplete:"name", required:true}}
+							{type:"text", path:"username", label:"Username", description:"Displayed publicly. How others will find you online.", options:{autocomplete:"username", required:true}}
+							{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in, and support your account. Not shared. Not displayed publicly.", options:{autocomplete:"email", required:true}}
+							{type:"password", path:"new_password", label:"Choose Your Password", description:"At least 8 characters. Please use a Password Manager.", options:{autocomplete:"new-password", minlength:8, required:true}}
 						]
 					}
 					options: ["endpoint:/@{{.UserID}}/wizard-1", "submit-label:Continue >>", "cancel-button:hide"]
 				},
 				{do:"set-state", state:"WIZARD-STEP-2"}
+				{do:"set-password"}
 				{do:"save"}
 				{do:"set-header", name:"HX-Refresh", value:"true"}
 			]
@@ -255,12 +258,10 @@
 					form: {
 						type: layout-vertical
 						children: [
-							{type:"colorpicker", path:"data.color-body", label:"Window Background"}
-							{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
-							{type:"colorpicker", path:"data.color-page", label:"Page Background"}
-							{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
-							{type:"upload", path:"iconUrl", label:"Avatar / Icon", options:{accept:"image/*"}}
-							{type:"upload", path:"imageUrl", label:"Banner", options:{accept:"image/*"}}
+							{type:"textarea", path:"statusText", label:"About You", description:"A brief description of you and your music. Markdown is okay. #Hashtags are encouraged."}
+							{type:"text", path:"location", label:"Location", description:"City, State, or Country where you are based."}
+							{type:"upload", path:"iconUrl", label:"Avatar Image", description:"Displayed publicly next to your name, often on other websites, too.", options:{accept:"image/*"}}
+							{type:"upload", path:"imageUrl", label:"Banner", description:"Displays at the top of your profile page.", options:{accept:"image/*"}}
 						]
 					}
 					options: ["endpoint:/@{{.UserID}}/wizard-2", "submit-label:Continue >>", "cancel-button:hide"]
@@ -281,8 +282,11 @@
 					form: {
 						type:layout-vertical
 						children: [
-							{type:"toggle", path:"isPublic", options:{text:"Public Profile"}}
-							{type:"toggle", path:"isIndexable", options:{text:"Allow Indexing by Search Engines"}}
+							{type:"colorpicker", path:"data.color-body", label:"Window Background"}
+							{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
+							{type:"colorpicker", path:"data.color-page", label:"Page Background"}
+							{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
+
 						]
 					}
 					options: ["endpoint:/@{{.UserID}}/wizard-3", "submit-label:Continue to Album Upload", "cancel-button:hide"]
@@ -291,6 +295,26 @@
 				{do:"save"}
 				{do:"search-index", if:"{{.IsIndexable}}"}
 				{do:"set-header", name:"Hx-Refresh", value:"true"}
+			]
+		}
+
+		publish: {
+			roles: ["self", "owner"]
+			steps: [
+				{do:"as-modal", steps:[
+					{do:"edit", form:{
+						type:"layout-vertical"
+						label:"Publish Your Profile"
+						description:"This determines who can see your profile and interact with you online."
+						children:[
+							{type:"toggle", path:"isPublic", options:{text:"Make My Profile Public (visible to people)"}}
+							{type:"toggle", path:"isIndexable", options:{text:"Make My Profile Indexable (include in search results)"}}
+						]}
+					}
+				]}
+				{do:"save"}
+				{do:"search-index", if:"{{.IsIndexable}}"}
+				{do:"refresh-page"}
 			]
 		}
 

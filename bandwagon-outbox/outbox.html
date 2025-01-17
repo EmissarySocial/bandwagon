@@ -36,7 +36,7 @@
 		{{- template "header" . -}}
 
 		{{- if not .IsPublic -}}
-			<div class="clickable alert-red" hx-get="/@{{.UserID}}/edit" role="button">
+			<div class="clickable alert-red" hx-get="/@{{.UserID}}/publish" role="button">
 				{{icon "alert-fill"}} 
 				Your profile is NOT public and won't be seen by others.
 				<span class="text-underline">Click here to make it public</span>
