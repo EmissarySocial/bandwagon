@@ -74,7 +74,7 @@
 						</div>
 					</div>
 					<div class="padding-bottom padding-horizontal-sm padding-top-xs text-plain">
-						<div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:scroll;">
+						<div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:auto;">
 							{{- range $tagName := $result.TagNames -}}
 								<a hx-get="/{{$token}}?q=%23{{$tagName}}" class="clickable inline-block clearTag turboclick">{{$tagName}}</a>
 							{{- end -}}
