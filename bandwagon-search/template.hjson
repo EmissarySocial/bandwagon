@@ -2,7 +2,7 @@
 	templateId:bandwagon-search
 	templateRole:search
 	extends:["base-intent"]
-	containedBy: ["top"]
+	containedBy: []
 	model:stream
 	label:Bandwagon Search page
 	description:Search Page for Bandwagon
