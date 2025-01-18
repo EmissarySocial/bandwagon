@@ -57,9 +57,9 @@
 							</div>
 						</div>
 					</div>
-					{{- if $result.Tags.NotEmpty -}}
+					{{- if $result.TagNames.NotEmpty -}}
 						<div class="margin-top align-center">
-							{{- range $index, $tag := $result.Tags.FirstN 3 -}}
+							{{- range $index, $tag := $result.TagNames.FirstN 3 -}}
 								<span hx-get="/{{$token}}?q=%23{{$tag}}" class="tag margin-horizontal-xs" role="button">{{$tag}}</span>
 							{{- end -}}
 						</div>
