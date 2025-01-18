@@ -114,17 +114,30 @@
 						{{- $icon := "music-note-beamed" -}}
 						{{- $label := $value -}}
 
-						{{- if eq "APPLE" $key -}}
+						{{- if eq "AMAZON" $key -}}
+							{{- $label = "Amazon Music" -}}
+							{{- $icon = "amazon" -}}
+
+						{{- else if eq "APPLE" $key -}}
 							{{- $icon = "apple" -}}
 							{{- $label = "Apple Music" -}}
+
+						{{- else if eq "BANDCAMP" $key -}}
+							{{- $label = "Bandcamp" -}}
+
+						{{- else if eq "GOOGLE" $key -}}
+							{{- $label = "Google Play" -}}
+							{{- $icon = "google" -}}
+
+						{{- else if eq "IHEARTRADIO" $key -}}
+							{{- $label = "iHeartRadio" -}}
+
+						{{- else if eq "PANDORA" $key -}}
+							{{- $label = "Pandora" -}}
 
 						{{- else if eq "SPOTIFY" $key -}}
 							{{- $label = "Spotify" -}}
 							{{- $icon = "spotify" -}}
-
-						{{- else if eq "YOUTUBE" $key -}}
-							{{- $label = "YouTube Music" -}}
-							{{- $icon = "youtube" -}}
 
 						{{- else if eq "SOUNDCLOUD" $key -}}
 							{{- $label = "SoundCloud" -}}
@@ -133,19 +146,9 @@
 						{{- else if eq "TIDAL" $key -}}
 							{{- $label = "Tidal" -}}
 
-						{{- else if eq "AMAZON" $key -}}
-							{{- $label = "Amazon Music" -}}
-							{{- $icon = "amazon" -}}
-
-						{{- else if eq "GOOGLE" $key -}}
-							{{- $label = "Google Play" -}}
-							{{- $icon = "google" -}}
-
-						{{- else if eq "PANDORA" $key -}}
-							{{- $label = "Pandora" -}}
-
-						{{- else if eq "IHEARTRADIO" $key -}}
-							{{- $label = "iHeartRadio" -}}
+						{{- else if eq "YOUTUBE" $key -}}
+							{{- $label = "YouTube Music" -}}
+							{{- $icon = "youtube" -}}
 
 						{{- else -}}
 							{{- $label = domainOnly $value -}}

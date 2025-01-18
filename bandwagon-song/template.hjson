@@ -102,6 +102,7 @@
 										{type: "text", path: "data.streamURL", label: "Video Stream URL"},
 										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+										{type:"text", path:"data.links.BANDCAMP", options:{placeholder:"Bandcamp"}}
 										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
 										{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
 										{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}
@@ -177,6 +178,7 @@
 											{type: "text", path: "data.streamURL", label: "Video Stream URL"},
 											{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 											{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+											{type:"text", path:"data.links.BANDCAMP", options:{placeholder:"Bandcamp"}}
 											{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
 											{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
 											{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}

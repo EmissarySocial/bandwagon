@@ -124,6 +124,7 @@
 										{type:"label", label:"When you enter streaming links, your visitors will be able to jump right to your album on whichever services you've selected."}
 										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+										{type:"text", path:"data.links.BANDCAMP", options:{placeholder:"Bandcamp"}}
 										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
 										{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
 										{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}
@@ -196,6 +197,7 @@
 									children: [
 										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
+										{type:"text", path:"data.links.BANDCAMP", options:{placeholder:"Bandcamp"}}
 										{type:"text", path:"data.links.GOOGLE", options:{placeholder:"Google Play"}}
 										{type:"text", path:"data.links.SOUNDCLOUD", options:{placeholder:"Soundcloud"}}
 										{type:"text", path:"data.links.SPOTIFY", options:{placeholder:"Spotify"}}
