@@ -17,8 +17,8 @@ function Play() {
 	var song = playlist[playlistIndex]
 
 	// htmx.find("#source-aac").src = song.url + ".aac?bitrate=128"
-	htmx.find("#source-mp3").src = song.url + ".mp3?bitrate=128"
-	htmx.find("#source-ogg").src = song.url + ".ogg?bitrate=128"
+	htmx.find("#source-mp3").src = song.url + ".mp3?bitrate=128&v=2"
+	htmx.find("#source-ogg").src = song.url + ".ogg?bitrate=128&v=2"
 
 	audio.load()
 	audio.volume = 0.8
