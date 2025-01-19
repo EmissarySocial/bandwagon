@@ -344,7 +344,7 @@
 					{{- if ne nil $song.Data.attachmentId -}}
 						{{- if not $first -}},{{- end -}}
 						{{- $first = false -}}
-						{"index":{{$index}}, "url":"/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}", "title":"{{$song.Label}}"}
+						{"url":"/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}", "title":"{{$song.Label}}"}
 					{{ end -}}
 				{{- end -}}
 				]'>
