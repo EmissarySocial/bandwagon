@@ -1,19 +1,28 @@
+{{- $isMyself := .IsMyself -}}
 {{- $showAlbums := eq "true" (.Data "show-albums") -}}
 {{- $showEvents := eq "true" (.Data "show-events") -}}
 {{- $showNews := eq "true" (.Data "show-news") -}}
 {{- $showShop := ne "" (.Data "shop-url") -}}
+{{- $hasBanner := ne "" .ImageURL -}}
 
 <style>{{- template "stylesheet" . -}}</style>
 
 <!-- Banner Image -->
-{{- if ne "" .ImageURL -}}
-	<div style="width:100%; height:256px; background-color: #a0a0a0; background-image:url('{{.ImageURL}}'); background-size:cover; background-position:center"></div>
+{{- if or $hasBanner $isMyself -}}
+	<div class="pos-relative width-100%" style="height:256px; background-color: #a0a0a0; background-image:url('{{.ImageURL}}'); background-size:cover; background-position:center">
+		{{- if $isMyself -}}
+			<div class="pos-absolute-top-right flex-column">
+				<button hx-get="/@me/edit-banner" class="text-xs turboclick">Edit Banner</button>
+				<button hx-get="/@me/edit-colors" class="text-xs turboclick">Edit Colors</button>
+			</div>
+		{{- end -}}
+	</div>
 {{- end -}}
 
 <!-- Menu Bar -->
 
-{{- if or $showAlbums $showEvents $showNews $showShop -}}
-<div id="band-menu" role="menubar">
+{{- if or $showAlbums $showEvents $showNews $showShop $isMyself -}}
+<div id="band-menu" role="menubar" class="pos-relative">
 	<a id="home" href="/@{{.Username}}" hx-get="/@{{.Username}}" role="menuitem" class="turboclick" aria-label="Home">{{icon "home-fill"}}</a>
 	{{- if $showAlbums -}}
 		<a id="albums" href="/@{{.Username}}/albums" hx-get="/@{{.Username}}/albums" role="menuitem" class="turboclick">{{first (.Data "label-albums") "Albums"}}</a>
@@ -26,6 +35,12 @@
 	{{- end -}}
 	{{- if $showShop -}}
 		<a href="{{.Data `shop-url`}}" target="_blank" role="menuitem" class="turboclick">{{first (.Data "label-shop") "Shop"}}</a>
+	{{- end -}}
+
+	{{- if $isMyself -}}
+		<div class="pos-absolute-top-right">
+			<button hx-get="/@me/edit-menu" class="text-xs turboclick">Edit Menu</button>
+		</div>
 	{{- end -}}
 </div>
 {{- end -}}

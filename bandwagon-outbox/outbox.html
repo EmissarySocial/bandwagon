@@ -43,72 +43,76 @@
 			</div>
 		{{- end -}}
 
-		<div class="padding pos-relative">
+		<div class="padding-sm pos-relative">
 
 			{{- if $isMyself -}}
 
-				<div class="button-group text-sm margin-bottom" role="group" aria-label="Profile Controls" style="overflow-x:scroll;">
-					<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
-					<button hx-get="/@{{.UserID}}/links">Edit Links</button>
-					<button hx-get="/@{{.UserID}}/add-album" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Album</button>
-					<button hx-get="/@{{.UserID}}/add-event" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Event</button>
-					<button hx-get="/@{{.UserID}}/add-news" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Post</button>
+				<!--div class="button-group text-sm margin-bottom" role="group" aria-label="Profile Controls" style="overflow-x:scroll;">
+					<button hx-get="/@me/edit">Edit Profile</button>
+					<button hx-get="/@me/links">Edit Links</button>
+					<button hx-get="/@me/add-album?isFeatured=true" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Album</button>
+					<button hx-get="/@me/add-event?isFeatured=true" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Event</button>
+					<button hx-get="/@me/add-news?isFeatured=true" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Post</button>
 
 					<button hx-post="/signout" hx-target="body">Sign Out</button>
-				</div>
+				</div-->
 
-				<form hx-post="/@{{.UserID}}/sort-featured" hx-trigger="end">
+				<form hx-post="/@me/sort-featured" hx-trigger="end">
 					<div hx-push-url="true">
 			{{- end -}}
 
 			<!-- Band Name -->
 			<div class="flex-row flex-align-center margin-top">
-				<img src="{{.IconURL}}" class="circle-48 flex-shrink-0" aria-hidden="true">
-				<h1 class="margin-none flex-grow-1">{{.DisplayName}}</h1>
-			</div>
-
-			<div class="flex-row">
-				<div class="width-48"></div>
-				<div>
-					<div class="max-width-640 text-gray">{{.StatusMessage | markdown}}</div>
-					<div class="max-width-640 margin-top-sm">
-						<span class="bold" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
-						{{- range  $index, $link := .Links }}
-							<span aira-hidden="true">&middot;</span>
-							<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
+				<img src="{{.IconURL}}" class="circle-96 flex-shrink-0 flex-align-self-start" aria-hidden="true">
+				<div class="flex-grow">
+					<div class="pos-relative">
+						<h1 class="margin-none">{{.DisplayName}}</h1>
+						{{- if $isMyself -}}
+							<div class="pos-absolute-top-right-0 flex-column">
+								<button hx-get="/@me/edit" class="text-xs">Edit Profile</button>
+								<button hx-get="/@{{.UserID}}/links" class="text-xs">Edit Links</button>
+								<button hx-post="/signout" class="text-xs">Sign Out</button>
+							</div>
 						{{- end -}}
 					</div>
+					<div class="bold margin-bottom" script="install selectText">@{{.Username}}@{{.Hostname}}</div>
+
+					<div class="margin-top pos-relative">
+						<div class="max-width-512">
+							{{- range  $index, $link := .Links }}
+								{{if gt $index 0}}<span aira-hidden="true">&middot;</span>{{end}}
+								<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
+							{{- end -}}
+						</div>
+					</div>
 		
+					<div class="margin-vertical">
+						{{- if not .IsMyself -}}
+							<button class="primary text-md" hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
+							<button class="text-md" hx-get="/@{{.UserID}}/intent">{{icon "more-horizontal"}}</button>
+						{{- end -}}
+					</div>
+
+					<div class="max-width-512 margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
+
 					{{- if .Tags.NotEmpty -}}
-						<div class="margin-top max-width-640">
+						<div class="margin-top max-width-512">
 							{{- range .Tags -}}
 								<a href="/artists?q=%23{{.Name}}" role="link" class="tag">#{{.Name}}</a>
 							{{- end -}}
 						</div>
 					{{- end -}}
 
-					<div class="margin-top-lg">
-						{{- if not .IsMyself -}}
-						<button class="primary text-md" hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
-						<button class="text-md" hx-get="/@{{.UserID}}/intent">{{icon "more-horizontal"}}</button>
-						{{- else if $featured.IsEmpty -}}
-							<div class="bold">Congratulations! You've set up your new Bandwagon profile.</div>
-							<div>1. Keep going by adding albums, events, and news to your page.</div>
-							<div>2. Mark items as "Featured" to show them on this home page.</div>
-							<div>3. Navigation menus will show all items of each type.</div>
-						{{- end -}}
-					</div>
-
 				</div>
 			</div>
 
-			{{- if $featured.NotEmpty -}}
 				<div class="columns-4 margin-top sortable">
+
 					{{- range $featured -}}
 						{{- if or .IsPublished $isMyself -}}
-							<div class="card flex-column hover-trigger hover-swell" script="install blockselect()">
+							<div class="rounded card flex-column hover-trigger hover-swell" script="install blockselect()">
 								{{- if eq "bandwagon-album" .TemplateID -}}
-									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover;" aria-hidden="true">
+									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
 									<div class="padding text-plain">
 										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
 									</div>
@@ -141,27 +145,39 @@
 									<input type="hidden" name="keys" value="{{.StreamID}}">
 								{{- end -}}
 							</div>
-							{{- end -}}
+						{{- end -}}
 					{{- end -}}
-				</div>
+	
+					{{- if $isMyself -}}
 
-			{{- else if $isMyself -}}
-
-				<div class="margin-top columns-4">
-					<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-album">
-						<div class="text-3xl margin-sm">{{icon "add"}}</div>
-						Click here to add your first album
-					</div>
-
-					{{- range seq 7 -}}
-						<div class="card card-dashed padding text-light-gray align-center" role="none" aria-hidden="true">
-							<div class="text-3xl margin-sm">&hellip;</div>
-							Coming Soon...<br><br>
+						<div class="rounded card padding flex-column">
+							<div class="flex-center flex-grow align-center margin-bottom-lg">
+								<div>
+									<div class="margin-none" style="font-size:64px;">{{icon "settings"}}</div>
+									<div class="text-xl margin-none bold">Settings</div>
+								</div>
+							</div>
+							<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-album?isFeatured=true">
+								{{icon "cassette"}} Add an Album
+							</div>
+							<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">
+								{{icon "calendar"}} Add an Event
+							</div>
+							<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-news?isFeatured=true">
+								{{icon "newspaper"}} Add a Post
+							</div>
 						</div>
-					{{- end -}}
-				</div>
+	
+						{{- if $featured.IsEmpty -}}
+							<div class="padding text-light-gray align-center" role="none" aria-hidden="true">
+								<div class="text-xl margin-sm">&larr; Start Here</div>
+							</div>
+						{{- end -}}
 
-			{{- end -}}
+					{{- end -}}
+
+				</div>
+			</div>
 
 			{{- if $isMyself -}}
 					</div>

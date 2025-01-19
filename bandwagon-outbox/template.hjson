@@ -123,39 +123,119 @@
 									type: layout-vertical
 									label: Basics
 									children: [
-										{type:"text", path:"displayName", label:"Name"}
-										{type:"textarea", path:"statusMessage", label:"Bio/Comment", description:"A brief statement about you. Markdown is allowed."}
-										{type:"textarea", path:"data.tags", label:"Tags", description:"Use #Hashtags separated by spaces"}
-										{type:"text", path:"location", label:"Location"}
+										{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
+										{type:"textarea", path:"statusMessage", label:"About Me", description:"A brief statement about you. Markdown is allowed. (PUBLIC)", options:{rows:6}}
+										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Avatar Image
+									children: [
+										{type:"upload", path:"iconUrl", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-icon"}}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Hashtags
+									children: [
+										{type:"textarea", path:"data.tags", label:"Tags", description:"Use #Hashtags separated by spaces.  (PUBLIC)", options:{rows:8}}
+									]
+								}
+								{
+									type:"layout-vertical"
+									label: Privacy & Security
+									children: [
+										{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in and support your account. Not shared. (PRIVATE)"}
+										{type:"password", path:"new_password", label:"Change Password", description:"At least 8 characters. Please use a Password Manager. (PRIVATE)"}
 										{type:"toggle", path:"isPublic", options:{text:"Public (visible to people)"}}
 										{type:"toggle", path:"isIndexable", options:{text:"Indexable (request inclusion in search engines)"}}
 									]
 								}
-								{
-									type: layout-vertical
-									label: Images
-									children: [
-										{type:"upload", path:"data.background-body", label:"Background Image", description:"Displays instead of the window's background color", options:{accept:"image/*", delete:"/@me/delete-background"}}
-										{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page.", options:{accept:"image/*", delete:"/@me/delete-image"}}
-										{type:"upload", path:"iconUrl", label:"Avatar / Icon", description:"Displays next to your name as an icon.", options:{accept:"image/*", delete:"/@me/delete-icon"}}
-									]
-								}
-								{
-									type: layout-vertical
-									label: Colors
-									children: [
-										{type:"colorpicker", path:"data.color-body", label:"Window Background"}
-										{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
-										{type:"colorpicker", path:"data.color-page", label:"Page Background"}
-										{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
-									]
-								}
+								
+							]
+						}
+					}
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
+					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
+					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
+					{do:"process-tags", paths:["data.tags"]}
+					{do:"save"}
+					{do:"search-index", if:"{{.IsIndexable}}"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-banner: {
+			roles: ["self", "owner"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Banner
+							type:layout-vertical
+							children: [
+								{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page.", options:{accept:"image/*", delete:"/@me/delete-image"}}
+								{type:"upload", path:"data.background-body", label:"Window Background", description:"Displays instead of the window's background color", options:{accept:"image/*", delete:"/@me/delete-background"}}
+							]
+						}
+					}
+					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
+					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
+					{do:"save"}
+					{do:"search-index", if:"{{.IsIndexable}}"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-colors: {
+			roles: ["self", "owner"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Colors
+							description: "Change the colors of your profile page to match your brand."
+							type:layout-vertical
+							children: [
+								{type:"colorpicker", path:"data.color-body", label:"Window Background"}
+								{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
+								{type:"colorpicker", path:"data.color-page", label:"Page Background"}
+								{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
+							]
+						}
+					}
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
+					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
+					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
+					{do:"process-tags", paths:["data.tags"]}
+					{do:"save"}
+					{do:"search-index", if:"{{.IsIndexable}}"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-menu: {
+			roles: ["self", "owner"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Menu
+							type:layout-tabs
+							children: [
 								{
 									type: layout-vertical
 									label: Albums
 									children: [
-										{type:"toggle", path:"data.show-albums", options:{text:"Display 'Albums' in Navigation Bar"}}
-										{type:"text", path:"data.label-albums", label:"Navigation Bar Text", options:{placeholder:"Albums"}}
+										{type:"toggle", path:"data.show-albums", options:{text:"Display 'Albums' in Menu Bar"}}
+										{type:"text", path:"data.label-albums", label:"Menu Bar Text", options:{placeholder:"Albums"}}
 										{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
@@ -163,8 +243,8 @@
 									type: layout-vertical
 									label: Events
 									children: [
-										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Navigation Bar"}}
-										{type:"text", path:"data.label-events", label:"Navigation Bar Text", options:{placeholder:"Shows"}}
+										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Menu Bar"}}
+										{type:"text", path:"data.label-events", label:"Menu Bar Text", options:{placeholder:"Shows"}}
 										{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Events' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
@@ -172,8 +252,8 @@
 									type: layout-vertical
 									label: News
 									children: [
-										{type:"toggle", path:"data.show-news", options:{text:"Display 'News' in Navigation Bar"}}
-										{type:"text", path:"data.label-news", label:"Navigation Bar Text", options:{placeholder:"News"}}
+										{type:"toggle", path:"data.show-news", options:{text:"Display 'News' in Menu Bar"}}
+										{type:"text", path:"data.label-news", label:"Menu Bar Text", options:{placeholder:"News"}}
 										{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'News' section. Markdown is allowed.", options:{rows:8}}
 									]
 								}
@@ -182,7 +262,7 @@
 									label: Shop
 									children: [
 										{type:"label", label:"The 'Shop' link is displayed automatically when you enter the shop URL below"}
-										{type:"text", path:"data.label-shop", label:"Navigation Bar Text", options:{placeholder:"Shop"}}
+										{type:"text", path:"data.label-shop", label:"Menu Bar Text", options:{placeholder:"Shop"}}
 										{type:"text", path:"data.shop-url", label:"Shop URL"}
 									]
 								}

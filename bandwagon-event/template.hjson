@@ -37,6 +37,7 @@
 			roles:["author"]
 			steps: [
 				{do:"as-modal", steps: [
+					{do:"set-data", from-url:["isFeatured"]}
 					{
 						do:edit
 						form: {

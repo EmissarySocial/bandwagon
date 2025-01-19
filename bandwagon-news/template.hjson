@@ -31,8 +31,9 @@
 
 		create: {
 			roles: ["author"]
-			steps: [
+			steps: [				
 				{do:"as-modal", options:["class:large"], steps:[
+					{do:"set-data", from-url:["isFeatured"]}
 					{
 						do:edit
 						form: {

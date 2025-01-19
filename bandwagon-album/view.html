@@ -3,6 +3,7 @@
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
 {{- $isPlayable := false -}}
+{{- $isowner := .IsOwner -}}
 {{- $links := .Data "links" -}}
 
 {{- range $index, $song := $songs -}}
@@ -331,7 +332,7 @@
 		</div>
 
 		{{- if $songs.NotEmpty -}}
-			<audio hx-on:ended="PlayNext()">
+			<audio {{if $isowner}} controls {{end}} hx-on:ended="PlayNext()">
 				<!--source id="source-aac" type="audio/aac"-->
 				<source id="source-mp3" type="audio/mp3">
 				<source id="source-ogg" type="audio/ogg">
@@ -380,7 +381,6 @@
 
 		<div class="pos-absolute-top-right text-sm">
 			{{- if $canEdit -}}
-				<button hx-get="/@{{.AttributedTo.UserID.Hex}}/edit">Edit Profile</button>
 				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
 
 				{{- if .IsPublished -}}
