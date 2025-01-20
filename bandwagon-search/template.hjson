@@ -65,7 +65,6 @@
 					}
 				}
 				{do: "save-and-publish"}
-				{do:"save", message:"Created by {{.Author.DisplayName}}"}
 				{do:"forward-to", url:"/{{.StreamID}}/edit"}
 			]
 		}
