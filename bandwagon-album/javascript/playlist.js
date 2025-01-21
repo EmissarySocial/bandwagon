@@ -4,10 +4,6 @@ var playlistIndex = -1
 // Play loads and plays the song at the current playlistIndex
 function Play() {
 
-	console.log("play")
-	console.log(playlist)
-	console.log("index", playlistIndex)
-
 	if (playlistIndex < 0) {
 		return
 	}
@@ -15,8 +11,6 @@ function Play() {
 	if (playlistIndex >= playlist.length) {
 		return
 	}
-
-	console.log("continue...")
 
 	var audio = htmx.find("audio")
 	var controls = htmx.find("#media-controls")
@@ -27,10 +21,8 @@ function Play() {
 	htmx.find("#source-ogg").src = song.url + ".ogg?bitrate=128&v=2"
 
 	audio.load()
-	console.log("loaded")
-	audio.volume = 0.8
+	// audio.volume = 0.8
 	audio.play()
-	console.log("playing")
 
 	htmx.addClass(controls, "PLAYING")
 	htmx.takeClass(htmx.find("#track-" + playlistIndex), "PLAYING")
@@ -38,7 +30,6 @@ function Play() {
 
 // Pause pauses the audio control
 function Pause() {
-	console.log("pause")
 	var controls = htmx.find("#media-controls")
 	var audio = htmx.find("audio")
 	var track = htmx.find("#track-" + playlistIndex)
@@ -50,7 +41,6 @@ function Pause() {
 
 // PlayFirst jumps to the first song in the playlist and plays it
 function PlayFirst() {
-	console.log("playFirst")
 	if (playlist.length > 0) {
 		playlistIndex = 0
 		Play()
@@ -59,7 +49,6 @@ function PlayFirst() {
 
 // PlayPrevious plays the previous song in the playlist and plays it
 function PlayPrevious() {
-	console.log("playPrevious")
 	if (playlist.length > 0) {
 		playlistIndex--
 		if (playlistIndex < 0) {
@@ -71,8 +60,6 @@ function PlayPrevious() {
 
 // PlayNext plays the next song in the playlist and plays it
 function PlayNext() {
-	console.log("playNext")
-
 	if (playlist.length > 0 ) {
 		playlistIndex++
 		if (playlistIndex >= playlist.length) {
@@ -83,9 +70,6 @@ function PlayNext() {
 }
 
 function Toggle(trackNumber) {
-
-	console.log("toggle")
-	console.log(trackNumber)
 
 	var audio = htmx.find("audio")
 
