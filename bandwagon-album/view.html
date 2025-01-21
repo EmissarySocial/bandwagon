@@ -345,7 +345,7 @@
 					{{- if ne nil $song.Data.attachmentId -}}
 						{{- if not $first -}},{{- end -}}
 						{{- $first = false -}}
-						{"url":"/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}", "title":"{{$song.Label}}"}
+						{"url":"/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}", "title":{{$song.Label | json}} }
 					{{ end -}}
 				{{- end -}}
 				]'>
