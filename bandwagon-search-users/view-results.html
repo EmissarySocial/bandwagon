@@ -27,10 +27,6 @@
 
 	{{- $token := .Token -}}
 
-	{{- if ne "" $query -}}
-		{{- template "tag-header" . -}}
-	{{- end -}}
-
 	<div class="page">
 
 		{{- if eq 1 $tags.Length -}}
