@@ -2,7 +2,7 @@
 	templateId: bandwagon-album
 	templateRole: album
 	model: Stream
-	containedBy: ["folder", "home", "outbox"]
+	containedBy: ["outbox"]
 	extends: ["base-intent"]
 	icon: album
 	label: Album (Default)
