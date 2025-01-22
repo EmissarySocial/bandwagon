@@ -10,7 +10,7 @@
 		{{- $tag := .SearchTag ($tags.Last) -}}
 		{{- $imageURL := $tag.ImageURL -}}
 		{{- if ne "" $imageURL -}}
-			<img src="{{$imageURL}}" class="pos-absolute-four-corners width-100%" style="object-fit:cover; opacity:0.3; z-index:-1; filter:blur(6px);" aria-hidden="true" loading="lazy">
+			<img src="{{$imageURL}}" class="pos-absolute-four-corners width-100%" style="object-fit:cover; opacity:0.3; z-index:-1; filter:blur(8px);" aria-hidden="true" loading="lazy">
 		{{- end -}}
 
 		{{- $background00 := $tag.Colors.At 0 -}}
