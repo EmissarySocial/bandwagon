@@ -17,7 +17,7 @@
 		{{- $textColor := $background00.Text -}}
 		{{- $shadowColor := $textColor.Text -}}
 
-		<div hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="flex-center pos-relative turboclick flex-column hover-trigger hover-swell" role="link" style="padding:6px; background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}}; border-radius:8px;">
+		<div hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="flex-center pos-relative turboclick flex-column hover-trigger hover-swell" role="link" style="padding:3px; background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}}; border-radius:8px;">
 			<div class="aspect-square" style="height:100%; width:100%; overflow:hidden; border-radius:6px;">
 				{{- if ne ""  $tag.ImageURL }}
 					<img src="{{$tag.ImageURL}}" class="block" style="width:100%; height:100%; object-fit:cover;" aria-label="{{$tag.Name}}" loading="lazy">
