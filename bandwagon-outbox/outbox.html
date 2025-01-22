@@ -33,15 +33,15 @@
 		<meta property="og:image" content="{{.IconURL}}">
 		<meta property="profile:username" content="{{.Username}}">
 
-		{{- template "header" . -}}
-
 		{{- if not .IsPublic -}}
 			<div class="clickable alert-red" hx-get="/@{{.UserID}}/publish" role="button">
 				{{icon "alert-fill"}} 
-				Your profile is NOT public and won't be seen by others.
-				<span class="text-underline">Click here to make it public</span>
+				Your profile is NOT public and is invisible to others.
+				<span class="text-underline">Click here to publish your profile</span>
 			</div>
 		{{- end -}}
+
+		{{- template "header" . -}}
 
 		<div class="padding-sm pos-relative">
 
@@ -95,89 +95,110 @@
 
 					<div class="max-width-512 margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
 
-					{{- if .Tags.NotEmpty -}}
-						<div class="margin-top max-width-512">
-							{{- range .Tags -}}
-								<a href="/artists?q=%23{{.Name}}" role="link" class="tag">#{{.Name}}</a>
+					<div class="margin-top max-width-512">
+						{{- range .Tags -}}
+							<a href="/artists?q=%23{{.Name}}" role="link" class="tag">#{{.Name}}</a>
+						{{- end -}}
+					</div>
+
+				</div>
+			</div>
+
+			<div class="columns-4 margin-top-xl sortable">
+
+				{{- range $featured -}}
+					{{- if or .IsPublished $isMyself -}}
+						<div class="rounded card flex-column hover-trigger hover-swell" script="install blockselect()">
+							{{- if eq "bandwagon-album" .TemplateID -}}
+								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
+								<div class="padding text-plain">
+									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
+								</div>
+							{{- else if eq "bandwagon-event" .TemplateID -}}
+								<div class="padding bold">{{.Data.date}}</div>
+								<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
+								<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
+								{{- if ne nil .Data.website -}}
+									<div class="padding">
+										<a href="{{.Data.website}}" target="_blank">{{first .Data.websiteLabel "Get Tickets"}}</a>
+									</div>
+								{{- end -}}
+							{{- else if eq "bandwagon-news" .TemplateID -}}
+								<h2 class="padding align-center">{{.Label}}</h2>
+								<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
+								<div class="padding">
+									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
+								</div>
+							{{- end -}}
+
+							{{- if not .IsPublished -}}
+								<div class="pos-absolute-four-corners bg-stripes flex-center">
+									<span class="text-xl bold">UNPUBLISHED</span>
+								</div>
+							{{- end -}}
+
+							{{- if $isMyself -}}
+								<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
+								<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
+								<input type="hidden" name="keys" value="{{.StreamID}}">
 							{{- end -}}
 						</div>
 					{{- end -}}
+				{{- end -}}
 
-				</div>
-			</div>
+				{{- if $isMyself -}}
 
-				<div class="columns-4 margin-top sortable">
-
-					{{- range $featured -}}
-						{{- if or .IsPublished $isMyself -}}
-							<div class="rounded card flex-column hover-trigger hover-swell" script="install blockselect()">
-								{{- if eq "bandwagon-album" .TemplateID -}}
-									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
-									<div class="padding text-plain">
-										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
-									</div>
-								{{- else if eq "bandwagon-event" .TemplateID -}}
-									<div class="padding bold">{{.Data.date}}</div>
-									<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
-									<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
-									{{- if ne nil .Data.website -}}
-										<div class="padding">
-											<a href="{{.Data.website}}" target="_blank">{{first .Data.websiteLabel "Get Tickets"}}</a>
-										</div>
-									{{- end -}}
-								{{- else if eq "bandwagon-news" .TemplateID -}}
-									<h2 class="padding align-center">{{.Label}}</h2>
-									<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
-									<div class="padding">
-										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
-									</div>
-								{{- end -}}
-
-								{{- if not .IsPublished -}}
-									<div class="pos-absolute-four-corners bg-stripes flex-center">
-										<span class="text-xl bold">UNPUBLISHED</span>
-									</div>
-								{{- end -}}
-
-								{{- if $isMyself -}}
-									<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
-									<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
-									<input type="hidden" name="keys" value="{{.StreamID}}">
-								{{- end -}}
+					<div class="rounded card padding flex-column">
+						<!--div class="flex-center flex-grow align-center margin-bottom-lg">
+							<div>
+								<div class="margin-none" style="font-size:64px;">{{icon "settings"}}</div>
+								<div class="text-xl margin-none bold">Settings</div>
 							</div>
-						{{- end -}}
-					{{- end -}}
-	
-					{{- if $isMyself -}}
-
-						<div class="rounded card padding flex-column">
-							<div class="flex-center flex-grow align-center margin-bottom-lg">
-								<div>
-									<div class="margin-none" style="font-size:64px;">{{icon "settings"}}</div>
-									<div class="text-xl margin-none bold">Settings</div>
-								</div>
-							</div>
-							<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-album?isFeatured=true">
-								{{icon "cassette"}} Add an Album
-							</div>
-							<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">
-								{{icon "calendar"}} Add an Event
-							</div>
-							<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-news?isFeatured=true">
-								{{icon "newspaper"}} Add a Post
+						</div-->
+						<div class="flex-center align-center link" role="button" hx-get="/@{{.UserID}}/add-album?isFeatured=true">
+							<div class="margin-vertical-xl">
+								<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
+								<div class="text-xl margin-none bold">Add an Album</div>
 							</div>
 						</div>
-	
-						{{- if $featured.IsEmpty -}}
-							<div class="padding text-light-gray align-center" role="none" aria-hidden="true">
-								<div class="text-xl margin-sm">&larr; Start Here</div>
-							</div>
-						{{- end -}}
+						<div class="align-center">&mdash; or &mdash;</div>
+						<!--div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-album?isFeatured=true">
+							{{icon "cassette"}} Add an Album
+						</div>
+						<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">
+							{{icon "calendar"}} Add an Event
+						</div>
+						<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-news?isFeatured=true">
+							{{icon "newspaper"}} Add a Post
+						</div>
+					-->
+						<div class="align-center">
+							Add a
+							<span class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">
+								Calendar Event
+							</span>
+							or a 
+							<span class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-news?isFeatured=true">
+								News Post
+							</span>
+						</div>
+					</div>
 
+					{{- if $featured.IsEmpty -}}
+						<div>
+							<div class="bold text-xl margin-none margin-bottom">Welcome!</div>
+							<div class="bold margin-vertical-xs">The Next Steps Are the Best Ones:</div>
+							<div class="text-light-gray margin-bottom">&larr; Build your online discography by clicking the cassette tape on the left.</div>
+							<div class="text-light-gray margin-bottom">Later, you can customize your profile colors and images using the buttons on the top-right side of the page &rarr;</div>
+							<div class="text-light-gray">And when you're ready, publish your finished profile on the Social Web.</div>
+						</div>
 					{{- end -}}
 
-				</div>
+				{{- end -}}
+
 			</div>
+		
+		</div>
 
 			{{- if $isMyself -}}
 					</div>
