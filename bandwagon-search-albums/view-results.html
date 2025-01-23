@@ -50,10 +50,12 @@
 			<h1 class="margin margin-bottom-sm">#{{$tags.First}}</h1>
 		{{- end -}}
 
-		<div class="margin-horizontal text-sm">
-			<button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">{{icon "plus-circle"}} Follow for Updates</button>
-			<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
-		</div>
+		{{- if .IsOwner -}}
+			<div class="margin-horizontal text-sm">
+				<button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">{{icon "plus-circle"}} Follow for Updates</button>
+				<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
+			</div>
+		{{- end -}}
 
 		<div class="columns-6 margin">
 			{{- range $result := $results -}}
