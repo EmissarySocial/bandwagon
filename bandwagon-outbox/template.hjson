@@ -314,8 +314,8 @@
 					options: ["endpoint:/@{{.UserID}}/wizard-1", "submit-label:Continue >>", "cancel-button:hide"]
 				},
 				{do:"set-state", state:"WIZARD-STEP-2"}
-				{do:"set-password"}
 				{do:"save"}
+				{do:"set-password"}
 				{do:"set-header", name:"HX-Refresh", value:"true"}
 			]
 		}
