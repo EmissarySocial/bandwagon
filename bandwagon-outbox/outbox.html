@@ -115,16 +115,16 @@
 									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
 								</div>
 							{{- else if eq "bandwagon-event" .TemplateID -}}
-								<div class="padding bold">{{.Data.date}}</div>
-								<div class="padding-horizontal text-xl margin-none bold">{{.Data.city}}</div>
-								<div class="padding-horizontal flex-grow margin-bottom bold">{{.Data.venue}}</div>
+								<h2 class="padding padding-bottom-none text-xl bold">{{.Data.city}}</h2>
+								<div class="padding-horizontal">{{.Data.date}}</div>
+								<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
 								{{- if ne nil .Data.website -}}
 									<div class="padding">
 										<a href="{{.Data.website}}" target="_blank">{{first .Data.websiteLabel "Get Tickets"}}</a>
 									</div>
 								{{- end -}}
 							{{- else if eq "bandwagon-news" .TemplateID -}}
-								<h2 class="padding align-center">{{.Label}}</h2>
+								<h2 class="padding padding-bottom-none">{{.Label}}</h2>
 								<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
 								<div class="padding">
 									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
