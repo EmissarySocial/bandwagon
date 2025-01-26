@@ -124,7 +124,8 @@
 									label: Basics
 									children: [
 										{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
-										{type:"textarea", path:"statusMessage", label:"About Me", description:"A brief statement about you. Markdown is allowed. (PUBLIC)", options:{rows:6}}
+										{type:"textarea", path:"statusMessage", label:"About Me", description:"Markdown is allowed. (PUBLIC)", options:{rows:4}}
+										{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces so fans can search for your profile.  (PUBLIC)"}
 										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
 									]
 								}
@@ -133,13 +134,6 @@
 									label: Avatar Image
 									children: [
 										{type:"upload", path:"iconUrl", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-icon"}}
-									]
-								}
-								{
-									type: layout-vertical
-									label: Hashtags
-									children: [
-										{type:"textarea", path:"data.tags", label:"Tags", description:"Use #Hashtags separated by spaces.  (PUBLIC)", options:{rows:8}}
 									]
 								}
 								{
@@ -161,7 +155,7 @@
 					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
 					{do:"process-tags", paths:["data.tags"]}
 					{do:"save"}
-					{do:"search-index", if:"{{.IsIndexable}}"}
+					{do:"search-index"}
 					{do:"refresh-page"}
 				]}
 			] 
@@ -394,6 +388,7 @@
 			steps: [
 				{do:"delete-attachments", field:"iconId"}
 				{do:"save"}
+				{do:"search-index", if:"{{.IsIndexable}}"}
 			]
 		}
 
@@ -402,6 +397,7 @@
 			steps: [
 				{do:"delete-attachments", field:"imageId"}
 				{do:"save"}
+				{do:"search-index", if:"{{.IsIndexable}}"}
 			]
 		}
 
