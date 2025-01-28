@@ -155,6 +155,7 @@
 					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
 					{do:"process-tags", paths:["data.tags"]}
 					{do:"save"}
+					{do:"set-password"}
 					{do:"search-index"}
 					{do:"refresh-page"}
 				]}
