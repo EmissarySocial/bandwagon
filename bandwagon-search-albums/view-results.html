@@ -52,7 +52,7 @@
 
 		{{- if .IsOwner -}}
 			<div class="margin-horizontal text-sm">
-				<button hx-get="/{{.Token}}/intent?intent=follow&object={{.Permalink}}">{{icon "plus-circle"}} Follow for Updates</button>
+				<button hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow for Updates</button>
 				<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
 			</div>
 		{{- end -}}
