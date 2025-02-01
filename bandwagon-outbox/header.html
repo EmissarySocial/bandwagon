@@ -3,17 +3,18 @@
 {{- $showEvents := eq "true" (.Data "show-events") -}}
 {{- $showNews := eq "true" (.Data "show-news") -}}
 {{- $showShop := ne "" (.Data "shop-url") -}}
-{{- $hasBanner := ne "" .ImageURL -}}
+{{- $hasBannerImage := ne "" .ImageURL -}}
+{{- $hasBannerColor := ne "" (.Data "color-banner") -}}
 
 <style>{{- template "stylesheet" . -}}</style>
 
 <!-- Banner Image -->
-{{- if or $hasBanner $isMyself -}}
-	<div class="pos-relative width-100%" style="height:256px; background-color: #a0a0a0; background-image:url('{{.ImageURL}}'); background-size:cover; background-position:center">
+{{- if or $hasBannerImage $hasBannerColor $isMyself -}}
+
+	<div id="band-banner" class="pos-relative width-100%">
 		{{- if $isMyself -}}
 			<div class="pos-absolute-top-right flex-column">
 				<button hx-get="/@me/edit-banner" class="text-xs turboclick">Edit Banner</button>
-				<button hx-get="/@me/edit-colors" class="text-xs turboclick">Edit Colors</button>
 			</div>
 		{{- end -}}
 	</div>

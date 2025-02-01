@@ -27,6 +27,7 @@
 					description-news: {type:"string"}
 					background-body: {type:"string", format:"uri"}
 					color-body: {type:"string", format:"color"},
+					color-banner: {type:"string", format:"color"},
 					color-menu: {type:"string", format:"color"},
 					color-page: {type:"string", format:"color"}, 
 					color-button: {type:"string", format:"color"}
@@ -131,9 +132,23 @@
 								}
 								{
 									type: layout-vertical
-									label: Avatar Image
+									label: Images
 									children: [
-										{type:"upload", path:"iconUrl", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-icon"}}
+										{type:"upload", path:"iconUrl", label:"Avater Image", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-icon"}}
+										{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page.", options:{accept:"image/*", delete:"/@me/delete-image"}}
+										{type:"upload", path:"data.background-body", label:"Window Background Image", description:"Displays instead of the window's background color", options:{accept:"image/*", delete:"/@me/delete-background"}}
+									]
+								}
+								{
+									label: Colors
+									description: "Change the colors of your profile page to match your brand."
+									type:layout-vertical
+									children: [
+										{type:"colorpicker", path:"data.color-body", label:"Window Background"}
+										{type:"colorpicker", path:"data.color-banner", label:"Banner Background"}
+										{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
+										{type:"colorpicker", path:"data.color-page", label:"Page Background"}
+										{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
 									]
 								}
 								{
@@ -170,41 +185,17 @@
 						do: "edit"
 						form:{
 							label: Edit Banner
+							description: Choose a color or an image to display a banner on your profile.  Leave empty and it will be hidden to visitors.
 							type:layout-vertical
 							children: [
+								{type:"colorpicker", path:"data.color-banner", label:"Background Color", description:"Displays underneath your banner image."}
 								{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page.", options:{accept:"image/*", delete:"/@me/delete-image"}}
-								{type:"upload", path:"data.background-body", label:"Window Background", description:"Displays instead of the window's background color", options:{accept:"image/*", delete:"/@me/delete-background"}}
 							]
 						}
 					}
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
-					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
 					{do:"save"}
 					{do:"search-index", if:"{{.IsIndexable}}"}
-					{do:"refresh-page"}
-				]}
-			] 
-		}
-
-		edit-colors: {
-			roles: ["self", "owner"]
-			steps: [
-				{do: "as-modal", background:"view", steps:[
-					{
-						do: "edit"
-						form:{
-							label: Edit Colors
-							description: "Change the colors of your profile page to match your brand."
-							type:layout-vertical
-							children: [
-								{type:"colorpicker", path:"data.color-body", label:"Window Background"}
-								{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
-								{type:"colorpicker", path:"data.color-page", label:"Page Background"}
-								{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
-							]
-						}
-					}
-					{do:"save"}
 					{do:"refresh-page"}
 				]}
 			] 
@@ -249,11 +240,18 @@
 								}
 								{
 									type: layout-vertical
-									label: Shop
+									label: Shop Link
 									children: [
 										{type:"label", label:"The 'Shop' link is displayed automatically when you enter the shop URL below"}
 										{type:"text", path:"data.label-shop", label:"Menu Bar Text", options:{placeholder:"Shop"}}
 										{type:"text", path:"data.shop-url", label:"Shop URL"}
+									]
+								}
+								{
+									type: layout-vertical
+									label: Colors
+									children: [
+										{type:"colorpicker", path:"data.color-menu", label:"Background Color"}
 									]
 								}
 							]
