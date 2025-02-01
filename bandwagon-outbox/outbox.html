@@ -115,7 +115,7 @@
 									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
 								</div>
 							{{- else if eq "bandwagon-event" .TemplateID -}}
-								<h2 class="padding padding-bottom-none text-xl bold">{{.Data.city}}</h2>
+								<h2 class="padding padding-bottom-none">{{.Data.city}}</h2>
 								<div class="padding-horizontal">{{.Data.date}}</div>
 								<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
 								{{- if ne nil .Data.website -}}
