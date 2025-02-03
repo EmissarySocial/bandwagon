@@ -60,10 +60,10 @@
 		<div class="columns-6 margin">
 			{{- range $result := $results -}}
 
-				<div class="album flex-column hover-trigger hover-swell margin-bottom-lg">
+				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
 					<div script="install blockselect()" role="link">
 						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" aria-hidden="true" loading="lazy">
-						<div class="padding-sm padding-bottom-xs text-plain ellipsis">
+						<div class="padding-sm padding-bottom-none text-plain ellipsis">
 							<a href="{{$result.URL}}" class="bold turboclick">{{$result.Name}}</a><br>
 						</div>
 						<div class="padding-left-sm text-sm text-gray">
@@ -75,13 +75,13 @@
 							{{$result.AttributedTo}}
 						</div>
 					</div>
-					<div class="padding-bottom padding-horizontal-sm padding-top-xs text-plain">
+					<!--div class="padding-bottom padding-horizontal-sm padding-top-xs text-plain">
 						<div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:auto;">
 							{{- range $tagName := $result.TagNames -}}
 								<a hx-get="/{{$token}}?q=%23{{$tagName}}" class="clickable inline-block clearTag turboclick">{{$tagName}}</a>
 							{{- end -}}
 						</div>
-					</div>
+					</div-->
 				</div>
 			{{- end -}}
 		</div>

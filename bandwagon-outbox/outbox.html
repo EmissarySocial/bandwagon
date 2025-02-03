@@ -109,6 +109,7 @@
 				{{- range $featured -}}
 					{{- if or .IsPublished $isMyself -}}
 						<div class="rounded card flex-column hover-trigger hover-swell" script="install blockselect()">
+							
 							{{- if eq "bandwagon-album" .TemplateID -}}
 								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
 								<div class="padding text-plain">

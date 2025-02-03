@@ -23,8 +23,7 @@
 
 	socialRole: Article
 	socialRules: [
-		{target:"title", value:""}, // remove the title because we're gonna stuff it into the content instead.
-		{target:"content", expression:"<div><b>{{.Label}}</b></div>{{.Content.HTML}}"}
+		{target:"content", expression:"{{.SummaryOrContent}}"}
 	]
 
 	actions: {
@@ -41,8 +40,8 @@
 							label:"+ Add a Post"
 							children: [
 								{type:"text", path: "label", label: "Title"}
-								{type:"textarea", path: "summary", label: "Summary", description:"Shows on summary listing"}
-								{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page", options:{rows:12}}
+								{type:"textarea", path: "summary", label: "Summary", description:"Message to send to followers. Shows on summary list."}
+								{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only.", options:{rows:12}}
 								{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article"}
 								{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 							]
