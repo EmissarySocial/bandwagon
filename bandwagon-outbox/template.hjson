@@ -125,7 +125,7 @@
 									label: Basics
 									children: [
 										{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
-										{type:"textarea", path:"statusMessage", label:"About Me", description:"Markdown is allowed. (PUBLIC)", options:{rows:4}}
+										{type:"textarea", path:"statusMessage", label:"About Me", description:"Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
 										{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces so fans can search for your profile.  (PUBLIC)"}
 										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
 									]
