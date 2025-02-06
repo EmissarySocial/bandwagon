@@ -1,5 +1,5 @@
 {{- $token := .Token -}}
-{{- $results := .Search.Top120.ByName -}}
+{{- $results := .Search.Top120.ByName.AllowAll -}}
 {{- $results := $results.WhereType "Album"  -}}
 {{- $results := $results.Slice -}}
 
@@ -20,13 +20,14 @@
 				<div class="text-gray flex-grow">
 					{{$result.AttributedTo}}
 				</div>
-				<!--div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:scroll;">
+				<div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:scroll;">
 					{{- range $tagName := $result.TagNames -}}
 						<a hx-get="/{{$token}}?q=%23{{$tagName}}" class="clickable inline-block clearTag turboclick">{{$tagName}}</a>
 					{{- end -}}
-				</div-->
+				</div>
 			</div>
 		</div>
+	
 	{{- end -}}
 
 	<div hx-get="/{{$token}}/view-albums-list?q={{.QueryString}}&name=GT:{{$last.Name}}" hx-target="this" hx-swap="outerHTML" hx-push-url="false" hx-trigger="revealed">Loading...</div>

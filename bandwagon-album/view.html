@@ -3,7 +3,6 @@
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
 {{- $isPlayable := false -}}
-{{- $isowner := .IsOwner -}}
 {{- $links := .Data "links" -}}
 
 {{- range $index, $song := $songs -}}
@@ -76,7 +75,7 @@
 				<div class="text-sm">
 					{{- range $index, $tag := $tags -}}
 						{{- if eq "Hashtag" $tag.Type}}
-							<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
+							<a href="/albums?q={{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
 						{{- end -}}
 					{{- end -}}
 				</div>
@@ -136,11 +135,12 @@
 											<span class="margin-right text-gray">
 												{{- if $isplayable -}}
 												<span class="hover-show">{{icon "play-fill"}}</span>
-													{{- if eq $song.IsFeatured true -}}
+												<span class="hover-show">{{icon "volume-up-fill"}}</span>
+												{{- if eq $song.IsFeatured true -}}
 														<span class="hover-hide">{{icon "star-fill"}}</span>
 													{{- else -}}
 														<span class="invisible hover-hide">{{icon "play-fill"}}</span>
-														{{- end -}}
+													{{- end -}}
 												{{- else -}}
 													{{- if eq $song.IsFeatured true -}}
 														{{icon "star-fill"}}
@@ -332,7 +332,7 @@
 		</div>
 
 		{{- if $songs.NotEmpty -}}
-			<audio {{if $isowner}} controls {{end}} hx-on:ended="PlayNext()">
+			<audio hx-on:ended="PlayNext()">
 				<!--source id="source-aac" type="audio/aac"-->
 				<source id="source-mp3" type="audio/mp3">
 				<source id="source-ogg" type="audio/ogg">

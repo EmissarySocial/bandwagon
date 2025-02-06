@@ -1,0 +1,15 @@
+{{- $licenses := .Dataset "bandwagon-search-albums.licenses" -}}
+
+<div class="search-navigation turboclick selected" hx-get="/albums">Albums</div>
+<div class="search-navigation turboclick" hx-get="/artists?{{.QueryString}}">Artists</div>
+<div class="search-navigation turboclick" hx-get="/songs?{{.QueryString}}">Tracks</div>
+<div class="search-navigation turboclick" hx-get="/events?{{.QueryString}}">Calendar</div>
+
+<hr>
+
+<div class="text-xs">
+	<label for="licenses" class="text-gray">LICENSE</label>
+	<select id="licenses" class="tagContainer" script='install select(value:"", options:{{$licenses | json}})'>
+		<option value="">(All)</option>
+	</select>
+</div>

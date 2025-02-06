@@ -10,7 +10,7 @@ behavior Listbox
 		set selection to the first <[role=option].selected /> in me
 		
 		if selection is null then
-			take .selected for the first <[role=option] /> in me
+			take .selected from my children for the first <[role=option] /> in me
 			exit
 		end
 
@@ -18,7 +18,7 @@ behavior Listbox
 			exit
 		end
 
-		take .selected for the next <[role=option] /> from selection
+		take .selected from my children for the next <[role=option] /> from selection
 	end
 
 	on ArrowUp
@@ -35,7 +35,7 @@ behavior Listbox
 			exit
 		end
 
-		take .selected for the previous <[role=option] /> from selection
+		take .selected from my children for the previous <[role=option] /> from selection
 	end
 
 end

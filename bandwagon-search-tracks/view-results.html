@@ -1,0 +1,94 @@
+{{- $token := .Token -}}
+{{- $query := .QueryParam "q" -}}
+
+<!-- Search Albums Here -->
+{{- $results := .Search.Top120.FullText.Tags -}}
+{{- $results := $results.WhereType "Audio" -}}
+{{- $results := $results.Slice.Shuffle -}}
+
+<!-- No Results -->
+{{- if $results.IsEmpty -}}
+
+	{{- $tags := .FeaturedSearchTags.Slice -}}
+
+	<div class="text-lg text-gray">
+		There are <b>no tracks</b> that match your criteria.
+		<br>
+		Please try some of these search terms instead...
+	</div>
+
+	<div class="margin-top-lg">
+		<div class="table search-container">
+			{{- range $index, $tag := $tags -}}
+				<div class="link turboclick" role="link" hx-get="/{{$token}}?q={{$tag.Name}}">
+					{{icon "tag"}} {{$tag.Name}}
+				</div>
+			{{- end -}}
+		</div>
+	</div>
+
+{{- else -}}
+
+	{{- template "tag-header" . -}}
+	
+	{{- if eq 1 $tags.Length -}}
+		<h1 class="margin margin-bottom-sm">#{{$tags.First}}</h1>
+	{{- end -}}
+
+	{{- if .IsOwner -}}
+		<div class="margin-horizontal text-sm">
+			<button hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow for Updates</button>
+			<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
+		</div>
+	{{- end -}}
+
+	<div class="columns-6 margin">
+		{{- range $result := $results -}}
+
+			<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
+				<div script="install blockselect()" role="link">
+					<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
+					<div class="padding-sm padding-bottom-none text-plain ellipsis">
+						<a href="{{$result.URL}}" class="bold turboclick">{{$result.Name}}</a><br>
+					</div>
+					<div class="padding-left-sm text-sm text-gray">
+						{{- if eq "Album" $result.Type -}}
+							Album &middot;
+						{{- else if eq "Audio" $result.Type -}}
+							Song &middot;
+						{{- end }}
+						{{$result.AttributedTo}}
+					</div>
+				</div>
+			</div>
+		{{- end -}}
+	</div>
+
+	<style>
+		.album {
+			border-radius:8px;
+			background-color:rgba(255, 255, 255, 0.1);
+		}
+
+		.album img {
+			object-fit:cover;
+			border-top-left-radius: 8px;
+			border-top-right-radius: 8px;
+		}
+
+		.clearTag {
+			display:inline-block;
+			background-color:rgba(0,0,0,0);
+			border: solid 1px rgba(0,0,0, 0.5);
+			color: rgba(0,0,0, 0.75);
+			padding:4px 8px;
+			border-radius: 8px;
+			margin-right:8px;
+		}
+
+		.clearTag:hover {
+			background-color:rgba(255, 255, 255, 0.1);
+		}
+	</style>
+
+{{- end -}}

@@ -129,6 +129,7 @@
 		}
 		view-results: {
 			steps:[
+				{do:"set-header", name:"Hx-Push-Url", value:"/{{.Token}}?q={{.QueryParam `q`}}"}
 				{do:"view-html"}
 			]
 		}

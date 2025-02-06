@@ -1,12 +1,12 @@
 {
-	templateId: bandwagon-search-albums
+	templateId: bandwagon-search-events
 	templateRole: search
-	extends: ["bandwagon-search", "bandwagon-common"]
+	extends: ["bandwagon-search"]
 	model: Stream
 	containedBy: ["top"]
-	icon: book
-	label: Bandwagon Album Search
-	description: Search Engine for Albums
+	icon: home
+	label: Bandwagon Event Search
+	description: Search Engine for Events
 	schema: {
 		type:object
 		properties: {
@@ -20,13 +20,5 @@
 				}
 			}
 		}    
-	}
-
-	actions: {
-		view-albums: {
-			steps: [
-				{do:"view-html"}
-			]
-		}
 	}
 }

@@ -1,0 +1,22 @@
+{
+	templateId: bandwagon-common
+	templateRole: album
+	containedBy: []
+	extends: []
+	label: Bandwagon Common
+	description: Common elements for Bandwagon apps
+
+	datasets: {
+		"licenses": [
+			{value:"COPYRIGHT", label:"Copyright. All Rights Reserved", icon:"copyright"},
+			{value:"CC-BY", label:"Creative Commons - Attribution", href:"https://creativecommons.org/licenses/by/4.0/", icon:"cc-by"}
+			{value:"CC-BY-NC", label:"Creative Commons - Attribution - Non Commercial", href:"https://creativecommons.org/licenses/by-nc/4.0/", icon:"cc-by-nc"}
+			{value:"CC-BY-NC-ND", label:"Creative Commons - Attribution - Non Commercial - No Derivatives", href:"https://creativecommons.org/licenses/by-nc-nd/4.0/", icon:"cc-by-nc-nd"}
+			{value:"CC-BY-NC-SA", label:"Creative Commons - Attribution - Non Commercial - Share Alike", href:"https://creativecommons.org/licenses/by-nc-sa/4.0/", icon:"cc-by-nc-sa"}
+			{value:"CC-BY-ND", label:"Creative Commons - Attribution - No Derivatives ", href:"https://creativecommons.org/licenses/by-nd/4.0/", icon:"cc-by-nd"}
+			{value:"CC-BY-SA", label:"Creative Commons - Attribution - Share Alike", href:"https://creativecommons.org/licenses/by-sa/4.0/", icon:"cc-by-sa"}
+			{value:"CC0", label:"Creative Commons Zero - No Rights Reserved", href:"https://creativecommons.org/public-domain/cc0/", icon:"cc0"},
+			{value:"PUBLIC-DOMAIN", label:"Public Domain", href:"https://creativecommons.org/publicdomain/mark/1.0/", icon:"public-domain"}
+		]
+	}
+}

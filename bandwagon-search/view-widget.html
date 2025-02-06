@@ -3,27 +3,24 @@
 <script src="/.templates/bandwagon-search/javascript"></script>
 <script type="text/hyperscript" src="/.templates/bandwagon-search/hyperscript"></script>
 
-<form id="search-form" hx-get="/{{.Token}}" hx-indicator="#search-widget">
-	<input type="hidden" id="search-query" name="q">
-</form>
-
-<div class="flex-center">
-	<div class="search-container pos-relative margin-bottom">
-		<div id="search-widget" script="install SearchWidget(value:{{$queryString |json}}, hint:{{.Data `searchText` |json}})" class="input">
-			<div id="search-tags"></div>
-			<input type="text" id="search-input"/>
-			<button class="primary align-center htmx-request-hide" style="width:3em;" aria-label="Search" id="search-submit">{{icon "search"}}</button>
-			<button class="primary align-center htmx-request-show" style="width:3em;"><span class="spin">{{icon "loading"}}</span></button>
-		</div>
+<div>
+	<div class="search-container pos-relative">
+		<form id="search-form" hx-get="/{{.Token}}/view-results" hx-target="#search-results" hx-indicator="#search-widget">
+			<div id="search-widget" script="install SearchWidget(value:{{$queryString |json}}, hint:{{.Data `searchText` |json}})" class="input">
+				<input type="search" id="search-input" autocomplete="off" name="q"/>
+				<button class="primary align-center htmx-request-hide" style="width:3em;" aria-label="Search" id="search-submit">{{icon "search"}}</button>
+				<button class="primary align-center htmx-request-show" style="width:3em;"><span class="spin">{{icon "loading"}}</span></button>
+			</div>
+		</form>
 		<form 
 			id="search-suggestions-form"
 			hx-get="/{{.Token}}/view-suggestions" 
-			hx-trigger="search"
+			hx-trigger="search throttle:100ms queue:last"
 			hx-target="#search-suggestions" 
-			hx-swap="innerHTML" 
+			hx-swap="morph:innerHTML" 
 			hx-push-url="false">
 			<input type="hidden" id="search-suggestion-query" name="q"/>
-			<div id="search-suggestions" script="install Popup install Listbox" style="visibility:hidden;"></div>
+			<div id="search-suggestions" class="pop-up list-box" script="install Popup install Listbox" style="visibility:hidden;"></div>
 		</form>
 	</div>
 </div>

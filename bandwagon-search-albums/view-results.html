@@ -1,41 +1,32 @@
-{{- $token := .Token -}}
 {{- $query := .QueryParam "q" -}}
-{{- $tags := parseTags $query -}}
 
 {{- if eq "" $query -}}
 
-	{{template "view-tags" .}}
+	{{- template "view-tags" . -}}
 
+<!-- No Results -->
 {{- else -}}
 
 	<!-- Search Albums Here -->
-	{{- $results := .Search.Top120 -}}
+	{{- $results := .Search.Top120.FullText.Tags -}}
 	{{- $results := $results.WhereType "Album" -}}
 	{{- $results := $results.Slice.Shuffle -}}
+	{{- $token := .Token -}}
 
-	<!-- No Results -->
 	{{- if $results.IsEmpty -}}
 
 		{{- $tags := .FeaturedSearchTags.Slice -}}
 
-		<div class="flex-center margin-bottom-lg">
-			<div class="search-container">
-				<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> Genres</a>
-				<a hx-get="/{{.Token}}/all" class="turboclick padding-right-sm"><i class="bi bi-list"></i> Albums</a>
-			</div>
-		</div>	
-
-		<div class="align-center flex-center text-lg text-gray">
-			<br>
-			Sorry. There are no results that match your criteria.
+		<div class="text-lg text-gray">
+			There are <b>no albums</b> that match your criteria.
 			<br>
 			Please try some of these search terms instead...
 		</div>
 
-		<div class="flex-center margin-top-lg">
+		<div class="margin-top-lg">
 			<div class="table search-container">
 				{{- range $index, $tag := $tags -}}
-					<div class="link turboclick" role="link" hx-get="/{{$token}}?q=%23{{$tag.Name}}">
+					<div class="link turboclick" role="link" hx-get="/{{$token}}?q={{$tag.Name}}">
 						{{icon "tag"}} {{$tag.Name}}
 					</div>
 				{{- end -}}
@@ -43,28 +34,20 @@
 		</div>
 
 	{{- else -}}
-	
-		{{- template "tag-header" . -}}
 		
-		{{- if eq 1 $tags.Length -}}
-			<h1 class="margin margin-bottom-sm">#{{$tags.First}}</h1>
-		{{- end -}}
+		<div class="padding-none margin-none margin-bottom text-lg">
+			<button class="primary" hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow These Results</button>
+			<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
+		</div>
 
-		{{- if .IsOwner -}}
-			<div class="margin-horizontal text-sm">
-				<button hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow for Updates</button>
-				<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
-			</div>
-		{{- end -}}
-
-		<div class="columns-6 margin">
+		<div class="columns-6">
 			{{- range $result := $results -}}
 
 				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
 					<div script="install blockselect()" role="link">
-						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" aria-hidden="true" loading="lazy">
-						<div class="padding-sm padding-bottom-none text-plain ellipsis">
-							<a href="{{$result.URL}}" class="bold turboclick">{{$result.Name}}</a><br>
+						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
+						<div class="padding-sm padding-bottom-none ellipsis">
+							<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
 						</div>
 						<div class="padding-left-sm text-sm text-gray">
 							{{- if eq "Album" $result.Type -}}
@@ -75,13 +58,6 @@
 							{{$result.AttributedTo}}
 						</div>
 					</div>
-					<!--div class="padding-bottom padding-horizontal-sm padding-top-xs text-plain">
-						<div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:auto;">
-							{{- range $tagName := $result.TagNames -}}
-								<a hx-get="/{{$token}}?q=%23{{$tagName}}" class="clickable inline-block clearTag turboclick">{{$tagName}}</a>
-							{{- end -}}
-						</div>
-					</div-->
 				</div>
 			{{- end -}}
 		</div>
@@ -89,7 +65,7 @@
 		<style>
 			.album {
 				border-radius:8px;
-				background-color:rgba(255, 255, 255, 0.1);
+				background-color:var(--gray15);
 			}
 
 			.album img {
@@ -114,4 +90,5 @@
 		</style>
 
 	{{- end -}}
+
 {{- end -}}

@@ -1,24 +1,64 @@
-<div id="search" class="fullscreen padding-top-lg">
+<div id="search" class="fullscreen">
 
-	{{- template "view-widget" . -}}
-
-	<div id="search-results">
-		{{.View "view-results"}}
+	<div class="flex-row padding-vertical-lg margin-bottom-lg" style="background-color:var(--gray20); margin-top:-8px; margin-right:-8px; margin-left:-8px;">
+		<div class="sidebar"></div>
+		<div class="flex-grow">
+			{{- template "view-widget" . -}}
+		</div>
 	</div>
 
-	{{- if .UserCan "edit" -}}
-		<br>
-		<br>
-		<div class="pos-absolute-bottom-right text-sm">
-			Admins:
-			<button hx-get="/{{.Token}}/edit">Edit</button>
-			<button hx-get="/{{.Token}}/sharing">Sharing</button>
-		</div>
-	{{- end -}}
+	<div class="flex-row">
 
+		<div class="sidebar" style="border-right: solid 1px var(--gray20);">
+			{{template "view-sidebar" .}}
+		</div>
+
+		<div class="flex-grow">
+
+			<div id="search-results">
+				{{.View "view-results"}}
+			</div>
+
+			{{- if .UserCan "edit" -}}
+				<br>
+				<br>
+				<br>
+				<br>
+				<div class="text-sm">
+					<button hx-get="/{{.Token}}/edit">Edit</button>
+					<button hx-get="/{{.Token}}/sharing">Sharing</button>
+				</div>
+			{{- end -}}
+		</div>
+	</div>
 </div>
 
+
 <style>
+	.sidebar {
+		width:180px;
+		min-width:180px;
+		max-width:180px;
+		padding-right:8px;
+		margin-right:8px;
+	}
+
+	.search-navigation {
+		border-radius:8px;
+		padding:8px 16px;
+		display:block;
+		cursor:pointer;
+	}
+
+	.search-navigation:hover {
+		background-color:var(--gray15);
+	}
+
+	.search-navigation.selected,
+	.search-navigation.selected:hover {
+		background-color:var(--gray20);
+	}
+
 	.search-container {
 		width:90%;
 		max-width: 640px;
@@ -63,6 +103,17 @@
 		margin-top:3px;
 	}
 
+	#search-suggestions > [role=option] {
+		display:block;
+		cursor:pointer;
+		padding: 4px 8px;
+		color:var(--black);
+	}
+
+	#search-suggestions > [role=option].selected {
+		background-color:var(--gray20);
+	}
+
 	.list-box {
 		width:100%;
 		border:solid 2px var(--gray40);
@@ -79,14 +130,4 @@
 		border-bottom-right-radius:8px;
 	}
 
-	#search-suggestions > [role=option] {
-		display:block;
-		cursor:pointer;
-		padding: 4px 8px;
-		color:var(--black);
-	}
-
-	#search-suggestions > [role=option].selected {
-		background-color:var(--gray20);
-	}
 </style>
