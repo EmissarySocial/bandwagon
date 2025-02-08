@@ -37,7 +37,7 @@
 						do:edit
 						form: {
 							type:layout-vertical
-							label:"+ Add a Post"
+							label:"+ Add News"
 							children: [
 								{type:"text", path: "label", label: "Title"}
 								{type:"textarea", path: "summary", label: "Summary", description:"Message to send to followers. Shows on summary list."}

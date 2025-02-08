@@ -222,7 +222,7 @@
 								}
 								{
 									type: layout-vertical
-									label: Events
+									label: Shows
 									children: [
 										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Menu Bar"}}
 										{type:"text", path:"data.label-events", label:"Menu Bar Text", options:{placeholder:"Shows"}}

@@ -32,12 +32,10 @@
 						</div>
 						<div class="text-xl margin-none bold">{{.Data.city}}</div>
 						<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
-						{{- if ne nil .Data.website -}}
-							{{ $websiteLabel := first .Data.websiteLabel "Get Tickets"}}
 							<div class="margin-top">
-								<a href="{{.Data.website}}" target="_blank" class="bold hover-underline">{{$websiteLabel}}</a>
+								<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" target="_blank" class="bold hover-underline">More...</a>
 							</div>
-						{{- end -}}
+						</div>
 
 						{{- if $isMyself -}}
 							<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>

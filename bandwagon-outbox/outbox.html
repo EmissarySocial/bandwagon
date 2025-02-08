@@ -116,17 +116,17 @@
 									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
 								</div>
 							{{- else if eq "bandwagon-event" .TemplateID -}}
-								<h2 class="padding padding-bottom-none">{{.Data.city}}</h2>
-								<div class="padding-horizontal">{{.Data.date}}</div>
+								<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
+								<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
 								<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
 								{{- if ne nil .Data.website -}}
 									<div class="padding">
-										<a href="{{.Data.website}}" target="_blank">{{first .Data.websiteLabel "Get Tickets"}}</a>
+										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" target="_blank">More...</a>
 									</div>
 								{{- end -}}
 							{{- else if eq "bandwagon-news" .TemplateID -}}
-								<h2 class="padding padding-bottom-none">{{.Label}}</h2>
-								<div class="padding-horizontal flex-grow ellipsis-block" style="height:3em;">{{.Summary}}</div>
+								<h2 class="padding padding-bottom-none margin-none">{{.Label}}</h2>
+								<div class="padding-horizontal flex-grow ellipsis-block" style="height:9em;">{{.Summary}}</div>
 								<div class="padding">
 									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
 								</div>
@@ -176,11 +176,11 @@
 						<div class="align-center">
 							Add a
 							<span class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">
-								Calendar Event
+								Show
 							</span>
-							or a 
+							or
 							<span class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-news?isFeatured=true">
-								News Post
+								News
 							</span>
 						</div>
 					</div>
