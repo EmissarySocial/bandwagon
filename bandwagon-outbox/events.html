@@ -48,7 +48,48 @@
 					</div>
 				{{- end -}}
 			</div>
-		{{- else -}}
+
+			{{- if $isMyself -}}
+				</form>
+
+				<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+
+				<script>
+					var sortables = document.querySelectorAll(".sortable");
+					for (var node of sortables) {
+						new Sortable(node, {
+							handle: ".drag-handle",
+							animation: 150,
+							whisperClass: 'draggable-whisper'
+						});
+					}
+				</script>
+
+				<style>
+					.draggable {
+						padding:10px 20px;
+						border: solid 1px var(--gray10);
+						background-color: var(--gray00);
+						color: var(--gray80);
+						margin-bottom: -1px;
+						cursor: grab;
+					}
+
+					.drag-handle {
+						cursor:grab;
+					}
+
+					.draggable-whisper {
+						background-color: var(--gray50);
+						color:var(--gray50);
+						cursor: grabbing;
+					}
+				</style>
+
+			{{- end -}}
+
+		{{- else if $isMyself -}}
+
 			<div class="margin-top columns-3">
 				<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-event">
 					<div class="text-3xl margin-sm">{{icon "add"}}</div>
@@ -62,45 +103,6 @@
 					</div>
 				{{- end -}}
 			</div>
-		{{- end -}}
-
-		{{- if $isMyself -}}
-			</form>
-
-			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
-
-			<script>
-				var sortables = document.querySelectorAll(".sortable");
-				for (var node of sortables) {
-					new Sortable(node, {
-						handle: ".drag-handle",
-						animation: 150,
-						whisperClass: 'draggable-whisper'
-					});
-				}
-			</script>
-
-			<style>
-				.draggable {
-					padding:10px 20px;
-					border: solid 1px var(--gray10);
-					background-color: var(--gray00);
-					color: var(--gray80);
-					margin-bottom: -1px;
-					cursor: grab;
-				}
-
-				.drag-handle {
-					cursor:grab;
-				}
-
-				.draggable-whisper {
-					background-color: var(--gray50);
-					color:var(--gray50);
-					cursor: grabbing;
-				}
-			</style>
-
 		{{- end -}}
 
 	</div>
