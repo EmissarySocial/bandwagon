@@ -1,4 +1,7 @@
-{{- $posts := (.Outbox.Where "templateId" "bandwagon-news").ByPublishDate.Reverse.Slice -}}
+{{- $posts := .Outbox.Top60.ByPublishDate.Reverse -}}
+{{- $posts := $posts.Where "templateId" "bandwagon-news" -}}
+{{- $posts := $posts.Slice -}}
+
 {{- $isMyself := .IsMyself -}}
 {{- $description := .Data "description-news" -}}
 
@@ -6,47 +9,38 @@
 
 	{{- template "header" . -}}
 
+	{{- if $isMyself -}}
+		<div class="text-sm align-right padding-sm margin-bottom">
+			<button hx-get="/@{{.UserID}}/add-news" class="text-sm" aria-label="Add a Post">{{icon "add"}} News</button>
+		</div>
+	{{- end -}}
+
 	<div class="padding">
 	
-		{{- if $isMyself -}}
-			<div class="button-group text-sm margin-bottom">
-				<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
-				<button hx-get="/@{{.UserID}}/add-news" class="text-sm" aria-label="Add a Post">{{icon "add"}} Post</button>
-			</div>
-		{{- end -}}
-
 		{{- if ne "" $description -}}
 			<div class="max-width-640">{{$description | markdown}}</div>
 		{{- end -}}
 
 		{{- if $posts.NotEmpty -}}
-			<div class="margin-vertical columns-4">
+			<table class="table">
 				{{- range $posts -}}
-					<div class="card hover-trigger padding-sm flex-column" script="install blockselect()">
-						<h2>{{.Label}}</h2>
-						<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
-						<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}">{{first .Data.linkText "Read More"}}</a>
-						{{- if $isMyself -}}
-							<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs hover-show">Edit</a>
-						{{- end -}}
-					</div>
+					<tr class="hover-trigger" script="install blockselect()">
+						<td>
+							{{- if ne "" .IconURL -}}
+								<img src="{{.IconURL}}" class="square width-100% block" aria-hidden="true">
+							{{- end -}}
+						</td>
+						<td class="pos-relative padding-right-none">
+							<h2>{{.Label}}</h2>
+							<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
+							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}">{{first .Data.linkText "Read More"}}</a>
+							{{- if $isMyself -}}
+								<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs hover-show">Edit News</a>
+							{{- end -}}
+						</div>
+					</tr>
 				{{- end -}}
-			</div>
-
-		{{- else if $isMyself -}}
-			<div class="margin-top columns-4">
-				<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-news">
-					<div class="text-3xl margin-sm">{{icon "add"}}</div>
-					Click here to add your first post
-				</div>
-
-				{{- range seq 3 -}}
-					<div class="card card-dashed padding text-light-gray align-center">
-						<div class="text-3xl margin-sm">&hellip;</div>
-						Coming Soon...<br><br>
-					</div>
-				{{- end -}}
-			</div>
+			</table>
 
 		{{- end -}}
 	</div>

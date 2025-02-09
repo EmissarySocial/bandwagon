@@ -188,18 +188,37 @@
 				ISRC: {{.Data "isrc"}}<br>
 			{{- end -}}
 		
+			{{- $license := .DataString "license"}}
+			{{- if eq "COPYRIGHT" $license -}}
+				<h3 class="margin-none">License</h3>
+				<div>
+					&copy;
+					{{ if ne nil (.Data "year") }}
+						{{.Data "year"}}
+					{{- end }}
+					Copyright.  All Rights Reserved.
+				</div>
+			{{- else if ne "" $license -}}
+				{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
+				{{- $licenseInfo := $licenses.Value $license -}}
+				<h3 class="margin-none">License</h3>
+				<div>
+					<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
+						{{icon $licenseInfo.Icon}} 
+						{{ if ne nil (.Data "year") }}
+							{{.Data "year"}}
+						{{- end }}
+						{{$licenseInfo.Label}}
+					</a>
+				</div>
+			{{- end -}}
 		</div>
 
 	</div>
 
 	{{- if .UserCan "edit" -}}
 		<div class="pos-absolute-top-right text-xs">
-			<div class="button-group">
-				<button hx-get="/@{{.AttributedTo.UserID.Hex}}/edit">Edit Profile</button>
-				<button hx-get="/{{.ParentID}}/edit">Edit Album</button>
-				<button hx-get="/{{.StreamID}}/edit">Edit Song</button>
-			</div>
-			<button hx-get="/{{.ParentID}}/add-song" class="primary"><span aria-label="Add">{{icon "add"}}</span> Another Song</button>
+			<button hx-get="/{{.StreamID}}/edit">Edit Song</button>
 		</div>
 	{{- end -}}
 	

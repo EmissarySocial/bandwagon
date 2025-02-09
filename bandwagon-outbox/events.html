@@ -1,4 +1,7 @@
-{{- $events := (.Outbox.Where "templateId" "bandwagon-event").ByRankAlt.Slice -}}
+{{- $events := .Outbox.ByStartDate.Reverse -}}
+{{- $events := $events.Where "templateId" "bandwagon-event" -}}
+{{- $events := $events.Slice -}}
+{{- $root := . -}}
 {{- $isMyself := .IsMyself -}}
 {{- $description := .Data "description-events" -}}
 
@@ -6,100 +9,69 @@
 
 	{{- template "header" . -}}
 
-	<div class="padding pos-relative">
-	
-		{{- if $isMyself -}}
-			<div class="button-group text-sm margin-bottom">
-				<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
-				<button hx-get="/@{{.UserID}}/add-event" class="text-sm" aria-label="Add an Event">{{icon "add"}} Event</button>
-			</div>
-		{{- end -}}
+	{{- if $isMyself -}}
+		<div class="margin-vertical align-right padding-sm text-sm">
+			<button hx-get="/@{{.UserID}}/add-event">
+				{{icon "add"}} Add Show
+			</button>
+		</div>
+	{{- end -}}
+
+	<div class="padding">
+
 
 		{{- if ne "" $description -}}
 			<div class="max-width-640 margin-bottom-lg">{{$description | markdown}}</div>
 		{{- end -}}
 
-		{{- if $events.NotEmpty -}}
-			{{- if $isMyself -}}
-				<form hx-post="/@{{.UserID}}/sort-children" hx-trigger="end" hx-swap="none" hx-push-url="false">
-			{{- end -}}
+		<table class="table">
+	
+			{{- range $events -}}
 
-			<div class="sortable columns-4">
-				{{- range $events -}}
-					<div class="card flex-column padding hover-trigger" script="install blockselect()">
+				{{- $backgroundColor := .Data.color.page | string | parseColor -}}
+				{{- $textColor := $backgroundColor.TextExt -}}
+
+				<tr class="hover-trigger" script="install blockselect()" style="background-color:{{$backgroundColor}}; color:{{$textColor}}">
+
+					<td style="max-width:128px;">
+						{{- if ne "" .IconURL -}}
+							<img src="{{.IconURL}}" class="square width-100%">
+						{{- end -}}
+					</td>
+					<td class="flex-column padding pos-relative" style="height:100%;">
 						<div>
-							<span class="bold">{{.Data.date}}</span>
+							<span class="bold text-gray">{{.Data.city}}</span>
 						</div>
-						<div class="text-xl margin-none bold">{{.Data.city}}</div>
-						<div class="flex-grow margin-bottom bold">{{.Data.venue}}</div>
-							<div class="margin-top">
-								<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" target="_blank" class="bold hover-underline">More...</a>
-							</div>
+						<div class="text-2xl margin-none bold">{{.StartDate | longDate}}</div>
+						<div class="flex-grow margin-vertical">
+							{{.Data.venue }}
+							&middot;
+							{{.StartDate | shortTime}}
+						</div>
+						<div class="margin-top">
+
+							{{- $website := index .Data "website" | string -}}
+
+							{{- if eq "" $website -}}
+								<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" target="_blank" class="button primary">More Info</a>
+							{{- else -}}
+								{{- $websiteLabel := index .Data "websiteLabel" -}}
+								{{- $websiteLabel := first $websiteLabel "Get Tickets" -}}
+								<a href="{{$website}}" target="_blank" class="button primary">{{$websiteLabel}}</a>
+								<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" target="_blank" class="button">More Info</a>
+							{{- end -}}
 						</div>
 
 						{{- if $isMyself -}}
-							<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>
-							<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit</button>
-							<input type="hidden" name="keys" value="{{.StreamID}}">
+							<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit Event</button>
 						{{- end -}}
+					</td>
 
-					</div>
-				{{- end -}}
-			</div>
-		{{- else -}}
-			<div class="margin-top columns-3">
-				<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-event">
-					<div class="text-3xl margin-sm">{{icon "add"}}</div>
-					Click here to add your first event
-				</div>
+				</tr>
 
-				{{- range seq 5 -}}
-					<div class="card card-dashed padding text-light-gray align-center">
-						<div class="text-3xl margin-sm">&hellip;</div>
-						Coming Soon...<br><br>
-					</div>
-				{{- end -}}
-			</div>
-		{{- end -}}
+			{{- end -}}
 
-		{{- if $isMyself -}}
-			</form>
-
-			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
-
-			<script>
-				var sortables = document.querySelectorAll(".sortable");
-				for (var node of sortables) {
-					new Sortable(node, {
-						handle: ".drag-handle",
-						animation: 150,
-						whisperClass: 'draggable-whisper'
-					});
-				}
-			</script>
-
-			<style>
-				.draggable {
-					padding:10px 20px;
-					border: solid 1px var(--gray10);
-					background-color: var(--gray00);
-					color: var(--gray80);
-					margin-bottom: -1px;
-					cursor: grab;
-				}
-
-				.drag-handle {
-					cursor:grab;
-				}
-
-				.draggable-whisper {
-					background-color: var(--gray50);
-					color:var(--gray50);
-					cursor: grabbing;
-				}
-			</style>
-
-		{{- end -}}
+		</table>
 
 	</div>
 

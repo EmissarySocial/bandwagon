@@ -9,13 +9,6 @@
 
 	<div class="padding pos-relative">
 
-		{{- if $isMyself -}}
-			<div class="button-group text-sm margin-bottom">
-				<button hx-get="/@{{.UserID}}/edit">Edit Profile</button>
-				<button hx-get="/@{{.UserID}}/add-album" aria-label="Add an Album">{{icon "add"}} Album</button>
-			</div>
-		{{- end -}}
-
 		{{- if ne "" $description -}}
 			<div class="max-width-640">{{$description | markdown}}</div>
 		{{- end -}}
@@ -25,52 +18,50 @@
 		{{- end -}}
 	
 		<div hx-push-url="true">
-			{{- if $albums.NotEmpty -}}
 
-				<div class="sortable margin-vertical-lg columns-4">
-					{{- range $albums -}}
-						{{- if or .IsPublished $isMyself -}}
-							<div class="card hover-trigger hover-swell" script="install blockselect()">
-								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover">
-								<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block turboclick">
-									<div class="block padding">
-										<div class="bold">{{.Label}}</div>
-										<div>{{.Data.year}}</div>
-									</div>
-								</a>
+			<div class="sortable margin-vertical-lg columns-4">
+				{{- range $albums -}}
+					{{- if or .IsPublished $isMyself -}}
+						<div class="card hover-trigger hover-swell" script="install blockselect()">
+							<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover">
+							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block turboclick">
+								<div class="block padding">
+									<div class="bold">{{.Label}}</div>
+									<div>{{.Data.year}}</div>
+								</div>
+							</a>
 
-								{{- if not .IsPublished -}}
-									<div class="pos-absolute-four-corners bg-stripes flex-center">
-										<span class="text-xl bold">UNPUBLISHED</span>
-									</div>
-								{{- end -}}
+							{{- if not .IsPublished -}}
+								<div class="pos-absolute-four-corners bg-stripes flex-center">
+									<span class="text-xl bold">UNPUBLISHED</span>
+								</div>
+							{{- end -}}
 
-								{{- if $isMyself -}}
-									<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>
-									<button hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</button>
-									<input type="hidden" name="keys" value="{{.StreamID}}">
-								{{- end -}}
-							</div>
-						{{- end -}}
-
-					{{- end -}}
-				</div>
-			{{- else if $isMyself -}}
-				<div class="margin-vertical-lg columns-4">
-					<div class="card padding clickable bold align-center" role="button" hx-get="/@{{.UserID}}/add-album">
-						<div class="text-3xl margin-sm">{{icon "add"}}</div>
-						Click here to add your first album
-					</div>
-
-					{{- range seq 3 -}}
-						<div class="card card-dashed padding text-light-gray align-center">
-							<div class="text-3xl margin-sm">&hellip;</div>
-							Coming Soon...<br><br>
+							{{- if $isMyself -}}
+								<button class="hover-show pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</button>
+								<button hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</button>
+								<input type="hidden" name="keys" value="{{.StreamID}}">
+							{{- end -}}
 						</div>
 					{{- end -}}
-				</div>
 
-			{{- end -}}
+				{{- end -}}
+
+				{{- if $isMyself -}}
+
+					<div class="rounded card padding flex-center">
+						<div class="align-center link" role="button" hx-get="/@{{.UserID}}/add-album">
+							<div class="margin-vertical-xl">
+								<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
+								<div class="text-xl margin-none bold">Add an Album</div>
+							</div>
+						</div>
+					</div>
+
+					{{- end -}}
+
+			</div>
+
 		</div>
 		
 		{{- if $isMyself -}}

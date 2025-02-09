@@ -7,12 +7,26 @@
 
 	<link rel="stylesheet" type="text/css" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
 
+	<!-- Open Graph: https://ogp.me -->
+    <meta property="og:type" content="event">
+	<meta property="og:url" content="{{.Permalink}}">
+    <meta property="og:title" content="{{.Label}}">
+    <meta property="og:description" content="{{.Summary}}">
+    <meta property="og:start_date" content="{{.StartDate | isoDate}}">
+    <meta property="og:image" content="{{.IconURL}}">
+
+	{{- if ne "" $bannerURL -}}
+		<img src="{{$bannerURL}}" class="width-100% margin-bottom">
+	{{- end -}}
+
 	<div class="padding pos-relative">
 	
 		<div class="md:flex-row">
-			<div class="md:width-4-10" style="">
-				<img src="{{.IconURL}}" class="square width-100%" style="border:solid 1px var(--gray30);">
-			</div>
+			{{- if ne "" .IconURL -}}
+				<div class="md:width-4-10">
+					<img src="{{.IconURL}}" class="square width-100%" style="border:solid 1px var(--gray30);">
+				</div>
+			{{- end -}}
 			<div class="md:width-24"></div>
 			<div class="md:width-1-2">
 				<h1 class="extra-bold margin-bottom-sm">{{.Label}}</h1>
@@ -45,81 +59,84 @@
 			</div>
 		</div>
 
-		<hr>
-
 		{{- if .Places.NotEmpty -}}
 
 			{{- $venue := index .Places 0 -}}
-			{{- $hasGeocode := $venue.HasGeocode -}}
 
-			<div class="md:flex-row margin-top-xxl">
+			{{- if $venue.NotEmpty -}}
 
-				<div class="md:width-4-10">
-					{{if $hasGeocode}}
-						<div id="map" class="square map" style="width:100%; border:solid 1px var(--gray30);"></div>
-						<div class="align-right text-xs">
-							Maps &copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 
-							and <a href="https://www.mediawiki.org/wiki/Maps" target="_blank">Wikimedia</a>. &nbsp;
-							Icon by <a href="https://icons8.com/icon/13800/location" target="_blank">Icons8</a>
-						</div>
+				{{- $hasGeocode := $venue.HasGeocode -}}
+				
+				<hr>
+				<div class="md:flex-row margin-top-xxl">
 
-						<!-- From: https://wiki.openstreetmap.org/wiki/OpenLayers_Marker_Example -->
-						<!-- https://wiki.openstreetmap.org/wiki/Openlayers_marker_multilayer_example -->
-						<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-						<script>			
-							map = new OpenLayers.Map("map");
-							// map.addLayer(new OpenLayers.Layer.OSM());
-							map.addLayer(new OpenLayers.Layer.OSM("Wikimedia",
-								["https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png"],
-								{
-									"attribution": "",
-									"tileOptions": {"crossOriginKeyword": null }}
-								)
-							);
+					<div class="md:width-4-10">
+						{{if $hasGeocode}}
+							<div id="map" class="square map" style="width:100%; border:solid 1px var(--gray30);"></div>
+							<div class="align-right text-xs">
+								Maps &copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> 
+								and <a href="https://www.mediawiki.org/wiki/Maps" target="_blank">Wikimedia</a>. &nbsp;
+								Icon by <a href="https://icons8.com/icon/13800/location" target="_blank">Icons8</a>
+							</div>
 
-							var zoom=14;
-							var lonLat = new OpenLayers.LonLat( {{$venue.Longitude}}, {{$venue.Latitude}} )
+							<!-- From: https://wiki.openstreetmap.org/wiki/OpenLayers_Marker_Example -->
+							<!-- https://wiki.openstreetmap.org/wiki/Openlayers_marker_multilayer_example -->
+							<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+							<script>			
+								map = new OpenLayers.Map("map");
+								// map.addLayer(new OpenLayers.Layer.OSM());
+								map.addLayer(new OpenLayers.Layer.OSM("Wikimedia",
+									["https://maps.wikimedia.org/osm-intl/${z}/${x}/${y}.png"],
+									{
+										"attribution": "",
+										"tileOptions": {"crossOriginKeyword": null }}
+									)
+								);
 
-							lonLat = lonLat.transform(
-								new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-								map.getProjectionObject() // to Spherical Mercator Projection
-							);
-						
-							var markers = new OpenLayers.Layer.Markers( "Markers" );
-							map.addLayer(markers);
+								var zoom=14;
+								var lonLat = new OpenLayers.LonLat( {{$venue.Longitude}}, {{$venue.Latitude}} )
+
+								lonLat = lonLat.transform(
+									new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+									map.getProjectionObject() // to Spherical Mercator Projection
+								);
 							
-							var size = new OpenLayers.Size(32,32);
-   							var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-   							var icon = new OpenLayers.Icon("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGUlEQVR4nO2aS0hVURSG/8pepDWM7AFFBZk1CdTuXeucHko2qAbRpGkkiaLUJCcNgmjeoIggEGleNGkShRSRSJNUGkVBZVH0VkrF/tjn3m5iaXuf1z1CCxZcLpd//9866yz22ecC/6MQVKyloIWKHgoeUfCOggkqxql4S0U/Bd1UHGMO1chKUNBMxV0qJqmgZZrf3qagsbzGBX0Opv+eggepgrARKyi4Ftn4nyDdzKEqWfMeNlHwJHbzWsoh+tiYlPltFLxJ0DyLV2KYHrbEaz6HagpeJG5eS/mKPtbEY34HFgYjMD3zLOZD+qiIDqA4WwbzLOaZaObzWEfBN8cefkwPncxjK5uwLEjz2XwnGHAEGGUDVkep/kUH498paCUwf0a9I1hARRsVYw4QF8KZz6GKii/W5j3sdijMHmsIwSdzFd0BFIcdqnQihH67g/4hdwDBZeuen6Vt/tFOg5YAl8IA2O1zBB3O4r/XOGkJcN9dvLAFtgGoCQ3go9Zyjdfu4ubGtBH3URkaIBcMCqsh4S5uZrCNeIQdJOuw3BLgq7u44FlmWkjxNAxAr5W4h87Eb2LBnTDi5y3FB8xIDDlGhyyvwDl3gDz2W4qbbHPWF3Q46O9zB2jGYio+WC4wRsFeB/ONxdMKWuR71mCRM0CwkOKKQ5XM3qZ9tnYK2qZQeVvzNDuCUOaLlap3APiVg8HNaSaMj8pi1lJwyqHnOSXrQgMEEIp7IRaNJwW9kcwHAB4Olg0gjwORAQIIc/iUfvX7CMyLB0DhpQ7g2T8g2UEIbqQIcD1W81Me8EdSMD9KxfrYAQIIRVcKvX86EfMBgI+KhG/ofnOQlhhAACHYYH1a4Vb5EQo2J2p+CkRLAgDHUzFfglDcjBHgVmwz3xqgHiuDo/DolR82WqmaL0F42Ol4TDg9x+lBy2K+BFE46wxb/VZkIai4GgKgB1kJNmCp40uQfvpYgiwFFauoeG5h/mVsr4/iDnNGRMHHWcx/pmA7shzMY9cMk8lMnCbMhaCHo9P+ejBpvsNcCprXTQXzP8K8AEEWorj97kpykZ+xubp/rAMA/QAAAABJRU5ErkJggg==", size, offset);
-							var marker = new OpenLayers.Marker(lonLat, icon)
-							markers.addMarker(marker);
-							
-							map.setCenter (lonLat, zoom);
-						</script>
+								var markers = new OpenLayers.Layer.Markers( "Markers" );
+								map.addLayer(markers);
+								
+								var size = new OpenLayers.Size(32,32);
+								var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+								var icon = new OpenLayers.Icon("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGUlEQVR4nO2aS0hVURSG/8pepDWM7AFFBZk1CdTuXeucHko2qAbRpGkkiaLUJCcNgmjeoIggEGleNGkShRSRSJNUGkVBZVH0VkrF/tjn3m5iaXuf1z1CCxZcLpd//9866yz22ecC/6MQVKyloIWKHgoeUfCOggkqxql4S0U/Bd1UHGMO1chKUNBMxV0qJqmgZZrf3qagsbzGBX0Opv+eggepgrARKyi4Ftn4nyDdzKEqWfMeNlHwJHbzWsoh+tiYlPltFLxJ0DyLV2KYHrbEaz6HagpeJG5eS/mKPtbEY34HFgYjMD3zLOZD+qiIDqA4WwbzLOaZaObzWEfBN8cefkwPncxjK5uwLEjz2XwnGHAEGGUDVkep/kUH498paCUwf0a9I1hARRsVYw4QF8KZz6GKii/W5j3sdijMHmsIwSdzFd0BFIcdqnQihH67g/4hdwDBZeuen6Vt/tFOg5YAl8IA2O1zBB3O4r/XOGkJcN9dvLAFtgGoCQ3go9Zyjdfu4ubGtBH3URkaIBcMCqsh4S5uZrCNeIQdJOuw3BLgq7u44FlmWkjxNAxAr5W4h87Eb2LBnTDi5y3FB8xIDDlGhyyvwDl3gDz2W4qbbHPWF3Q46O9zB2jGYio+WC4wRsFeB/ONxdMKWuR71mCRM0CwkOKKQ5XM3qZ9tnYK2qZQeVvzNDuCUOaLlap3APiVg8HNaSaMj8pi1lJwyqHnOSXrQgMEEIp7IRaNJwW9kcwHAB4Olg0gjwORAQIIc/iUfvX7CMyLB0DhpQ7g2T8g2UEIbqQIcD1W81Me8EdSMD9KxfrYAQIIRVcKvX86EfMBgI+KhG/ofnOQlhhAACHYYH1a4Vb5EQo2J2p+CkRLAgDHUzFfglDcjBHgVmwz3xqgHiuDo/DolR82WqmaL0F42Ol4TDg9x+lBy2K+BFE46wxb/VZkIai4GgKgB1kJNmCp40uQfvpYgiwFFauoeG5h/mVsr4/iDnNGRMHHWcx/pmA7shzMY9cMk8lMnCbMhaCHo9P+ejBpvsNcCprXTQXzP8K8AEEWorj97kpykZ+xubp/rAMA/QAAAABJRU5ErkJggg==", size, offset);
+								var marker = new OpenLayers.Marker(lonLat, icon)
+								markers.addMarker(marker);
+								
+								map.setCenter (lonLat, zoom);
+							</script>
 
-					{{- end -}}
-				</div>
-				<div class="md:width-24"></div>
-				<div class="md:width-1-2">
-
-					<div class="text-lg">
-						<h1 class="extra-bold">{{.Data "venue"}}</h1>
-						<div class="text-xl text-gray">{{- $venue.FullAddress | text -}}</div>
+						{{- end -}}
 					</div>
-		
-					{{if $hasGeocode}}
-						<div class="margin-top-xl text-gray">Open With:</div>
+					<div class="md:width-24"></div>
+					<div class="md:width-1-2">
+
 						<div class="text-lg">
-							<a href="https://maps.apple.com?q={{$venue.FullAddress}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} Apple Maps</a>
-							<a href="https://maps.google.com/maps/place/{{$venue.FullAddress}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} Google Maps</a>
-							<!--a href="https://bing.com/maps?q={{$venue.FullAddress}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} Microsoft Maps</a-->
-							<a href="https://mapquest.com/latlng/{{$venue.Latitude}},{{$venue.Longitude}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} MapQuest</a>
+							<h1 class="extra-bold">{{.Data "venue"}}</h1>
+							<div class="text-xl text-gray">{{- $venue.FullAddress | text -}}</div>
 						</div>
+			
+						{{if $hasGeocode}}
+							<div class="margin-top-xl text-gray">Open With:</div>
+							<div class="text-lg">
+								<a href="https://maps.apple.com?q={{$venue.FullAddress}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} Apple Maps</a>
+								<a href="https://maps.google.com/maps/place/{{$venue.FullAddress}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} Google Maps</a>
+								<!--a href="https://bing.com/maps?q={{$venue.FullAddress}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} Microsoft Maps</a-->
+								<a href="https://mapquest.com/latlng/{{$venue.Latitude}},{{$venue.Longitude}}" target="_blank" class="block padding-vertical-xs">{{icon "map"}} MapQuest</a>
+							</div>
+			
+						{{- end -}}
 		
-					{{- end -}}
-	
+					</div>
 				</div>
-			</div>
+			{{- end -}}
 
 		{{- end -}}
 

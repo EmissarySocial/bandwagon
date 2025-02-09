@@ -83,7 +83,7 @@
 						do: edit
 						form: {
 							label: + Add an Album
-							type: layout-tabs
+							type:layout-tabs
 							children: [
 								{
 									type:layout-vertical
@@ -92,23 +92,22 @@
 										{type:"text", path:"label", label:"Album Name"}
 										{type:"text", path:"data.year", label:"Release Date"}
 										{type:"select", path:"data.license", label:"License", options:{provider:"bandwagon-album.licenses"}}
-										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", rules:{width:800, height:800}}}
-										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
+										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured?"}}
 									]
 								}
 								{
 									type:layout-vertical
 									label: Metadata
 									children: [
-										{type:"textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as hashtags, separated by spaces"}
-										{type:"textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
+										{type:"textarea", path:"summary", label:"Sidebar Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
+										{type:"textarea", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
 									]
 								}
 								{
 									type:layout-vertical
 									label: Links
 									children: [
-										{type:"label", label:"When you enter streaming links, your visitors will be able to jump right to your album on whichever services you've selected."}
 										{type:"text", path:"data.links.AMAZON", options:{placeholder:"Amazon Music"}}
 										{type:"text", path:"data.links.APPLE", options:{placeholder:"Apple Music"}}
 										{type:"text", path:"data.links.BANDCAMP", options:{placeholder:"Bandcamp"}}
@@ -129,6 +128,13 @@
 										{type:"colorpicker", path:"data.color.body", label:"Window Background"}
 										{type:"colorpicker", path:"data.color.page", label:"Page Background"}
 										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
+									]
+								}
+								{
+									type:"layout-vertical"
+									label:"Distribution"
+									children:[
+										{type:"multiselect", path:"syndication", label:"Distribute to these indie streaming services", description:"These services will be notified when this album is published", options:{provider:"syndication-targets"}}
 									]
 								}
 							]
@@ -174,8 +180,8 @@
 									type:layout-vertical
 									label: Metadata
 									children: [
-										{type:"textarea", path:"data.tags", label:"Genres / Tags", description:"Enter genres as #hashtags separated by spaces"}
-										{type:"textarea", path:"summary", label:"Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
+										{type:"textarea", path:"summary", label:"Sidebar Notes", options:{rows:8}, description:"Notes appear on the side of the album page. Markdown is allowed."}
+										{type:"textarea", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces"}
 									]
 								}
 								{
@@ -258,6 +264,12 @@
 					location: child
 					title: + Add a Song
 					type:bandwagon-song
+					with-data:{
+						"data.artist":"{{.AttributedTo.Name}}"
+						"data.composer":"{{.AttributedTo.Name}}"
+						"data.tags":"{{.Data `tags`}}"
+						"data.license": "{{.Data `license`}}"
+					}
 				}
 			]
 		}
@@ -289,7 +301,15 @@
 			steps: [
 				{do: "as-modal", steps:[
 					{do:"view-html"}
-					{do:"upload-attachments", category:"other", maximum:8, fieldname:"file", label-fieldname:"label", description-fieldname:"description"}
+					{do:"edit", form:{
+						type:"layout-vertical"
+						children:[
+							{type:"text", path:"attachmentLabel", label:"Label"}
+							{type:"textarea", path:"attachmentDescription", label:"Description", description:"A few words to show underneath the filename."}
+							{type:"upload", path:"file", label:"Attachment"}
+						]
+					}, options:["submit-label:Upload Attachment"]}
+					{do:"upload-attachments", category:"other", maximum:8, fieldname:"file", label-fieldname:"attachmentLabel", description-fieldname:"attachmentDescription"}
 					{do:"refresh-page"}
 				]}
 			]

@@ -1,28 +1,41 @@
 <div class="framed page app padding-none" script="on htmx:load if #news is not null then add [@aria-selected=true] to #news">
 
+	<!-- Open Graph: https://ogp.me -->
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="{{.Label}}">
+	<meta property="og:url" content="{{.Permalink}}">
+	<meta property="og:image" content="{{.IconURL}}">
+
+	<meta property="og:article:published_time" content="{{.PublishDate | isoDate}}">
+	<meta property="og:article:modified_time" content="{{.UpdateDate | isoDate }}">
+	<meta property="og:article:author" content="{{.AttributedTo.ProfileURL}}">
+
 	<div hx-get="/@{{.ParentID}}/header" hx-swap="outerHTML" hx-target="this" hx-trigger="load" hx-push-url="false"></div>
+
+	{{- $bannerURL := .Data "bannerUrl" -}}
+	{{- if ne "" $bannerURL -}}
+		<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true">
+	{{- end -}}
 
 	<article class="content padding-lg">
 
-		<div class="margin-bottom text-lg">
-			<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a>
-		</div>
-
 		<div>
-			<h1>{{.Label}}</h1>
-			<div>
-				{{.PublishDate | shortDate}}
-				<span class="text-sm margin-left">
-					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
-					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
-					<button hx-get="/{{.StreamID}}/intent?intent=dislike&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-down"}}</span> Dislike</button>
-				</span>
+			<h1 class="extra-bold margin-bottom-none">{{.Label}}</h1>
+			<div class="margin-bottom-xl text-lg">
+				<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a>
+				&nbsp;
+				<span class="text-gray">{{.PublishDate | shortDate}}</span>
+			</div>
+	
+			<div class="text-sm">
+				<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
+				<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
 			</div>
 			<div class="margin-vertical">{{.ContentHTML}}</div>
 		</div>
 
 		{{- if .UserCan "edit" -}}
-			<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-sm">Edit</button>
+			<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-sm">Edit News</button>
 		{{- end -}}
 
 	</article>

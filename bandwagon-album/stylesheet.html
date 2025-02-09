@@ -78,13 +78,23 @@ body {
 
 }
 
-#media-controls > .playing-show,
-#media-controls.PLAYING > .playing-hide {
+#media-controls:not(.PLAYING) > .playing-show,
+#media-controls.PLAYING > .playing-hide,
+.track:not(.PLAYING) .playing-show,
+.track.PLAYING .playing-hide,
+.track:not(.PLAYING) .playing-hide.hover-hide
+.track:not(.PLAYING):hover .playing-hide.hover-show
+{
 	display: none;
 }
 
 #media-controls.PLAYING > .playing-show,
-#media-controls > .playing-hide {
+#media-controls:not(.PLAYING) > .playing-hide,
+.track.PLAYING playing-show,
+.track:not(.PLAYING) .playing-hide,
+.track:not(.PLAYING) .playing-hide.hover-hide
+.track:not(.PLAYING):hover .playing-hide.hover-show,
+ {
 	display: initial;
 }
 

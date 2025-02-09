@@ -46,17 +46,6 @@
 		<div class="padding-sm pos-relative">
 
 			{{- if $isMyself -}}
-
-				<!--div class="button-group text-sm margin-bottom" role="group" aria-label="Profile Controls" style="overflow-x:scroll;">
-					<button hx-get="/@me/edit">Edit Profile</button>
-					<button hx-get="/@me/links">Edit Links</button>
-					<button hx-get="/@me/add-album?isFeatured=true" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Album</button>
-					<button hx-get="/@me/add-event?isFeatured=true" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Event</button>
-					<button hx-get="/@me/add-news?isFeatured=true" class="hide md:show"><span aria-label="Add">{{icon "add"}}</span> Post</button>
-
-					<button hx-post="/signout" hx-target="body">Sign Out</button>
-				</div-->
-
 				<form hx-post="/@me/sort-featured" hx-trigger="end">
 					<div hx-push-url="true">
 			{{- end -}}
@@ -75,7 +64,12 @@
 							</div>
 						{{- end -}}
 					</div>
-					<div class="bold margin-bottom" script="install selectText">@{{.Username}}@{{.Hostname}}</div>
+					<div class="margin-bottom">
+						<span class="bold" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
+						{{- if ne "" .Location }}
+							<span class="text-gray"> &middot; {{.Location}}</span>
+						{{- end -}}
+					</div>
 
 					<div class="margin-top pos-relative">
 						<div class="max-width-512">
@@ -113,23 +107,40 @@
 							{{- if eq "bandwagon-album" .TemplateID -}}
 								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
 								<div class="padding text-plain">
-									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{.Label}}</a>
+									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
+									<div class="text-gray">Album &middot; {{index .Data "year"}}</div>
 								</div>
 							{{- else if eq "bandwagon-event" .TemplateID -}}
-								<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
-								<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
-								<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
-								{{- if ne nil .Data.website -}}
-									<div class="padding">
-										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" target="_blank">More...</a>
+								{{- if ne "" .IconURL -}}
+									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
+									<div class="padding text-plain">
+										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
+										<div class="text-gray">{{.StartDate | shortDate }}</div>
 									</div>
+								{{- else -}}
+									<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
+									<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
+									<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
+									{{- if ne nil .Data.website -}}
+										<div class="padding">
+											<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" target="_blank">More...</a>
+										</div>
+									{{- end -}}
 								{{- end -}}
 							{{- else if eq "bandwagon-news" .TemplateID -}}
-								<h2 class="padding padding-bottom-none margin-none">{{.Label}}</h2>
-								<div class="padding-horizontal flex-grow ellipsis-block" style="height:9em;">{{.Summary}}</div>
-								<div class="padding">
-									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
-								</div>
+								{{- if ne "" .IconURL -}}
+									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
+									<div class="padding text-plain">
+										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
+										<div class="text-gray">{{.PublishDate | shortDate }}</div>
+									</div>
+								{{- else -}}
+									<h2 class="padding padding-bottom-none margin-none">{{.Label}}</h2>
+									<div class="padding-horizontal flex-grow ellipsis-block" style="height:9em;">{{.Summary}}</div>
+									<div class="padding">
+										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick">{{first .Data.linkText "Read More"}}</a>
+									</div>
+								{{- end -}}
 							{{- end -}}
 
 							{{- if not .IsPublished -}}
@@ -150,12 +161,6 @@
 				{{- if $isMyself -}}
 
 					<div class="rounded card padding flex-column">
-						<!--div class="flex-center flex-grow align-center margin-bottom-lg">
-							<div>
-								<div class="margin-none" style="font-size:64px;">{{icon "settings"}}</div>
-								<div class="text-xl margin-none bold">Settings</div>
-							</div>
-						</div-->
 						<div class="flex-center align-center link" role="button" hx-get="/@{{.UserID}}/add-album?isFeatured=true">
 							<div class="margin-vertical-xl">
 								<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
@@ -163,16 +168,7 @@
 							</div>
 						</div>
 						<div class="align-center">&mdash; or &mdash;</div>
-						<!--div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-album?isFeatured=true">
-							{{icon "cassette"}} Add an Album
-						</div>
-						<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">
-							{{icon "calendar"}} Add an Event
-						</div>
-						<div class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-news?isFeatured=true">
-							{{icon "newspaper"}} Add a Post
-						</div>
-					-->
+						
 						<div class="align-center">
 							Add a
 							<span class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">

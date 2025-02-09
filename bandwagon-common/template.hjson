@@ -8,7 +8,7 @@
 
 	datasets: {
 		"licenses": [
-			{value:"COPYRIGHT", label:"Copyright. All Rights Reserved", icon:"copyright"},
+			{value:"COPYRIGHT", label:"All Rights Reserved", icon:"copyright"},
 			{value:"CC-BY", label:"Creative Commons - Attribution", href:"https://creativecommons.org/licenses/by/4.0/", icon:"cc-by"}
 			{value:"CC-BY-NC", label:"Creative Commons - Attribution - Non Commercial", href:"https://creativecommons.org/licenses/by-nc/4.0/", icon:"cc-by-nc"}
 			{value:"CC-BY-NC-ND", label:"Creative Commons - Attribution - Non Commercial - No Derivatives", href:"https://creativecommons.org/licenses/by-nc-nd/4.0/", icon:"cc-by-nc-nd"}
