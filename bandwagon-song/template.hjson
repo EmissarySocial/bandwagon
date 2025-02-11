@@ -86,7 +86,7 @@
 								}
 								{
 									type: layout-vertical
-									label: Lyrics
+									label: Description
 									children: [
 										{type: "textarea", path: "data.lyrics", description:"Enter lyrics or song description.  Displays on this song's detail page.", options:{rows: 16}}
 										{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
@@ -163,7 +163,7 @@
 									}
 									{
 										type: layout-vertical
-										label: Lyrics
+										label: Description
 										children: [
 											{type: "textarea", path: "data.lyrics", description:"Enter lyrics or song description.  Displays on this song's detail page.", options:{rows: 16}}
 											{type: "toggle", path: "data.explicit", options:{true-text:"Explicit Lyrics", false-text:"Explicit Lyrics"}}
