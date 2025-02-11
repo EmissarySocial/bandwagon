@@ -34,10 +34,16 @@
 			<div class="margin-vertical">{{.ContentHTML}}</div>
 		</div>
 
-		{{- if .UserCan "edit" -}}
-			<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-sm">Edit News</button>
-		{{- end -}}
-
 	</article>
+
+	{{- if .UserCan "edit" -}}
+		<div class="pos-absolute-top-right text-sm">
+			<button hx-get="/{{.StreamID}}/edit">Edit News</button>
+		</div>
+
+		<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
+			<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+		</div>
+	{{- end -}}
 
 </div>

@@ -230,7 +230,11 @@
 
 		</div>
 
-		<div hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
+		{{- if $isMyself -}}
+			<div hx-ext="sse" sse-connect="/@{{.UserID}}/sse">
+				<div hx-get="/@{{.UserID}}" hx-trigger="sse:{{.UserID}}, refreshPage from:window" hx-push-url="false"></div>
+			</div>
+		{{- end -}}
 
 	</div>
 

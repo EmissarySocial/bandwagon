@@ -144,6 +144,10 @@
 			<div class="pos-absolute-top-right text-sm">
 				<button hx-get="/{{.StreamID}}/edit">Edit Event</button>
 			</div>
+
+			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
+				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+			</div>
 		{{- end -}}
 
 	</div>
