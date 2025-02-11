@@ -317,11 +317,13 @@
 					{{- if eq "COPYRIGHT" $license -}}
 						<h3 class="margin-none">License</h3>
 						<div>
-							&copy;
-							{{ if ne nil (.Data "year") }}
-								{{.Data "year"}}
+							&copy; Copyright
+							{{- if ne nil (.Data "year") }}
+								{{.Data "year"}}.
+							{{- else -}}
+								.
 							{{- end }}
-							Copyright.  All Rights Reserved.
+							All Rights Reserved.
 						</div>
 					{{- else if ne "" $license -}}
 						{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
