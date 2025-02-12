@@ -190,7 +190,7 @@
 		
 			{{- $license := .DataString "license"}}
 			{{- if eq "COPYRIGHT" $license -}}
-				<h3 class="margin-none">License</h3>
+				<h3 class="margin-top">License</h3>
 				<div>
 					&copy; Copyright
 					{{- if ne nil (.Data "year") }}
@@ -203,7 +203,7 @@
 			{{- else if ne "" $license -}}
 				{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
 				{{- $licenseInfo := $licenses.Value $license -}}
-				<h3 class="margin-none">License</h3>
+				<h3 class="margin-top">License</h3>
 				<div>
 					<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
 						{{icon $licenseInfo.Icon}} 

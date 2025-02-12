@@ -162,12 +162,12 @@
 												hx-get="/{{$song.StreamID}}"
 											{{- end -}}
 										>
-											{{- $song.Data.length -}}
 										</td>
 										<td class="text-xs align-right" nowrap>
-											<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm" aria-label="Song Details">{{icon "more-horizontal"}}</button>
+											<span class="hover-hide margin-right-sm">{{- $song.Data.length -}}</span>
+											<button hx-get="/{{$song.StreamID}}" class="hover-show" aria-label="Song Details">Track Info</button>
 											{{- if $canEdit -}}
-												<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
+												<button hx-get="/{{$song.StreamID}}/edit" class="hover-show margin-right-none margin-left-sm">Edit</button>
 											{{- end -}}
 										</td>
 									</tr>
