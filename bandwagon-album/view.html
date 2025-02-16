@@ -3,7 +3,6 @@
 {{- $songs := .Children.Top60.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
 {{- $isPlayable := false -}}
-{{- $isowner := .IsOwner -}}
 {{- $links := .Data "links" -}}
 
 {{- range $index, $song := $songs -}}
@@ -51,34 +50,21 @@
 		<div class="md:flex-row margin-bottom">
 			<div class="md:width-256 flex-shrink-0 pos-relative">
 				{{- if ne "" .IconURL -}}
-					<img src="{{.IconURL}}" class="width-100% aspect-square" aria-hidden="true" style="object-fit:cover;">
+					<img src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
 				{{- else if $canEdit -}}
-					<div class="aspect-square text-center flex-column flex-justify-center flex-align-center" style="border:solid 1px var(--black)" script="install blockselect()">
+					<div class="rounded square text-center flex-column flex-justify-center flex-align-center" style="border:solid 1px var(--black)" script="install blockselect()">
 						<a hx-get="/{{.StreamID}}/edit" class="text-plain">Click here to add album art</a>
 					</div>
 				{{- end -}}
 
-				{{- if not .IsPublished -}}
-					<div class="pos-absolute-four-corners bg-stripes flex-center">
-						<span class="text-xl bold">UNPUBLISHED</span>
-					</div>
-				{{- end -}}
 			</div>
 			<div class="md:width-32"></div>
 			<div class="flex-grow-1">
+				<h1 class="margin-bottom-xs">{{.Label}}</h1>
 				<div class="text-lg margin-top-none">
 					<a hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}" class="turboclick" aria-label="Artist: {{.AttributedTo.Name}}">
 						{{.AttributedTo.Name}}
 					</a> 
-				</div>
-				<h1 class="margin-top-none">{{.Label}}</h1>
-
-				<div class="text-sm">
-					{{- range $index, $tag := $tags -}}
-						{{- if eq "Hashtag" $tag.Type}}
-							<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
-						{{- end -}}
-					{{- end -}}
 				</div>
 
 				<div class="margin-vertical"></div>
@@ -88,11 +74,12 @@
 						<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
 						<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none">{{icon "skip-backward-fill"}}</button>
 						<button hx-on:click="Pause()" class="primary playing-show margin-right-none">{{icon "pause-fill"}}</button>
-						<button hx-on:click="PlayNext()" class="primary playing-show">{{icon "skip-forward-fill"}}</button>
+						<button hx-on:click="PlayNext(true)" class="primary playing-show">{{icon "skip-forward-fill"}}</button>
 					</div>
-				{{- else if and $songs.IsEmpty $canEdit -}}
+				{{- else if $canEdit -}}
 					<div class="margin-vertical-lg">
-						<button class="primary" hx-get="/{{.StreamID}}/add-song"><td><span aria-hidden="true">{{icon "plus"}}</span> Add the first song to this album</button>
+						<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
+						<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
 					</div>
 				{{- end -}}
 
@@ -133,18 +120,9 @@
 											{{- end -}}
 										>
 
-											<span class="margin-right text-gray">
-												{{- if $isplayable -}}
-												<span class="hover-show">{{icon "play-fill"}}</span>
-													{{- if eq $song.IsFeatured true -}}
-														<span class="hover-hide">{{icon "star-fill"}}</span>
-													{{- else -}}
-														<span class="invisible hover-hide">{{icon "play-fill"}}</span>
-														{{- end -}}
-												{{- else -}}
-													{{- if eq $song.IsFeatured true -}}
-														{{icon "star-fill"}}
-													{{- end -}}
+											<span class="text-gray">
+												{{- if $song.IsFeatured -}}
+													<span>{{icon "star-fill"}}</span>
 												{{- end -}}
 											</span>
 										</td>
@@ -155,7 +133,13 @@
 												hx-get="/{{$song.StreamID}}"
 											{{- end -}}
 										>
+										{{- if $isplayable -}}
+											<span class="playing-hide hover-show">{{icon "play-fill"}}</span>
+											<span class="playing-show">{{icon "volume-up-fill"}}</span>
+											<span class="playing-hide hover-hide hide sm:show">{{add $index 1}}.</span>
+										{{- else -}}
 											<span class="hide sm:show">{{add $index 1}}.</span>
+										{{- end -}}
 										</td>
 										<td class="width-100%"
 											{{ if $isplayable -}}
@@ -174,21 +158,25 @@
 												hx-get="/{{$song.StreamID}}"
 											{{- end -}}
 										>
-											{{- $song.Data.length -}}
 										</td>
 										<td class="text-xs align-right" nowrap>
-											<button hx-get="/{{$song.StreamID}}" class="margin-right-none margin-left-sm" aria-label="Song Details">{{icon "more-horizontal"}}</button>
+											<span class="hover-hide margin-right-sm">{{- $song.Data.length -}}</span>
+											<button hx-get="/{{$song.StreamID}}" class="hover-show" aria-label="Song Details">Track Info</button>
 											{{- if $canEdit -}}
-												<button hx-get="/{{$song.StreamID}}/edit" class="margin-right-none margin-left-sm">Edit</button>
+												<button hx-get="/{{$song.StreamID}}/edit" class="hover-show margin-right-none margin-left-sm">Edit</button>
 											{{- end -}}
 										</td>
 									</tr>
 								{{- end -}}
 
 								{{- if $canEdit -}}
-									<tr hx-get="/{{.StreamID}}/add-song" role="button">
-										<td colspan="6" class="link">
-											<span aria-hidden="true">{{icon "add"}}</span> Add Another Song
+									<tr hx-get="/{{.StreamID}}/add-song" role="button" class="link">
+										<td></td>
+										<td aria-hidden="true">
+											{{icon "add"}}
+										</td>
+										<td colspan="5">
+											Add Another Song
 										</td>
 									</tr>
 								{{- end -}}
@@ -197,12 +185,28 @@
 						</table>
 					</form>
 
+				{{- else if and $songs.IsEmpty $canEdit -}}
+					<div class="table">
+						<div>
+							<span role="button" class="link" hx-get="/{{.StreamID}}/add-song"><span aria-hidden="true">{{icon "plus"}}</span> Add a song to this album</span>
+						</div>
+					</div>
 				{{- end -}}
 			
 			</div>
 
 			<div class="md:width-32 flex-shrink-0 flex-grow-0"></div>
 			<div class="md:width-256 flex-shrink-0">
+
+				{{- if $tags.NotEmpty -}}
+					<div class="text-sm margin-bottom">
+						{{- range $index, $tag := $tags -}}
+							{{- if eq "Hashtag" $tag.Type}}
+								<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
+							{{- end -}}
+						{{- end -}}
+					</div>
+				{{- end -}}
 
 				{{- if ne "" .Summary -}}
 					<div class="margin-bottom-lg">
@@ -274,14 +278,18 @@
 				{{- if or $uploads.NotEmpty $canEdit -}}
 					<div class="margin-bottom-lg">
 						<div class="flex-row">
-							<h3 class="flex-grow margin-none">Downloads</h3>
-							{{- if $canEdit -}}
-								<button hx-get="/{{$streamID}}/upload" class="text-xs" aria-label="Upload a File" title="Upload a File">{{icon "add"}}</button>
-							{{- end -}}
+							<h3 class="flex-grow margin-none">Other Files</h3>
 						</div>
 
+						{{- if $canEdit -}}
+							<div class="margin-bottom-sm">
+								<div class="text-gray">Attachments like <b class="nowrap">liner notes</b> or <b class="nowrap">album art</b> that anyone can access.</div>
+								<span role="button" hx-get="/{{$streamID}}/upload" class="link" aria-label="Attach a File">{{icon "upload"}} Attach a File</span>
+							</div>
+						{{- end -}}
+
 						{{- if $uploads.NotEmpty -}}
-							<div class="table">
+							<div class="table margin-top-lg">
 								{{- range $index, $upload := $uploads -}}
 									<div class="flex-row padding-vertical-sm">
 										<div class="flex-grow">
@@ -305,11 +313,13 @@
 					{{- if eq "COPYRIGHT" $license -}}
 						<h3 class="margin-none">License</h3>
 						<div>
-							&copy;
-							{{ if ne nil (.Data "year") }}
-								{{.Data "year"}}
+							&copy; Copyright
+							{{- if ne nil (.Data "year") }}
+								{{.Data "year"}}.
+							{{- else -}}
+								.
 							{{- end }}
-							Copyright.  All Rights Reserved.
+							All Rights Reserved.
 						</div>
 					{{- else if ne "" $license -}}
 						{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
@@ -332,7 +342,7 @@
 		</div>
 
 		{{- if $songs.NotEmpty -}}
-			<audio {{if $isowner}} controls {{end}} hx-on:ended="PlayNext()">
+			<audio hx-on:ended="PlayNext()">
 				<!--source id="source-aac" type="audio/aac"-->
 				<source id="source-mp3" type="audio/mp3">
 				<source id="source-ogg" type="audio/ogg">
@@ -388,19 +398,22 @@
 				{{- else -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
-
-				<button hx-get="/{{.StreamID}}/add-song"><span aria-label="Add">{{icon "add"}}</span> Song</button>
 			{{- end -}}
+
 			{{- if .UserCan "zip" -}}
 				<a class="button" href="/{{.StreamID}}/zip">Download</a>
 			{{- end -}}
 		</div>
 
-
 		<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window"></div>
 
 	</div>
 
-	<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
+	{{- if $canEdit -}}
+		<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
+			<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+		</div>
+	{{- end -}}
+
 </div>
 

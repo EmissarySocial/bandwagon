@@ -10,14 +10,40 @@
 	schema: {
 		type:object
 		properties: {
+			label: {type:"string", required:true}
+			summary: {type:"string"}
+			iconUrl: {type:"string", format:"url"}
+			startDate: {type:"object", properties: {
+				date: {type:"string", format:"date"}
+				time: {type:"string", format:"time"}
+			}}
+			places: {
+				type:"array", 
+				items: {
+					type:"object"
+					properties: {
+						"name": {type:"string"}
+						"fullAddress": {type:"string"}
+						"latitude": {type:"number"}
+						"longitude": {type:"number"}
+					}
+				}
+			}
 			data: {
 				type:object
 				properties: {
-					date: {type:"string", required: true}
+					tags: {type:"string"}
+					bannerUrl: {type:"string", format:"url"}
+					flyerUrl: {type:"string", format:"url"}
 					city: {type:"string"}
 					venue: {type:"string"}
 					websiteLabel: {type:"string"}
-					website: {type:"string", format:"uri"}
+					website: {type:"string", format:"url"}
+					color: {type:"object", properties: {
+						body: {type:"string", format:"color"},
+						page: {type:"string", format:"color"}, 
+						button: {type:"string", format:"color"}
+					}}
 				}
 			}
 		}
@@ -28,9 +54,16 @@
 		{target:"type", value:["Event","Article"]}
 		{target:"name", expression:"{{.Data.city}} {{.Data.date}}"},
 		{target:"summary", expression:"{{.Data.venue}}"},
-		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
-		{target:"attributedTo.name", path:"attributedTo.name"},
 	]
+
+	search: {
+		type: "Event"
+		iconUrl:"{{.IconURL}}"
+		text: "{{.Label}} {{.Summary}} {{index .Data `year`}}"
+		tags: "{{.Hashtags.Join ` `}}"
+	}
+
+	tagPaths: ["data.tags"]
 
 	actions: {
 		create: {
@@ -41,19 +74,71 @@
 					{
 						do:edit
 						form: {
-							label: + Add an Event
-							type:layout-vertical
+							label:"+ Add a Show"
+							type:layout-tabs
 							children: [
-								{type:"text", path:"data.date", label:"Date"}
-								{type:"text", path:"data.city", label:"City"}
-								{type:"text", path:"data.venue", label:"Venue"}
-								{type:"text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
-								{type:"text", path:"data.website", label:"Ticketing Website", description: "Link to the ticketing website"}
-								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{
+									label: Event Date
+									type:layout-vertical
+									children: [
+										{type:"text", path:"label", label:"Event Name"}
+										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
+										{type:"date", path:"startDate.date", label:"Date"}
+										{type:"time", path:"startDate.time", label:"Start Time"}
+										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+									]
+								}
+								{
+									label: Description
+									type:layout-vertical
+									children: [
+										{type:"textarea", path:"summary", description:"Shows on event details. Markdown is okay.", options:{rows:10}}
+									]
+								}
+								{
+									label: Venue
+									type:layout-vertical
+									children: [
+										{type:"text", path:"place.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
+										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
+										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
+									]
+								}
+								{
+									label: Tickets
+									type:layout-vertical
+									children: [
+										{type:"text", path:"data.website", label:"Ticketing Website", description: "Website where fans can buy tickets"}
+										{type:"text", path:"data.websiteLabel", label:"Button Text", description:"The label to display on your website", options:{placeholder:"Get Tickets"}}
+									]
+								}
+								{
+									type:layout-vertical
+									label: Colors
+									children: [
+										{type:"colorpicker", path:"data.color.body", label:"Window Background"}
+										{type:"colorpicker", path:"data.color.page", label:"Page Background"}
+										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
+									]
+								}
+								{
+									label: Uploads
+									type:layout-vertical
+									children: [
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"upload", path:"data.flyerUrl", label:"Flyer", options:{delete:"/{{.StreamID}}/delete-flyer"}}
+									]
+								}
 							]
 						}
 					}
 				]}
+
+				{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", rules:{width:800, height:800, types:["webp"]}}
+				{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
+				{do:"upload-attachments", category:"flyer", fieldname:"data.flyerUrl", download-path:"data.flyerUrl", rules:{}}
+				
 				{do:"process-tags", paths:"data.tags"}
 				{do:"save-and-publish", outbox:"true"}
 				{do:"search-index"}
@@ -65,23 +150,75 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps: [
+					{do:"view-html"}
 					{
 						do:edit
 						options:["delete:/{{.StreamID}}/delete"]
 						form: {
-							label:Edit Event
-							type:layout-vertical
+							type:layout-tabs
 							children: [
-								{type:"text", path:"data.date", label:"Date"}
-								{type:"text", path:"data.city", label:"City"}
-								{type:"text", path:"data.venue", label:"Venue"}
-								{type:"text", path:"data.websiteLabel", label:"Ticketing Text", description:"Label to display on your website", options:{placeholder:"Get Tickets"}}
-								{type:"text", path:"data.website", label:"Ticketing Website"}
-								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{
+									label: Event Date
+									type:layout-vertical
+									children: [
+										{type:"text", path:"label", label:"Event Name"}
+										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
+										{type:"date", path:"startDate.date", label:"Date"}
+										{type:"time", path:"startDate.time", label:"Start Time"}
+										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+									]
+								}
+								{
+									label: Description
+									type:layout-vertical
+									children: [
+										{type:"textarea", path:"summary", description:"Shows on event details. Markdown is okay.", options:{rows:10}}
+									]
+								}
+								{
+									label: Venue
+									type:layout-vertical
+									children: [
+										{type:"text", path:"places.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
+										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
+										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
+									]
+								}
+								{
+									label: Tickets
+									type:layout-vertical
+									children: [
+										{type:"text", path:"data.website", label:"Ticketing Website", description: "Website where fans can buy tickets"}
+										{type:"text", path:"data.websiteLabel", label:"Button Text", description:"The label to display on your website", options:{placeholder:"Get Tickets"}}
+									]
+								}
+								{
+									type:layout-vertical
+									label: Colors
+									children: [
+										{type:"colorpicker", path:"data.color.body", label:"Window Background"}
+										{type:"colorpicker", path:"data.color.page", label:"Page Background"}
+										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
+									]
+								}
+								{
+									label: Uploads
+									type:layout-vertical
+									children: [
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"upload", path:"data.flyerUrl", label:"Flyer", options:{delete:"/{{.StreamID}}/delete-flyer"}}
+									]
+								}
 							]
 						}
 					}
 				]}
+
+				{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", rules:{width:800, height:800, types:["webp"]}}
+				{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
+				{do:"upload-attachments", category:"flyer", fieldname:"data.flyerUrl", download-path:"data.flyerUrl", rules:{}}
+				
 				{do:"process-tags", paths:"data.tags"}
 				{do:"save-and-publish", outbox:"true"}
 				{do:"search-index"}
@@ -89,12 +226,39 @@
 			]
 		}
 
+		stylesheet: {
+			steps:[
+				{do:"view-css"}
+			]
+		}
 		delete: {
 			roles: ["author"]
 			steps: [
 				{do:"delete"}
 				{do:"unpublish", outbox:"true"}
 				{do:"refresh-page"}
+			]
+		}
+
+		delete-icon: {
+			roles: ["author"]
+			steps: [
+				{do:"delete-attachments", fieldname:"iconUrl"}
+				{do:"save"}
+			]
+		}
+		delete-banner: {
+			roles: ["author"]
+			steps: [
+				{do:"delete-attachments", fieldname:"data.bannerUrl"}
+				{do:"save"}
+			]
+		}
+		delete-flyer: {
+			roles: ["author"]
+			steps: [
+				{do:"delete-attachments", fieldname:"data.flyerUrl"}
+				{do:"save"}
 			]
 		}
 	}

@@ -1,135 +1,49 @@
-behavior SearchWidget(value, hint)
-
+behavior SearchWidget
 	init
-		set :lastSearchValue to ""
-		set the #search-input's placeholder to hint
-		focus() the #search-input
-		clearTags()
-		replaceTags(value)
+		send focus(initial:true) to the #search-input
 	end
 
 	-- submit the search
 	on click from #search-submit
-
-		-- prepare the input to send to the server
-		remove the #search-query's value
-		repeat for tag in <[data-tag]/> in #search-tags
-			set tagValue to "#" + the tag's @data-tag
-			append the tagValue + " " to the #search-query's value
-		end
-	
-		-- special case for tag suggestions
-		addSuggestion()
-
-		-- finalize and submit
-		append the #search-input's value to the #search-query's value
 		send submit to #search-form
-	end
-
-	---------------------------
-	-- Tags
-
-	-- Add tags (if suggestions are visible) or submit the form
-	on keyup[key=="Enter"] from #search-input
-		if the #search-suggestions's *visibility is not "hidden" then
-			addSuggestion()
-			exit
-		end
-
-		send click to the #search-submit
-	end
-
-	-- Maybe add Tags
-	on blur from #search-input
-		replaceTags(#search-input.value)
-	end
-
-	on keyup[key==" "] from #search-input
-		replaceTags(#search-input.value)
-	end
-
-	-- remove a tag
-	on keydown[key=="Backspace"] from #search-input
-
-		if not isCursorAtStart(#search-input) then
-			exit
-		end
-
-		set tag to the last <[data-tag]/> in #search-tags
-		if tag is not null then 
-			remove the tag
-		end
-
-	end
-
-	-- navigate tags
-	on keydown[key=="ArrowLeft"] from #search-input
-
-		if not isCursorAtStart(#search-input) then
-			exit
-		end
-
-		set tag to the last <[data-tag]/> in #search-tags
-		if tag is not null then 
-			focus() the tag
-		end
 	end
 
 	---------------------------
 	-- Search Suggestions
 
-	-- show the search suggestions
-	on focus from #search-input or keyup from #search-input 
+	on showSuggestions		
+		-- clean up the search value
+		set searchValue to the #search-input's value
+		set searchValue to lastWord(searchValue)
+		set searchValue to searchValue.toLowerCase()
 
-		if the #search-input's value == :lastSearchValue then
-			exit
-		end
-		set :lastSearchValue to the #search-input's value
-
-		if the #search-input's value contains "#" then 
-			trigger showSuggestions
-		else
-			send hide to #search-suggestions
-		end
-	end
-
-	on showSuggestions
-		set parsed to parseTags(:lastSearchValue)
-		set tags to parsed.tags
-
-		if tags.length == 0 then
-			set #search-suggestion-query.value to ""
-		else 
-			set #search-suggestion-query.value to tags[0]
-		end
-
+		-- send query and show suggestions
+		set #search-suggestion-query.value to searchValue
 		send search to the #search-suggestions-form
 		send show to #search-suggestions
 	end
 
-	-- hide search suggestions
-	on blur from #search-input
+	---------------------------
+	-- Keyboard Navigation
+
+	on keydown[key=="Escape"] from #search-input
 		send hide to #search-suggestions
 	end
 
-	on keyup[key=="Escape"] from #search-input
-		send hide to #search-suggestions
+	on keydown[key=="Enter"] from #search-input
+		if the #search-suggestions's *visibility is "visible" then
+			useSuggestion()
+		else
+			send submit to #search-form
+		end
 	end
 
-	on click from #search-input
-		send hide to #search-suggestions
-	end
-
-	-- keyboard navigation
 	on keydown[key=="ArrowDown"] from #search-input
-		halt the event
-
 		if the #search-suggestions's *visibility is "hidden" then
 			trigger showSuggestions
 		else
 			send ArrowDown to #search-suggestions
 		end
-
 	end
 
 	on keydown[key=="ArrowUp"] from #search-input
@@ -137,4 +51,22 @@ behavior SearchWidget(value, hint)
 		send ArrowUp to #search-suggestions
 	end
 
+	on keyup from #search-input throttled at 100ms
+		set ignoreKeys to ["ArrowDown", "ArrowUp", "Enter", "Escape"]
+
+		if ignoreKeys.includes(event.key) then
+			exit
+		end
+
+		-- handle regular keystrokes
+		send showSuggestions
+	end
+
+	on blur from #search-input debounced at 50ms
+		send hide to #search-suggestions
+	end
+
+	on submit from #search-form
+		send hide to #search-suggestions
+	end
 end

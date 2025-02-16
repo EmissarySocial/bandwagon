@@ -59,11 +59,16 @@ function PlayPrevious() {
 }
 
 // PlayNext plays the next song in the playlist and plays it
-function PlayNext() {
+function PlayNext(loop) {
 	if (playlist.length > 0 ) {
 		playlistIndex++
 		if (playlistIndex >= playlist.length) {
-			playlistIndex = 0
+
+			if (loop == true) {
+				playlistIndex = 0
+			} else {
+				return
+			}
 		}
 		Play()
 	}

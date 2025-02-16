@@ -1,16 +1,24 @@
 behavior Popup
 
 	init
-		hide with visibility
 		add .pop-up
 	end
 
 	on show
-		show with visibility
+		set visibility to my *visibility
+
+		if visibility is "hidden" then
+			log "set visible"
+			set my *visibility to "visible"
+		end
 	end
 
 	on hide
-		hide with visibility
+		set visibility to my *visibility
+		if visibility is "visible" then
+			log "set hidden"
+			set my *visibility to "hidden"
+		end
 	end
 
 end

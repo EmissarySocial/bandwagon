@@ -1,27 +1,135 @@
-<div id="search" class="fullscreen padding-top-lg">
+<div id="search" class="fullscreen padding-none">
 
-	{{- template "view-widget" . -}}
-
-	<div id="search-results">
-		{{.View "view-results"}}
+	<div class="flex-row padding-vertical-lg margin-bottom-lg" style="background-color:var(--gray70);">
+		<div class="sidebar"></div>
+		<div class="flex-grow margin-right">
+			{{- template "view-widget" . -}}
+		</div>
 	</div>
 
-	{{- if .UserCan "edit" -}}
-		<br>
-		<br>
-		<div class="pos-absolute-bottom-right text-sm">
-			Admins:
-			<button hx-get="/{{.Token}}/edit">Edit</button>
-			<button hx-get="/{{.Token}}/sharing">Sharing</button>
-		</div>
-	{{- end -}}
+	<div class="flex-row">
 
+		<div class="sidebar">
+			{{template "view-sidebar" .}}
+		</div>
+
+		<div class="flex-grow margin-right">
+
+			<div id="search-results">
+				{{template "view-results" .}}
+			</div>
+
+			{{- if .UserCan "edit" -}}
+				<br>
+				<br>
+				<br>
+				<br>
+				<div class="text-sm">
+					<button hx-get="/{{.Token}}/edit">Edit</button>
+					<button hx-get="/{{.Token}}/sharing">Sharing</button>
+				</div>
+			{{- end -}}
+		</div>
+	</div>
 </div>
 
+
 <style>
+	.sidebar {
+		width:240px;
+		min-width:240px;
+		max-width:240px;
+		padding:0px 16px;
+		margin-right:16px;
+	}
+
+	.search-navigation {
+		border-radius:8px;
+		padding:8px 16px;
+		display:block;
+		cursor:pointer;
+	}
+
+	.search-navigation:hover {
+		background-color:var(--gray15);
+	}
+
+	.search-navigation.selected,
+	.search-navigation.selected:hover {
+		background-color:var(--gray40);
+		color:var(--white);
+		font-weight:600;
+	}
+
 	.search-container {
-		width:90%;
-		max-width: 640px;
+		width:100%;
+	}
+
+	#search-widget {
+		display:flex;
+		flex-direction:row;
+		flex-wrap:nowrap;
+		flex-grow:1;
+		margin:0px;
+		padding:0px;
+	}
+
+	#search-widget:has(input:focus) {
+		outline:solid;
+		outline-color: -webkit-focus-ring-color;
+	}
+
+	#search-widget > input {
+		border:none;
+		outline:none;
+		flex-grow:1;
+	}
+
+	#search-widget > button {
+		font-size:calc(var(--rhythm) * 1.75);
+		margin:4px;
+	}
+
+	#search-tags {
+		display:flex;
+		flex-direction:row;
+		flex-wrap:nowrap;
+	}
+
+	#search-input {
+		flex-grow:1;
+		margin-left:(--rhythm);
+	}
+
+	#search-suggestions {
+		margin-top:3px;
+	}
+
+	#search-suggestions > [role=option] {
+		display:block;
+		cursor:pointer;
+		padding: 4px 8px;
+		color:var(--black);
+	}
+
+	#search-suggestions > [role=option].selected {
+		background-color:var(--gray20);
+	}
+
+	.list-box {
+		width:100%;
+		border:solid 2px var(--gray40);
+	}
+
+	.pop-up {
+		position:absolute;
+		visibility:hidden;
+		z-index:10;
+		background-color:var(--input-background);
+		box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+		border-top:none;
+		border-bottom-left-radius: 8px;
+		border-bottom-right-radius:8px;
 	}
 
 	#search-widget {

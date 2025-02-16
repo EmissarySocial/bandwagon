@@ -1,0 +1,16 @@
+{{- $query := .QueryParam "q" -}}
+{{- $licenses := .Dataset "bandwagon-search-albums.licenses" -}}
+{{- $tags := .QueryParam "tags" -}}
+
+<div class="search-navigation turboclick selected" hx-get="/albums">Albums</div>
+<div class="search-navigation turboclick" hx-get="/artists?q={{$query}}">Artists</div>
+<div class="search-navigation turboclick" hx-get="/events?q={{$query}}&date=next-30-days">Calendar</div>
+
+<hr>
+
+<div class="text-xs">
+	<label for="licenses" class="text-gray">LICENSE</label>
+	<select id="licenses" name="tags" form="search-form" script='install select(value:"{{$tags}}", prefix:"LIC:", options:{{$licenses | json}}) on change send submit to #search-form'>
+		<option value="">(All)</option>
+	</select>
+</div>

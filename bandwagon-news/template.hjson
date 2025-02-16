@@ -17,6 +17,7 @@
 			}}
 			data: {type:"object", properties:{
 				linkText: {type:"string"}
+				bannerUrl: {type:"string", format:"url"}
 			}}
 		}
 	}
@@ -36,17 +37,41 @@
 					{
 						do:edit
 						form: {
-							type:layout-vertical
-							label:"+ Add a Post"
+							type:layout-tabs
+							label:"+ Add News"
 							children: [
-								{type:"text", path: "label", label: "Title"}
-								{type:"textarea", path: "summary", label: "Summary", description:"Message to send to followers. Shows on summary list."}
-								{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only.", options:{rows:12}}
-								{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article"}
-								{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{
+									type:layout-vertical
+									label: News
+									children: [
+										{type:"text", path: "label", label: "Title"}
+										{type:"textarea", path: "summary", label: "Summary", description:"Message to send to followers. Shows on summary list.", options:{rows:5}}
+										{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article", options:{placeholder:"Read More"}}
+										{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+									]
+								}
+								{
+									type:layout-vertical
+									label:"Content"
+									children:[
+										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:12}}
+									]
+								}
+								{
+									type:layout-vertical
+									label:"Uploads"
+									children:[
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+									]
+								}
 							]
 						}
 					}
+
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", rules:{width:800, height:800, types:["webp"]}}
+					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
+					
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
 					{do:"process-tags", paths:"data.tags"}
 					{do:"save-and-publish", outbox:"true"}
@@ -60,21 +85,45 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", options:["class:large"], steps:[
+					{do:"view-html"}
 					{
 						do:"edit"
 						options: ["delete:/{{.StreamID}}/delete"]
 						form: {
-							type:layout-vertical
-							label:"Edit Post"
+							type:layout-tabs
 							children: [
-								{type:"text", path: "label", label: "Title", description:"Shows everywhere"}
-								{type:"textarea", path: "summary", label: "Summary", description:"Shows on summary listing only"}
-								{type:"textarea", path: "content.raw", label: "Content", options:{rows:8}, description:"Shows on news article page only"}
-								{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article"}
-								{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+								{
+									type:layout-vertical
+									label: News
+									children: [
+										{type:"text", path: "label", label: "Title"}
+										{type:"textarea", path: "summary", label: "Summary", description:"Message to send to followers. Shows on summary list.", options:{rows:5}}
+										{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article", options:{placeholder:"Read More"}}
+										{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+									]
+								}
+								{
+									type:layout-vertical
+									label:"Content"
+									children:[
+										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:12}}
+									]
+								}
+								{
+									type:layout-vertical
+									label:"Uploads"
+									children:[
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+									]
+								}
 							]
 						}
 					}
+
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", rules:{width:800, height:800, types:["webp"]}}
+					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
+					
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
 					{do:"process-tags", paths:"data.tags"}
 					{do:"save-and-publish", outbox:"true"}

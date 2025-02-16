@@ -56,3 +56,8 @@ function parseTags(value) {
 		remainder: remainder
 	}
 }
+
+function lastWord(value) {
+	var words = value.split(" ")
+	return words[words.length - 1]
+}

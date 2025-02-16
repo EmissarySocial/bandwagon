@@ -1,0 +1,27 @@
+{{- $query := .QueryParam "q" -}}
+{{- $date := .QueryParam "date" -}}
+{{- if eq "" $date -}}
+	{{- $date := "next-30-days" -}}
+{{- end -}}
+
+<div class="search-navigation turboclick" hx-get="/albums?q={{$query}}">Albums</div>
+<div class="search-navigation turboclick" hx-get="/artists?q={{$query}}">Artists</div>
+<div class="search-navigation selected" hx-get="/events?date=next-30-days">Calendar</div>
+
+<hr>
+
+<div class="text-xs margin-bottom">
+	<label for="date" class="text-gray">DATE</label>
+	<select id="date" name="date" form="search-form" script="install select(value:'{{$date}}') on change send submit to #search-form">
+		<option value="next-30-days">Next 30 Days</option>
+		<option value="next-90-days">Next 90 Days</option>
+		<option value="next-365-days">Next Year</option>
+		<option value="past-365-days">Previous Year</option>
+	</select>
+</div>
+
+<div class="text-xs margin-bottom">
+	<label for="place" class="text-gray" form="search-form">VENUE</label>
+	<input id="place" form="search-form" placeholder="Coming Soon..." disabled>
+</div>
+

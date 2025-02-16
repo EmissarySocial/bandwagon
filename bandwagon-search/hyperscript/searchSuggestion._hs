@@ -1,14 +1,10 @@
 behavior SearchSuggestion
 
-	init
-		add [@role="option"]
-	end
-
 	on mouseover 
-		take .selected 
+		take .selected from my siblings
 	end
 
 	on mousedown 
-		addSuggestion()
+		useSuggestion()
 	end
 end

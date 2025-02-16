@@ -69,6 +69,7 @@
 					template: bandwagon-album
 					label: + Add Album
 					set-permissions: {copy:true, editor:["self"]}
+					with-data:{data.tags:"{{.Data `tags`}}"}
 				}
 				{do:"set-data", values:{"data.show-albums":"true"}}
 				{do:"save"}
@@ -86,6 +87,7 @@
 					template: bandwagon-event
 					title: + Add a Song
 					set-permissions: {copy:true, editor:["self"]}
+					with-data:{data.tags:"{{.Data `tags`}}"}
 				}
 				{do:"set-data", values:{"data.show-events":"true"}}
 				{do: "save"}
@@ -126,7 +128,7 @@
 									children: [
 										{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
 										{type:"textarea", path:"statusMessage", label:"About Me", description:"Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
-										{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces so fans can search for your profile.  (PUBLIC)"}
+										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces.  (PUBLIC)"}
 										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
 									]
 								}
@@ -222,7 +224,7 @@
 								}
 								{
 									type: layout-vertical
-									label: Events
+									label: Shows
 									children: [
 										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Menu Bar"}}
 										{type:"text", path:"data.label-events", label:"Menu Bar Text", options:{placeholder:"Shows"}}
@@ -322,7 +324,7 @@
 						type: layout-vertical
 						children: [
 							{type:"textarea", path:"statusMessage", label:"About You", description:"A brief description of you and your music. Markdown is okay."}
-							{type:"textarea", path:"data.tags", label:"Tags", description:"Use #Hashtags separated by spaces to describe your music."}
+							{type:"textarea", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
 							{type:"text", path:"location", label:"Location", description:"City, State, or Country where you are based."}
 							{type:"upload", path:"iconUrl", label:"Avatar Image", description:"Displayed publicly next to your name, often on other websites, too.", options:{accept:"image/*"}}
 							{type:"upload", path:"imageUrl", label:"Banner", description:"Displays at the top of your profile page.", options:{accept:"image/*"}}

@@ -1,9 +1,8 @@
-{{- $artist := .ParentOutbox "view" -}}
-{{- $albumColors := .Data "color" -}}
+{{- $eventColors := .Data "color" -}}
 
-{{- $bodyColor := first $albumColors.body ($artist.Data "color-body") -}}
-{{- $pageColor := first $albumColors.page ($artist.Data "color-page") -}}
-{{- $buttonColor := first $albumColors.button ($artist.Data "color-button") -}}
+{{- $bodyColor := $eventColors.body -}}
+{{- $pageColor := $eventColors.page -}}
+{{- $buttonColor := $eventColors.button -}}
 
 body {
 
@@ -76,28 +75,4 @@ body {
 	--link-color-hover: {{$buttonColorHover}};
 {{- end }}
 
-}
-
-#media-controls:not(.PLAYING) > .playing-show,
-#media-controls.PLAYING > .playing-hide,
-.track:not(.PLAYING) .playing-show,
-.track.PLAYING .playing-hide,
-.track:not(.PLAYING) .playing-hide.hover-hide
-.track:not(.PLAYING):hover .playing-hide.hover-show
-{
-	display: none;
-}
-
-#media-controls.PLAYING > .playing-show,
-#media-controls:not(.PLAYING) > .playing-hide,
-.track.PLAYING playing-show,
-.track:not(.PLAYING) .playing-hide,
-.track:not(.PLAYING) .playing-hide.hover-hide
-.track:not(.PLAYING):hover .playing-hide.hover-show,
- {
-	display: initial;
-}
-
-.track.PLAYING {
-	background-color: var(--gray10);
 }

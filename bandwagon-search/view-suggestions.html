@@ -1,5 +1,7 @@
 {{- $searchTags := .AllowedSearchTags.Top12.ByName.Slice -}}
-
 {{- range $searchTag := $searchTags -}}
-	<div script="install SearchSuggestion">{{$searchTag.Name}}</div>
+	<div 
+		id="searchTag-{{$searchTag.SearchTagID.Hex}}" 
+		role="option" 
+		script="install SearchSuggestion">{{$searchTag.Name}}</div>
 {{- end -}}

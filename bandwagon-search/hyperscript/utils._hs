@@ -1,63 +1,19 @@
-def replaceTags(preset)
+def useSuggestion()
 
-	send hide to the #search-suggestions
-	set result to parseTags(preset)	
-	set the #search-input's value to result.remainder
-
-	for tag in result.tags
-		addTag(tag)
+	-- do not execute if suggestions are not visible
+	if the #search-suggestions's *visibility is "hidden" then
+		exit
 	end
-end
+			
+	-- find the first "selected" suggestion
+	set suggestion to the first <div.selected /> in #search-suggestions
 
-def clearTags()
-	set the #search-tags's innerHTML to ""
-end
-
-def addTag(tag)
-
-	-- Guarantee that the tag is not empty
-	if tag is "" then
+	if suggestion is undefined then
 		exit
 	end
 
-	-- Guarantee that the tag is unique
-	set exists to <div [data-tag=${tag}] /> in #search-tags
-	if exists.length is greater than 0 then
-		exit
-	end
-
-	-- Add the tag to the collection
-	set newTag to `<div script="install SearchTag" data-tag="${tag}"></div>`
-	put newTag at the end of the #search-tags
-end
-
-def addSuggestion()
-	if the #search-suggestions's *visibility is not "hidden" then
-		
-		set suggestion to the first <div.selected /> in #search-suggestions
-
-		if suggestion is undefined then
-			replaceTags(#search-input.value)
-		else
-			make a RegExp from "#[^ ]*" called findTag
-			set currentValue to the #search-input's value
-			set the #search-input's value to currentValue.replace(findTag, "")
-			addTag(suggestion.innerHTML)
-		end
-
-		hide the #search-suggestions with visibility
-	end
-end
-
-def isCursorAtStart(node)
-
-	if the node's selectionStart > 0 then
-		return false
-	end
-
-	if the node's selectionEnd > 0 then
-		return false
-	end
-
-	return true
+	-- send the request to the server
+	set the #search-input's value to "#" + suggestion.innerHTML
+	send click to the #search-submit
+	hide the #search-suggestions with visibility
 end
