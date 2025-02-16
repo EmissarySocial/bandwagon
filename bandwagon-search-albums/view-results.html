@@ -3,93 +3,95 @@
 {{- $tags := .QueryParam "tags" -}}
 {{- $empty := and (eq "" $query) (eq "" $tags) -}}
 
-<!-- Search Albums Here -->
-{{- $results := .Search.WhereType "Album" -}}
-
 {{- if $empty -}}
-	{{- $results = $results.Top30.ByCreateDate.Reverse.Slice -}}
+
+	{{- template "view-tags" . -}}
+
 {{- else -}}
+	<!-- Search Albums Here -->
+	{{- $results := .Search.WhereType "Album" -}}
 	{{- $results = $results.Top120.Slice.Shuffle -}}
-{{- end -}}
 
-{{- if $results.IsEmpty -}}
+	{{- if $results.IsEmpty -}}
 
-	{{- $tags := .FeaturedSearchTags.Slice -}}
+		{{- $tags := .FeaturedSearchTags.Slice -}}
 
-	<div class="text-lg text-gray">
-		There are <b>no albums</b> that match 
-		{{if ne "" $query}}
-			<b>&quot;{{$query}}&quot;</b>.
-		{{- else -}}
-			your search.
+		<div class="text-lg text-gray">
+			There are <b>no albums</b> that match 
+			{{if ne "" $query}}
+				<b>&quot;{{$query}}&quot;</b>.
+			{{- else -}}
+				your search.
+			{{- end -}}
+			<br>
+			Please try some of these search terms instead...
+		</div>
+
+		<div class="margin-top-lg">
+			<div class="table search-container">
+				{{- range $index, $tag := $tags -}}
+					<div class="link turboclick" role="link" hx-get="/{{$token}}?q={{$tag.Name}}">
+						{{icon "tag"}} {{$tag.Name}}
+					</div>
+				{{- end -}}
+			</div>
+		</div>
+
+	{{- else -}}
+		
+		<!--
+		{{- if .IsOwner -}}
+			<div class="padding-none margin-none margin-bottom text-lg">
+				<button class="primary" hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow These Results</button>
+				<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
+			</div>
 		{{- end -}}
-		<br>
-		Please try some of these search terms instead...
-	</div>
+		-->
 
-	<div class="margin-top-lg">
-		<div class="table search-container">
-			{{- range $index, $tag := $tags -}}
-				<div class="link turboclick" role="link" hx-get="/{{$token}}?q={{$tag.Name}}">
-					{{icon "tag"}} {{$tag.Name}}
+		<div class="columns-6">
+			{{- range $result := $results -}}
+
+				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
+					<div role="link" class="turboclick" script="install blockselect()">
+						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
+						<div class="padding-sm padding-bottom-none ellipsis">
+							<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
+						</div>
+						<div class="padding-left-sm text-sm text-gray">
+							{{$result.AttributedTo}}
+						</div>
+					</div>
 				</div>
 			{{- end -}}
 		</div>
-	</div>
 
-{{- else -}}
-	
-	<!--
-	{{- if .IsOwner -}}
-		<div class="padding-none margin-none margin-bottom text-lg">
-			<button class="primary" hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow These Results</button>
-			<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
-		</div>
+		<style>
+			.album {
+				border-radius:8px;
+				background-color:var(--gray15);
+			}
+
+			.album img {
+				object-fit:cover;
+				border-top-left-radius: 8px;
+				border-top-right-radius: 8px;
+			}
+
+			.clearTag {
+				display:inline-block;
+				background-color:rgba(0,0,0,0);
+				border: solid 1px rgba(0,0,0, 0.5);
+				color: rgba(0,0,0, 0.75);
+				padding:4px 8px;
+				border-radius: 8px;
+				margin-right:8px;
+			}
+
+			.clearTag:hover {
+				background-color:rgba(255, 255, 255, 0.1);
+			}
+		</style>
+
 	{{- end -}}
-	-->
-
-	<div class="columns-6">
-		{{- range $result := $results -}}
-
-			<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
-				<div role="link" class="turboclick" script="install blockselect()">
-					<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
-					<div class="padding-sm padding-bottom-none ellipsis">
-						<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
-					</div>
-					<div class="padding-left-sm text-sm text-gray">
-						{{$result.AttributedTo}}
-					</div>
-				</div>
-			</div>
-		{{- end -}}
-	</div>
-
-	<style>
-		.album {
-			border-radius:8px;
-			background-color:var(--gray15);
-		}
-
-		.album img {
-			object-fit:cover;
-			border-top-left-radius: 8px;
-			border-top-right-radius: 8px;
-		}
-
-		.clearTag {
-			display:inline-block;
-			background-color:rgba(0,0,0,0);
-			border: solid 1px rgba(0,0,0, 0.5);
-			color: rgba(0,0,0, 0.75);
-			padding:4px 8px;
-			border-radius: 8px;
-			margin-right:8px;
-		}
-
-		.clearTag:hover {
-			background-color:rgba(255, 255, 255, 0.1);
-		}
-	</style>
 
 {{- end -}}
