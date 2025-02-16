@@ -59,8 +59,7 @@
 	search: {
 		type: "Event"
 		iconUrl:"{{.IconURL}}"
-		text: "{{.Label}} {{.Summary}} {{index .Data `year`}}"
-		tags: "{{.Hashtags.Join ` `}}"
+		text: "{{.Label}} {{.AttributedTo.Name}} {{index .Data `year`}}"
 	}
 
 	tagPaths: ["data.tags"]
