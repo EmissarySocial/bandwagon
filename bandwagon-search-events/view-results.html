@@ -46,7 +46,11 @@
 					<div class="text-lg margin-none bold">{{.Name}}</div>
 					<div class="flex-grow text-gray">
 						{{.Date | shortDate}}
-						{{.Date | shortTime}}<br>
+						{{- $time := .Date | shortTime -}}
+						{{- if ne "12:00 AM" $time -}}
+							&nbsp;{{- $time -}}
+						{{- end -}}
+						<br>
 						{{.AttributedTo}}<br>
 						{{.Place.Name}}<br>
 					</div>
