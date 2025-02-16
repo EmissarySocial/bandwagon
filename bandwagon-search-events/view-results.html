@@ -24,16 +24,12 @@
 
 			<div class="flex-row padding hover-trigger turboclick" role="link" onclick="window.location='{{.URL}}'">
 
-				{{- if $group.Header $result.Date -}}
-					<div>
-						<div style="text-align:center; width:48px; margin-right:16px;">
-							<div class="text-uppercase" style="font-size:12px; line-height:100%; color:var(--gray60);">{{$result.Date | shortMonth}}</div>
-							<div style="font-size:24px; padding:8px; font-weight:bold;">{{$result.Date | day}}</div>
-						</div>
+				<div>
+					<div style="text-align:center; width:48px; margin-right:16px;">
+						<div class="text-uppercase" style="font-size:12px; line-height:100%; color:var(--gray60);">{{$result.Date | shortMonth}}</div>
+						<div style="font-size:24px; padding:8px; font-weight:bold;">{{$result.Date | day}}</div>
 					</div>
-				{{- else -}}
-					<div></div>
-				{{- end -}}
+				</div>
 	
 				<div>
 					<div class="rounded square width-128" style="background-color:var(--gray20);">
