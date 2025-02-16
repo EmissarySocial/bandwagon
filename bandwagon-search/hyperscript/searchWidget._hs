@@ -1,8 +1,5 @@
-behavior SearchWidget(value, hint)
-
+behavior SearchWidget
 	init
-		set the #search-input's placeholder to hint
-		set the #search-input's value to value
 		send focus(initial:true) to the #search-input
 	end
 

@@ -1,6 +1,5 @@
 {{- $token := .Token -}}
-{{- $results := .Search.Top120.ByName.AllowAll -}}
-{{- $results := $results.WhereType "Album"  -}}
+{{- $results := .Search.Top120.ByName.WhereType "Album"  -}}
 {{- $results := $results.Slice -}}
 
 {{- if $results.NotEmpty -}}

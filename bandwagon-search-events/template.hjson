@@ -21,4 +21,12 @@
 			}
 		}    
 	}
+
+	actions: {
+		embed: {
+			steps: [
+				{do:"view-html", as-full-page:true}
+			]
+		}
+	}
 }

@@ -56,7 +56,8 @@
 		type: "Album"
 		iconUrl:""
 		summary:""
-		text: "{{.Label}} {{.Summary}} {{index .Data `year`}}"
+		text: "{{.Label}} {{.AttributedTo.Name}}"
+		tags: "LIC:{{index .Data `license`}}"
 	}
 
 	states: {

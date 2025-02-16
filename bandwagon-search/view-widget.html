@@ -1,12 +1,13 @@
-{{- $queryString := .QueryParam "q" | trim -}}
+{{- $query := .QueryParam "q" | trim -}}
+{{- $placeholder := .Data "searchText" -}}
 
 <script src="/.templates/bandwagon-search/javascript"></script>
 <script type="text/hyperscript" src="/.templates/bandwagon-search/hyperscript"></script>
 
 <div class="search-container pos-relative">
-	<form id="search-form" hx-get="/{{.Token}}/view-results" hx-target="#search-results" hx-indicator="#search-widget">
-		<div id="search-widget" script="install SearchWidget(value:{{$queryString |json}}, hint:{{.Data `searchText` |json}})" class="input">
-			<input type="search" id="search-input" autocomplete="off" name="q"/>
+	<form id="search-form" hx-get="/{{.Token}}" hx-indicator="#search-widget">
+		<div id="search-widget" script="install SearchWidget" class="input">
+			<input type="search" id="search-input" autocomplete="off" name="q" value="{{$query}}" placeholder="{{$placeholder}}"/>
 			<button class="primary align-center htmx-request-hide" style="width:3em;" aria-label="Search" id="search-submit">{{icon "search"}}</button>
 			<button class="primary align-center htmx-request-show" style="width:3em;"><span class="spin">{{icon "loading"}}</span></button>
 		</div>

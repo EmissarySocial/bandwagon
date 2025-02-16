@@ -87,6 +87,7 @@
 					template: bandwagon-event
 					title: + Add a Song
 					set-permissions: {copy:true, editor:["self"]}
+					with-data:{data.tags:"{{.Data `tags`}}"}
 				}
 				{do:"set-data", values:{"data.show-events":"true"}}
 				{do: "save"}

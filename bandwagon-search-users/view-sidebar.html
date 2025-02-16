@@ -1,8 +1,8 @@
+{{- $query := .QueryParam "q" -}}
 
-<div class="search-navigation turboclick" hx-get="/albums?{{.QueryString}}">Albums</div>
-<div class="search-navigation selected" hx-get="/artists?{{.QueryString}}">Artists</div>
-<div class="search-navigation turboclick" hx-get="/songs?{{.QueryString}}">Tracks</div>
-<div class="search-navigation turboclick" hx-get="/events?{{.QueryString}}">Calendar</div>
+<div class="search-navigation turboclick" hx-get="/albums?q={{$query}}">Albums</div>
+<div class="search-navigation selected" hx-get="/artists">Artists</div>
+<div class="search-navigation turboclick" hx-get="/events?q={{$query}}&date=next-30-days">Calendar</div>
 
 <hr>
 

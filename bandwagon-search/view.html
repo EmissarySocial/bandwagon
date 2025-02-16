@@ -1,22 +1,22 @@
-<div id="search" class="fullscreen">
+<div id="search" class="fullscreen padding-none">
 
-	<div class="flex-row padding-vertical-lg margin-bottom-lg" style="background-color:var(--gray20); margin-top:-8px; margin-right:-8px; margin-left:-8px;">
-		<div class="sidebar" style="margin-right:16px;"></div>
-		<div class="flex-grow">
+	<div class="flex-row padding-vertical-lg margin-bottom-lg" style="background-color:var(--gray70);">
+		<div class="sidebar"></div>
+		<div class="flex-grow margin-right">
 			{{- template "view-widget" . -}}
 		</div>
 	</div>
 
 	<div class="flex-row">
 
-		<div class="sidebar" style="border-right: solid 1px var(--gray20);">
+		<div class="sidebar">
 			{{template "view-sidebar" .}}
 		</div>
 
-		<div class="flex-grow">
+		<div class="flex-grow margin-right">
 
 			<div id="search-results">
-				{{.View "view-results"}}
+				{{template "view-results" .}}
 			</div>
 
 			{{- if .UserCan "edit" -}}
@@ -36,11 +36,11 @@
 
 <style>
 	.sidebar {
-		width:180px;
-		min-width:180px;
-		max-width:180px;
-		padding-right:8px;
-		margin-right:8px;
+		width:240px;
+		min-width:240px;
+		max-width:240px;
+		padding:0px 16px;
+		margin-right:16px;
 	}
 
 	.search-navigation {
@@ -56,12 +56,13 @@
 
 	.search-navigation.selected,
 	.search-navigation.selected:hover {
-		background-color:var(--gray20);
+		background-color:var(--gray40);
+		color:var(--white);
+		font-weight:600;
 	}
 
 	.search-container {
 		width:100%;
-		padding-right:var(--rhythm);
 	}
 
 	#search-widget {

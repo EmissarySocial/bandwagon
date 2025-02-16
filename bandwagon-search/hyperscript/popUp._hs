@@ -1,7 +1,6 @@
 behavior Popup
 
 	init
-		log "init popup"
 		add .pop-up
 	end
 

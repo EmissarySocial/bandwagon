@@ -1,0 +1,12 @@
+{{- $stylesheet := .QueryParam "stylesheet" -}}
+
+{{- if ne "false" $stylesheet -}}
+	<link rel="stylesheet" type="text/css" href="/.themes/global/stylesheet?v={{.ETag}}">
+{{- end -}}
+
+{{- .View "view-results" -}}
+<div class="margin align-right text-xs text-gray">
+	<a href="{{.Host}}/{{.Token}}" class="text-black" target="_blank">Calendar by {{.Hostname}}</a>
+</div>
+
+<script src="http://localhost/.themes/global/resources/hyperscript/_hyperscript.min.js"></script>

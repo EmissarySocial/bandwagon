@@ -17,7 +17,7 @@
 		<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true">
 	{{- end -}}
 
-	<article class="content padding-lg">
+	<article class="content padding-lg pos-relative">
 
 		<div>
 			<h1 class="extra-bold margin-bottom-none">{{.Label}}</h1>
@@ -34,16 +34,16 @@
 			<div class="margin-vertical">{{.ContentHTML}}</div>
 		</div>
 
+		{{- if .UserCan "edit" -}}
+			<div class="pos-absolute-top-right text-sm">
+				<button hx-get="/{{.StreamID}}/edit">Edit News</button>
+			</div>
+
+			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
+				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+			</div>
+		{{- end -}}
+
 	</article>
-
-	{{- if .UserCan "edit" -}}
-		<div class="pos-absolute-top-right text-sm">
-			<button hx-get="/{{.StreamID}}/edit">Edit News</button>
-		</div>
-
-		<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-			<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
-		</div>
-	{{- end -}}
 
 </div>

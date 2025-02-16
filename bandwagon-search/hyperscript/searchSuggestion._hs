@@ -1,7 +1,7 @@
 behavior SearchSuggestion
 
 	on mouseover 
-		take .selected from my parentNode
+		take .selected from my siblings
 	end
 
 	on mousedown 

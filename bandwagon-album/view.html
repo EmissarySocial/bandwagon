@@ -121,18 +121,8 @@
 										>
 
 											<span class="text-gray">
-												{{- if $isplayable -}}
-													<span class="playing-hide hover-show">{{icon "play-fill"}}</span>
-													<span class="playing-show">{{icon "volume-up-fill"}}</span>
-													{{- if eq $song.IsFeatured true -}}
-														<span class="playing-hide hover-hide">{{icon "star-fill"}}</span>
-													{{- end -}}
-												{{- else -}}
-													{{- if $song.IsFeatured -}}
-														<span class="playing-hide">{{icon "star-fill"}}</span>
-													{{- else -}}
-														<span class="invisible">{{icon "star-fill"}}</span>
-													{{- end -}}
+												{{- if $song.IsFeatured -}}
+													<span>{{icon "star-fill"}}</span>
 												{{- end -}}
 											</span>
 										</td>
@@ -143,7 +133,13 @@
 												hx-get="/{{$song.StreamID}}"
 											{{- end -}}
 										>
+										{{- if $isplayable -}}
+											<span class="playing-hide hover-show">{{icon "play-fill"}}</span>
+											<span class="playing-show">{{icon "volume-up-fill"}}</span>
+											<span class="playing-hide hover-hide hide sm:show">{{add $index 1}}.</span>
+										{{- else -}}
 											<span class="hide sm:show">{{add $index 1}}.</span>
+										{{- end -}}
 										</td>
 										<td class="width-100%"
 											{{ if $isplayable -}}
@@ -206,7 +202,7 @@
 					<div class="text-sm margin-bottom">
 						{{- range $index, $tag := $tags -}}
 							{{- if eq "Hashtag" $tag.Type}}
-								<a href="/albums?q={{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
+								<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
 							{{- end -}}
 						{{- end -}}
 					</div>

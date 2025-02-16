@@ -1,8 +1,7 @@
 {{- $token := .Token -}}
 {{- $query := .QueryParam "q" -}}
 
-{{- $results := .Search.Top120.ByName.FullText.Tags.AllowAll -}}
-{{- $results := $results.WhereType "Person" -}}
+{{- $results := .Search.Top120.ByName.WhereType "Person" -}}
 {{- $results := $results.Slice.Shuffle -}}
 
 <!-- No Results -->
@@ -11,7 +10,7 @@
 	{{- $tags := .FeaturedSearchTags.Slice -}}
 
 	<div class="text-lg text-gray">
-		There are <b>no artists</b> that match your criteria.
+		There are <b>no artists</b> that match <b>&quot;{{$query}}&quot;</b>.
 		<br>
 		Please try some of these search terms instead...
 	</div>
@@ -32,7 +31,7 @@
 
 	<div class="columns-6">
 		{{- range $index, $result := $results -}}
-			<div class="align-center">
+			<div class="align-center hover-swell">
 				<div role="link" script="install blockselect()">
 
 					{{- if eq "" $result.IconURL -}}
@@ -50,15 +49,6 @@
 						</div>
 					</div>
 				</div>
-				<!--
-				{{- if $result.TagNames.NotEmpty -}}
-					<div class="margin-top align-center">
-						{{- range $index, $tag := $result.TagNames.FirstN 3 -}}
-							<span hx-get="/{{$token}}?q=%23{{$tag}}" class="tag margin-horizontal-xs" role="button">{{$tag}}</span>
-						{{- end -}}
-					</div>
-				{{- end -}}
-				-->
 			</div>
 		{{- end -}}
 	</div>

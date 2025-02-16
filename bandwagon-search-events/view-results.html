@@ -1,6 +1,63 @@
-<div class="text-lg text-gray">
-	<b>Calendar Search</b> Coming Soon... <br>
-	<br>
-	Fans: check back later to find events near you.<br>
-	Musicians: make sure to populate your calendars now!<br>
-</div>
+{{- $host := .Host -}}
+{{- $token := .Token -}}
+{{- $query := .QueryParam "q" -}}
+
+{{- $results := .Search.Top120.ByDate.WhereType "Event" -}}
+{{- $results := $results.Slice -}}
+
+<!-- No Results -->
+{{- if $results.IsEmpty -}}
+
+	{{- $tags := .FeaturedSearchTags.Slice -}}
+
+	<div class="text-lg text-gray">
+		There are <b>no events</b> that match <b>&quot;{{$query}}&quot;</b>.
+	</div>
+
+{{- else -}}
+
+	{{- $token := .Token -}}
+	{{- $group := groupie -}}
+
+	<div class="table">
+		{{- range $index, $result := $results -}}
+
+			<div class="flex-row padding hover-trigger turboclick" role="link" onclick="window.location='{{.URL}}'">
+
+				{{- if $group.Header $result.Date -}}
+					<div>
+						<div style="text-align:center; width:48px; margin-right:16px;">
+							<div class="text-uppercase" style="font-size:12px; line-height:100%; color:var(--gray60);">{{$result.Date | shortMonth}}</div>
+							<div style="font-size:24px; padding:8px; font-weight:bold;">{{$result.Date | day}}</div>
+						</div>
+					</div>
+				{{- else -}}
+					<div></div>
+				{{- end -}}
+	
+				<div>
+					<div class="rounded square width-128" style="background-color:var(--gray20);">
+						{{- if ne "" .IconURL -}}
+							<img src="{{.IconURL}}" class="rounded square block width-100%">
+						{{- end -}}
+					</div>
+				</div>
+				<div class="flex-column margin-left pos-relative">
+					<div class="text-lg margin-none bold">{{.Name}}</div>
+					<div class="flex-grow text-gray">
+						{{.Date | shortDate}}
+						{{.Date | shortTime}}<br>
+						{{.AttributedTo}}<br>
+						{{.Place.Name}}<br>
+					</div>
+					<div>
+						<a href="{{.URL}}">More Info &rarr;</a>
+					</div>
+				</div>
+
+			</div>
+
+		{{- end -}}
+	</div>
+
+{{- end -}}

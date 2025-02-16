@@ -13,7 +13,7 @@ def useSuggestion()
 	end
 
 	-- send the request to the server
-	set the #search-input's value to suggestion.innerHTML
+	set the #search-input's value to "#" + suggestion.innerHTML
 	send click to the #search-submit
 	hide the #search-suggestions with visibility
 end

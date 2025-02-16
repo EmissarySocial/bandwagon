@@ -32,6 +32,7 @@
 			data: {
 				type:object
 				properties: {
+					tags: {type:"string"}
 					bannerUrl: {type:"string", format:"url"}
 					flyerUrl: {type:"string", format:"url"}
 					city: {type:"string"}
@@ -53,16 +54,16 @@
 		{target:"type", value:["Event","Article"]}
 		{target:"name", expression:"{{.Data.city}} {{.Data.date}}"},
 		{target:"summary", expression:"{{.Data.venue}}"},
-		// {target:"attributedTo.id", path:"attributedTo.profileUrl"},
-		// {target:"attributedTo.name", path:"attributedTo.name"},
 	]
 
 	search: {
 		type: "Event"
 		iconUrl:"{{.IconURL}}"
-		summary:"{{.StartDate.Format `January 2, 2006`}} {{.Data.city}} {{.Data.venue}}"
 		text: "{{.Label}} {{.Summary}} {{index .Data `year`}}"
+		tags: "{{.Hashtags.Join ` `}}"
 	}
+
+	tagPaths: ["data.tags"]
 
 	actions: {
 		create: {
@@ -81,6 +82,7 @@
 									type:layout-vertical
 									children: [
 										{type:"text", path:"label", label:"Event Name"}
+										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
 										{type:"date", path:"startDate.date", label:"Date"}
 										{type:"time", path:"startDate.time", label:"Start Time"}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
@@ -97,7 +99,7 @@
 									label: Venue
 									type:layout-vertical
 									children: [
-										{type:"text", path:"data.venue", label:"Venue Name", description:"Just a label. Shows on event cards"}
+										{type:"text", path:"place.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
 										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
 										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
 									]
@@ -160,6 +162,7 @@
 									type:layout-vertical
 									children: [
 										{type:"text", path:"label", label:"Event Name"}
+										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
 										{type:"date", path:"startDate.date", label:"Date"}
 										{type:"time", path:"startDate.time", label:"Start Time"}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
@@ -176,7 +179,7 @@
 									label: Venue
 									type:layout-vertical
 									children: [
-										{type:"text", path:"data.venue", label:"Venue Name", description:"Just a label. Shows on event cards"}
+										{type:"text", path:"places.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
 										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
 										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
 									]

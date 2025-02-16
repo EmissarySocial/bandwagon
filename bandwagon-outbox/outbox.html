@@ -65,9 +65,9 @@
 						{{- end -}}
 					</div>
 					<div class="margin-bottom">
-						<span class="bold" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
+						<span class="bold text-gray" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
 						{{- if ne "" .Location }}
-							<span class="text-gray"> &middot; {{.Location}}</span>
+							<span class="text-gray margin-left"> {{icon "location"}} {{.Location}}</span>
 						{{- end -}}
 					</div>
 
@@ -121,11 +121,9 @@
 									<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
 									<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
 									<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
-									{{- if ne nil .Data.website -}}
-										<div class="padding">
-											<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" target="_blank">More...</a>
-										</div>
-									{{- end -}}
+									<div class="padding">
+										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" target="_blank">More...</a>
+									</div>
 								{{- end -}}
 							{{- else if eq "bandwagon-news" .TemplateID -}}
 								{{- if ne "" .IconURL -}}
