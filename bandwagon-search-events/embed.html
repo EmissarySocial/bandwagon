@@ -2,18 +2,20 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="/.themes/global/stylesheet?v={{.ETag}}">
+	<link rel="stylesheet" type="text/css" href="/.themes/default/stylesheet?v={{.ETag}}">
 	<style>
 		:root {
 			overscroll-behavior: none;
 		}
 	</style>
 </head>
-<body id="body" onresize="sendResize()">
+
+<body onresize="sendResize()">
 
 	{{- .View "view-results" -}}
 
 	<div class="margin align-right text-xs text-gray">
-		<a href="{{.Host}}/{{.Token}}" class="text-black" target="_blank">Calendar by {{.Hostname}}</a>
+		<a href="{{.Host}}/{{.Token}}" class="text-black" target="_top">Calendar by {{.Hostname}}</a>
 	</div>
 
 	<script>
@@ -23,7 +25,7 @@
 			var message = {
 				"action":"resize",
 				"src": "{{.URL}}",
-				"height": document.getElementById("body").scrollHeight
+				"height": document.body.scrollHeight
 			}
 
 			window.parent.postMessage(message, "*");
