@@ -1,12 +1,45 @@
-{{- $stylesheet := .QueryParam "stylesheet" -}}
-
-{{- if ne "false" $stylesheet -}}
+<!DOCTYPE html>
+<html>
+<head>
 	<link rel="stylesheet" type="text/css" href="/.themes/global/stylesheet?v={{.ETag}}">
-{{- end -}}
+	<style>
+		:root {
+			overscroll-behavior: none;
+		}
+	</style>
+</head>
+<body id="body" onresize="sendResize()" style="background-color:var(--body-background); color:var(--text-color);">
 
-{{- .View "view-results" -}}
-<div class="margin align-right text-xs text-gray">
-	<a href="{{.Host}}/{{.Token}}" class="text-black" target="_blank">Calendar by {{.Hostname}}</a>
-</div>
+	{{- .View "view-results" -}}
 
-<script src="http://localhost/.themes/global/resources/hyperscript/_hyperscript.min.js"></script>
+	<div class="margin align-right text-xs text-gray">
+		<a href="{{.Host}}/{{.Token}}" class="text-black" target="_blank">Calendar by {{.Hostname}}</a>
+	</div>
+
+	<script>
+		"use strict";
+
+		function sendResize() {
+			var message = {
+				"action":"resize",
+				"src": "{{.URL}}",
+				"height": document.getElementById("body").scrollHeight
+			}
+
+			window.parent.postMessage(message, "*");
+		}
+
+		window.addEventListener("message", function(event) {
+			console.log("RECEIVED??")
+			console.log(event)
+			// root.style.setProperty('--my-variable', 'my-value');
+		});
+
+		sendResize();
+	</script>	
+
+<script src="http://localhost/.themes/global/resources/hyperscript/_hyperscript.min.js" defer></script>
+<script src="http://localhost/.themes/global/hyperscript" type="text/hyperscript"></script>
+
+</body>
+</html>
