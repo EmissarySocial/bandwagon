@@ -1,4 +1,4 @@
-{{- $events := .Outbox.ByStartDate.Reverse -}}
+{{- $events := .Outbox.ByStartDate -}}
 {{- $events := $events.Where "templateId" "bandwagon-event" -}}
 {{- $events := $events.Slice -}}
 {{- $root := . -}}
