@@ -31,7 +31,7 @@
 							{{- end -}}
 						</td>
 						<td class="pos-relative padding-right-none">
-							<h2>{{.Label}}</h2>
+							<div class="text-xl bold margin-none">{{.Label}}</div>
 							<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
 							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}">{{first .Data.linkText "Read More"}}</a>
 							{{- if $isMyself -}}

@@ -11,8 +11,9 @@
 <!-- Banner Image -->
 {{- if or $hasBannerImage $hasBannerColor $isMyself -}}
 
-	<div id="band-banner" class="pos-relative width-100%">
+	<div id="profile-banner" class="pos-relative width-100% hide sm:show">
 		{{- if $isMyself -}}
+			<div>&nbsp;</div>
 			<div class="pos-absolute-top-right flex-column">
 				<button hx-get="/@me/edit-banner" class="text-xs turboclick">Edit Banner</button>
 			</div>
@@ -23,7 +24,7 @@
 <!-- Menu Bar -->
 
 {{- if or $showAlbums $showEvents $showNews $showShop $isMyself -}}
-<div id="band-menu" role="menubar" class="pos-relative">
+<div id="profile-menu" role="menubar" class="pos-relative">
 	<a id="home" href="/@{{.Username}}" hx-get="/@{{.Username}}" role="menuitem" class="turboclick" aria-label="Home">{{icon "home-fill"}}</a>
 	{{- if $showAlbums -}}
 		<a id="albums" href="/@{{.Username}}/albums" hx-get="/@{{.Username}}/albums" role="menuitem" class="turboclick">{{first (.Data "label-albums") "Albums"}}</a>

@@ -28,5 +28,13 @@
 				{do:"view-html", as-full-page:true}
 			]
 		}
+		view: {
+			steps:[
+				{do:"if", condition:"{{eq `` (.QueryParam `date`)}}", then:[
+					{do:"set-query-param", date:"next-30-days"}
+				]}
+				{do:"view-html"}
+			]
+		}
 	}
 }

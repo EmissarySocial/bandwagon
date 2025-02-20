@@ -100,7 +100,7 @@ body {
 {{- $bannerHex := first (.Data "color-banner") "#a0a0a0" -}}
 {{- $bannerColor := parseColor $bannerHex -}}
 
-#band-banner {
+#profile-banner {
 	background-color: {{$bannerColor}};
 	height:256px;
 	background-image:url('{{.ImageURL}}');
@@ -108,25 +108,25 @@ body {
 	background-position:center;
 }
 
-#band-menu {
+#profile-menu {
 	background-color: var(--menu-background);
 	font-size: 1.25em;
 	text-align: center;
 }
 
-#band-menu > [role=menuitem] {
+#profile-menu > [role=menuitem] {
 	display: inline-block;
 	padding: var(--rhythm) calc(var(--rhythm) * 1.5) ;
 	color: var(--menu-text);
 }
 
-#band-menu > [role=menuitem]:hover {
+#profile-menu > [role=menuitem]:hover {
 	background-color: var(--menu-hover-background);
 	color: var(--menu-hover-text);
 }
 
-#band-menu > [role=menuitem][aria-selected=true],
-#band-menu > [role=menuitem][aria-selected=true]:hover {
+#profile-menu > [role=menuitem][aria-selected=true],
+#profile-menu > [role=menuitem][aria-selected=true]:hover {
 	background-color: var(--menu-selected-background);
 	color: var(--menu-selected-text);
 }

@@ -89,6 +89,29 @@
 								Icon by <a href="https://icons8.com/icon/13800/location" target="_blank">Icons8</a>
 							</div>
 
+						{{- end -}}
+					</div>
+					<div class="md:width-24"></div>
+					<div class="md:width-1-2 p-location">
+
+						<div class="text-lg h-card">
+							<h1 class="extra-bold p-name">{{$venue.Name}}</h1>
+							<div class="text-xl text-gray p-adr">{{- $venue.FullAddress | text -}}</div>
+						</div>
+			
+						{{if $hasGeocode}}
+							<div class="margin-top-xl text-gray">Open With:</div>
+							<div class="text-lg">
+								<div><a href="https://maps.apple.com?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Apple Maps</a></div>
+								<div><a href="https://maps.google.com/maps/place/{{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Google Maps</a></div>
+								<div><a href="https://bing.com/maps?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Microsoft Maps</a></div>
+							</div>
+
+							<div class="h-geo">
+								<data id="longitude" class="p-longitude" value="{{$venue.Longitude}}"></data>
+								<data id="latitude" class="p-latitude" value="{{$venue.Latitude}}"></data>
+							</div>
+
 							<!-- From: https://wiki.openstreetmap.org/wiki/OpenLayers_Marker_Example -->
 							<!-- https://wiki.openstreetmap.org/wiki/Openlayers_marker_multilayer_example -->
 							<script>
@@ -104,7 +127,16 @@
 									);
 
 									var zoom=14;
-									var lonLat = new OpenLayers.LonLat( {{$venue.Longitude}}, {{$venue.Latitude}} )
+									var longitude = parseFloat(document.getElementById("longitude").value);
+									var latitude = parseFloat(document.getElementById("latitude").value);
+									console.log(document.getElementById("longitude"));
+									console.log(longitude);
+									console.log(latitude);
+									var lonLat = new OpenLayers.LonLat(longitude, latitude)
+										.transform(
+											new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+											map.getProjectionObject() // to Spherical Mercator Projection
+										);
 
 									lonLat = lonLat.transform(
 										new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
@@ -126,28 +158,6 @@
 
 							<script id="open-layers" src="https://openlayers.org/api/2.13.1/OpenLayers.js" onload="showMap()"></script>
 
-						{{- end -}}
-					</div>
-					<div class="md:width-24"></div>
-					<div class="md:width-1-2 p-location">
-
-						<div class="text-lg h-card">
-							<h1 class="extra-bold p-name">{{$venue.Name}}</h1>
-							<div class="text-xl text-gray p-adr">{{- $venue.FullAddress | text -}}</div>
-						</div>
-			
-						{{if $hasGeocode}}
-							<div class="margin-top-xl text-gray">Open With:</div>
-							<div class="text-lg">
-								<div><a href="https://maps.apple.com?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Apple Maps</a></div>
-								<div><a href="https://maps.google.com/maps/place/{{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Google Maps</a></div>
-								<div><a href="https://bing.com/maps?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Microsoft Maps</a></div>
-							</div>
-
-							<div class="h-geo">
-								<data class="p-longitude" value="{{$venue.Longitude}}"></data>
-								<data class="p-latitude" value="{{$venue.Latitude}}"></data>
-							</div>
 						{{- end -}}
 		
 					</div>

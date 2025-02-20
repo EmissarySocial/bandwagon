@@ -4,9 +4,11 @@
 	{{- $date := "next-30-days" -}}
 {{- end -}}
 
-<div class="search-navigation turboclick" hx-get="/albums?q={{$query}}">Albums</div>
-<div class="search-navigation turboclick" hx-get="/artists?q={{$query}}">Artists</div>
-<div class="search-navigation selected" hx-get="/events?date=next-30-days">Calendar</div>
+<div class="flex-row md:flex-column">
+	<a class="search-navigation turboclick" href="/albums?q={{$query}}" hx-get="/albums?q={{$query}}">Albums</a>
+	<a class="search-navigation turboclick" href="/artists?q={{$query}}" hx-get="/artists?q={{$query}}">Artists</a>
+	<a class="search-navigation selected" href="/events" hx-get="/events">Calendar</a>
+</div>
 
 <hr>
 

@@ -29,15 +29,15 @@
 
 	{{- $token := .Token -}}
 
-	<div class="columns-6">
+	<div class="cols-2-6">
 		{{- range $index, $result := $results -}}
 			<div class="align-center hover-swell">
 				<div role="link" script="install blockselect()">
 
 					{{- if eq "" $result.IconURL -}}
-						<div class="circle-128 margin-right-sm inline-block" style="max-width:100%;"></div>
+						<div class="circle width-128 margin-right-sm inline-block" style="max-width:100%;"></div>
 					{{- else -}}
-						<img src="{{$result.IconURL}}" class="circle-128 margin-right-sm" style="max-width:100%;" loading="lazy">
+						<img src="{{$result.IconURL}}" class="circle width-128 margin-right-sm" style="max-width:100%;" loading="lazy">
 					{{- end -}}
 
 					<div class="flex-grow">

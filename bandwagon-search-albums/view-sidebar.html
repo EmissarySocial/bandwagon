@@ -2,9 +2,11 @@
 {{- $licenses := .Dataset "bandwagon-search-albums.licenses" -}}
 {{- $tags := .QueryParam "tags" -}}
 
-<div class="search-navigation turboclick selected" hx-get="/albums">Albums</div>
-<div class="search-navigation turboclick" hx-get="/artists?q={{$query}}">Artists</div>
-<div class="search-navigation turboclick" hx-get="/events?q={{$query}}&date=next-30-days">Calendar</div>
+<div class="flex-row md:flex-column">
+	<a class="search-navigation turboclick selected" href="/albums" hx-get="/albums">Albums</a>
+	<a class="search-navigation turboclick" href="artists?q={{$query}}" hx-get="/artists?q={{$query}}">Artists</a>
+	<a class="search-navigation turboclick" href="/events?q={{$query}}" hx-get="/events?q={{$query}}">Calendar</a>
+</div>
 
 <hr>
 

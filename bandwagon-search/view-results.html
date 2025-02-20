@@ -14,7 +14,7 @@
         <button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
     </div>
     <hr>
-    <div class="columns-4">
+    <div class="cols-4">
         {{- range $result := $results -}}
             <div class="card" style="overflow-x:hidden;">
                 <pre>{{- $result | jsonIndent -}}</pre>

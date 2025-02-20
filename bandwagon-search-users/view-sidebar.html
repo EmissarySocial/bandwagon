@@ -1,8 +1,7 @@
 {{- $query := .QueryParam "q" -}}
 
-<div class="search-navigation turboclick" hx-get="/albums?q={{$query}}">Albums</div>
-<div class="search-navigation selected" hx-get="/artists">Artists</div>
-<div class="search-navigation turboclick" hx-get="/events?q={{$query}}&date=next-30-days">Calendar</div>
-
-<hr>
-
+<div class="flex-row md:flex-column">
+	<a class="search-navigation turboclick" href="/albums?q={{$query}}" hx-get="/albums?q={{$query}}">Albums</a>
+	<a class="search-navigation selected" href="/artists" hx-get="/artists">Artists</a>
+	<a class="search-navigation turboclick" href="/events?q={{$query}}" hx-get="/events?q={{$query}}">Calendar</a>
+</div>

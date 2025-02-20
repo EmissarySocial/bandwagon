@@ -1,7 +1,7 @@
 {{- $token := .Token -}}
 {{- $tags := .FeaturedSearchTags.ByRank.Slice -}}
 
-<div class="columns-6">
+<div class="cols-2-4">
 	{{- range $index, $tag := $tags -}}
 
 		{{- $background00 :=  $tag.Colors.At 0 | parseColor -}}

@@ -51,9 +51,11 @@
 			{{- end -}}
 
 			<!-- Band Name -->
-			<div class="flex-row flex-align-center margin-top">
-				<img src="{{.IconURL}}" class="circle-96 flex-shrink-0 flex-align-self-start" aria-hidden="true">
-				<div class="flex-grow">
+			<div class="md:flex-row flex-align-center margin-top">
+				<div class="md:flex-align-self-start margin-horizontal-auto align-center">
+					<img src="{{.IconURL}}" class="circle width-40% md:width-96" aria-hidden="true">
+				</div>
+				<div class="flex-grow align-center md:align-left">
 					<div class="pos-relative">
 						<h1 class="margin-none">{{.DisplayName}}</h1>
 						{{- if $isMyself -}}
@@ -98,21 +100,21 @@
 				</div>
 			</div>
 
-			<div class="columns-4 margin-top-xl sortable">
+			<div class="cols-2-4 margin-top-xl sortable">
 
 				{{- range $featured -}}
 					{{- if or .IsPublished $isMyself -}}
-						<div class="rounded card flex-column hover-trigger hover-swell" script="install blockselect()">
+						<div class="card flex-column hover-trigger hover-swell" script="install blockselect()">
 							
 							{{- if eq "bandwagon-album" .TemplateID -}}
-								<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
+								<img src="{{.IconURL}}" class="square width-100% block object-fit-cover" aria-hidden="true">
 								<div class="padding text-plain">
 									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
 									<div class="text-gray">Album &middot; {{index .Data "year"}}</div>
 								</div>
 							{{- else if eq "bandwagon-event" .TemplateID -}}
 								{{- if ne "" .IconURL -}}
-									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
+									<img src="{{.IconURL}}" class="square width-100% block object-fit-cover" aria-hidden="true">
 									<div class="padding text-plain">
 										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
 										<div class="text-gray">{{.StartDate | shortDate }}</div>
@@ -127,7 +129,7 @@
 								{{- end -}}
 							{{- else if eq "bandwagon-news" .TemplateID -}}
 								{{- if ne "" .IconURL -}}
-									<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover; border-top-left-radius: var(--rhythm); border-top-right-radius: var(--rhythm);" aria-hidden="true">
+									<img src="{{.IconURL}}" class="square width-100% block object-fit-cover" aria-hidden="true">
 									<div class="padding text-plain">
 										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
 										<div class="text-gray">{{.PublishDate | shortDate }}</div>

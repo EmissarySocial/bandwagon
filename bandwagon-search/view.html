@@ -1,19 +1,19 @@
 <div id="search" class="fullscreen padding-none">
 
-	<div class="flex-row padding-vertical-lg margin-bottom-lg" style="background-color:var(--gray50);">
-		<div class="sidebar"></div>
-		<div class="flex-grow margin-right">
+	<div class="flex-row padding-vertical-lg margin-bottom" style="background-color:var(--gray50);">
+		<div class="hide md:show sidebar"></div>
+		<div class="flex-grow margin-horizontal">
 			{{- template "view-widget" . -}}
 		</div>
 	</div>
 
-	<div class="flex-row">
+	<div class="md:flex-row">
 
-		<div class="sidebar">
+		<div class="sidebar margin-bottom-lg">
 			{{template "view-sidebar" .}}
 		</div>
 
-		<div class="flex-grow margin-right">
+		<div class="flex-grow margin-horizontal container">
 
 			<div id="search-results">
 				{{template "view-results" .}}
@@ -36,11 +36,15 @@
 
 <style>
 	.sidebar {
-		width:240px;
-		min-width:240px;
-		max-width:240px;
 		padding:0px 16px;
-		margin-right:16px;
+	}
+	@media screen and (min-width: 768px) {
+		.sidebar {
+			width:240px;
+			min-width:240px;
+			max-width:240px;
+			margin:0 auto;
+		}
 	}
 
 	.search-navigation {
@@ -48,10 +52,12 @@
 		padding:8px 16px;
 		display:block;
 		cursor:pointer;
+		color:var(--text-color);
 	}
 
 	.search-navigation:hover {
 		background-color:var(--gray15);
+		color:var(--text-color);
 	}
 
 	.search-navigation.selected,
