@@ -26,10 +26,11 @@
 					description-events: {type:"string"}
 					description-news: {type:"string"}
 					background-body: {type:"string", format:"uri"}
-					color-body: {type:"string", format:"color"},
-					color-banner: {type:"string", format:"color"},
-					color-menu: {type:"string", format:"color"},
-					color-page: {type:"string", format:"color"}, 
+					stylesheet: {type:"string"}
+					color-body: {type:"string", format:"color"}
+					color-banner: {type:"string", format:"color"}
+					color-menu: {type:"string", format:"color"}
+					color-page: {type:"string", format:"color"} 
 					color-button: {type:"string", format:"color"}
 				}
 			}
@@ -45,10 +46,10 @@
 				{
 					do:"set-data", 
 					values:{
-						"data.label-albums":"Albums",
-						"data.label-events":"Events",
-						"data.label-news":"News",
-						"data.label-shop":"Shop",
+						"data.label-albums":"Albums"
+						"data.label-events":"Events"
+						"data.label-news":"News"
+						"data.label-shop":"Shop"
 					}
 				}
 			]
@@ -154,6 +155,13 @@
 									]
 								}
 								{
+									label: Stylesheet
+									type:layout-vertical
+									children: [
+										{type:"textarea", path:"data.stylesheet", description: "Custom CSS stylesheet for your profile. Experts only! &nbsp; <a href=https://bandwagon.fm/css-guide target=_blank>Read the CSS Guide &rarr;</a>", options:{rows:12}}
+									]
+								}
+								{
 									type:"layout-vertical"
 									label: Privacy & Security
 									children: [
@@ -163,7 +171,6 @@
 										{type:"toggle", path:"isIndexable", options:{text:"Indexable (request inclusion in search engines)"}}
 									]
 								}
-								
 							]
 						}
 					}

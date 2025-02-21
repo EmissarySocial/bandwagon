@@ -5,7 +5,7 @@
 {{- $attachmentID := .Data "attachmentId" -}}
 {{- $duration := .Data "length"}}
 
-<div class="page">
+<div id="track-{{.StreamID}}" class="page">
 
 	<link rel="stylesheet" href="/{{.ParentID}}/stylesheet">
 	
@@ -29,20 +29,20 @@
 
 	<div class="md:flex-row margin-bottom">
 		<div class="md:width-256 flex-shrink-0">
-			<img src="{{$album.IconURL}}" class="aspect-square width-100%" aria-hidden="true" style="object-fit:cover;">
+			<img id="track-icon" src="{{$album.IconURL}}" class="aspect-square width-100%" aria-hidden="true" style="object-fit:cover;">
 		</div>
 
 		<div class="md:width-32"></div>
 		<div class="flex-grow-1">
 			<div class="text-lg margin-top-none">
-				<a href="/@{{$album.AttributedTo.UserID.Hex}}" class="turboclick" aria-label="Artist: $album.AttributedTo.Name">
+				<a id="track-attributedTo" href="/@{{$album.AttributedTo.UserID.Hex}}" class="turboclick" aria-label="Artist: $album.AttributedTo.Name">
 					{{$album.AttributedTo.Name}}
 				</a> 
 				<span aria-hidden="true">&middot;</span>
-				<a href="/{{$album.StreamID}}" class="turboclick" aria-label="Album: $album.Label">{{ $album.Label }}</a>
+				<a id="track-album" href="/{{$album.StreamID}}" class="turboclick" aria-label="Album: $album.Label">{{ $album.Label }}</a>
 			</div>
 			<h1 class="margin-vertical-none">
-				<span aria-label="Track: {{.Label}}">{{.Label}}</span>
+				<span id="track-name" aria-label="Track: {{.Label}}">{{.Label}}</span>
 				{{- if eq true (.Data "explicit") -}}
 					<span class="text-light-gray text-xl margin-left" title="Explicit Lyrics" aria-label="Explicit Lyrics">{{icon "explicit-fill"}}</span>
 				{{- end -}}
@@ -50,12 +50,12 @@
 
 			<div class="margin-bottom text-gray">
 				{{ if ne nil ($album.Data "year") -}}
-					{{$album.Data "year"}}
+					<span id="track-year">{{$album.Data "year"}}</span>
 					{{ if ne nil (.Data "length") -}}
 						<span aria-hidden="true">&middot;</span>
 					{{ end }} 
 				{{- end -}}
-				{{.Data "length"}}
+				<span id="track-length">{{.Data "length"}}</span>
 			</div>
 
 			<div class="margin-vertical"></div>
@@ -97,13 +97,13 @@
 		<div class="flex-grow-1">
 
 			{{- if ne nil $lyrics -}}
-				<div class="margin-bottom-xl padding-right-xl">{{$lyrics | text}}</div>
+				<div id="track-description" class="margin-bottom-xl padding-right-xl">{{$lyrics | text}}</div>
 			{{- end -}}
 	
 		</div>
 
 		<div class="md:width-32 flex-shrink-0 flex-grow-0"></div>
-		<div class="md:width-256 flex-shrink-0">
+		<div id="track-links" class="md:width-256 flex-shrink-0">
 
 			{{- if $links.NotEmpty -}}
 
@@ -165,53 +165,57 @@
 			{{- end -}}
 
 			{{- if ne nil $streamURL -}}
-				<a href="{{$streamURL}}" target="_blank" class="block ellipsis">
+				<a id="track-video" href="{{$streamURL}}" target="_blank" class="block ellipsis">
 					<i class="bi bi-camera-video-fill"></i> Music Video
 				</a><br>
 			{{- end -}}
 
 			<br>
 			{{- if ne nil (.Data "artist") -}}
-				Artist: {{.Data "artist"}}<br>
+				<span id="track-artist">Artist: {{.Data "artist"}}</span><br>
 			{{- end -}}
 
 			{{- if ne nil (.Data "composer") -}}
-				Composer: {{.Data "composer"}}<br>
+				<span id="track-composer">Composer: {{.Data "composer"}}</span><br>
 			{{- end -}}
 
 			{{- if ne nil (.Data "producer") -}}
-				Producer: {{.Data "producer"}}<br>
+				<span id="track-producer">Producer: {{.Data "producer"}}</span><br>
 			{{- end -}}
 
 			<br>
 			{{- if ne nil (.Data "isrc") -}}
-				ISRC: {{.Data "isrc"}}<br>
+				<span id="track-isrc">ISRC: {{.Data "isrc"}}</span><br>
 			{{- end -}}
 		
 			{{- $license := .DataString "license"}}
 			{{- if eq "COPYRIGHT" $license -}}
-				<h3 class="margin-top">License</h3>
-				<div>
-					&copy; Copyright
-					{{- if ne nil (.Data "year") }}
-						{{.Data "year"}}.
-					{{- else -}}
-						.
-					{{- end }}
-					All Rights Reserved.
+				<div id="track-license">
+					<h3 class="margin-top">License</h3>
+					<div>
+						&copy; Copyright
+						{{- if ne nil (.Data "year") }}
+							{{.Data "year"}}.
+						{{- else -}}
+							.
+						{{- end }}
+						All Rights Reserved.
+					</div>
 				</div>
 			{{- else if ne "" $license -}}
 				{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
 				{{- $licenseInfo := $licenses.Value $license -}}
-				<h3 class="margin-top">License</h3>
-				<div>
-					<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
-						{{icon $licenseInfo.Icon}} 
-						{{ if ne nil (.Data "year") }}
-							{{.Data "year"}}
-						{{- end }}
-						{{$licenseInfo.Label}}
-					</a>
+				<div id="track-license">
+					<h3 class="margin-top">License</h3>
+					<div>
+						<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
+							{{icon $licenseInfo.Icon}} 
+							{{ if ne nil (.Data "year") }}
+								{{.Data "year"}}
+							{{- end }}
+							{{$licenseInfo.Label}}
+						</a>
+					</div>
 				</div>
 			{{- end -}}
 		</div>

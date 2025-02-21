@@ -53,11 +53,11 @@
 			<!-- Band Name -->
 			<div class="md:flex-row flex-align-center margin-top">
 				<div class="md:flex-align-self-start margin-horizontal-auto align-center">
-					<img src="{{.IconURL}}" class="circle width-40% md:width-96" aria-hidden="true">
+					<img id="profile-icon" src="{{.IconURL}}" class="circle width-40% md:width-96" aria-hidden="true">
 				</div>
 				<div class="flex-grow align-center md:align-left">
 					<div class="pos-relative">
-						<h1 class="margin-none">{{.DisplayName}}</h1>
+						<h1 id="profile-name" class="margin-none">{{.DisplayName}}</h1>
 						{{- if $isMyself -}}
 							<div class="pos-absolute-top-right-0 flex-column">
 								<button hx-get="/@me/edit" class="text-xs">Edit Profile</button>
@@ -67,19 +67,17 @@
 						{{- end -}}
 					</div>
 					<div class="margin-bottom">
-						<span class="bold text-gray" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
+						<span id="profile-username" class="bold text-gray" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
 						{{- if ne "" .Location }}
-							<span class="text-gray margin-left"> {{icon "location"}} {{.Location}}</span>
+							<span id="profile-location" class="text-gray margin-left"> {{icon "location"}} {{.Location}}</span>
 						{{- end -}}
 					</div>
 
-					<div class="margin-top pos-relative">
-						<div class="max-width-512">
-							{{- range  $index, $link := .Links }}
-								{{if gt $index 0}}<span aira-hidden="true">&middot;</span>{{end}}
-								<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
-							{{- end -}}
-						</div>
+					<div id="profile-links" class="margin-top pos-relative max-width-512">
+						{{- range  $index, $link := .Links }}
+							{{if gt $index 0}}<span aira-hidden="true">&middot;</span>{{end}}
+							<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
+						{{- end -}}
 					</div>
 		
 					<div class="margin-vertical">
@@ -89,9 +87,9 @@
 						{{- end -}}
 					</div>
 
-					<div class="max-width-512 margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
+					<div id="profile-status" class="max-width-512 margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
 
-					<div class="margin-top max-width-512">
+					<div id="profile-tags" class="margin-top max-width-512">
 						{{- range .Tags -}}
 							<a href="/artists?q=%23{{.Name}}" role="link" class="tag">#{{.Name}}</a>
 						{{- end -}}
