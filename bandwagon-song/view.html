@@ -4,6 +4,11 @@
 {{- $lyrics := .Data "lyrics" -}}
 {{- $attachmentID := .Data "attachmentId" -}}
 {{- $duration := .Data "length"}}
+{{- $iconURL := .IconURL -}}
+
+{{- if eq "" $iconURL -}}
+	{{- $iconURL =  $album.IconURL -}}
+{{- end -}}
 
 <div id="track-{{.StreamID}}" class="page">
 
@@ -18,7 +23,7 @@
 	<meta property="og.type" content="music.song">
 	<meta property="og:title" content="{{.Label}}">
 	<meta property="og:url" content="{{.Permalink}}">
-	<meta property="og:image" content="{{$album.IconURL}}">
+	<meta property="og:image" content="{{$iconURL}}">
 	<meta property="og:site_name" content="{{.DomainLabel}}">
 	<meta property="og:description" content="{{.Summary}}">
 	<meta property="og:audio" content="{{.Host}}/{{.StreamID}}/attachments/{{$attachmentID}}">
@@ -29,7 +34,7 @@
 
 	<div class="md:flex-row margin-bottom">
 		<div class="md:width-256 flex-shrink-0">
-			<img id="track-icon" src="{{$album.IconURL}}" class="aspect-square width-100%" aria-hidden="true" style="object-fit:cover;">
+			<img id="track-icon" src="{{$iconURL}}" class="aspect-square width-100%" aria-hidden="true" style="object-fit:cover;">
 		</div>
 
 		<div class="md:width-32"></div>

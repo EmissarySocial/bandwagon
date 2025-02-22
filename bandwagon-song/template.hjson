@@ -8,6 +8,7 @@
 		type: object
 		properties: {
 			label: {type: "string", required: true}
+			iconUrl: {type:"string", format:"url"}
 			data: {
 				type: object 
 				properties: {
@@ -79,8 +80,9 @@
 									label: General
 									children: [
 										{type: "text",   path: "label", label: "Song Title"},
-										{type: "text",   path: "data.length", label: "Length"},
 										{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
+										{type: "upload", path: "iconUrl", label:"Cover Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
+										{type: "text",   path: "data.length", label: "Length"},
 										{type: "toggle", path: "isFeatured", options:{false-text:"Featured?", true-text:"Featured on Home Page"}}
 									]
 								}
@@ -128,6 +130,7 @@
 						}
 					}
 				]}
+				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save-and-publish"}
 				{do:"search-index"}
@@ -156,8 +159,9 @@
 										label: General
 										children: [
 											{type: "text",   path: "label", label: "Song Title"},
-											{type: "text",   path: "data.length", label: "Length"},
 											{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
+											{type: "upload", path: "iconUrl", label:"Cover Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
+											{type: "text",   path: "data.length", label: "Length"},
 											{type: "toggle", path: "isFeatured", options:{true-text:"Featured", false-text:"Featured"}}
 										]
 									}
@@ -206,6 +210,7 @@
 						}
 					]
 				}
+				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				{do:"save-and-publish"}
 				{do:"search-index"}
@@ -221,6 +226,14 @@
 			]
 		}
 
+		delete-icon: {
+			roles: ["author"]
+			steps: [
+				{do: "delete-attachments"}
+				{do: "set-data", values:{"iconUrl": ""}}
+				{do: "save"}
+			]
+		}
 		prev: {
 			steps:[
 				{do:"with-prev-sibling", steps:[
