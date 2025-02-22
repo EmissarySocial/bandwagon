@@ -48,7 +48,7 @@
 		{{- end -}}
 		-->
 
-		<div class="cols-2-6">
+		<div class="cols-2-6 margin-bottom-lg">
 			{{- range $result := $results -}}
 
 				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
@@ -63,6 +63,10 @@
 					</div>
 				</div>
 			{{- end -}}
+		</div>
+
+		<div class="text-sm">
+			<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
 		</div>
 
 		<style>

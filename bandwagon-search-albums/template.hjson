@@ -28,5 +28,11 @@
 				{do:"view-html"}
 			]
 		}
+
+		feed: {
+			steps: [
+				{do:"view-feed", search-types:["Album"]}
+			]
+		}
 	}
 }

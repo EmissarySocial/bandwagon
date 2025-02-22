@@ -23,11 +23,15 @@
 	}
 
 	actions: {
-		all: {
-			steps: [{do:"view-html", file:"view-albums"}]
-		}
+		
 		view-albums-list: {
 			steps: [{do:"view-html"}]
+		}
+
+		feed: {
+			steps: [
+				{do:"view-feed", search-types:["Audio"]}
+			]
 		}
 	}
 }

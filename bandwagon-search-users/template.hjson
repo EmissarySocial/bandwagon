@@ -21,4 +21,12 @@
 			}
 		}    
 	}
+
+	actions: {
+		feed: {
+			steps: [
+				{do:"view-feed", search-types:["Person"]}
+			]
+		}
+	}
 }
