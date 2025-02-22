@@ -12,7 +12,7 @@
 		properties: {
 			label: {type:"string", required: true}
 			summary: {type:"string", format:"html"}
-			iconUrl: {type:"string", format:"uri"}
+			iconUrl: {type:"string", format:"url"}
 			syndication: {type:"array", items:{type:"string"}}
 			data: {
 				type:object
