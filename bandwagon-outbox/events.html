@@ -29,6 +29,7 @@
 
 				{{- $backgroundColor := .Data.color.page | string | parseColor -}}
 				{{- $textColor := $backgroundColor.TextExt -}}
+				{{- $venue := .Places.First -}}
 
 				<tr class="hover-trigger" script="install blockselect()" style="background-color:{{$backgroundColor}}; color:{{$textColor}}">
 
@@ -43,9 +44,19 @@
 						</div>
 						<div class="text-xl margin-none bold">{{.StartDate | longDate}}</div>
 						<div class="flex-grow margin-vertical">
-							{{.Data.venue }}
-							&middot;
-							{{.StartDate | shortTime}}
+							{{- $venueName := $venue.Name -}}
+							{{- if ne "" $venueName -}}
+								<span class="bold">{{- $venueName -}}</span>
+							{{ end -}}
+
+							{{- if .StartDate.NotMidnight -}}
+								<span class="text-gray">
+									{{- if ne "" $venueName }}
+										at
+									{{ end -}}
+									{{.StartDate | shortTime}}
+								</div>
+							{{ end -}}
 						</div>
 						<div class="margin-top">
 
