@@ -158,7 +158,7 @@
 									label: Stylesheet
 									type:layout-vertical
 									children: [
-										{type:"textarea", path:"data.stylesheet", description: "Custom CSS stylesheet for your profile. Experts only! &nbsp; <a href=https://bandwagon.fm/css-guide target=_blank>Read the CSS Guide &rarr;</a>", options:{rows:12}}
+										{type:"textarea", path:"data.stylesheet", description: "Custom CSS stylesheet for your profile. Experts only! &nbsp; <a href=https://bandwagon.fm/css-guide target=_blank>Read the CSS Guide &rarr;</a>", options:{rows:12, style:"font-family:monospace; font-size:14px;"}}
 									]
 								}
 								{

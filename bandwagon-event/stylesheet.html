@@ -1,3 +1,4 @@
+{{- $artist := .ParentOutbox "view" -}}
 {{- $eventColors := .Data "color" -}}
 
 {{- $bodyColor := $eventColors.body -}}
@@ -76,3 +77,5 @@ body {
 {{- end }}
 
 }
+
+{{ $artist.Data "stylesheet"}}
