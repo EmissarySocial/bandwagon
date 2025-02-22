@@ -129,14 +129,7 @@
 									var zoom=14;
 									var longitude = parseFloat(document.getElementById("longitude").value);
 									var latitude = parseFloat(document.getElementById("latitude").value);
-									console.log(document.getElementById("longitude"));
-									console.log(longitude);
-									console.log(latitude);
 									var lonLat = new OpenLayers.LonLat(longitude, latitude)
-										.transform(
-											new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-											map.getProjectionObject() // to Spherical Mercator Projection
-										);
 
 									lonLat = lonLat.transform(
 										new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
