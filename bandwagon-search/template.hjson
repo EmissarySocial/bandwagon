@@ -9,6 +9,7 @@
 	schema: {
 		type:object
 		properties: {
+			icon: {type:"string"}
 			label: {type:"string"}
 			summary: {type:"string"}
 			data: {
@@ -49,6 +50,7 @@
 								label:Page Info
 								children: [
 									{type:"text", label:"Token", path:"token"}
+									{type:"text", label:"Icon", path:"icon"}
 									{type:"text", label:"Page Name", path:"label"}
 									{type:"textarea", label:"Description", path:"summary"}
 								]
@@ -85,6 +87,7 @@
 									children: [
 										{type:"text", readOnly:true, label:"Template Type", path:"templateId"}
 										{type:"text", label:"Token", path:"token"}
+										{type:"text", label:"Icon", path:"icon"}
 										{type:"text", label:"Page Name", path:"label"}
 										{type:"textarea", label:"Description", path:"summary"}
 									]
