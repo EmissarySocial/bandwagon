@@ -39,18 +39,16 @@
 
 	{{- else -}}
 		
-		<!--
-		{{- if .IsOwner -}}
-			<div class="padding-none margin-none margin-bottom text-lg">
-				<button class="primary" hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow These Results</button>
-				<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
-			</div>
-		{{- end -}}
-		-->
+		<div class="text-sm">
+			{{- $actorURL := concat .Host "/.search?type=Album&" .RawQuery -}}
+			<button class="primary text-md" hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}">Follow Results</button>
+			<button class="text-md" hx-get="/{{.StreamID}}/intent">{{icon "more-horizontal"}}</button>
+			or 
+			<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
+		</div>
 
 		<div class="cols-2-6 margin-bottom-lg">
 			{{- range $result := $results -}}
-
 				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
 					<div role="link" class="turboclick" script="install blockselect()">
 						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
@@ -63,10 +61,6 @@
 					</div>
 				</div>
 			{{- end -}}
-		</div>
-
-		<div class="text-sm">
-			<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
 		</div>
 
 		<style>
