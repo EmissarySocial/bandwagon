@@ -58,11 +58,15 @@
 		{target:"library", expression:"{{.ParentURL}}/pub/children"}
 	]
 
-	searchRules: [
-		{target:"type", value:"Audio"}
-		{target:"fullText", expression:"{{.Label}} {{index .Data `lyrics`}}"}
-		{target:"icon", expression:""}
-	]
+	search: {
+		type: "Audio"
+		iconUrl:""
+		summary:""
+		text: "{{.Label}} {{.AttributedTo.Name}} {{index .Data `lyrics`}}"
+		tags: "LIC:{{index .Data `license`}}"
+	}
+
+	tagPaths: ["data.tags"]
 
 	actions: {
 		create: {
@@ -132,6 +136,7 @@
 				]}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
+				{do:"process-tags", paths:"data.tags"}
 				{do:"save-and-publish"}
 				{do:"search-index"}
 			]
@@ -212,6 +217,7 @@
 				}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
+				{do:"process-tags", paths:"data.tags"}
 				{do:"save-and-publish"}
 				{do:"search-index"}
 				{do:"refresh-page"}

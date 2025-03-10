@@ -44,7 +44,7 @@
 		</div>
 	{{- end -}}
 
-	<div class="padding pos-relative">
+	<div class="pos-relative padding">
 			
 		<!-- First Row: Album Name and Artwork -->
 		<div class="md:flex-row margin-bottom">
@@ -60,7 +60,7 @@
 			</div>
 			<div class="md:width-32"></div>
 			<div class="flex-grow-1">
-				<h1 id="album-name" class="margin-bottom-xs">{{.Label}}</h1>
+				<h1 id="album-name" class="margin-vertical-none">{{.Label}}</h1>
 				<div class="text-lg margin-top-none">
 					<a id="album-attributedTo" hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}" class="turboclick" aria-label="Artist: {{.AttributedTo.Name}}">
 						{{.AttributedTo.Name}}
