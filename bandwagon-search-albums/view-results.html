@@ -40,7 +40,7 @@
 	{{- else -}}
 		
 		<div class="text-sm">
-			{{- $actorURL := concat .Host "/.search?type=Album&" .RawQuery -}}
+			{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
 			<button class="primary text-md" hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}">Follow Results</button>
 			<button class="text-md" hx-get="/{{.StreamID}}/intent">{{icon "more-horizontal"}}</button>
 			or 
