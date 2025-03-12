@@ -74,7 +74,7 @@
 					
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
 					{do:"process-tags", paths:"data.tags"}
-					{do:"save-and-publish", outbox:"true"}
+					{do:"save"}
 					{do:"search-index"}
 					{do:"refresh-page"}
 				]}
@@ -126,8 +126,15 @@
 					
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
 					{do:"process-tags", paths:"data.tags"}
-					{do:"save-and-publish", outbox:"true"}
-					{do:"search-index"}
+					{do:"if", condition: "{{.IsPublished}}", 
+						then: [
+							{do:"save-and-publish"}
+							{do:"search-index"}
+						], 
+						else: [
+							{do:"save"}
+						]
+					}
 					{do:"refresh-page"}
 				]}
 			] 
@@ -147,5 +154,40 @@
 				{do:"refresh-page"}
 			]
 		}
+
+		publish: {
+			roles: ["author"]
+			steps: [
+				{do:"as-modal", steps:[
+					{
+						do: edit
+						form: {
+							type: layout-vertical
+							label: Publish this News?
+							children:[
+								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+							]
+						},
+						options:["submit-label:Publish"]
+					}
+					{do:"set-state", state:"published"}
+					{do:"save-and-publish", outbox:"true"}
+					{do:"search-index"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
+		unpublish: {
+			roles: ["author"]
+			steps: [
+				{do:"as-confirmation", title:"Un-Publish this News?", message:"Un-Publishing this news will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish from Website"}
+				{do:"set-state", state:"unpublished"}
+				{do:"unpublish", outbox:"true"}
+				{do:"search-index"}
+				{do:"refresh-page"}
+			]
+		}
+		
 	}
 }

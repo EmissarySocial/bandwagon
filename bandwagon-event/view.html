@@ -15,6 +15,14 @@
     <meta property="og:start_date" content="{{.StartDate | isoDate}}">
     <meta property="og:image" content="{{.IconURL}}">
 
+	{{- if not .IsPublished -}}
+		<div class="clickable alert-red" hx-get="/{{.StreamID}}/publish" role="button">
+			{{icon "alert-fill"}} 
+			This show HAS NOT BEEN published yet and won't be seen by others.
+			<span class="text-underline">Click here to publish it</span>
+		</div>
+	{{- end -}}
+
 	{{- if ne "" $bannerURL -}}
 		<img id="event-banner" src="{{$bannerURL}}" class="width-100% margin-bottom u-photo">
 	{{- end -}}
@@ -161,7 +169,12 @@
 
 		{{- if $canEdit -}}
 			<div class="pos-absolute-top-right text-sm">
-				<button hx-get="/{{.StreamID}}/edit">Edit Event</button>
+				<button hx-get="/{{.StreamID}}/edit">Edit Show</button>
+				{{- if .IsPublished -}}
+					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
+				{{- else -}}
+					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
+				{{- end -}}
 			</div>
 
 			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">

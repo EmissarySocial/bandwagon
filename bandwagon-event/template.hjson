@@ -77,10 +77,10 @@
 							type:layout-tabs
 							children: [
 								{
-									label: Event Date
+									label: Show Date
 									type:layout-vertical
 									children: [
-										{type:"text", path:"label", label:"Event Name"}
+										{type:"text", path:"label", label:"Name"}
 										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
 										{type:"date", path:"startDate.date", label:"Date"}
 										{type:"time", path:"startDate.time", label:"Start Time"}
@@ -139,8 +139,7 @@
 				{do:"upload-attachments", category:"flyer", fieldname:"data.flyerUrl", download-path:"data.flyerUrl", rules:{}}
 				
 				{do:"process-tags", paths:"data.tags"}
-				{do:"save-and-publish", outbox:"true"}
-				{do:"search-index"}
+				{do:"save", outbox:"true"}
 				{do:"refresh-page"}
 			]
 		}
@@ -157,10 +156,10 @@
 							type:layout-tabs
 							children: [
 								{
-									label: Event Date
+									label: Show Date
 									type:layout-vertical
 									children: [
-										{type:"text", path:"label", label:"Event Name"}
+										{type:"text", path:"label", label:"Name"}
 										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
 										{type:"date", path:"startDate.date", label:"Date"}
 										{type:"time", path:"startDate.time", label:"Start Time"}
@@ -219,7 +218,48 @@
 				{do:"upload-attachments", category:"flyer", fieldname:"data.flyerUrl", download-path:"data.flyerUrl", rules:{}}
 				
 				{do:"process-tags", paths:"data.tags"}
-				{do:"save-and-publish", outbox:"true"}
+				{do:"if", condition: "{{.IsPublished}}", 
+					then: [
+						{do:"save-and-publish"}
+						{do:"search-index"}
+					], 
+					else: [
+						{do:"save"}
+					]
+				}
+				{do:"refresh-page"}
+			]
+		}
+
+		publish: {
+			roles: ["author"]
+			steps: [
+				{do:"as-modal", steps:[
+					{
+						do: edit
+						form: {
+							type: layout-vertical
+							label: Publish this Show?
+							children:[
+								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
+							]
+						},
+						options:["submit-label:Publish Show"]
+					}
+					{do:"set-state", state:"published"}
+					{do:"save-and-publish", outbox:"true"}
+					{do:"search-index"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
+		unpublish: {
+			roles: ["author"]
+			steps: [
+				{do:"as-confirmation", title:"Un-Publish this Show?", message:"Un-Publishing this show will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish from Website"}
+				{do:"set-state", state:"unpublished"}
+				{do:"unpublish", outbox:"true"}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]

@@ -10,6 +10,14 @@
 	<meta property="og:article:modified_time" content="{{.UpdateDate | isoDate }}">
 	<meta property="og:article:author" content="{{.AttributedTo.ProfileURL}}">
 
+	{{- if not .IsPublished -}}
+		<div class="clickable alert-red margin-none" hx-get="/{{.StreamID}}/publish" role="button">
+			{{icon "alert-fill"}} 
+			This news HAS NOT BEEN published yet and won't be seen by others.
+			<span class="text-underline">Click here to publish it</span>
+		</div>
+	{{- end -}}
+
 	<div hx-get="/@{{.ParentID}}/header" hx-swap="outerHTML" hx-target="this" hx-trigger="load" hx-push-url="false"></div>
 
 	{{- $bannerURL := .Data "bannerUrl" -}}
@@ -37,6 +45,11 @@
 		{{- if .UserCan "edit" -}}
 			<div class="pos-absolute-top-right text-sm">
 				<button hx-get="/{{.StreamID}}/edit">Edit News</button>
+				{{- if .IsPublished -}}
+					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
+				{{- else -}}
+					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
+				{{- end -}}
 			</div>
 
 			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
