@@ -45,8 +45,8 @@
 									label: News
 									children: [
 										{type:"text", path: "label", label: "Title"}
-										{type:"textarea", path: "summary", label: "Summary", description:"Message to send to followers. Shows on summary list.", options:{rows:5}}
-										{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article", options:{placeholder:"Read More"}}
+										{type:"textarea", path: "summary", label: "Summary", description:"Shows on list pages.", options:{rows:5}}
+										{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article.", options:{placeholder:"Read More"}}
 										{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
@@ -97,8 +97,8 @@
 									label: News
 									children: [
 										{type:"text", path: "label", label: "Title"}
-										{type:"textarea", path: "summary", label: "Summary", description:"Message to send to followers. Shows on summary list.", options:{rows:5}}
-										{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article", options:{placeholder:"Read More"}}
+										{type:"textarea", path: "summary", label: "Summary", description:"Shows on list pages.", options:{rows:5}}
+										{type:"text", path:"data.linkText", label:"Link Text", description:"Text for the link to the full article.", options:{placeholder:"Read More"}}
 										{type:"toggle", path: "isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
 									]
 								}
