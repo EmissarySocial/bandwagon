@@ -44,7 +44,7 @@
 			<div class="flex-grow-1">
 				<h1 class="margin-vertical-none">
 					<span id="track-name">
-						<span class="hide-not-screenreader">Track Name:</span>
+						<span class="hide-visual">Track Name:</span>
 						{{.Label}}
 					</span>
 					{{- if eq true (.Data "explicit") -}}
@@ -53,12 +53,12 @@
 				</h1>
 				<div class="text-lg margin-top-none">
 					<a id="track-attributedTo" href="/@{{$album.AttributedTo.UserID.Hex}}" class="turboclick">
-						<span class="hide-not-screenreader">Artist:</span>
+						<span class="hide-visual">Artist:</span>
 						{{$album.AttributedTo.Name}}
 					</a> 
 					<span aria-hidden="true">&middot;</span>
 					<a id="track-album" href="/{{$album.StreamID}}" class="turboclick">
-						<span class="hide-not-screenreader">Album:</span>
+						<span class="hide-visual">Album:</span>
 						{{ $album.Label }}
 					</a>
 				</div>
@@ -66,7 +66,7 @@
 				<div class="margin-bottom text-gray">
 					{{ if ne nil ($album.Data "year") -}}
 						<span id="track-year">
-							<span class="hide-not-screenreader">Release Date:</span>
+							<span class="hide-visual">Release Date:</span>
 							{{$album.Data "year"}}
 						</span>
 						{{ if ne nil (.Data "length") -}}
@@ -74,7 +74,7 @@
 						{{ end }} 
 					{{- end -}}
 					<span id="track-length">
-						<span class="hide-not-screenreader">Play Time:</span>
+						<span class="hide-visual">Play Time:</span>
 						{{.Data "length"}}
 					</span>
 				</div>
