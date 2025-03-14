@@ -53,7 +53,7 @@
 					<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
 				{{- else if $canEdit -}}
 					<div class="rounded square text-center flex-column flex-justify-center flex-align-center" style="border:solid 1px var(--black)" script="install blockselect()">
-						<a hx-get="/{{.StreamID}}/edit" class="text-plain">Click here to add album art</a>
+						<span hx-get="/{{.StreamID}}/edit" role="button" class="link text-plain">Click here to add album art</span>
 					</div>
 				{{- end -}}
 
@@ -388,7 +388,6 @@
 			{{- end -}}
 		</div>
 
-		<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window"></div>
 
 	</div>
 
@@ -396,6 +395,8 @@
 		<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
 			<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
 		</div>
+	{{- else -}}
+		<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
 	{{- end -}}
 
 </div>
