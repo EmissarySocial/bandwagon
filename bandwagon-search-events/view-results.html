@@ -1,6 +1,7 @@
 {{- $host := .Host -}}
 {{- $token := .Token -}}
 {{- $query := .QueryParam "q" -}}
+{{- $escapedQuery := queryEscape $query -}}
 
 {{- $results := .Search.Top120.ByDate.WhereType "Event" -}}
 {{- $results := $results.Slice -}}

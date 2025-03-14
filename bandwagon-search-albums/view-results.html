@@ -8,11 +8,82 @@
 	{{- template "view-tags" . -}}
 
 {{- else -}}
-	<!-- Search Albums Here -->
-	{{- $results := .Search.WhereType "Album" -}}
-	{{- $results = $results.Top120.Slice.Shuffle -}}
 
-	{{- if $results.IsEmpty -}}
+	<!-- Search Albums Here -->
+	{{- $results := .Search.Top60.ByShuffle.WhereType "Album" -}}
+	{{- $after := .QueryParam "after" | int64 -}}
+
+	{{- if ne 0 $after -}}
+		{{- $results = $results.AfterShuffle $after -}}
+	{{- end -}}
+
+	{{- $results := $results.Slice -}}
+	{{- $last := $results.Last -}}
+	{{- $results = $results.Shuffle -}}
+
+	{{- if $results.NotEmpty -}}
+
+		{{- if eq 0 $after -}}
+			<style>
+				.album {
+					border-radius:8px;
+					background-color:var(--gray15);
+				}
+
+				.album img {
+					object-fit:cover;
+					border-top-left-radius: 8px;
+					border-top-right-radius: 8px;
+				}
+
+				.clearTag {
+					display:inline-block;
+					background-color:rgba(0,0,0,0);
+					border: solid 1px rgba(0,0,0, 0.5);
+					color: rgba(0,0,0, 0.75);
+					padding:4px 8px;
+					border-radius: 8px;
+					margin-right:8px;
+				}
+
+				.clearTag:hover {
+					background-color:rgba(255, 255, 255, 0.1);
+				}
+			</style>
+
+			<div class="text-sm">
+				{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
+				<button class="primary text-md" hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}">Follow Results</button>
+				<button class="text-md" hx-get="/{{.StreamID}}/intent">{{icon "more-horizontal"}}</button>
+				or 
+				<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
+			</div>
+
+		{{- end -}}
+
+		<div class="cols-2-6 margin-bottom-lg" 
+			hx-get="/{{.StreamID}}/view-results?q={{$query |queryEscape}}&tags={{$tags | queryEscape}}&after={{$last.Shuffle}}" 
+			hx-target="this" 
+			hx-swap="afterend" 
+			hx-trigger="revealed" 
+			hx-push-url="false">
+	
+			{{- range $result := $results -}}
+				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
+					<div role="link" class="turboclick" script="install blockselect()">
+						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
+						<div class="padding-sm padding-bottom-none ellipsis">
+							<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
+						</div>
+						<div class="padding-left-sm text-sm text-gray">
+							{{$result.AttributedTo}}
+						</div>
+					</div>
+				</div>
+			{{- end -}}
+		</div>
+
+	{{- else if eq 0 $after -}}
 
 		{{- $tags := .FeaturedSearchTags.Slice -}}
 
@@ -36,59 +107,6 @@
 				{{- end -}}
 			</div>
 		</div>
-
-	{{- else -}}
-		
-		<div class="text-sm">
-			{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
-			<button class="primary text-md" hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}">Follow Results</button>
-			<button class="text-md" hx-get="/{{.StreamID}}/intent">{{icon "more-horizontal"}}</button>
-			or 
-			<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
-		</div>
-
-		<div class="cols-2-6 margin-bottom-lg">
-			{{- range $result := $results -}}
-				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
-					<div role="link" class="turboclick" script="install blockselect()">
-						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
-						<div class="padding-sm padding-bottom-none ellipsis">
-							<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
-						</div>
-						<div class="padding-left-sm text-sm text-gray">
-							{{$result.AttributedTo}}
-						</div>
-					</div>
-				</div>
-			{{- end -}}
-		</div>
-
-		<style>
-			.album {
-				border-radius:8px;
-				background-color:var(--gray15);
-			}
-
-			.album img {
-				object-fit:cover;
-				border-top-left-radius: 8px;
-				border-top-right-radius: 8px;
-			}
-
-			.clearTag {
-				display:inline-block;
-				background-color:rgba(0,0,0,0);
-				border: solid 1px rgba(0,0,0, 0.5);
-				color: rgba(0,0,0, 0.75);
-				padding:4px 8px;
-				border-radius: 8px;
-				margin-right:8px;
-			}
-
-			.clearTag:hover {
-				background-color:rgba(255, 255, 255, 0.1);
-			}
-		</style>
 
 	{{- end -}}
 

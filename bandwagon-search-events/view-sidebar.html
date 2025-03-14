@@ -1,12 +1,13 @@
 {{- $query := .QueryParam "q" -}}
+{{- $escapedQuery := queryEscape $query -}}
 {{- $date := .QueryParam "date" -}}
 {{- if eq "" $date -}}
 	{{- $date := "next-30-days" -}}
 {{- end -}}
 
 <div class="flex-row md:flex-column">
-	<a class="search-navigation turboclick" href="/albums?q={{$query}}" hx-get="/albums?q={{$query}}">Albums</a>
-	<a class="search-navigation turboclick" href="/artists?q={{$query}}" hx-get="/artists?q={{$query}}">Artists</a>
+	<a class="search-navigation turboclick" href="/albums?q={{$query}}" hx-get="/albums?q={{$escapedQuery}}">Albums</a>
+	<a class="search-navigation turboclick" href="/artists?q={{$query}}" hx-get="/artists?q={{$escapedQuery}}">Artists</a>
 	<a class="search-navigation selected" href="/events" hx-get="/events">Calendar</a>
 </div>
 
