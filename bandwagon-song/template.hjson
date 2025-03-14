@@ -86,7 +86,7 @@
 										{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 										{type: "upload", path: "iconUrl", label:"Cover Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 										{type: "text",   path: "data.length", label: "Length"},
-										{type: "toggle", path: "isFeatured", options:{false-text:"Featured?", true-text:"Featured on Home Page"}}
+										{type: "toggle", path: "isFeatured", options:{true-text:"Featured. Highlighted on track list", false-text:"Featured?"}}
 									]
 								}
 								{
@@ -166,7 +166,7 @@
 											{type: "upload", path: "data.attachmentId", label: "Audio File", options:{filename:"data.attachmentFilename", accept:"audio/*"}},
 											{type: "upload", path: "iconUrl", label:"Cover Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 											{type: "text",   path: "data.length", label: "Length"},
-											{type: "toggle", path: "isFeatured", options:{true-text:"Featured", false-text:"Featured"}}
+											{type: "toggle", path: "isFeatured", options:{true-text:"Featured. Highlighted on track list", false-text:"Featured?"}}
 										]
 									}
 									{
