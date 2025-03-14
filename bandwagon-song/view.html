@@ -43,27 +43,40 @@
 			<div class="md:width-32"></div>
 			<div class="flex-grow-1">
 				<h1 class="margin-vertical-none">
-					<span id="track-name" aria-label="Track: {{.Label}}">{{.Label}}</span>
+					<span id="track-name">
+						<span class="hide-not-screenreader">Track Name:</span>
+						{{.Label}}
+					</span>
 					{{- if eq true (.Data "explicit") -}}
 						<span class="text-light-gray text-xl margin-left" title="Explicit Lyrics" aria-label="Explicit Lyrics">{{icon "explicit-fill"}}</span>
 					{{- end -}}
 				</h1>
 				<div class="text-lg margin-top-none">
-					<a id="track-attributedTo" href="/@{{$album.AttributedTo.UserID.Hex}}" class="turboclick" aria-label="Artist: $album.AttributedTo.Name">
+					<a id="track-attributedTo" href="/@{{$album.AttributedTo.UserID.Hex}}" class="turboclick">
+						<span class="hide-not-screenreader">Artist:</span>
 						{{$album.AttributedTo.Name}}
 					</a> 
 					<span aria-hidden="true">&middot;</span>
-					<a id="track-album" href="/{{$album.StreamID}}" class="turboclick" aria-label="Album: $album.Label">{{ $album.Label }}</a>
+					<a id="track-album" href="/{{$album.StreamID}}" class="turboclick">
+						<span class="hide-not-screenreader">Album:</span>
+						{{ $album.Label }}
+					</a>
 				</div>
 
 				<div class="margin-bottom text-gray">
 					{{ if ne nil ($album.Data "year") -}}
-						<span id="track-year">{{$album.Data "year"}}</span>
+						<span id="track-year">
+							<span class="hide-not-screenreader">Release Date:</span>
+							{{$album.Data "year"}}
+						</span>
 						{{ if ne nil (.Data "length") -}}
 							<span aria-hidden="true">&middot;</span>
 						{{ end }} 
 					{{- end -}}
-					<span id="track-length">{{.Data "length"}}</span>
+					<span id="track-length">
+						<span class="hide-not-screenreader">Play Time:</span>
+						{{.Data "length"}}
+					</span>
 				</div>
 
 				<div class="margin-vertical"></div>
