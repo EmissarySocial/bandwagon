@@ -82,8 +82,8 @@
 		
 					<div class="margin-vertical">
 						{{- if not .IsMyself -}}
-							<button class="primary text-md" hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">Follow for Updates</button>
-							<button class="text-md" hx-get="/@{{.UserID}}/intent">{{icon "more-horizontal"}}</button>
+							<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary text-md">Follow for Updates</button>
+							<button hx-get="/@{{.UserID}}/intent" class="text-md">{{icon "more-horizontal"}}</button>
 						{{- end -}}
 					</div>
 
@@ -147,7 +147,7 @@
 
 							{{- if $isMyself -}}
 								<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
-								<a hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</a>
+								<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit</button>
 								<input type="hidden" name="keys" value="{{.StreamID}}">
 							{{- end -}}
 						</div>
@@ -157,7 +157,7 @@
 				{{- if $isMyself -}}
 
 					<div class="rounded card padding flex-column">
-						<div class="flex-center align-center link" role="button" hx-get="/@{{.UserID}}/add-album?isFeatured=true">
+						<div hx-get="/@{{.UserID}}/add-album?isFeatured=true" role="button" class="flex-center align-center link">
 							<div class="margin-vertical-xl">
 								<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
 								<div class="text-xl margin-none bold">Add an Album</div>
@@ -167,11 +167,11 @@
 						
 						<div class="align-center">
 							Add a
-							<span class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-event?isFeatured=true">
+							<span hx-get="/@{{.UserID}}/add-event?isFeatured=true" role="button" class="text-sm margin-bottom link">
 								Show
 							</span>
 							or
-							<span class="text-sm margin-bottom link" role="button" hx-get="/@{{.UserID}}/add-news?isFeatured=true">
+							<span hx-get="/@{{.UserID}}/add-news?isFeatured=true" role="button" class="text-sm margin-bottom link">
 								News
 							</span>
 						</div>

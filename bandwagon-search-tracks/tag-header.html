@@ -59,12 +59,12 @@
 		<div class="flex-center margin-bottom-lg">
 			<div class="search-container">
 
-				<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i></a>
-				<a hx-get="/{{.Token}}/all" hx-target="main" class="turboclick padding-right-sm" aria-label="View Album Directory"><i class="bi bi-list"></i></a>
+				<a hx-get="/{{.Token}}" href="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i></a>
+				<a hx-get="/{{.Token}}/all" href="/{{.Token}}/all" hx-target="main" class="turboclick padding-right-sm" aria-label="View Album Directory"><i class="bi bi-list"></i></a>
 				{{- if $tag.RelatedTags.NotEmpty -}}
 					<div class="inline-block margin-right-sm"></div>
 					{{- range $index, $relatedTag := $tag.RelatedTags -}}
-						<div class="clearTag text-sm turboclick" role="button" hx-get="/{{$token}}?q={{$query | queryEscape }}+%23{{$relatedTag}}">{{$relatedTag}}</div>
+						<a hx-get="/{{$token}}?q=%23{{$relatedTag}}" href="/{{$token}}?q=%23{{$relatedTag}}" class="clearTag text-sm turboclick" role="button">{{$relatedTag}}</a>
 					{{- end -}}
 				{{- end -}}
 
@@ -76,7 +76,7 @@
 
 	<div class="flex-center margin-bottom-lg">
 		<div class="search-container">
-			<a hx-get="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
+			<a hx-get="/{{.Token}}" href="/{{.Token}}" hx-target="main" class="turboclick padding-right-sm" aria-label="Return to Tag Menu"><i class="bi bi-grid-3x3-gap-fill"></i> All</a>
 		</div>
 	</div>
 

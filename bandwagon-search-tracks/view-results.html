@@ -20,9 +20,9 @@
 	<div class="margin-top-lg">
 		<div class="table search-container">
 			{{- range $index, $tag := $tags -}}
-				<div class="link turboclick" role="link" hx-get="/{{$token}}?q={{$tag.Name}}">
+				<a href="/{{$token}}?q=%23{{$tag.Name}}" hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="block turboclick">
 					{{icon "tag"}} {{$tag.Name}}
-				</div>
+				</a>
 			{{- end -}}
 		</div>
 	</div>

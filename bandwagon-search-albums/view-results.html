@@ -53,8 +53,8 @@
 
 			<div class="text-sm">
 				{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
-				<button class="primary text-md" hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}">Follow Results</button>
-				<button class="text-md" hx-get="/{{.StreamID}}/intent">{{icon "more-horizontal"}}</button>
+				<button hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}" class="primary text-md">Follow Results</button>
+				<button hx-get="/{{.StreamID}}/intent" class="text-md">{{icon "more-horizontal"}}</button>
 				or 
 				<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
 			</div>

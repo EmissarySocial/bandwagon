@@ -1,8 +1,8 @@
 
-<div class="search-navigation turboclick" hx-get="/albums?{{.QueryString}}">Albums</div>
-<div class="search-navigation turboclick" hx-get="/artists?{{.QueryString}}">Artists</div>
-<div class="search-navigation selected" hx-get="/songs">Tracks</div>
-<div class="search-navigation turboclick" hx-get="/events?{{.QueryString}}">Calendar</div>
+<a href="/albums?{{.QueryString}}" hx-get="/albums?{{.QueryString}}" class="search-navigation turboclick">Albums</a>
+<a href="/artists?{{.QueryString}}" hx-get="/artists?{{.QueryString}}" class="search-navigation turboclick">Artists</a>
+<a href="/songs" hx-get="/songs" class="search-navigation turboclick selected">Tracks</a>
+<a href="/events?{{.QueryString}}" hx-get="/events?{{.QueryString}}" class="search-navigation turboclick">Calendar</a>
 
 <hr>
 

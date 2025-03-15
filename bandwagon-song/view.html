@@ -83,7 +83,7 @@
 				<div class="margin-vertical-lg">
 
 					<div id="media-controls" class="margin-vertical-lg">
-						<button hx-get="/{{.StreamID}}/prev" role="link" aria-label="Previous Track">{{icon "skip-backward-fill"}} Prev</button>
+						<a href="/{{.StreamID}}/prev" hx-get="/{{.StreamID}}/prev" class="button" aria-label="Previous Track">{{icon "skip-backward-fill"}} Prev</a>
 						{{ if ne nil $attachmentID }}
 							<button hx-on:click="PlayFirst()" class="primary playing-hide" aria-label="Play Track">{{icon "play-fill"}} Play</button>
 							<button hx-on:click="Pause()" class="primary playing-show" aria-label="Pause Track">{{icon "pause-fill"}} Pause</button>
@@ -100,7 +100,7 @@
 						{{ else }}
 							<button disabled aria-label="Play Track">{{icon "play-fill"}} Play</button>
 						{{ end }}
-						<button hx-get="/{{.StreamID}}/next" role="link" aria-label="Next Track">Next {{icon "skip-forward-fill"}}</button>
+						<a href="/{{.StreamID}}/next" hx-get="/{{.StreamID}}/next" class="button" aria-label="Next Track">Next {{icon "skip-forward-fill"}}</a>
 					</div>
 
 					<div class="text-sm">

@@ -56,8 +56,6 @@
 
 					{{- if ne nil $flyerURL -}}
 						<a id="event-flyer" href="{{$flyerURL}}" target="_blank" class="width-100% md:width-auto button margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "download"}}</span> Download</a>
-					{{- else -}}
-						<!--button class="width-100% md:width-auto margin-left-xs margin-bottom-xs" hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true">{{icon "thumbs-up"}}</span> Like</button-->
 					{{- end -}}
 
 				</div>

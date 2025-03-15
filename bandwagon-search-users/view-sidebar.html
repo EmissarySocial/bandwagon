@@ -2,7 +2,7 @@
 {{- $escapedQuery := queryEscape $query -}}
 
 <div class="flex-row md:flex-column">
-	<a class="search-navigation turboclick" href="/albums?q={{$query}}" hx-get="/albums?q={{$escapedQuery}}">Albums</a>
-	<a class="search-navigation selected" href="/artists" hx-get="/artists">Artists</a>
-	<a class="search-navigation turboclick" href="/events?q={{$query}}" hx-get="/events?q={{$escapedQuery}}">Calendar</a>
+	<a href="/albums?q={{$query}}" hx-get="/albums?q={{$escapedQuery}}" class="search-navigation turboclick">Albums</a>
+	<a href="/artists" hx-get="/artists" class="search-navigation turboclick selected">Artists</a>
+	<a href="/events?q={{$query}}" hx-get="/events?q={{$escapedQuery}}" class="search-navigation turboclick">Calendar</a>
 </div>

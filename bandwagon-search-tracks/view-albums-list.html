@@ -21,7 +21,7 @@
 				</div>
 				<div class="text-xs" style="white-space:nowrap; overflow-y:hidden; overflow-x:scroll;">
 					{{- range $tagName := $result.TagNames -}}
-						<a hx-get="/{{$token}}?q=%23{{$tagName}}" class="clickable inline-block clearTag turboclick">{{$tagName}}</a>
+						<a hx-get="/{{$token}}?q=%23{{$tagName}}" href="/{{$token}}?q=%23{{$tagName}}" class="clickable inline-block clearTag turboclick">{{$tagName}}</a>
 					{{- end -}}
 				</div>
 			</div>

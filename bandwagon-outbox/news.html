@@ -33,9 +33,9 @@
 						<td class="pos-relative padding-right-none">
 							<div class="text-xl bold margin-none">{{.Label}}</div>
 							<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
-							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}">{{first .Data.linkText "Read More"}}</a>
+							<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}">{{first .Data.linkText "Read More"}}</a>
 							{{- if $isMyself -}}
-								<a hx-get="/{{.StreamID}}/edit" class="button pos-absolute-top-right text-xs hover-show">Edit News</a>
+								<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-xs hover-show">Edit News</button>
 							{{- end -}}
 						</div>
 					</tr>
