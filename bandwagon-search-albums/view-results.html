@@ -51,12 +51,16 @@
 				}
 			</style>
 
-			<div class="text-sm">
-				{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
-				<button hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}" class="primary text-md">Follow Results</button>
-				<button hx-get="/{{.StreamID}}/intent" class="text-md">{{icon "more-horizontal"}}</button>
-				or 
-				<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
+			<div class="flex-row text-sm">
+				<div class="flex-grow"></div>
+				<div class="margin-bottom-lg nowrap" script="on load trigger storage on window">
+					{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
+					<div class="margin-bottom-sm">
+						<button hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+						<a href="/{{.Token}}/feed?{{.QueryString}}" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
+					</div>
+					<div hx-get="/{{.StreamID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
+				</div>
 			</div>
 
 		{{- end -}}
