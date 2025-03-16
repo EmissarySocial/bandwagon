@@ -1,0 +1,41 @@
+{{- $tags := .QueryParam "q" | parseTags -}}
+{{- if $tags.NotEmpty -}}
+
+	{{- $tag := $tags.First | .SearchTag -}}
+
+	{{- $related := $tag.RelatedTags -}}
+	{{- if $related.NotEmpty -}}
+		{{- $token := .Token -}}
+		<div class="search-related text-sm margin-top" role="group" aria-label="Related tags">
+			<span class="margin-right-xs" aria-hidden>Related:</span>
+			{{- range $tag := $related -}}
+				<a href="/{{$token}}?q=%23{{$tag}}" hx-get="/{{$token}}?q=%23{{$tag}}" class="related-tag turboclick">{{$tag}}</a>
+			{{- end -}}
+		</div>
+
+		<style>
+			.search-related {
+				margin-bottom:-1em;
+				color:var(--gray15);
+			}
+			.related-tag {
+				display:inline-block;
+				text-decoration:none;
+				padding:4px 8px;
+				margin-right:4px;
+				border-radius:4px;
+				border:solid 1px var(--gray15);
+				color:var(--gray15);
+				cursor:pointer;
+			}
+
+			.related-tag:hover {
+				color:var(--white);
+				border-color:var(--white);
+				background-color:var(--gray60);
+
+			}
+		</style>
+	{{- end -}}
+
+{{- end -}}
