@@ -102,17 +102,23 @@
 
 				{{- range $featured -}}
 					{{- if or .IsPublished $isMyself -}}
-						<div class="card flex-column hover-trigger hover-swell" script="install blockselect()">
+						<div class="rounded card flex-column hover-trigger hover-swell" script="install blockselect()">
 							
 							{{- if eq "bandwagon-album" .TemplateID -}}
-								<img src="{{.IconURL}}" class="square width-100% block object-fit-cover" aria-hidden="true">
+								<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
 								<div class="padding text-plain">
 									<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
-									<div class="text-gray">Album &middot; {{index .Data "year"}}</div>
+									<div class="text-gray">
+										Album 
+										{{- $releaseDate := index .Data "year" -}}
+										{{- if ne "" $releaseDate }}
+											&middot; {{$releaseDate}}
+										{{- end -}}
+									</div>
 								</div>
 							{{- else if eq "bandwagon-event" .TemplateID -}}
 								{{- if ne "" .IconURL -}}
-									<img src="{{.IconURL}}" class="square width-100% block object-fit-cover" aria-hidden="true">
+									<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
 									<div class="padding text-plain">
 										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
 										<div class="text-gray">{{.StartDate | shortDate }}</div>
@@ -127,7 +133,7 @@
 								{{- end -}}
 							{{- else if eq "bandwagon-news" .TemplateID -}}
 								{{- if ne "" .IconURL -}}
-									<img src="{{.IconURL}}" class="square width-100% block object-fit-cover" aria-hidden="true">
+									<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
 									<div class="padding text-plain">
 										<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="turboclick bold">{{.Label}}</a>
 										<div class="text-gray">{{.PublishDate | shortDate }}</div>
