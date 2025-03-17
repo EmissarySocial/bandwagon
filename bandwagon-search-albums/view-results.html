@@ -26,14 +26,11 @@
 		{{- if eq 0 $after -}}
 			<style>
 				.album {
-					border-radius:8px;
 					background-color:var(--gray15);
 				}
 
 				.album img {
 					object-fit:cover;
-					border-top-left-radius: 8px;
-					border-top-right-radius: 8px;
 				}
 
 				.clearTag {
@@ -53,7 +50,7 @@
 
 			<div class="flex-row text-sm">
 				<div class="flex-grow"></div>
-				<div class="margin-bottom-lg nowrap" script="on load trigger storage on window">
+				<div class="margin-bottom nowrap" script="on load trigger storage on window">
 					{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
 					<div class="margin-bottom-sm">
 						<button hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
@@ -73,9 +70,9 @@
 			hx-push-url="false">
 	
 			{{- range $result := $results -}}
-				<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
+				<div class="album rounded flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
 					<div role="link" class="turboclick" script="install blockselect()">
-						<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
+						<img src="{{$result.IconURL}}" class="rounded-top square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
 						<div class="padding-sm padding-bottom-none ellipsis">
 							<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
 						</div>
