@@ -53,7 +53,7 @@
 				<div class="margin-bottom nowrap" script="on load trigger storage on window">
 					{{- $actorURL := concat .Host "/.search?types=Album&" .RawQuery -}}
 					<div class="margin-bottom-sm">
-						<button hx-get="/{{.StreamID}}/intent?intent=follow&object={{$actorURL | queryEscape}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+						<button hx-post="/.search-lookup?types=Album&{{.RawQuery}}&forward=/{{.StreamID}}/intent%3Fintent%3Dfollow%26object=" class="primary">{{icon "fediverse"}} Follow for Updates</button>
 						<a href="/{{.Token}}/feed?{{.QueryString}}" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
 					</div>
 					<div hx-get="/{{.StreamID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
