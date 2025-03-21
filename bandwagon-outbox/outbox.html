@@ -55,9 +55,9 @@
 				<div class="md:flex-align-self-start margin-horizontal-auto align-center">
 					<img id="profile-icon" src="{{.IconURL}}" class="circle width-40% md:width-96" aria-hidden="true">
 				</div>
-				<div class="flex-grow align-center md:align-left">
+				<div class="flex-grow ">
 					<div class="pos-relative">
-						<h1 id="profile-name" class="margin-none">{{.DisplayName}}</h1>
+						<h1 id="profile-name" class="margin-none align-center md:align-left">{{.DisplayName}}</h1>
 						{{- if $isMyself -}}
 							<div class="pos-absolute-top-right-0 flex-column">
 								<button hx-get="/@me/edit" class="text-xs">Edit Profile</button>
@@ -66,33 +66,36 @@
 							</div>
 						{{- end -}}
 					</div>
-					<div class="margin-bottom">
+					<div class="margin-bottom align-center md:align-left">
 						<span id="profile-username" class="bold text-gray" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
 						{{- if ne "" .Location }}
 							<span id="profile-location" class="text-gray margin-left"> {{icon "location"}} {{.Location}}</span>
 						{{- end -}}
 					</div>
 
-					<div id="profile-links" class="margin-top pos-relative max-width-512">
+					<div id="profile-links" class="margin-top pos-relative align-center md:align-left">
 						{{- range  $index, $link := .Links }}
 							{{if gt $index 0}}<span aira-hidden="true">&middot;</span>{{end}}
 							<a href="{{$link.ProfileURL}}" rel="me" target="_blank">{{$link.Name}}</a>
 						{{- end -}}
 					</div>
 		
-					<div class="margin-vertical">
+					<div class=" max-width-512 margin-horizontal-auto md:margin-horizontal-none">
 						{{- if not .IsMyself -}}
-							<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary text-md">Follow for Updates</button>
-							<button hx-get="/@{{.UserID}}/intent" class="text-md">{{icon "more-horizontal"}}</button>
+							<div class="margin-vertical">
+								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary text-md">Follow for Updates</button>
+								<button hx-get="/@{{.UserID}}/intent" class="text-md">{{icon "more-horizontal"}}</button>
+							</div>
 						{{- end -}}
-					</div>
 
-					<div id="profile-status" class="max-width-512 margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
+						<div id="profile-status" class="margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
 
-					<div id="profile-tags" class="margin-top max-width-512">
-						{{- range .Tags -}}
-							<a href="/artists?q=%23{{.Name}}" role="link" class="tag">#{{.Name}}</a>
-						{{- end -}}
+						<div id="profile-tags" class="margin-top">
+							{{- range .Tags -}}
+								<a href="/artists?q=%23{{.Name}}" role="link" class="tag">#{{.Name}}</a>
+							{{- end -}}
+						</div>
+	
 					</div>
 
 				</div>
