@@ -6,9 +6,11 @@
 {{- end -}}
 
 <div class="flex-row md:flex-column">
-	<a class="search-navigation turboclick" href="/albums?q={{$query}}" hx-get="/albums?q={{$escapedQuery}}">Albums</a>
-	<a class="search-navigation turboclick" href="/artists?q={{$query}}" hx-get="/artists?q={{$escapedQuery}}">Artists</a>
-	<a class="search-navigation selected" href="/events" hx-get="/events">Calendar</a>
+	<a href="/artists?q={{$query}}" hx-get="/artists?q={{$escapedQuery}}" class="search-navigation turboclick">Artists</a>
+	<a href="/albums?q={{$query}}" hx-get="/albums?q={{$escapedQuery}}" class="search-navigation turboclick">Albums</a>
+	<a href="/tracks?q={{$query}}" hx-get="/tracks?q={{$escapedQuery}}" class="search-navigation turboclick">Tracks</a>
+	<a href="/events" hx-get="/events" class="search-navigation turboclick selected">Calendar</a>
+	<a href="/news/?q={{$query}}" hx-get="/news/?q={{$escapedQuery}}" class="search-navigation turboclick">News</a>
 </div>
 
 <hr>

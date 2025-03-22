@@ -1,13 +1,15 @@
-{{- $query := .QueryParam "q" -}}
-{{- $escapedQuery := queryEscape $query -}}
-
 {{- $licenses := .Dataset "bandwagon-search-albums.licenses" -}}
 {{- $tags := .QueryParam "tags" -}}
 
+{{- $query := .QueryParam "q" -}}
+{{- $escapedQuery := queryEscape $query -}}
+
 <div class="flex-row md:flex-column">
-	<a class="search-navigation turboclick selected" href="/albums" hx-get="/albums">Albums</a>
-	<a class="search-navigation turboclick" href="/artists?q={{$query}}" hx-get="/artists?q={{$escapedQuery}}">Artists</a>
-	<a class="search-navigation turboclick" href="/events?q={{$query}}" hx-get="/events?q={{$escapedQuery}}">Calendar</a>
+	<a href="/artists?q={{$query}}" hx-get="/artists?q={{$escapedQuery}}" class="search-navigation turboclick">Artists</a>
+	<a href="/albums" hx-get="/albums" class="search-navigation turboclick selected">Albums</a>
+	<a href="/tracks?q={{$query}}" hx-get="/tracks?q={{$escapedQuery}}" class="search-navigation turboclick">Tracks</a>
+	<a href="/events?q={{$query}}" hx-get="/events?q={{$escapedQuery}}" class="search-navigation turboclick">Calendar</a>
+	<a href="/news/?q={{$query}}" hx-get="/news/?q={{$escapedQuery}}" class="search-navigation turboclick">News</a>
 </div>
 
 <hr>

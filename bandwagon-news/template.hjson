@@ -27,6 +27,15 @@
 		{target:"content", expression:"{{.SummaryOrContent}}"}
 	]
 
+	search: {
+		type:Article
+		iconUrl:""
+		summary:""
+		text: "{{.Label}} {{.AttributedTo.Name}} {{.Summary}} {{.Content.HTML}}"
+	}
+
+	tagPaths: ["summary", "content.html"]
+
 	actions: {
 
 		create: {
@@ -76,7 +85,7 @@
 					{do:"process-tags", paths:"data.tags"}
 					{do:"save"}
 					{do:"search-index"}
-					{do:"refresh-page"}
+					{do:"forward-to", url:"/{{.StreamID}}"}
 				]}
 			]
 		}

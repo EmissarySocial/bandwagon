@@ -1,18 +1,73 @@
 {{- $token := .Token -}}
 {{- $query := .QueryParam "q" -}}
+{{- $tags := .QueryParam "tags" -}}
+{{- $empty := and (eq "" $query) (eq "" $tags) -}}
 
-<!-- Search Albums Here -->
-{{- $results := .Search.Top120.FullText.Tags -}}
-{{- $results := $results.WhereType "Audio" -}}
-{{- $results := $results.Slice.Shuffle -}}
+<!-- Search Tracks Here -->
+{{- $results := .Search.Top30.ByShuffle.WhereType "Audio" -}}
+{{- $after := .QueryParam "after" | int64 -}}
 
-<!-- No Results -->
-{{- if $results.IsEmpty -}}
+{{- if ne 0 $after -}}
+	{{- $results = $results.AfterShuffle $after -}}
+{{- end -}}
+
+{{- $results := $results.Slice -}}
+{{- $last := $results.Last -}}
+{{- $results = $results.Shuffle -}}
+
+{{- if $results.NotEmpty -}}
+
+	{{- if eq 0 $after -}}
+		<div class="flex-row text-sm">
+			<div class="flex-grow"></div>
+			<div class="margin-bottom nowrap" script="on load trigger storage on window">
+				<div class="margin-bottom-sm">
+					<button hx-post="/.searchQuery?types=Audio&{{.RawQuery}}&forward=/{{.StreamID}}/intent%3Fintent%3Dfollow%26object=" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+					<a href="/{{.Token}}/feed?{{.QueryString}}" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
+				</div>
+				<div hx-get="/{{.StreamID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
+			</div>
+		</div>
+
+	{{- end -}}
+
+	<div class="table margin-bottom" 
+		hx-get="/{{.StreamID}}/view-results?q={{$query |queryEscape}}&tags={{$tags | queryEscape}}&after={{$last.Shuffle}}" 
+		hx-target="this" 
+		hx-swap="afterend" 
+		hx-trigger="revealed" 
+		hx-push-url="false">
+
+		{{- range $result := $results -}}
+			<div class="track flex-row turboclick" role="link" script="install blockselect()">
+				<div class="rounded square width-96" style="background-color:var(--gray20);">
+					{{- if ne "" $result.IconURL -}}
+						<img src="{{$result.IconURL}}" class="rounded square width-100% block" aria-hidden="true" loading="lazy">
+					{{- end -}}
+				</div>
+				<div class="padding-sm padding-bottom-none ellipsis">
+					<div>
+						<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
+					</div>
+					<div class="text-sm text-gray">
+						Artist: {{$result.AttributedTo}}
+					</div>
+				</div>
+			</div>
+		{{- end -}}
+	</div>
+
+{{- else if eq 0 $after -}}
 
 	{{- $tags := .FeaturedSearchTags.Slice -}}
 
 	<div class="text-lg text-gray">
-		There are <b>no tracks</b> that match your criteria.
+		There are <b>no tracks</b> that match 
+		{{if ne "" $query}}
+			<b>&quot;{{$query}}&quot;</b>.
+		{{- else -}}
+			your search.
+		{{- end -}}
 		<br>
 		Please try some of these search terms instead...
 	</div>
@@ -20,75 +75,11 @@
 	<div class="margin-top-lg">
 		<div class="table search-container">
 			{{- range $index, $tag := $tags -}}
-				<a href="/{{$token}}?q=%23{{$tag.Name}}" hx-get="/{{$token}}?q=%23{{$tag.Name}}" class="block turboclick">
+				<div class="link turboclick" role="link" hx-get="/{{$token}}?q={{$tag.Name}}">
 					{{icon "tag"}} {{$tag.Name}}
-				</a>
+				</div>
 			{{- end -}}
 		</div>
 	</div>
-
-{{- else -}}
-
-	{{- template "tag-header" . -}}
-	
-	{{- if eq 1 $tags.Length -}}
-		<h1 class="margin margin-bottom-sm">#{{$tags.First}}</h1>
-	{{- end -}}
-
-	{{- if .IsOwner -}}
-		<div class="margin-horizontal text-sm">
-			<button hx-get="/{{.Token}}/intent?intent=follow&object={{.URL | queryEscape}}">{{icon "plus-circle"}} Follow for Updates</button>
-			<button hx-get="/{{.Token}}/intent">{{icon "more-horizontal"}}</button>
-		</div>
-	{{- end -}}
-
-	<div class="cols-2-6 margin">
-		{{- range $result := $results -}}
-
-			<div class="album flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
-				<div script="install blockselect()" role="link">
-					<img src="{{$result.IconURL}}" class="square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
-					<div class="padding-sm padding-bottom-none text-plain ellipsis">
-						<a href="{{$result.URL}}" class="bold turboclick">{{$result.Name}}</a><br>
-					</div>
-					<div class="padding-left-sm text-sm text-gray">
-						{{- if eq "Album" $result.Type -}}
-							Album &middot;
-						{{- else if eq "Audio" $result.Type -}}
-							Song &middot;
-						{{- end }}
-						{{$result.AttributedTo}}
-					</div>
-				</div>
-			</div>
-		{{- end -}}
-	</div>
-
-	<style>
-		.album {
-			border-radius:8px;
-			background-color:rgba(255, 255, 255, 0.1);
-		}
-
-		.album img {
-			object-fit:cover;
-			border-top-left-radius: 8px;
-			border-top-right-radius: 8px;
-		}
-
-		.clearTag {
-			display:inline-block;
-			background-color:rgba(0,0,0,0);
-			border: solid 1px rgba(0,0,0, 0.5);
-			color: rgba(0,0,0, 0.75);
-			padding:4px 8px;
-			border-radius: 8px;
-			margin-right:8px;
-		}
-
-		.clearTag:hover {
-			background-color:rgba(255, 255, 255, 0.1);
-		}
-	</style>
 
 {{- end -}}

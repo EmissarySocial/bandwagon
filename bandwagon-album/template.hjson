@@ -413,6 +413,12 @@
 			]
 		}
 
+		icon: {
+			steps: [
+				{do:"redirect-to", url:"{{.IconURL}}"}
+			]
+		}
+
 		zip9348103752: {
 			steps: [
 				{do:"get-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [

@@ -58,8 +58,8 @@
 	]
 
 	search: {
-		type: "Audio"
-		iconUrl:""
+		type: Audio
+		iconUrl:"{{first .IconURL (join `/` .ParentID.Hex `/icon`)}}"
 		summary:""
 		text: "{{.Label}} {{.AttributedTo.Name}} {{index .Data `lyrics`}}"
 		tags: "LIC:{{index .Data `license`}}"
@@ -138,6 +138,7 @@
 				{do:"process-tags", paths:"data.tags"}
 				{do:"save-and-publish"}
 				{do:"search-index"}
+				{do:"refresh-page"}
 			]
 		}
 		view: {
