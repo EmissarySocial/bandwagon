@@ -10,7 +10,7 @@
 		{{- $textColor := $background00.Text -}}
 		{{- $shadowColor := $textColor.Text -}}
 
-		<div hx-get="/albums?q=%23{{$tag.Name}}" class="flex-center pos-relative turboclick flex-column hover-trigger hover-swell" role="link" style="padding:3px; background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}}; border-radius:8px;">
+		<div hx-get="/albums?q=%23{{$tag.Name}}" class="album flex-center pos-relative turboclick flex-column hover-trigger hover-swell rounded" role="link" style="padding:3px; background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}};">
 			<div class="aspect-square width-100%" style="overflow:hidden; border-radius:6px;">
 				{{- if ne ""  $tag.ImageURL }}
 					<img src="{{$tag.ImageURL}}" class="block aspect-square width-100%" style="object-fit:cover;" aria-label="{{$tag.Name}}" loading="lazy">
@@ -20,3 +20,15 @@
 		</div>
 	{{- end -}}
 </div>
+
+<style>
+	.album {
+		filter:saturate(0);
+		transition-property: transform, filter;
+		transition-duration: 0.15s;
+	}
+
+	.album:hover {
+		filter:saturate(1);
+	}
+</style>
