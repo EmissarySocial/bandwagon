@@ -130,8 +130,7 @@
 					<div id="song-tags" class="text-sm margin-bottom">
 						{{- range $index, $tag := .Tags -}}
 							{{- if eq "Hashtag" $tag.Type}}
-							<!--a href="/tracks?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a-->
-							<span class="tag margin-bottom-sm">#{{$tag.Name}}</span>
+							<a href="/tracks?q=%23{{$tag.Name}}" hx-get="/tracks?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
 							{{- end -}}
 						{{- end -}}
 					</div>
