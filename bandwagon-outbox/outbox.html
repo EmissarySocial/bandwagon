@@ -146,10 +146,11 @@
 										<div class="padding bold link">{{first .Data.linkText "Read More"}}</div>
 									{{- end -}}
 								{{- end -}}
+
+								{{- if not .IsPublished -}}
+									<div class="pos-absolute-four-corners bg-stripes flex-center"></div>
+								{{- end -}}
 							</a>
-							{{- if not .IsPublished -}}
-								<div class="pos-absolute-four-corners bg-stripes flex-center"></div>
-							{{- end -}}
 
 							{{- if $isMyself -}}
 								<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
