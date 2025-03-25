@@ -105,7 +105,7 @@
 
 				{{- range $featured -}}
 					{{- if or .IsPublished $isMyself -}}
-						<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" class="rounded block card text-plain text-black flex-column hover-trigger hover-swell turboclick">
+						<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" class="rounded block card text-plain text-nocolor flex-column hover-trigger hover-swell turboclick">
 							
 							{{- if eq "bandwagon-album" .TemplateID -}}
 								<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">

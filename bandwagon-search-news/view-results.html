@@ -40,7 +40,7 @@
 		hx-push-url="false">
 
 		{{- range $index, $result := $results -}}
-			<div class="flex-row" role="link" script="install blockselect()">
+			<a href="{{$result.URL}}" class="block text-plain text-nocolor flex-row">
 
 				<div class="rounded square width-96" style="background-color:var(--gray20);">
 					{{- if ne "" $result.IconURL -}}
@@ -49,17 +49,11 @@
 				</div>
 
 				<div class="flex-grow">
-					<div class="margin-none ellipsis">
-						<a href="{{$result.URL}}" tabIndex="none" class="bold text-plain text-black">{{$result.Name}}</a>
-					</div>
-					<div class="text-gray text-sm margin-bottom-sm">
-						{{- $result.AttributedTo }}
-					</div>
-					<div class="text-gray text-sm">
-						{{ $result.CreateDate | shortDate -}}
-					</div>
+					<div class="bold link margin-none ellipsis">{{$result.Name}}</div>
+					<div class="text-gray text-sm margin-bottom-sm">{{- $result.AttributedTo }}</div>
+					<div class="text-gray text-sm">{{ $result.CreateDate | shortDate -}}</div>
 				</div>
-			</div>
+			</a>
 		{{- end -}}
 	</div>
 

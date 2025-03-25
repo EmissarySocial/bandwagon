@@ -26,6 +26,7 @@
 		{{- if eq 0 $after -}}
 			<style>
 				.album {
+					display:block;
 					background-color:var(--gray15);
 				}
 
@@ -69,17 +70,13 @@
 			hx-push-url="false">
 	
 			{{- range $result := $results -}}
-				<div class="album rounded flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg">
-					<div role="link" class="turboclick" script="install blockselect()">
-						<img src="{{$result.IconURL}}" class="rounded-top square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
-						<div class="padding-sm padding-bottom-none ellipsis">
-							<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
-						</div>
-						<div class="padding-left-sm text-sm text-gray">
-							{{$result.AttributedTo}}
-						</div>
+				<a href="{{$result.URL}}" class="album rounded flex-column hover-trigger hover-swell padding-bottom-sm margin-bottom-lg text-plain text-nocolor turboclick">
+					<img src="{{$result.IconURL}}" class="rounded-top square width-100% margin-bottom-xs block" style="background-color:var(--gray30);" aria-hidden="true" loading="lazy">
+					<div class="padding-sm padding-bottom-none ellipsis bold">{{$result.Name}}</div>
+					<div class="padding-left-sm text-sm text-gray">
+						{{$result.AttributedTo}}
 					</div>
-				</div>
+				</a>
 			{{- end -}}
 		</div>
 

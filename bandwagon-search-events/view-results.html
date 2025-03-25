@@ -23,7 +23,7 @@
 	<div class="table margin-bottom-lg">
 		{{- range $index, $result := $results -}}
 
-			<div class="sm:flex-row padding hover-trigger turboclick" role="link" script="install blockselect()">
+			<a href="{{.URL}}" target="_blank" class="block text-plain text-nocolor sm:flex-row padding hover-trigger turboclick">
 
 				<div class="hide md:show">
 					<div style="text-align:center; width:48px; margin-right:16px;">
@@ -53,11 +53,11 @@
 						{{.Place.Name}}<br>
 					</div>
 					<div class="hide sm:show">
-						<a href="{{.URL}}" target="_top">More Info &rarr;</a>
+						<span class="link">More Info &rarr;</span>
 					</div>
 				</div>
 
-			</div>
+			</a>
 
 		{{- end -}}
 	</div>

@@ -53,7 +53,7 @@
 					<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
 				{{- else if $canEdit -}}
 					<div class="rounded square text-center flex-column flex-justify-center flex-align-center" style="border:solid 1px var(--black)" script="install blockselect()">
-						<span hx-get="/{{.StreamID}}/edit" role="button" class="link text-plain">Click here to add album art</span>
+						<button hx-get="/{{.StreamID}}/edit" class="link text-plain">Click here to add album art</button>
 					</div>
 				{{- end -}}
 

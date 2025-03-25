@@ -26,8 +26,7 @@
 
 		{{- range $index, $result := $results -}}
 			<div class="align-center hover-swell">
-				<div role="link" script="install blockselect()">
-
+				<a href="{{$result.URL}}" class="block text-plain text-nocolor">
 					{{- if eq "" $result.IconURL -}}
 						<div class="circle width-128 margin-right-sm inline-block" style="max-width:100%;"></div>
 					{{- else -}}
@@ -35,14 +34,10 @@
 					{{- end -}}
 
 					<div class="flex-grow">
-						<div class="margin-none ellipsis">
-							<a href="{{$result.URL}}" tabIndex="none" class="bold text-plain text-black">{{$result.Name}}</a>
-						</div>
-						<div class="text-gray text-sm">
-							{{- $result.AttributedTo -}}
-						</div>
+						<div class="margin-none ellipsis bold">{{$result.Name}}</div>
+						<div class="text-gray text-sm">{{- $result.AttributedTo -}}</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		{{- end -}}
 	</div>

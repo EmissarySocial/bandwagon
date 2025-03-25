@@ -22,14 +22,12 @@
 			<div class="sortable margin-vertical-lg cols-2-4">
 				{{- range $albums -}}
 					{{- if or .IsPublished $isMyself -}}
-						<div class="card hover-trigger hover-swell" script="install blockselect()">
+						<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" class="card hover-trigger hover-swell text-plain text-nocolor turboclick">
 							<img src="{{.IconURL}}" class="square width-100% block" style="object-fit:cover">
-							<a hx-get="/{{.StreamID}}" href="/{{.StreamID}}" class="block turboclick">
 								<div class="block padding">
 									<div class="bold">{{.Label}}</div>
 									<div>{{.Data.year}}</div>
 								</div>
-							</a>
 
 							{{- if not .IsPublished -}}
 								<div class="pos-absolute-four-corners bg-stripes flex-center">
@@ -42,7 +40,7 @@
 								<button hx-get="/{{.StreamID}}/edit" class="hover-show button pos-absolute-top-right text-xs">Edit</button>
 								<input type="hidden" name="keys" value="{{.StreamID}}">
 							{{- end -}}
-						</div>
+							</a>
 					{{- end -}}
 
 				{{- end -}}

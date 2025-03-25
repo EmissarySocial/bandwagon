@@ -39,21 +39,19 @@
 		hx-push-url="false">
 
 		{{- range $result := $results -}}
-			<div class="track flex-row turboclick" role="link" script="install blockselect()">
+			<a href="{{$result.URL}}" class="block text-plain text-nocolor track flex-row turboclick">
 				<div class="rounded square width-96" style="background-color:var(--gray20);">
 					{{- if ne "" $result.IconURL -}}
 						<img src="{{$result.IconURL}}" class="rounded square width-100% block" aria-hidden="true" loading="lazy">
 					{{- end -}}
 				</div>
 				<div class="padding-sm padding-bottom-none ellipsis">
-					<div>
-						<a href="{{$result.URL}}" class="text-plain bold turboclick">{{$result.Name}}</a><br>
-					</div>
+					<div class="bold">{{$result.Name}}</div>
 					<div class="text-sm text-gray">
 						Artist: {{$result.AttributedTo}}
 					</div>
 				</div>
-			</div>
+			</a>
 		{{- end -}}
 	</div>
 
