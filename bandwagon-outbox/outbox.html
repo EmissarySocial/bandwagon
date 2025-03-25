@@ -105,47 +105,48 @@
 
 				{{- range $featured -}}
 					{{- if or .IsPublished $isMyself -}}
-						<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" class="rounded block card text-plain text-nocolor flex-column hover-trigger hover-swell turboclick">
-							
-							{{- if eq "bandwagon-album" .TemplateID -}}
-								<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
-								<div class="padding text-plain">
-									<div class="bold link">{{.Label}}</div>
-									<div class="text-gray">
-										Album 
-										{{- $releaseDate := index .Data "year" -}}
-										{{- if ne "" $releaseDate }}
-											&middot; {{$releaseDate}}
-										{{- end -}}
-									</div>
-								</div>
-							{{- else if eq "bandwagon-event" .TemplateID -}}
-								{{- if ne "" .IconURL -}}
+						<div class="rounded block card hover-trigger hover-swell">
+							<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" class="text-plain text-nocolor flex-column">
+								
+								{{- if eq "bandwagon-album" .TemplateID -}}
 									<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
 									<div class="padding text-plain">
 										<div class="bold link">{{.Label}}</div>
-										<div class="text-gray">{{.StartDate | shortDate }}</div>
+										<div class="text-gray">
+											Album 
+											{{- $releaseDate := index .Data "year" -}}
+											{{- if ne "" $releaseDate }}
+												&middot; {{$releaseDate}}
+											{{- end -}}
+										</div>
 									</div>
-								{{- else -}}
-									<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
-									<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
-									<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
-									<div class="padding bold link">More...</div>
+								{{- else if eq "bandwagon-event" .TemplateID -}}
+									{{- if ne "" .IconURL -}}
+										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
+										<div class="padding text-plain">
+											<div class="bold link">{{.Label}}</div>
+											<div class="text-gray">{{.StartDate | shortDate }}</div>
+										</div>
+									{{- else -}}
+										<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
+										<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
+										<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
+										<div class="padding bold link">More...</div>
+									{{- end -}}
+								{{- else if eq "bandwagon-news" .TemplateID -}}
+									{{- if ne "" .IconURL -}}
+										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
+										<div class="padding text-plain">
+											<div class="bold link">{{.Label}}</div>
+											<div class="text-gray">{{.PublishDate | shortDate }}</div>
+										</div>
+									{{- else -}}
+										<h2 class="padding padding-bottom-none margin-none">{{.Label}}</h2>
+										<div class="padding-horizontal flex-grow ellipsis-block" style="height:9em;">{{.Summary}}</div>
+										<div class="padding bold link">{{first .Data.linkText "Read More"}}</div>
+									{{- end -}}
 								{{- end -}}
-							{{- else if eq "bandwagon-news" .TemplateID -}}
-								{{- if ne "" .IconURL -}}
-									<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
-									<div class="padding text-plain">
-										<div class="bold link">{{.Label}}</div>
-										<div class="text-gray">{{.PublishDate | shortDate }}</div>
-									</div>
-								{{- else -}}
-									<h2 class="padding padding-bottom-none margin-none">{{.Label}}</h2>
-									<div class="padding-horizontal flex-grow ellipsis-block" style="height:9em;">{{.Summary}}</div>
-									<div class="padding bold link">{{first .Data.linkText "Read More"}}</div>
-								{{- end -}}
-							{{- end -}}
-
+							</a>
 							{{- if not .IsPublished -}}
 								<div class="pos-absolute-four-corners bg-stripes flex-center"></div>
 							{{- end -}}
@@ -155,7 +156,7 @@
 								<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit</button>
 								<input type="hidden" name="keys" value="{{.StreamID}}">
 							{{- end -}}
-						</a>
+						</div>
 					{{- end -}}
 				{{- end -}}
 

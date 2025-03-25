@@ -48,15 +48,14 @@
 			
 		<!-- First Row: Album Name and Artwork -->
 		<div class="md:flex-row margin-bottom">
-			<div class="md:width-256 flex-shrink-0 pos-relative">
+			<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-256 flex-shrink-0 pos-relative">
 				{{- if ne "" .IconURL -}}
 					<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
 				{{- else if $canEdit -}}
-					<div class="rounded square text-center flex-column flex-justify-center flex-align-center" style="border:solid 1px var(--black)" script="install blockselect()">
-						<button hx-get="/{{.StreamID}}/edit" class="link text-plain">Click here to add album art</button>
+					<div class="rounded square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--black)" script="install blockselect()">
+						Click here to add album art
 					</div>
 				{{- end -}}
-
 			</div>
 			<div class="md:width-32"></div>
 			<div class="flex-grow-1">
