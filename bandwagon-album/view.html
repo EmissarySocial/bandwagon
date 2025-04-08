@@ -403,8 +403,8 @@
 	</div>
 
 	{{- if $canEdit -}}
-		<div id="stream-refresh-steps" hx-preserve>
-			<div xhx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window delay:100ms" hx-push-url="false"></div>
+		<div id="stream-refresh-{{.StreamID}}" hx-preserve>
+			<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window delay:100ms" hx-push-url="false"></div>
 
 			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
 				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}" hx-push-url="false"></div>
