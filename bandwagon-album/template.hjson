@@ -132,13 +132,6 @@
 										{type:"colorpicker", path:"data.color.button", label:"Links and Buttons"}
 									]
 								}
-								{
-									type:"layout-vertical"
-									label:"Distribution"
-									children:[
-										{type:"multiselect", path:"syndication", label:"Distribute to these indie streaming services", description:"These services will be notified when this album is published", options:{provider:"syndication-targets"}}
-									]
-								}
 							]
 						}
 					}
@@ -146,7 +139,7 @@
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"process-tags", paths:"data.tags"}
 				{do:"save"}
-				{do:"forward-to", url: "/{{.StreamID}}/view"}
+				{do:"forward-to", url: "/{{.StreamID}}"}
 			]
 		}
 		view: {
@@ -273,6 +266,7 @@
 						"data.license": "{{.Data `license`}}"
 					}
 				}
+				{do:"refresh-page"}
 			]
 		}
 

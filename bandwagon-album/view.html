@@ -37,13 +37,15 @@
 	{{- end -}}
 
 	{{- if not .IsPublished -}}
-		<div class="clickable alert-red" hx-get="/{{.StreamID}}/publish" role="button">
-			{{icon "alert-fill"}} 
-			This album HAS NOT BEEN published yet and won't be seen by others.
-			<span class="text-underline">Click here to publish it</span>
-		</div>
-	{{- end -}}
+		{{- if $songs.NotEmpty -}}
+			<div class="clickable alert-green margin-none" hx-get="/{{.StreamID}}/publish" role="button">
+				{{icon "check-circle"}} 
 
+				This album IS READY TO PUBLISH on the social web.
+				<span class="text-underline">Click here to publish it now</span>
+			</div>
+		{{- end -}}
+	{{- end -}}
 	<div class="pos-relative padding">
 			
 		<!-- First Row: Album Name and Artwork -->
@@ -70,27 +72,30 @@
 					</a> 
 				</div>
 
-				<div class="margin-vertical"></div>
-	
-				{{- if $isPlayable -}}
-					<div id="media-controls" class="margin-vertical-lg">
-						<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
-						<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none" aria-label="Skip Backward">{{icon "skip-backward-fill"}}</button>
-						<button hx-on:click="Pause()" class="primary playing-show margin-right-none" aria-label="Pause Playback">{{icon "pause-fill"}}</button>
-						<button hx-on:click="PlayNext(true)" class="primary playing-show" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
-					</div>
-				{{- else if $canEdit -}}
-					<div class="margin-vertical-lg">
-						<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
-						<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
+				{{- if .IsPublished -}}
+
+					<div class="margin-vertical"></div>
+		
+					{{- if $isPlayable -}}
+						<div id="media-controls" class="margin-vertical-lg">
+							<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
+							<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none" aria-label="Skip Backward">{{icon "skip-backward-fill"}}</button>
+							<button hx-on:click="Pause()" class="primary playing-show margin-right-none" aria-label="Pause Playback">{{icon "pause-fill"}}</button>
+							<button hx-on:click="PlayNext(true)" class="primary playing-show" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
+						</div>
+					{{- else if and $songs.NotEmpty $canEdit -}}
+						<div class="margin-vertical-lg">
+							<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
+							<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
+						</div>
+					{{- end -}}
+
+					<div class="text-sm">
+						<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
+						<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
+						<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
 					</div>
 				{{- end -}}
-
-				<div class="text-sm">
-					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
-					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
-					<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
-				</div>
 			</div>
 		</div>
 
@@ -102,7 +107,7 @@
 
 				{{- if $songs.NotEmpty -}}
 				
-					<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end">
+					<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end" hx-push-url="false">
 						<div id="album-tracks" class="table">
 							{{- range $index, $song := $songs -}}
 								{{- $isplayable := ne nil $song.Data.attachmentId -}}
@@ -151,6 +156,7 @@
 										{{- end -}}
 									</div>
 								</div>
+
 							{{- end -}}
 
 							{{- if $canEdit -}}
@@ -168,10 +174,17 @@
 						</div>
 					</form>
 
-				{{- else if and $songs.IsEmpty $canEdit -}}
+				{{- else if $canEdit -}}
+
 					<div class="table">
-						<div>
-							<span role="button" class="link" hx-get="/{{.StreamID}}/add-song"><span aria-hidden="true">{{icon "plus"}}</span> Add a song to this album</span>
+						<div role="button" class="clickable flex-row" hx-get="/{{.StreamID}}/add-song">
+							<div class="margin-horizontal-xs flex-align-self-center link" style="font-size:50px" aria-hidden="true">{{icon "music"}}</div>
+							<div class="flex-grow">
+								<div class="text-lg bold link nowrap">
+									Add the first song to this album
+								</div>
+								<div class="text-sm text-gray">You'll need to add at least one song to this album before you can publish it.</div>
+							</div>
 						</div>
 					</div>
 				{{- end -}}
@@ -350,7 +363,7 @@
 				<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js" preload></script>
 
 				<script>
-					new Sortable(document.getElementById("track-list"), {
+					new Sortable(document.getElementById("album-tracks"), {
 						handle: ".drag-handle",
 						animation: 150,
 						whisperClass: 'draggable-whisper'
@@ -378,7 +391,7 @@
 
 				{{- if .IsPublished -}}
 					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
-				{{- else -}}
+				{{- else if $songs.NotEmpty -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
 			{{- end -}}
@@ -388,15 +401,16 @@
 			{{- end -}}
 		</div>
 
-
 	</div>
 
 	{{- if $canEdit -}}
-		<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-			<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+		<div id="stream-refresh-steps" hx-preserve>
+			<div xhx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window delay:100ms" hx-push-url="false"></div>
+
+			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
+				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}" hx-push-url="false"></div>
+			</div>
 		</div>
-	{{- else -}}
-		<div hx-get="/{{.StreamID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
 	{{- end -}}
 
 </div>
