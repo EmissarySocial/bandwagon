@@ -16,7 +16,7 @@
     <meta property="og:image" content="{{.IconURL}}">
 
 	{{- if not .IsPublished -}}
-		<div class="clickable alert-red" hx-get="/{{.StreamID}}/publish" role="button">
+		<div hx-get="/{{.StreamID}}/publish" class="clickable alert-red" role="button">
 			{{icon "alert-fill"}} 
 			This show HAS NOT BEEN published yet and won't be seen by others.
 			<span class="text-underline">Click here to publish it</span>
@@ -38,7 +38,7 @@
 			<div class="md:width-24"></div>
 			<div class="md:width-1-2">
 				<h1 id="event-name" class="extra-bold margin-bottom-sm p-name">{{.Label}}</h1>
-				<div id="event-attributedTo"><a href="{{.AttributedTo.ProfileURL}}" hx-get="/@{{.AttributedTo.UserID.Hex}}" class="text-lg text-gray">{{.AttributedTo.Name}}</a></div>
+				<div id="event-attributedTo"><a href="{{.AttributedTo.ProfileURL}}" hx-boost="true" class="text-lg text-gray">{{.AttributedTo.Name}}</a></div>
 				<h2 id="event-startDate">
 					<span id="event-startDate-Date" class="bold nowrap dt-start" datetime="{{.StartDate.String}}">{{- .StartDate | longDate -}}</span>
 					<span id="event-startDate-Time" class="text-light-gray nowrap">at {{ .StartDate | shortTime -}}</span>
@@ -52,7 +52,7 @@
 						<a id="event-tickets" href="{{$ticketURL}}" class="width-100% md:width-auto button primary margin-left-xs margin-bottom-xs" target="_blank">{{ $ticketLabel }}</a>
 					{{- end -}}
 
-					<button class="width-100% md:width-auto margin-left-xs margin-bottom-xs" hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true">{{icon "share"}}</span> Share</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}" class="width-100% md:width-auto margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "share"}}</span> Share</button>
 
 					{{- if ne nil $flyerURL -}}
 						<a id="event-flyer" href="{{$flyerURL}}" target="_blank" class="width-100% md:width-auto button margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "download"}}</span> Download</a>
@@ -69,7 +69,7 @@
 					<hr>
 					<div id="event-tags">
 						{{- range $index, $tag := .Tags -}}
-							<a href="/events?q=%23{{$tag.Name}}&date=next-365-days" hx-get="/events?q=%23{{$tag.Name}}&date=next-365-days" class="tag margin-horizontal-xs p-category" role="button">#{{$tag.Name}}</a>
+							<a href="/events?q=%23{{$tag.Name}}&date=next-365-days" hx-boost="true" class="tag margin-horizontal-xs p-category" role="button">#{{$tag.Name}}</a>
 						{{- end -}}
 					</div>
 				{{- end -}}

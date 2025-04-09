@@ -63,12 +63,12 @@
 							{{- $website := index .Data "website" | string -}}
 
 							{{- if eq "" $website -}}
-								<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" target="_blank" class="button primary">More Info</a>
+								<a href="/{{.StreamID}}" hx-boost="true" class="button primary">More Info</a>
 							{{- else -}}
 								{{- $websiteLabel := index .Data "websiteLabel" -}}
 								{{- $websiteLabel := first $websiteLabel "Get Tickets" -}}
 								<a href="{{$website}}" target="_blank" class="button primary">{{$websiteLabel}}</a>
-								<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" target="_blank" class="button">More Info</a>
+								<a href="/{{.StreamID}}" hx-boost="true" class="button">More Info</a>
 							{{- end -}}
 						</div>
 

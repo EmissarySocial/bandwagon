@@ -34,11 +34,21 @@
 		<meta property="profile:username" content="{{.Username}}">
 
 		{{- if not .IsPublic -}}
-			<div class="clickable alert-red" hx-get="/@{{.UserID}}/publish" role="button">
-				{{icon "alert-fill"}} 
-				Your profile is NOT public and is invisible to others.
-				<span class="text-underline">Click here to publish your profile</span>
-			</div>
+
+			{{- $ready := false -}}
+			{{- range $featured -}}
+				{{- if and .IsPublished (eq "bandwagon-album" .TemplateID) -}}
+					{{- $ready = true -}}
+				{{- end -}}
+			{{- end -}}
+
+			{{- if $ready -}}
+				<div hx-get="/@{{.UserID}}/publish" class="clickable alert-green margin-none" role="button">
+					{{icon "check-circle"}} 
+					Your profile IS READY TO PUBLISH on the social web.
+					<span class="text-underline">Click here to publish it now</span>
+				</div>
+			{{- end -}}
 		{{- end -}}
 
 		{{- template "header" . -}}
@@ -101,141 +111,149 @@
 				</div>
 			</div>
 
-			<div class="cols-2-4 margin-top-xl sortable">
+			{{- if $featured.NotEmpty -}}
 
-				{{- range $featured -}}
-					{{- if or .IsPublished $isMyself -}}
-						<div class="rounded block card hover-trigger hover-swell">
-							<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" class="text-plain text-nocolor flex-column">
-								
-								{{- if eq "bandwagon-album" .TemplateID -}}
-									<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
-									<div class="padding text-plain">
-										<div class="bold link">{{.Label}}</div>
-										<div class="text-gray">
-											Album 
-											{{- $releaseDate := index .Data "year" -}}
-											{{- if ne "" $releaseDate }}
-												&middot; {{$releaseDate}}
-											{{- end -}}
-										</div>
-									</div>
-								{{- else if eq "bandwagon-event" .TemplateID -}}
-									{{- if ne "" .IconURL -}}
+				<div class="cols-2-4 margin-top-xl sortable">
+
+					{{- range $featured -}}
+						{{- if or .IsPublished $isMyself -}}
+							<div class="rounded block card hover-trigger hover-swell">
+								<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor flex-column block">
+									
+									{{- if eq "bandwagon-album" .TemplateID -}}
 										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
 										<div class="padding text-plain">
 											<div class="bold link">{{.Label}}</div>
-											<div class="text-gray">{{.StartDate | shortDate }}</div>
+											<div class="text-gray">
+												Album 
+												{{- $releaseDate := index .Data "year" -}}
+												{{- if ne nil $releaseDate }}
+													&middot; {{$releaseDate}}
+												{{- end -}}
+											</div>
 										</div>
-									{{- else -}}
-										<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
-										<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
-										<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
-										<div class="padding bold link">More...</div>
+									{{- else if eq "bandwagon-event" .TemplateID -}}
+										{{- if ne "" .IconURL -}}
+											<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
+											<div class="padding text-plain">
+												<div class="bold link">{{.Label}}</div>
+												<div class="text-gray">{{.StartDate | shortDate }}</div>
+											</div>
+										{{- else -}}
+											<h2 class="padding padding-bottom-none margin-none">{{.Data.city}}</h2>
+											<div class="padding-horizontal">{{.StartDate | shortDate}}</div>
+											<div class="padding-horizontal padding-top flex-grow margin-bottom bold">{{.Data.venue}}</div>
+											<div class="padding bold link">More...</div>
+										{{- end -}}
+									{{- else if eq "bandwagon-news" .TemplateID -}}
+										{{- if ne "" .IconURL -}}
+											<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
+											<div class="padding text-plain">
+												<div class="bold link">{{.Label}}</div>
+												<div class="text-gray">{{.PublishDate | shortDate }}</div>
+											</div>
+										{{- else -}}
+											<h2 class="padding padding-bottom-none margin-none">{{.Label}}</h2>
+											<div class="padding-horizontal flex-grow ellipsis-block" style="height:9em;">{{.Summary}}</div>
+											<div class="padding bold link">{{first .Data.linkText "Read More"}}</div>
+										{{- end -}}
 									{{- end -}}
-								{{- else if eq "bandwagon-news" .TemplateID -}}
-									{{- if ne "" .IconURL -}}
-										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
-										<div class="padding text-plain">
-											<div class="bold link">{{.Label}}</div>
-											<div class="text-gray">{{.PublishDate | shortDate }}</div>
-										</div>
-									{{- else -}}
-										<h2 class="padding padding-bottom-none margin-none">{{.Label}}</h2>
-										<div class="padding-horizontal flex-grow ellipsis-block" style="height:9em;">{{.Summary}}</div>
-										<div class="padding bold link">{{first .Data.linkText "Read More"}}</div>
+
+									{{- if not .IsPublished -}}
+										<div class="pos-absolute-four-corners bg-stripes flex-center"></div>
 									{{- end -}}
-								{{- end -}}
+								</a>
 
-								{{- if not .IsPublished -}}
-									<div class="pos-absolute-four-corners bg-stripes flex-center"></div>
+								{{- if $isMyself -}}
+									<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
+									<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit</button>
+									<input type="hidden" name="keys" value="{{.StreamID}}">
 								{{- end -}}
-							</a>
-
-							{{- if $isMyself -}}
-								<span class="hover-show button pos-absolute-top-left text-xs drag-handle">{{icon "drag-handle"}}</span>
-								<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit</button>
-								<input type="hidden" name="keys" value="{{.StreamID}}">
-							{{- end -}}
-						</div>
+							</div>
+						{{- end -}}
 					{{- end -}}
-				{{- end -}}
 
-				{{- if $isMyself -}}
+					{{- if $isMyself -}}
 
-					<div class="rounded card padding flex-column">
-						<div hx-get="/@{{.UserID}}/add-album?isFeatured=true" role="button" class="flex-center align-center link">
-							<div class="margin-vertical-xl">
-								<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
-								<div class="text-xl margin-none bold">Add an Album</div>
+						<div class="rounded card padding flex-column">
+							<div hx-get="/@{{.UserID}}/add-album?isFeatured=true" class="flex-center align-center link" role="button">
+								<div class="margin-vertical-xl">
+									<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
+									<div class="text-xl margin-none bold">Add an Album</div>
+								</div>
+							</div>
+							<div class="align-center">&mdash; or &mdash;</div>
+							
+							<div class="align-center">
+								Add a
+								<span hx-get="/@{{.UserID}}/add-event?isFeatured=true" class="text-sm margin-bottom link" role="button">
+									Show
+								</span>
+								or
+								<span hx-get="/@{{.UserID}}/add-news?isFeatured=true" class="text-sm margin-bottom link" role="button">
+									News
+								</span>
 							</div>
 						</div>
-						<div class="align-center">&mdash; or &mdash;</div>
-						
-						<div class="align-center">
-							Add a
-							<span hx-get="/@{{.UserID}}/add-event?isFeatured=true" role="button" class="text-sm margin-bottom link">
-								Show
-							</span>
-							or
-							<span hx-get="/@{{.UserID}}/add-news?isFeatured=true" role="button" class="text-sm margin-bottom link">
-								News
-							</span>
-						</div>
-					</div>
 
-					{{- if $featured.IsEmpty -}}
-						<div>
-							<div class="bold text-xl margin-none margin-bottom">Welcome!</div>
-							<div class="bold margin-vertical-xs">The Next Steps Are the Best Ones:</div>
-							<div class="text-light-gray margin-bottom">&larr; Build your online discography by clicking the cassette tape on the left.</div>
-							<div class="text-light-gray margin-bottom">Later, you can customize your profile colors and images using the buttons on the top-right side of the page &rarr;</div>
-							<div class="text-light-gray">And when you're ready, publish your finished profile on the Social Web.</div>
-						</div>
 					{{- end -}}
+
+				</div>
+			
+				{{- if $isMyself -}}
+						</div>
+					</form>
+
+					<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+
+					<script>
+						var sortables = document.querySelectorAll(".sortable");
+						for (var node of sortables) {
+							new Sortable(node, {
+								handle: ".drag-handle",
+								animation: 150,
+								whisperClass: 'draggable-whisper'
+							});
+						}
+					</script>
+
+					<style>
+						.drag-handle {
+							cursor:grab;
+						}
+
+						.draggable-whisper {
+							background-color: var(--gray50);
+							color:var(--gray50);
+							cursor: grabbing;
+						}
+					</style>
 
 				{{- end -}}
 
-			</div>
-		
-		</div>
+			{{- else if $isMyself -}}
 
-			{{- if $isMyself -}}
+				<div class="margin-top-xl card padding rounded md:width-40% lg:width-30%">
+					<div hx-get="/@{{.UserID}}/add-album?isFeatured=true" class="flex-center align-center" role="button">
+						<div class="margin-vertical">
+							<div class="margin-none link" style="font-size:64px;">{{icon "cassette"}}</div>
+							<div class="text-lg margin-none margin-bottom bold link">Upload Your First Album</div>
+							<div class="text-sm text-gray">Let's Get Started! You can publish your profile after your first album is ready.</div>
+						</div>
 					</div>
-				</form>
-
-				<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
-
-				<script>
-					var sortables = document.querySelectorAll(".sortable");
-					for (var node of sortables) {
-						new Sortable(node, {
-							handle: ".drag-handle",
-							animation: 150,
-							whisperClass: 'draggable-whisper'
-						});
-					}
-				</script>
-
-				<style>
-					.drag-handle {
-						cursor:grab;
-					}
-
-					.draggable-whisper {
-						background-color: var(--gray50);
-						color:var(--gray50);
-						cursor: grabbing;
-					}
-				</style>
+				</div>
 
 			{{- end -}}
 
 		</div>
 
 		{{- if $isMyself -}}
-			<div hx-ext="sse" sse-connect="/@{{.UserID}}/sse">
-				<div hx-get="/@{{.UserID}}" hx-trigger="sse:{{.UserID}}, refreshPage from:window" hx-push-url="false"></div>
+			<div id="outbox-refresh-{{.UserID}}" hx-preserve>
+				<div hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
+
+				<div hx-ext="sse" sse-connect="/@{{.UserID}}/sse">
+					<div hx-get="/@{{.UserID}}" hx-trigger="sse:{{.UserID}}" hx-push-url="false"></div>
+				</div>
 			</div>
 		{{- end -}}
 

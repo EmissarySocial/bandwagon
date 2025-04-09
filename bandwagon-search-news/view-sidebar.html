@@ -1,10 +1,9 @@
 {{- $query := .QueryParam "q" -}}
-{{- $escapedQuery := queryEscape $query -}}
 
 <div class="flex-row md:flex-column">
-	<a href="/artists?q={{$query}}" hx-get="/artists?q={{$escapedQuery}}" class="search-navigation turboclick">Artists</a>
-	<a href="/albums?q={{$query}}" hx-get="/albums?q={{$escapedQuery}}" class="search-navigation turboclick">Albums</a>
-	<a href="/tracks?q={{$query}}" hx-get="/tracks?q={{$escapedQuery}}" class="search-navigation turboclick">Tracks</a>
-	<a href="/events?q={{$query}}" hx-get="/events?q={{$escapedQuery}}" class="search-navigation turboclick">Calendar</a>
-	<a href="/news/" hx-get="/news/" class="search-navigation turboclick selected">News</a>
+	<a href="/artists?q={{$query}}" hx-boost="true" class="search-navigation turboclick">Artists</a>
+	<a href="/albums?q={{$query}}" hx-boost="true" class="search-navigation turboclick">Albums</a>
+	<a href="/tracks?q={{$query}}" hx-boost="true" class="search-navigation turboclick">Tracks</a>
+	<a href="/events?q={{$query}}" hx-boost="true" class="search-navigation turboclick">Calendar</a>
+	<a href="/news/" hx-boost="true" class="search-navigation turboclick selected">News</a>
 </div>

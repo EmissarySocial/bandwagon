@@ -11,7 +11,7 @@
 	<meta property="og:article:author" content="{{.AttributedTo.ProfileURL}}">
 
 	{{- if not .IsPublished -}}
-		<div class="clickable alert-red margin-none" hx-get="/{{.StreamID}}/publish" role="button">
+		<div hx-get="/{{.StreamID}}/publish" class="clickable alert-red margin-none" role="button">
 			{{icon "alert-fill"}} 
 			This news HAS NOT BEEN published yet and won't be seen by others.
 			<span class="text-underline">Click here to publish it</span>

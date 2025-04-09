@@ -66,9 +66,9 @@
 					{{.Label}}
 				</h1>
 				<div class="text-lg margin-top-none">
-					<a id="album-attributedTo" hx-get="/@{{.ParentID}}" href="/@{{.ParentID}}" class="turboclick" aria-label="Artist: {{.AttributedTo.Name}}">
+					<a href="/@{{.ParentID}}" hx-boost="true" id="album-attributedTo" aria-label="Artist: {{.AttributedTo.Name}}">
 						{{.AttributedTo.Name}}
-					</a> 
+					</a>
 				</div>
 
 				{{- if .IsPublished -}}
@@ -149,7 +149,7 @@
 										</div>
 									</div>
 									<div class="text-xs align-right flex-shrink-0 nowrap">
-										<a href="/{{$song.StreamID}}" hx-get="/{{$song.StreamID}}" role="button" class="button">Track Info</a>
+										<a href="/{{$song.StreamID}}" hx-boost="true" role="button" class="button">Track Info</a>
 										{{- if $canEdit -}}
 											<button hx-get="/{{$song.StreamID}}/edit" class="margin-left-sm">Edit</button>
 										{{- end -}}
@@ -176,7 +176,7 @@
 				{{- else if $canEdit -}}
 
 					<div class="table">
-						<div role="button" class="clickable flex-row" hx-get="/{{.StreamID}}/add-song">
+						<div hx-get="/{{.StreamID}}/add-song" role="button" class="clickable flex-row">
 							<div class="margin-horizontal-xs flex-align-self-center link" style="font-size:50px" aria-hidden="true">{{icon "music"}}</div>
 							<div class="flex-grow">
 								<div class="text-lg bold link nowrap">
@@ -279,7 +279,7 @@
 						{{- if $canEdit -}}
 							<div class="margin-bottom-sm">
 								<div class="text-gray">Attachments like <b class="nowrap">liner notes</b> or <b class="nowrap">album art</b> that anyone can access.</div>
-								<span role="button" hx-get="/{{$streamID}}/upload" class="link" aria-label="Attach a File">{{icon "upload"}} Attach a File</span>
+								<span hx-get="/{{$streamID}}/upload" class="link" role="button" aria-label="Attach a File">{{icon "upload"}} Attach a File</span>
 							</div>
 						{{- end -}}
 

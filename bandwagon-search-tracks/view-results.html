@@ -73,9 +73,9 @@
 	<div class="margin-top-lg">
 		<div class="table search-container">
 			{{- range $index, $tag := $tags -}}
-				<div class="link turboclick" role="link" hx-get="/{{$token}}?q={{$tag.Name}}">
+				<a href="/{{$token}}?q={{$tag.Name}}" hx-boost="true" class="block turboclick" role="link">
 					{{icon "tag"}} {{$tag.Name}}
-				</div>
+				</a>
 			{{- end -}}
 		</div>
 	</div>

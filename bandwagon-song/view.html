@@ -83,7 +83,7 @@
 				<div class="margin-vertical-lg">
 
 					<div id="media-controls" class="margin-vertical-lg">
-						<a href="/{{.StreamID}}/prev" hx-get="/{{.StreamID}}/prev" class="button" aria-label="Previous Track">{{icon "skip-backward-fill"}} Prev</a>
+						<a href="/{{.StreamID}}/prev" hx-boost="true" class="button" aria-label="Previous Track">{{icon "skip-backward-fill"}} Prev</a>
 						{{ if ne nil $attachmentID }}
 							<button hx-on:click="PlayFirst()" class="primary playing-hide" aria-label="Play Track">{{icon "play-fill"}} Play</button>
 							<button hx-on:click="Pause()" class="primary playing-show" aria-label="Pause Track">{{icon "pause-fill"}} Pause</button>
@@ -100,7 +100,7 @@
 						{{ else }}
 							<button disabled aria-label="Play Track">{{icon "play-fill"}} Play</button>
 						{{ end }}
-						<a href="/{{.StreamID}}/next" hx-get="/{{.StreamID}}/next" class="button" aria-label="Next Track">Next {{icon "skip-forward-fill"}}</a>
+						<a href="/{{.StreamID}}/next" hx-boost="true" class="button" aria-label="Next Track">Next {{icon "skip-forward-fill"}}</a>
 					</div>
 
 					<div class="text-sm">
@@ -130,7 +130,7 @@
 					<div id="song-tags" class="text-sm margin-bottom">
 						{{- range $index, $tag := .Tags -}}
 							{{- if eq "Hashtag" $tag.Type}}
-							<a href="/tracks?q=%23{{$tag.Name}}" hx-get="/tracks?q=%23{{$tag.Name}}" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
+							<a href="/tracks?q=%23{{$tag.Name}}" hx-boost="true" class="tag margin-bottom-sm">#{{$tag.Name}}</a>
 							{{- end -}}
 						{{- end -}}
 					</div>

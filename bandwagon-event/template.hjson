@@ -140,7 +140,7 @@
 				
 				{do:"process-tags", paths:"data.tags"}
 				{do:"save", outbox:"true"}
-				{do:"refresh-page"}
+				{do:"forward-to", url:"/{{.StreamID}}"}
 			]
 		}
 		view: {do:"view-html"}

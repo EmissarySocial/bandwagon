@@ -9,7 +9,7 @@
 		<div class="search-related text-sm margin-top" role="group" aria-label="Related tags">
 			<span class="margin-right-xs" aria-hidden>Related:</span>
 			{{- range $tag := $related -}}
-				<a href="/{{$token}}?q=%23{{$tag}}" hx-get="/{{$token}}?q=%23{{$tag}}" class="related-tag turboclick">{{$tag}}</a>
+				<a href="/{{$token}}?q=%23{{$tag}}" hx-boost="true" class="related-tag turboclick">{{$tag}}</a>
 			{{- end -}}
 		</div>
 

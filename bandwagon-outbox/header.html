@@ -23,19 +23,19 @@
 <!-- Menu Bar -->
 
 {{- if or $showAlbums $showEvents $showNews $showShop $isMyself -}}
-<div id="profile-menu" role="menubar" class="pos-relative">
-	<a id="home" href="/@{{.Username}}" hx-get="/@{{.Username}}" role="menuitem" class="turboclick" aria-label="Home">{{icon "home-fill"}}</a>
+<div id="profile-menu" role="menubar" class="pos-relative" script="on load take .selected from .nav-item for #nav-outbox">
+	<a id="home" href="/@{{.Username}}" hx-boost="true" class="turboclick" role="menuitem" aria-label="Home">{{icon "home-fill"}}</a>
 	{{- if $showAlbums -}}
-		<a id="albums" href="/@{{.Username}}/albums" hx-get="/@{{.Username}}/albums" role="menuitem" class="turboclick">{{first (.Data "label-albums") "Albums"}}</a>
+		<a id="albums" href="/@{{.Username}}/albums" hx-boost="true" class="turboclick" role="menuitem">{{first (.Data "label-albums") "Albums"}}</a>
 	{{- end -}}
 	{{- if $showEvents -}}
-		<a id="events" href="/@{{.Username}}/events" hx-get="/@{{.Username}}/events" role="menuitem" class="turboclick">{{first (.Data "label-events") "Shows"}}</a>
+		<a id="events" href="/@{{.Username}}/events" hx-boost="true" class="turboclick" role="menuitem">{{first (.Data "label-events") "Shows"}}</a>
 	{{- end -}}
 	{{- if $showNews -}}
-		<a id="news" href="/@{{.Username}}/news"  hx-get="/@{{.Username}}/news" role="menuitem" class="turboclick">{{first (.Data "label-news") "News"}}</a>
+		<a id="news" href="/@{{.Username}}/news"  hx-boost="true" class="turboclick" role="menuitem">{{first (.Data "label-news") "News"}}</a>
 	{{- end -}}
 	{{- if $showShop -}}
-		<a href="{{.Data `shop-url`}}" target="_blank" role="menuitem" class="turboclick">{{first (.Data "label-shop") "Shop"}}</a>
+		<a href="{{.Data `shop-url`}}" target="_blank" class="turboclick" role="menuitem">{{first (.Data "label-shop") "Shop"}}</a>
 	{{- end -}}
 
 	{{- if $isMyself -}}

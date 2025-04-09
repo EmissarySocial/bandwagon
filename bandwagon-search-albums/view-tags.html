@@ -10,7 +10,7 @@
 		{{- $textColor := $background00.Text -}}
 		{{- $shadowColor := $textColor.Text -}}
 
-		<a href="/albums?q=%23{{$tag.Name}}" hx-get="/albums?q=%23{{$tag.Name}}" class="block text-plain album flex-center pos-relative turboclick flex-column hover-trigger hover-swell rounded" role="link" style="padding:3px; background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}};">
+		<a href="/albums?q=%23{{$tag.Name}}" hx-boost="true" class="block text-plain album flex-center pos-relative turboclick flex-column hover-trigger hover-swell rounded" role="link" style="padding:3px; background-color:{{$background00}}; background-image: {{$backgroundImage | css}}; color:{{$textColor}};">
 			<div class="aspect-square width-100%" style="overflow:hidden; border-radius:6px;">
 				{{- if ne ""  $tag.ImageURL }}
 					<img src="{{$tag.ImageURL}}" class="block aspect-square width-100%" style="object-fit:cover;" aria-label="{{$tag.Name}}" loading="lazy">

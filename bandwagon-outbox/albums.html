@@ -23,7 +23,7 @@
 				{{- range $albums -}}
 					{{- if or .IsPublished $isMyself -}}
 						<div class="rounded card hover-trigger hover-swell">
-							<a href="/{{.StreamID}}" hx-get="/{{.StreamID}}" class="text-plain text-nocolor turboclick">
+							<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor turboclick">
 								<img src="{{.IconURL}}" class="rounded-top square width-100% block" style="object-fit:cover">
 								<div class="block padding">
 									<div class="bold">{{.Label}}</div>
@@ -50,7 +50,7 @@
 				{{- if $isMyself -}}
 
 					<div class="rounded card padding flex-center">
-						<div class="align-center link" role="button" hx-get="/@{{.UserID}}/add-album">
+						<div hx-get="/@{{.UserID}}/add-album" class="align-center link" role="button">
 							<div class="margin-vertical-xl">
 								<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
 								<div class="text-xl margin-none bold">Add an Album</div>
