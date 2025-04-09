@@ -165,6 +165,7 @@
 									type:"layout-vertical"
 									label: Privacy & Security
 									children: [
+										{type:"text", path:"username", label:"Username", description:"How others will identify you online. (PUBLIC)", options:{autocomplete:"off", validator:"/.validate/username"}}
 										{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in and support your account. Not shared. (PRIVATE)"}
 										{type:"password", path:"new_password", label:"Change Password", description:"At least 8 characters. Please use a Password Manager. (PRIVATE)"}
 										{type:"toggle", path:"isPublic", options:{text:"Public (visible to people)"}}
