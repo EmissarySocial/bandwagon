@@ -128,16 +128,16 @@
 									label: Basics
 									children: [
 										{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
-										{type:"textarea", path:"statusMessage", label:"About Me", description:"Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
+										{type:"textarea", path:"statusMessage", label:"About Me", description:"Displayed at the bottom of your profile page. Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
 										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
-										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces.  (PUBLIC)"}
+										{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces.  (PUBLIC)"}
 									]
 								}
 								{
 									type: layout-vertical
 									label: Images
 									children: [
-										{type:"upload", path:"iconUrl", label:"Avater Image", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-icon"}}
+										{type:"upload", path:"iconUrl", label:"Avatar Image", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-icon"}}
 										{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-image"}}
 										{type:"upload", path:"data.background-body", label:"Window Background Image", description:"Displays instead of the window's background color (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-background"}}
 									]
@@ -155,15 +155,15 @@
 									]
 								}
 								{
-									label: Stylesheet
+									label: Style
 									type:layout-vertical
 									children: [
-										{type:"textarea", path:"data.stylesheet", description: "Custom CSS stylesheet for your profile. Experts only! &nbsp; <a href=https://bandwagon.fm/css-guide target=_blank>Read the CSS Guide &rarr;</a>", options:{rows:12, style:"font-family:monospace; font-size:14px;"}}
+										{type:"textarea", path:"data.stylesheet", label:"Custom CSS Stylesheet", description: "Experts only! &nbsp; <a href=https://bandwagon.fm/css-guide target=_blank>Read the CSS Guide &rarr;</a>", options:{rows:12, style:"font-family:monospace; font-size:14px;"}}
 									]
 								}
 								{
 									type:"layout-vertical"
-									label: Privacy & Security
+									label: Security
 									children: [
 										{type:"text", path:"username", label:"Username", description:"How others will identify you online. (PUBLIC)", options:{autocomplete:"off", validator:"/.validate/username"}}
 										{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in and support your account. Not shared. (PRIVATE)"}
@@ -182,6 +182,27 @@
 					{do:"process-tags", paths:["data.tags"]}
 					{do:"save"}
 					{do:"set-password"}
+					{do:"search-index"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-status: {
+			roles: ["self"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Status Message
+							type: layout-vertical
+							children: [
+								{type:"textarea", path:"statusMessage", description:"Displayed at the bottom of your profile page. Markdown is allowed. (PUBLIC)", options:{rows:8, showLimit:true}}
+							]
+						}
+					}
+					{do:"save"}
 					{do:"search-index"}
 					{do:"refresh-page"}
 				]}
@@ -207,6 +228,71 @@
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
 					{do:"save"}
 					{do:"search-index", if:"{{.IsIndexable}}"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+		edit-albums: {
+			roles: ["self"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							type: layout-vertical
+							label: Edit Albums
+							children: [
+								{type:"text", path:"data.label-albums", label:"Title Text", description:"Used on profile, and at top of 'Albums' page.", options:{placeholder:"Albums"}}
+								{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of this page. Markdown is allowed.", options:{rows:8}}
+							]
+						}
+					}
+					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+
+		edit-events: {
+			roles: ["self"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit Shows
+							type: layout-vertical
+							children: [
+								{type:"text", path:"data.label-events", label:"Title Text", description:"Used on profile and at the top of 'Shows' page.", options:{placeholder:"Shows"}}
+								{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of this page. Markdown is allowed.", options:{rows:8}}
+							]
+						}
+					}
+					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			] 
+		}
+
+
+		edit-news: {
+			roles: ["self"]
+			steps: [
+				{do: "as-modal", background:"view", steps:[
+					{
+						do: "edit"
+						form:{
+							label: Edit News
+							type: layout-vertical
+							children: [
+								{type:"text", path:"data.label-news", label:"Title Text", description:"Used on profile and at the top of 'News' page.", options:{placeholder:"News"}}
+								{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'News' section. Markdown is allowed.", options:{rows:8}}
+							]
+						}
+					}
+					{do:"save"}
 					{do:"refresh-page"}
 				]}
 			] 
@@ -273,7 +359,6 @@
 				]}
 			] 
 		}
-
 		sort-featured: {
 			roles: ["self"]
 			steps: [

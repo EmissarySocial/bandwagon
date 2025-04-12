@@ -1,29 +1,56 @@
 {{- $events := .Outbox.ByStartDate -}}
 {{- $events := $events.Where "templateId" "bandwagon-event" -}}
+{{- $showCurrent := ne "past" (.QueryParam "view") -}}
+
+{{- if $showCurrent -}}
+	{{- $events = $events.WhereGT "startDate" today -}}
+{{- else -}}
+	{{- $events = $events.WhereLT "startDate" today -}}
+{{- end -}}
+
 {{- $events := $events.Slice -}}
 {{- $root := . -}}
 {{- $isMyself := .IsMyself -}}
+{{- $label := first (.Data "label-events") "Shows" -}}
 {{- $description := .Data "description-events" -}}
 
 <div class="framed page app padding-none" script="on load add [@aria-selected=true] to #events">
 
 	{{- template "header" . -}}
 
-	{{- if $isMyself -}}
-		<div class="margin-vertical align-right padding-sm text-sm">
-			<button hx-get="/@{{.UserID}}/add-event">
-				{{icon "add"}} Add Show
-			</button>
-		</div>
-	{{- end -}}
+	<div class="padding pos-relative">
 
-	<div class="padding">
+		<div class="flex-row flex-align-center margin-top margin-bottom-lg">
+			<a href="/@{{.Username}}" hx-boost="true" class="flex-row flex-align-center">
+				<img src="{{.IconURL}}" class="circle width-32" aria-hidden="true">
+				<span class="text-lg margin-none">{{.DisplayName}}</span>
+			</a>
+			<span class="text-lg bold margin-none">&middot; {{$label}}</span>
+
+			{{- if $isMyself -}}
+				<div class="pos-absolute-top-right text-sm">
+					<button hx-get="/@{{.UserID}}/add-event">{{icon "add"}} Show</button>
+					<button hx-get="/@{{.UserID}}/edit-events">Edit</button>
+				</div>
+			{{- end -}}
+	
+		</div>
 
 		{{- if ne "" $description -}}
 			<div class="max-width-640 margin-bottom-lg">{{$description | markdown}}</div>
 		{{- end -}}
 
-		<table class="table">
+		<div role="tablist" class="pills text-sm" hx-swap="innerHTML show:window:top">
+			{{- if $showCurrent -}}
+				<span role="tab" aria-selected="true">Upcoming Shows</span>
+				<a role="tab" href="/@{{.Username}}/events?view=past" hx-boost="true">Past</a>
+			{{- else -}}
+				<a role="tab" href="/@{{.Username}}/events" hx-boost="true">Upcoming</a>
+				<span role="tab" aria-selected="true">Past Shows</span>
+			{{- end -}}
+		</div>
+
+		<div class="table">
 	
 			{{- range $events -}}
 
@@ -31,57 +58,46 @@
 				{{- $textColor := $backgroundColor.TextExt -}}
 				{{- $venue := .Places.First -}}
 
-				<tr class="hover-trigger" script="install blockselect()" style="background-color:{{$backgroundColor}}; color:{{$textColor}}">
+				<div class="pos-relative hover-trigger">
+					<a href="/{{.StreamID}}" hx-boost="true" class="block text-plain text-nocolor flex-row">
 
-					<td style="max-width:128px;">
-						{{- if ne "" .IconURL -}}
-							<img src="{{.IconURL}}" class="square width-100%">
-						{{- end -}}
-					</td>
-					<td class="flex-column padding pos-relative" style="height:100%;">
-						<div>
-							<span class="bold text-gray">{{.Data.city}}</span>
-						</div>
-						<div class="text-xl margin-none bold">{{.StartDate | longDate}}</div>
-						<div class="flex-grow margin-vertical">
-							{{- $venueName := $venue.Name -}}
-							{{- if ne "" $venueName -}}
-								<span class="bold">{{- $venueName -}}</span>
-							{{ end -}}
-
-							{{- if .StartDate.NotMidnight -}}
-								<span class="text-gray">
-									{{- if ne "" $venueName }}
-										at
-									{{ end -}}
-									{{.StartDate | shortTime}}
-								</div>
-							{{ end -}}
-						</div>
-						<div class="margin-top">
-
-							{{- $website := index .Data "website" | string -}}
-
-							{{- if eq "" $website -}}
-								<a href="/{{.StreamID}}" hx-boost="true" class="button primary">More Info</a>
-							{{- else -}}
-								{{- $websiteLabel := index .Data "websiteLabel" -}}
-								{{- $websiteLabel := first $websiteLabel "Get Tickets" -}}
-								<a href="{{$website}}" target="_blank" class="button primary">{{$websiteLabel}}</a>
-								<a href="/{{.StreamID}}" hx-boost="true" class="button">More Info</a>
+						<div class="width-128 flex-shrink-0 margin-right">
+							{{- if ne "" .IconURL -}}
+								<img src="{{.IconURL}}" class="rounded square width-100%">
 							{{- end -}}
 						</div>
+						<div class="flex-column">
+							<div class="bold text-gray">{{.Data.city}}</div>
+							<div class="text-xl margin-none bold">{{.StartDate | longDate}}</div>
+							<div class="flex-grow margin-vertical">
+								{{- $venueName := $venue.Name -}}
+								{{- if ne "" $venueName -}}
+									<span class="bold">{{- $venueName -}}</span>
+								{{ end -}}
 
-						{{- if $isMyself -}}
-							<button hx-get="/{{.StreamID}}/edit" class="hover-show pos-absolute-top-right text-xs">Edit Event</button>
-						{{- end -}}
-					</td>
+								{{- if .StartDate.NotMidnight -}}
+									<span class="text-gray">
+										{{- if ne "" $venueName }}
+											at
+										{{ end -}}
+										{{.StartDate | shortTime}}
+									</div>
+								{{ end -}}
+							</div>
+							<div class="margin-top link">More Info &rarr;</div>
+						</div>
+					</a>
 
-				</tr>
+					{{- if $isMyself -}}
+						<div class="pos-absolute-top-right text-sm hover-show">
+							<button hx-get="/{{.StreamID}}/edit">Edit Show</button>
+						</div>
+					{{- end -}}
+				</div>
 				
 			{{- end -}}
 
-		</table>
+		</div>
 
 	</div>
 

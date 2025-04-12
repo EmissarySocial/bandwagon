@@ -3,46 +3,60 @@
 {{- $posts := $posts.Slice -}}
 
 {{- $isMyself := .IsMyself -}}
+{{- $label := first (.Data "label-news") "News" -}}
 {{- $description := .Data "description-news" -}}
 
 <div class="framed page app padding-none" script="on load add [@aria-selected=true] to #news">
 
 	{{- template "header" . -}}
 
-	{{- if $isMyself -}}
-		<div class="text-sm align-right padding-sm margin-bottom">
-			<button hx-get="/@{{.UserID}}/add-news" class="text-sm" aria-label="Add a Post">{{icon "add"}} News</button>
-		</div>
-	{{- end -}}
-
-	<div class="padding">
+	<div class="padding pos-relative">
 	
+		<div class="flex-row flex-align-center margin-top margin-bottom-xl">
+			<a href="/@{{.Username}}" hx-boost="true" class="flex-row flex-align-center">
+				<img src="{{.IconURL}}" class="circle width-32" aria-hidden="true">
+				<span class="text-lg margin-none">{{.DisplayName}}</span>
+			</a>
+			<span class="text-lg bold margin-none">&middot; {{$label}}</span>
+
+			{{- if $isMyself -}}
+				<div class="pos-absolute-top-right text-sm">
+					<button hx-get="/@{{.UserID}}/add-news" aria-label="Add a Post">{{icon "add"}} News</button>
+					<button hx-get="/@{{.UserID}}/edit-news" aria-label="Edit News Page">Edit</button>
+				</div>
+			{{- end -}}
+
+		</div>
+
 		{{- if ne "" $description -}}
 			<div class="max-width-640">{{$description | markdown}}</div>
 		{{- end -}}
 
 		{{- if $posts.NotEmpty -}}
-			<table class="table">
+			<div class="table">
 				{{- range $posts -}}
-					<tr class="hover-trigger" script="install blockselect()">
-						<td>
-							{{- if ne "" .IconURL -}}
-								<img src="{{.IconURL}}" class="square width-100% block" aria-hidden="true">
-							{{- end -}}
-						</td>
-						<td class="pos-relative padding-right-none">
-							<div class="text-xl bold margin-none">{{.Label}}</div>
-							<div class="margin-vertical flex-grow ellipsis-block">{{.Summary}}</div>
-							<a href="/{{.StreamID}}" hx-boost="true">{{first .Data.linkText "Read More"}}</a>
-							{{- if $isMyself -}}
-								<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-xs hover-show">Edit News</button>
-							{{- end -}}
-						</div>
-					</tr>
+					<div class="pos-relative hover-trigger">
+						<a href="/{{.StreamID}}" hx-boost="true" class="block text-plain text-nocolor flex-row">
+							<div class="width-128 rounded square margin-right">
+								{{- if ne "" .IconURL -}}
+									<img src="{{.IconURL}}" class="rounded square width-100% block" aria-hidden="true">
+								{{- end -}}
+							</div>
+							<div class="padding-right-none flex-column">
+								<div class="text-lg bold margin-none ellipsis">{{.Label}}</div>
+								<div class="margin-bottom flex-grow ellipsis-block" style="max-height:4em;">{{.Summary}}</div>
+								<div class="link">{{first .Data.linkText "Read More"}} &rarr;</div>
+							</div>
+						</a>
+						{{- if $isMyself -}}
+							<button hx-get="/{{.StreamID}}/edit" class="pos-absolute-top-right text-xs hover-show">Edit News</button>
+						{{- end -}}
+					</div>
 				{{- end -}}
-			</table>
+				</div>
 
 		{{- end -}}
+
 	</div>
 
 	<div hx-get="/@{{.UserID}}/news" hx-trigger="refreshPage from:window"></div>

@@ -1,5 +1,6 @@
 {{- $albums := (.Outbox.Where "templateId" "bandwagon-album").ByRankAlt.Slice -}}
 {{- $isMyself := .IsMyself -}}
+{{- $label := first (.Data "label-albums") "Albums" -}}
 {{- $description := .Data "description-albums" -}}
 
 <!-- Page content -->
@@ -8,6 +9,22 @@
 	{{- template "header" . -}}
 
 	<div class="padding pos-relative">
+
+		<div class="flex-row flex-align-center margin-top margin-bottom-xl">
+			<a href="/@{{.Username}}" hx-boost="true" class="flex-row flex-align-center">
+				<img src="{{.IconURL}}" class="circle width-32" aria-hidden="true">
+				<span class="text-lg margin-none">{{.DisplayName}}</span>
+			</a>
+			<span class="text-lg bold margin-none">&middot; {{$label}}</span>
+
+			{{- if $isMyself -}}
+				<div class="pos-absolute-top-right text-xs">
+					<button hx-get="/@{{.UserID}}/add-album" aria-label="Add an Album">{{icon "add"}} Album</button>
+					<button hx-get="/@{{.UserID}}/edit-albums" aria-label="Edit Albums">Edit</button>
+				</div>
+			{{- end -}}
+
+		</div>
 
 		{{- if ne "" $description -}}
 			<div class="max-width-640">{{$description | markdown}}</div>
@@ -46,19 +63,6 @@
 					{{- end -}}
 
 				{{- end -}}
-
-				{{- if $isMyself -}}
-
-					<div class="rounded card padding flex-center">
-						<div hx-get="/@{{.UserID}}/add-album" class="align-center link" role="button">
-							<div class="margin-vertical-xl">
-								<div class="margin-none" style="font-size:64px;">{{icon "cassette"}}</div>
-								<div class="text-xl margin-none bold">Add an Album</div>
-							</div>
-						</div>
-					</div>
-
-					{{- end -}}
 
 			</div>
 

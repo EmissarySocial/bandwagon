@@ -20,6 +20,7 @@
 					license: {type:"string"}
 					imageFilename: {type:"string", maxLength:255}
 					tags: {type:"string"}
+					releaseDate:{type:"string", format:"date"}
 					year: {type:"string", minvalue:"0000", maxvalue:"9999", required: false}
 					links: {type:"object", wildcard: {type:"string", format:"uri"}}
 					color: {type:"object", properties: {
@@ -93,7 +94,7 @@
 									children: [
 										{type:"text", path:"label", label:"Album Name"}
 										{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
-										{type:"text", path:"data.year", label:"Release Date"}
+										{type:"date", path:"data.releaseDate", label:"Release Date"}
 										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured?"}}
 									]
@@ -166,7 +167,7 @@
 									children: [
 										{type:"text", path:"label", label:"Album Name"}
 										{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
-										{type:"text", path:"data.year", label:"Release Date"}
+										{type:"date", path:"data.releaseDate", label:"Release Date"}
 										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured?"}}
 									]
