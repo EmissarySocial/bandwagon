@@ -21,7 +21,6 @@
 					imageFilename: {type:"string", maxLength:255}
 					tags: {type:"string"}
 					releaseDate:{type:"string", format:"date"}
-					year: {type:"string", minvalue:"0000", maxvalue:"9999", required: false}
 					links: {type:"object", wildcard: {type:"string", format:"uri"}}
 					color: {type:"object", properties: {
 						body: {type:"string", format:"color"},
