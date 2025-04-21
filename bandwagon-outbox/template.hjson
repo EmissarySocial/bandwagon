@@ -128,7 +128,7 @@
 									label: Basics
 									children: [
 										{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
-										{type:"textarea", path:"statusMessage", label:"About Me", description:"Displayed at the bottom of your profile page. Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
+										{type:"textarea", path:"statusMessage", label:"About Me", description:"Displayed on your profile page. Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
 										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
 										{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces.  (PUBLIC)"}
 									]
@@ -198,7 +198,7 @@
 							label: Edit Status Message
 							type: layout-vertical
 							children: [
-								{type:"textarea", path:"statusMessage", description:"Displayed at the bottom of your profile page. Markdown is allowed. (PUBLIC)", options:{rows:8, showLimit:true}}
+								{type:"textarea", path:"statusMessage", description:"Displayed on your profile page. Markdown is allowed. (PUBLIC)", options:{rows:8, showLimit:true}}
 							]
 						}
 					}

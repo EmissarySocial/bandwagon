@@ -32,6 +32,24 @@
 		}
 	}
 
+	accessRoles: {
+		buyer: {
+			label: Buyer
+			description: Buyers have purchased this album and have lifetime access to it.
+			subscription: true
+		}
+		subscriber: {
+			label: Subscriber
+			description: Subscribers have full access so long as their subscription is valid.
+			subscription: true
+		}
+		renter: {
+			label: Renter
+			description: IDK, man.  I'm just testing subscription stuff.
+			subscription: true
+		}
+	}
+
 	socialRole: Album
 	socialRules: [
 		
@@ -229,6 +247,16 @@
 					]
 				}
 				{do:"refresh-page"}
+			]
+		}
+
+		edit-subscriptions: {
+			roles: ["owner"]
+			steps: [
+				{do:"as-modal", steps: [
+					{do:"set-subscriptions", title:"Purchase Options"}
+					{do:"save", message:"Subscription settings updated by {{.Author}}"}
+				]}
 			]
 		}
 

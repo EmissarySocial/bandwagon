@@ -75,19 +75,21 @@
 
 					<div class="margin-vertical"></div>
 		
-					{{- if $isPlayable -}}
-						<div id="media-controls" class="margin-vertical-lg">
+					<div id="media-controls" class="margin-vertical-lg">
+						{{- if $isPlayable -}}
 							<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
 							<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none" aria-label="Skip Backward">{{icon "skip-backward-fill"}}</button>
 							<button hx-on:click="Pause()" class="primary playing-show margin-right-none" aria-label="Pause Playback">{{icon "pause-fill"}}</button>
-							<button hx-on:click="PlayNext(true)" class="primary playing-show" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
-						</div>
-					{{- else if and $songs.NotEmpty $canEdit -}}
-						<div class="margin-vertical-lg">
-							<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
-							<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
-						</div>
-					{{- end -}}
+							<button hx-on:click="PlayNext(true)" class="primary playing-show margin-right" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
+						{{- else if and $songs.NotEmpty $canEdit -}}
+								<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
+								<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
+						{{- end -}}
+
+						{{- if .HasSubscriptions -}}
+							<button class="outline">Buy Now</button>
+						{{- end -}}
+					</div>
 
 					<div class="text-sm">
 						<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
@@ -385,7 +387,8 @@
 
 		<div class="pos-absolute-top-right text-sm">
 			{{- if $canEdit -}}
-				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+			<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+			<button hx-get="/{{.StreamID}}/edit-subscriptions">Purchase Options</button>
 
 				{{- if .IsPublished -}}
 					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
@@ -410,6 +413,4 @@
 			</div>
 		</div>
 	{{- end -}}
-
 </div>
-

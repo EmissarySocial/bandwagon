@@ -6,6 +6,7 @@
 	{{- $albums := .Outbox.Featured.Where "templateId" "bandwagon-album" -}}
 	{{- $albums := $albums.By "data.releaseDate" -}}
 	{{- $albums := $albums.Reverse.Slice -}}
+	{{- $subscriptionCount := .Subscriptions.Count -}}
 
 	<!-- Page content -->
 	<div class="framed page h-card padding-none" script="on load add [@aria-selected=true] to #home">
@@ -83,20 +84,28 @@
 						{{- if ne "" (.Data "label-shop") -}}
 							<a href="{{.Data `shop-url`}}" rel="me" target="_blank">{{first (.Data "label-shop") "Shop"}}</a>
 						{{- end -}}
-				
 					</div>
 		
-					{{- if not .IsMyself -}}
-						<div class="margin-vertical-lg align-center md:align-left flex-row">
-							<div class="nowrap" script="on load trigger storage on window">
-								<div class="margin-none">
-									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
-									<a href="/@{{.UserID}}/feed" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
-								</div>
-								<div hx-get="/@{{.UserID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
+					<div class="margin-vertical-lg align-center md:align-left flex-row">
+						{{- if gt $subscriptionCount 0 -}}
+							<div>
+								<button hx-get="/@{{.UserID}}/subscribe" class="primary">{{icon "star"}} Subscribe</button>
+								<div class="text-xs">&nbsp;</div>
 							</div>
+						{{- end -}}
+						<div class="nowrap" script="on load trigger storage on window">
+							<div class="margin-none">
+								{{- if gt $subscriptionCount 0 -}}
+									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">{{icon "person"}} Follow</button>
+								{{- else -}}
+									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+								{{- end }}
+
+								<a href="/@{{.UserID}}/feed" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
+							</div>
+							<div hx-get="/@{{.UserID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
 						</div>
-					{{- end -}}
+					</div>
 
 				</div>
 			</div>
