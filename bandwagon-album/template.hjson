@@ -227,7 +227,7 @@
 									type:"layout-vertical"
 									label:"Distribution"
 									children:[
-										{type:"multiselect", path:"syndication", label:"Distribute to these indie streaming services", description:"These services will be notified when this album is published", options:{provider:"syndication-targets"}}
+										{type:"multiselect", path:"syndication", label:"Distribute to these streaming services", description:"These services will be notified when this album is published.", options:{provider:"syndication-targets"}}
 									]
 								}
 							]
@@ -377,21 +377,40 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
-					{
-						do: edit
-						form: {
-							type: layout-vertical
-							label: Publish this Album?
-							children:[
-								{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
-								{type:"select", path:"isFeatured", label:"Feature on Home Page", options:{enum:[{value:"false", label:"NO. Do not show on my home page"}, {value:"true", label:"YES. Show on my home page"}]}}
-								{type:"multiselect", path:"syndication", label:"Distribute to Streaming Stations", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}
-							]
-						},
-						options:["submit-label:Publish Album"]
-					}
+					{do:"if", condition:"{{eq `true` (.QueryParam `republish`)}}",
+					then:[
+						{
+							do: edit
+							form: {
+								type: layout-vertical
+								label: Re-Publish this Album?
+								description: "If you've made changes to this album, you can send updates to all distribution channels.",
+								children:[
+									{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
+									{type:"select", path:"isFeatured", label:"Feature on Home Page", options:{enum:[{value:"false", label:"NO. Do not show on my home page"}, {value:"true", label:"YES. Show on my home page"}]}}
+									{type:"multiselect", path:"syndication", label:"Distribute to Streaming Stations", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}
+								]
+							},
+							options:["submit-label:Publish Album"]
+						}
+					],
+					else:[
+						{
+							do: edit
+							form: {
+								type: layout-vertical
+								label: Publish this Album?
+								children:[
+									{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
+									{type:"select", path:"isFeatured", label:"Feature on Home Page", options:{enum:[{value:"false", label:"NO. Do not show on my home page"}, {value:"true", label:"YES. Show on my home page"}]}}
+									{type:"multiselect", path:"syndication", label:"Distribute to Streaming Stations", description:"Share this album with indie streaming services.", options:{provider:"syndication-targets"}}
+								]
+							},
+							options:["submit-label:Publish Album"]
+						}
+					]}
 					{do:"set-state", state:"published"}
-					{do:"save-and-publish", outbox:"true"}
+					{do:"save-and-publish", outbox:"true", republish:true}
 					{do:"search-index"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
@@ -426,12 +445,15 @@
 		unpublish: {
 			roles: ["author"]
 			steps: [
-				{do:"as-confirmation", title:"Un-Publish this Album?", message:"Un-Publishing this album will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish from Website "}
-				{do:"set-state", state:"unpublished"}
-				{do:"unpublish", outbox:"true"}
-				{do:"search-index"}
-				{do:"delete-archive", token:"FULL-ALBUM"}
-				{do:"refresh-page"}
+				{do:"as-modal", steps:[
+					{do:"view-html"}
+					/*{do:"as-confirmation", icon:"check", title:"Published to Internet", message:"This album has been published and is visible to everyone online.<br><br>You can un-publish it if you want to hide it.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish Album"} */
+					{do:"set-state", state:"unpublished"}
+					{do:"unpublish", outbox:"true"}
+					{do:"search-index"}
+					{do:"delete-archive", token:"FULL-ALBUM"}
+					{do:"refresh-page"}
+				]}
 			]
 		}
 

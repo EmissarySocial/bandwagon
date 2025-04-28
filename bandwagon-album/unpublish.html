@@ -1,0 +1,14 @@
+<h1 id="modal-title">{{icon "check"}} Published Album</h1>
+
+<div class="margin-vertical">
+	This album has been published and is visible to everyone online.
+	<br>
+	<br>
+	If you've made changes, you can <span hx-get="/{{.StreamID}}/publish?republish=true" class="link" role="button">re-publish to streaming partners</span> to send those updates to them.
+	<br>
+	<br>
+	You can un-publish it if you want to hide it.  You'll still be able to edit and make changes to it, but others will not see it.
+</div>
+
+<button hx-post="/{{.StreamID}}/unpublish" class="primary">Un-Publish Album</button>
+<button script="on click send closeModal">Cancel</button>
