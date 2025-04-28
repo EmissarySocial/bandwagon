@@ -1,0 +1,20 @@
+{{- $userID := .AttributedTo.UserID.Hex -}}
+{{- $permalink := .Permalink -}}
+{{- $checkoutLabel := first (.Data "checkout label") "Buy Now" -}}
+<h1 id="modal-title">{{$checkoutLabel}}</h1>
+
+<div class="table">
+	{{- range $index, $subscription := .Subscriptions.Slice -}}
+		<a href="/.checkout?userId={{$userID}}&subscriptionId={{$subscription.ID}}&return={{$permalink}}" role="link" class="text-nocolor text-plain flex-row">
+			<div class="flex-grow">
+				<div class="bold">{{$subscription.Name}}</div>
+				<div class="text-sm text-gray">{{$subscription.Description}}</div>
+			</div>
+			<div class="flex-align-self-start text-xl margin-none">&rarr;</div>
+		</a>
+	{{- end -}}
+</div>
+
+<div class="margin-top">
+	<button script="on click send closeModal">Close Window</button>
+</div>

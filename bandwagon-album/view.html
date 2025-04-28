@@ -4,12 +4,12 @@
 {{- $canEdit := .UserCan "edit" -}}
 {{- $isPlayable := false -}}
 {{- $links := .Data "links" -}}
-
 {{- range $index, $song := $songs -}}
 	{{- if ne nil $song.Data.attachmentId -}}
 		{{- $isPlayable = true -}} 
 	{{- end -}}
 {{- end -}}
+{{- $checkoutLabel := first (.Data "checkout label") "Buy Now" -}}
 
 <div id="album-{{.StreamID}}" class="page padding-none">
 
@@ -86,9 +86,11 @@
 								<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
 						{{- end -}}
 
+						<!--
 						{{- if .HasSubscriptions -}}
-							<button class="outline">Buy Now</button>
+							<button hx-get="/{{$streamID}}/checkout" class="outline">{{$checkoutLabel}}</button>
 						{{- end -}}
+						-->
 					</div>
 
 					<div class="text-sm">

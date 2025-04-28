@@ -17,6 +17,7 @@
 			data: {
 				type:object
 				properties: {
+					checkoutLabel: {type:"string", maxLength:255}
 					license: {type:"string"}
 					imageFilename: {type:"string", maxLength:255}
 					tags: {type:"string"}
@@ -250,6 +251,20 @@
 			]
 		}
 
+		checkout: {
+			roles: ["anonymous"]
+			steps: [
+				{do:"if", condition:"{{eq 1 .Subscriptions.Count }}", then:[
+					{do:"redirect-to", url:"/.checkout?subscriptionId={{.Subscriptions.Slice.First.SubscriptionID.Hex}}&return={{.Permalink}}"}
+				], else:[
+					{do:"as-modal", background:"view", steps:[
+						{do:"view-html"}
+					]}
+				]}
+			]
+		}
+
+		/*
 		edit-subscriptions: {
 			roles: ["owner"]
 			steps: [
@@ -259,6 +274,7 @@
 				]}
 			]
 		}
+		*/
 
 		delete: {
 			roles: ["author"]
