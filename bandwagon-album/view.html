@@ -391,7 +391,7 @@
 			<button hx-get="/{{.StreamID}}/edit-subscriptions">Purchase Options</button>
 
 				{{- if .IsPublished -}}
-					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
+					<button hx-get="/{{.StreamID}}/unpublish">{{icon "check"}} Published</button>
 				{{- else if $songs.NotEmpty -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
