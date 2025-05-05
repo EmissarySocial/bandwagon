@@ -264,7 +264,6 @@
 			]
 		}
 
-		/*
 		edit-subscriptions: {
 			roles: ["owner"]
 			steps: [
@@ -274,7 +273,6 @@
 				]}
 			]
 		}
-		*/
 
 		delete: {
 			roles: ["author"]
