@@ -268,7 +268,7 @@
 			roles: ["owner"]
 			steps: [
 				{do:"as-modal", steps: [
-					{do:"set-subscriptions", title:"Purchase Options"}
+					{do:"set-products", title:"Purchase Options"}
 					{do:"save", message:"Subscription settings updated by {{.Author}}"}
 				]}
 			]
