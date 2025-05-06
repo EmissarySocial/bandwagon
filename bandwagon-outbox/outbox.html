@@ -6,7 +6,9 @@
 	{{- $albums := .Outbox.Featured.Where "templateId" "bandwagon-album" -}}
 	{{- $albums := $albums.By "data.releaseDate" -}}
 	{{- $albums := $albums.Reverse.Slice -}}
-	{{- $subscriptionCount := .Subscriptions.Count -}}
+	<!--
+	{{- $productCount := .Products.Count -}}
+	-->
 
 	<!-- Page content -->
 	<div class="framed page h-card padding-none" script="on load add [@aria-selected=true] to #home">
@@ -87,19 +89,24 @@
 					</div>
 		
 					<div class="margin-vertical-lg align-center md:align-left flex-row">
-						{{- if gt $subscriptionCount 0 -}}
+						<!--
+						{{- if gt $productCount 0 -}}
 							<div>
 								<button hx-get="/@{{.UserID}}/subscribe" class="primary">{{icon "star"}} Subscribe</button>
 								<div class="text-xs">&nbsp;</div>
 							</div>
 						{{- end -}}
+						-->
 						<div class="nowrap" script="on load trigger storage on window">
 							<div class="margin-none">
-								{{- if gt $subscriptionCount 0 -}}
+								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+								<!--
+								{{- if gt $productCount 0 -}}
 									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">{{icon "person"}} Follow</button>
 								{{- else -}}
 									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
 								{{- end }}
+								-->
 
 								<a href="/@{{.UserID}}/feed" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
 							</div>

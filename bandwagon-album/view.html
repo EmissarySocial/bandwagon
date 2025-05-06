@@ -86,9 +86,11 @@
 								<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
 						{{- end -}}
 
-						{{- if .HasSubscriptions -}}
+						<!--
+						{{- if .HasProducts -}}
 							<button hx-get="/{{$streamID}}/checkout" class="outline">{{$checkoutLabel}}</button>
 						{{- end -}}
+						-->
 					</div>
 
 					<div class="text-sm">
@@ -388,7 +390,9 @@
 		<div class="pos-absolute-top-right text-sm">
 			{{- if $canEdit -}}
 			<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+			<!--
 			<button hx-get="/{{.StreamID}}/edit-subscriptions">Purchase Options</button>
+			-->
 
 				{{- if .IsPublished -}}
 					<button hx-get="/{{.StreamID}}/unpublish">{{icon "check"}} Published</button>

@@ -254,8 +254,8 @@
 		checkout: {
 			roles: ["anonymous"]
 			steps: [
-				{do:"if", condition:"{{eq 1 .Subscriptions.Count }}", then:[
-					{do:"redirect-to", url:"/.checkout?subscriptionId={{.Subscriptions.Slice.First.SubscriptionID.Hex}}&return={{.Permalink}}"}
+				{do:"if", condition:"{{eq 1 .Products.Count }}", then:[
+					{do:"redirect-to", url:"/.checkout?productId={{.Products.Slice.First.ProductID.Hex}}&return={{.Permalink}}"}
 				], else:[
 					{do:"as-modal", background:"view", steps:[
 						{do:"view-html"}
@@ -264,7 +264,8 @@
 			]
 		}
 
-		edit-subscriptions: {
+		/*
+		edit-products: {
 			roles: ["owner"]
 			steps: [
 				{do:"as-modal", steps: [
@@ -273,6 +274,7 @@
 				]}
 			]
 		}
+		*/
 
 		delete: {
 			roles: ["author"]
