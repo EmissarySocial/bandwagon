@@ -504,5 +504,20 @@
 				{do:"save"}
 			]
 		}
+
+		checkout: {
+			roles: ["self"]
+			steps: [
+				{do:"if", condition:"{{eq 1 .Products.Featured.Count}}", 
+				then:[
+					{do:"redirect-to", url:"/.checkout?productId={{.Products.Slice.First.ProductID.Hex}}&return={{.Permalink}}"}
+				], 
+				else:[
+					{do:"as-modal", steps:[
+						{do:"view-html"}
+					]}
+				]}
+			]
+		}
 	}
 }

@@ -37,17 +37,17 @@
 		buyer: {
 			label: Buyer
 			description: Buyers have purchased this album and have lifetime access to it.
-			subscription: true
+			purchasable: true
 		}
 		subscriber: {
 			label: Subscriber
 			description: Subscribers have full access so long as their subscription is valid.
-			subscription: true
+			purchasable: true
 		}
 		renter: {
 			label: Renter
 			description: IDK, man.  I'm just testing subscription stuff.
-			subscription: true
+			purchasable: true
 		}
 	}
 
@@ -264,7 +264,6 @@
 			]
 		}
 
-		/*
 		edit-products: {
 			roles: ["owner"]
 			steps: [
@@ -274,7 +273,6 @@
 				]}
 			]
 		}
-		*/
 
 		delete: {
 			roles: ["author"]

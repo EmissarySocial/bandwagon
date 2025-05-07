@@ -50,7 +50,7 @@
 			
 		<!-- First Row: Album Name and Artwork -->
 		<div class="md:flex-row margin-bottom">
-			<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-256 flex-shrink-0 pos-relative">
+			<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-320 lg:width-480 flex-shrink-0 pos-relative">
 				{{- if ne "" .IconURL -}}
 					<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
 				{{- else if $canEdit -}}
@@ -86,11 +86,10 @@
 								<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
 						{{- end -}}
 
-						<!--
 						{{- if .HasProducts -}}
-							<button hx-get="/{{$streamID}}/checkout" class="outline">{{$checkoutLabel}}</button>
+							<button hx-get="/{{$streamID}}/checkout" class="outline">{{icon "star"}} {{$checkoutLabel}}</button>
 						{{- end -}}
-						-->
+
 					</div>
 
 					<div class="text-sm">
@@ -195,7 +194,7 @@
 			</div>
 
 			<div class="md:width-32 flex-shrink-0 flex-grow-0"></div>
-			<div class="md:width-256 flex-shrink-0">
+			<div class="md:width-320 lg:width-480 flex-shrink-0">
 
 				{{- if $tags.NotEmpty -}}
 					<div id="album-tags" class="text-sm margin-bottom">
@@ -389,10 +388,8 @@
 
 		<div class="pos-absolute-top-right text-sm">
 			{{- if $canEdit -}}
-			<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
-			<!--
-			<button hx-get="/{{.StreamID}}/edit-subscriptions">Purchase Options</button>
-			-->
+				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+				<button hx-get="/{{.StreamID}}/edit-products">Purchase Options</button>
 
 				{{- if .IsPublished -}}
 					<button hx-get="/{{.StreamID}}/unpublish">{{icon "check"}} Published</button>
