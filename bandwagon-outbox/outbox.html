@@ -54,15 +54,15 @@
 			<!-- Band Name -->
 			<div class="padding md:flex-row flex-align-center margin-top">
 				<div class="md:flex-align-self-start margin-horizontal-auto align-center">
-					<img id="profile-icon" src="{{.IconURL}}" class="circle width-30% md:width-96" aria-hidden="true">
+					<img id="profile-icon" src="{{.IconURL}}" class="circle width-60% sm:width:40% md:width-96" aria-hidden="true">
 				</div>
 				<div class="flex-grow">
 					<h1 id="profile-name" class="margin-none align-center md:align-left">{{.DisplayName}}</h1>
 
-					<div class="margin-none align-center md:align-left">
-						<span id="profile-username" class="text-gray" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
+					<div class="margin-vertical sm:margin-none align-center md:align-left">
+						<span id="profile-username" class="text-gray nowrap" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
 						{{- if ne "" .Location }}
-							<span id="profile-location" class="text-gray margin-left"> {{icon "location"}} {{.Location}}</span>
+							<span id="profile-location" class="text-gray margin-left nowrap"> {{icon "location"}} {{.Location}}</span>
 						{{- end -}}
 					</div>
 
@@ -274,18 +274,16 @@
 							{{- if or .IsPublished $isMyself -}}
 
 								<div class="pos-relative hover-trigger clickable flex-column">
-									<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor flex-row">
+									<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor sm:flex-row width-100%">
 
-										<div class="hide sm:show width-128 margin-right">
-											{{- if eq "" .IconURL -}}
-												<div class="rounded square width-128" style="background-color:var(--gray20);"></div>
-											{{- else -}}
-												<img src="{{.IconURL}}" class="rounded square width-128 object-fit-cover" aria-hidden="true">
-											{{- end -}}
-										</div>
+										{{- if eq "" .IconURL -}}
+											<div class="hide sm:show rounded square width:100% sm:width-128 margin-right" style="background-color:var(--gray20);"></div>
+										{{- else -}}
+											<img src="{{.IconURL}}" class="rounded square width-100% sm:width-128 object-fit-cover margin-right" aria-hidden="true">
+										{{- end -}}
 
 										<div>
-											<div class="text-lg bold margin-none padding-none ellipsis-block">{{.Label}}</div>
+											<div class="text-lg bold margin-none padding-none ellipsis-block" style="max-height:3em;">{{.Label}}</div>
 											<div class="padding-bottom text-gray">{{.PublishDate | shortDate }}</div>
 											<div class="text-gray width-512">{{.Summary}}</div>
 											<div class="bold link">{{first .Data.linkText "Read More"}} &rarr;</div>
