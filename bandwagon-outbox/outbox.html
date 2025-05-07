@@ -77,7 +77,7 @@
 						{{- end -}}
 					</div>
 				</div>
-				<div class="margin-top-lg md:margin-none align-center md:align-left text-sm">
+				<div class="margin-top-lg md:margin-none align-center md:align-left">
 
 					<div class="nowrap" script="on load trigger storage on window">
 						<div class="margin-none">
@@ -87,10 +87,10 @@
 							{{- else -}}
 								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
 							{{- end }}
-
-							<a href="/@{{.UserID}}/feed" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
 						</div>
-						<div hx-get="/@{{.UserID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
+						<div class="margin-top-sm text-xs text-light-gray">
+							<span hx-get="/@{{.UserID}}/intent" class="clickable intentMarker-account">&nbsp;</span>
+						</div>
 					</div>
 				</div>
 			</div>
