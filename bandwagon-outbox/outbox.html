@@ -6,9 +6,7 @@
 	{{- $albums := .Outbox.Featured.Where "templateId" "bandwagon-album" -}}
 	{{- $albums := $albums.By "data.releaseDate" -}}
 	{{- $albums := $albums.Reverse.Slice -}}
-	<!--
 	{{- $productCount := .Products.Count -}}
-	-->
 
 	<!-- Page content -->
 	<div class="framed page h-card padding-none" script="on load add [@aria-selected=true] to #home">
@@ -59,16 +57,7 @@
 					<img id="profile-icon" src="{{.IconURL}}" class="circle width-30% md:width-96" aria-hidden="true">
 				</div>
 				<div class="flex-grow">
-					<div class="pos-relative">
-						<h1 id="profile-name" class="margin-none align-center md:align-left">{{.DisplayName}}</h1>
-						{{- if $isMyself -}}
-							<div class="pos-absolute-top-right-0 flex-column">
-								<button hx-get="/@me/edit" class="text-xs">Edit Profile</button>
-								<button hx-get="/@{{.UserID}}/links" class="text-xs">Edit Links</button>
-								<button hx-post="/signout" class="text-xs">Sign Out</button>
-							</div>
-						{{- end -}}
-					</div>
+					<h1 id="profile-name" class="margin-none align-center md:align-left">{{.DisplayName}}</h1>
 
 					<div class="margin-none align-center md:align-left">
 						<span id="profile-username" class="text-gray" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
@@ -87,33 +76,22 @@
 							<a href="{{.Data `shop-url`}}" rel="me" target="_blank">{{first (.Data "label-shop") "Shop"}}</a>
 						{{- end -}}
 					</div>
-		
-					<div class="margin-vertical-lg align-center md:align-left flex-row">
-						<!--
-						{{- if gt $productCount 0 -}}
-							<div>
-								<button hx-get="/@{{.UserID}}/subscribe" class="primary">{{icon "star"}} Subscribe</button>
-								<div class="text-xs">&nbsp;</div>
-							</div>
-						{{- end -}}
-						-->
-						<div class="nowrap" script="on load trigger storage on window">
-							<div class="margin-none">
+				</div>
+				<div class="margin-top-lg md:margin-none align-center md:align-left text-sm">
+
+					<div class="nowrap" script="on load trigger storage on window">
+						<div class="margin-none">
+							{{- if gt $productCount 0 -}}
+								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "person"}} Follow</button>
+								<button hx-get="/@{{.UserID}}/checkout" class="outline">{{icon "star"}} Subscribe</button>
+							{{- else -}}
 								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
-								<!--
-								{{- if gt $productCount 0 -}}
-									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">{{icon "person"}} Follow</button>
-								{{- else -}}
-									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
-								{{- end }}
-								-->
+							{{- end }}
 
-								<a href="/@{{.UserID}}/feed" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
-							</div>
-							<div hx-get="/@{{.UserID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
+							<a href="/@{{.UserID}}/feed" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
 						</div>
+						<div hx-get="/@{{.UserID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
 					</div>
-
 				</div>
 			</div>
 
@@ -124,7 +102,7 @@
 
 					{{- $albumLabel := first (.Data "label-albums") "Albums" -}}
 
-					<div class="margin-top-lg margin-bottom pos-relative">
+					<div class="margin-bottom pos-relative">
 						<a href="/@{{$username}}/albums" hx-boost="true" aria-label="View All Albums">
 							<span class="text-nocolor text-plain text-xl bold margin-right-sm">{{$albumLabel}}</span>
 							All &rarr;
@@ -192,7 +170,6 @@
 						{{- end -}}
 					</div>
 				{{- end -}}
-
 
 				<!-- Events -->
 				{{- $events := .Outbox.Featured.Where "templateId" "bandwagon-event" -}}
@@ -267,7 +244,6 @@
 					{{- end -}}
 
 				{{- end -}}
-
 
 				<!-- News -->
 				{{- $news := .Outbox.Featured.Where "templateId" "bandwagon-news" -}}
