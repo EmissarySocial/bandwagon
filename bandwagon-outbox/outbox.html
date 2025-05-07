@@ -276,11 +276,13 @@
 								<div class="pos-relative hover-trigger clickable flex-column">
 									<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor flex-row">
 
-										{{- if eq "" .IconURL -}}
-											<div class="rounded square width-128 margin-right" style="background-color:var(--gray20);"></div>
-										{{- else -}}
-											<img src="{{.IconURL}}" class="rounded square width-128 margin-right object-fit-cover" aria-hidden="true">
-										{{- end -}}
+										<div class="hide sm:show width-128 margin-right">
+											{{- if eq "" .IconURL -}}
+												<div class="rounded square width-128" style="background-color:var(--gray20);"></div>
+											{{- else -}}
+												<img src="{{.IconURL}}" class="rounded square width-128 object-fit-cover" aria-hidden="true">
+											{{- end -}}
+										</div>
 
 										<div>
 											<div class="text-lg bold margin-none padding-none ellipsis-block">{{.Label}}</div>
