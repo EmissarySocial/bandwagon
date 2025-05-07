@@ -255,7 +255,11 @@
 			roles: ["anonymous"]
 			steps: [
 				{do:"if", condition:"{{eq 1 .Products.Count }}", then:[
-					{do:"redirect-to", url:"/.checkout?productId={{.Products.Slice.First.ProductID.Hex}}&return={{.Permalink}}"}
+					{
+						do:"forward-to"
+						url:"/.checkout?productId={{.ProductIDs.First}}&return={{.Permalink}}"
+						method:"get"
+					}
 				], else:[
 					{do:"as-modal", background:"view", steps:[
 						{do:"view-html"}
