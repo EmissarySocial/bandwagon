@@ -152,7 +152,7 @@
 										</div>
 									</div>
 									<div class="text-xs align-right flex-shrink-0 nowrap">
-										<a href="/{{$song.StreamID}}" hx-boost="true" role="button" class="button">Track Info</a>
+										<a href="/{{$song.StreamID}}" hx-boost="true" hx-push-url="true" role="button" class="button">Track Info</a>
 										{{- if $canEdit -}}
 											<button hx-get="/{{$song.StreamID}}/edit" class="margin-left-sm">Edit</button>
 										{{- end -}}
