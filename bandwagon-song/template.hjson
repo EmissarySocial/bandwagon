@@ -255,5 +255,12 @@
 				]}
 			]
 		}
+
+		audio: {
+			steps:[
+				{do:"view-attachment", category:"Audio", format:["ogg", "mp3"], bitrate:128}
+			]
+		}
+
 	}
 }

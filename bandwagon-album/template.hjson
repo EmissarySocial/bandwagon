@@ -251,6 +251,12 @@
 			]
 		}
 
+		image: {
+			steps:[
+				{do:"view-attachment", category:"image", format:["webp", "jpeg", "gif"], width:800, height:800}
+			]
+		}
+
 		checkout: {
 			roles: ["anonymous"]
 			steps: [
