@@ -46,295 +46,293 @@
 			</div>
 		{{- end -}}
 	{{- end -}}
-	<div class="pos-relative padding">
-			
-		<!-- First Row: Album Name and Artwork -->
-		<div class="md:flex-row margin-bottom">
-			<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-320 lg:width-480 flex-shrink-0 pos-relative">
-				{{- if ne "" .IconURL -}}
-					<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
-				{{- else if $canEdit -}}
-					<div class="rounded square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--black)" script="install blockselect()">
-						Click here to add album art
-					</div>
-				{{- end -}}
-			</div>
-			<div class="md:width-32"></div>
-			<div class="flex-grow-1">
-				<h1 id="album-name" class="margin-vertical-none">
-					<span class="hide-visual">Album Name:</span>
-					{{.Label}}
-				</h1>
-				<div class="text-lg margin-top-none">
-					<a href="/@{{.ParentID}}" hx-boost="true" id="album-attributedTo" aria-label="Artist: {{.AttributedTo.Name}}">
-						{{.AttributedTo.Name}}
-					</a>
+
+	<div class="md:flex-row pos-relative padding">
+
+		<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-50% lg:width-40% md:margin-right-lg flex-grow-0 flex-shrink-0 margin-bottom-lg rounded pos-relative">
+			{{- if ne "" .IconURL -}}
+				<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
+			{{- else if $canEdit -}}
+				<div class="rounded width-100% square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--black)" script="install blockselect()">
+					Click here to add album art
 				</div>
-
-				{{- if .IsPublished -}}
-
-					<div class="margin-vertical"></div>
-		
-					<div id="media-controls" class="margin-vertical-lg">
-						{{- if $isPlayable -}}
-							<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
-							<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none" aria-label="Skip Backward">{{icon "skip-backward-fill"}}</button>
-							<button hx-on:click="Pause()" class="primary playing-show margin-right-none" aria-label="Pause Playback">{{icon "pause-fill"}}</button>
-							<button hx-on:click="PlayNext(true)" class="primary playing-show margin-right" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
-						{{- else if and $songs.NotEmpty $canEdit -}}
-							<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
-							<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
-						{{- end -}}
-
-						{{- if .HasProducts -}}
-							<button hx-get="/{{$streamID}}/checkout" class="outline">{{icon "star"}} {{$checkoutLabel}}</button>
-						{{- end -}}
-
-					</div>
-
-					<div class="text-sm">
-						<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
-						<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
-						<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
-					</div>
-				{{- end -}}
-			</div>
+			{{- end -}}
 		</div>
 
-		<!-- Second Row: -->
-		<div class="md:flex-row-reverse">
-
-			<!-- Song List -->
-			<div class="flex-grow-1">
-
-				{{- if $songs.NotEmpty -}}
-				
-					<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end" hx-push-url="false">
-						<div id="album-tracks" class="table">
-							{{- range $index, $song := $songs -}}
-								{{- $isplayable := ne nil $song.Data.attachmentId -}}
-								<div id="track-{{$index}}" class="clickable flex-row">
-									<div class="flex-grow flex-row track" role="button" aria-label="Play Track: {{$song.Label}}"
-										{{ if $isplayable -}}
-											hx-on:click="Toggle({{$index}})"
-										{{- else -}}
-											hx-get="/{{$song.StreamID}}"
-										{{- end -}}
-									>
-										<input type="hidden" name="keys" value="{{.StreamID}}">
-
-										{{- if and $canEdit (gt $songs.Length 1) -}}
-											<div class="">
-												<span class="drag-handle">{{icon "drag-handle"}}</span>
-											</div>
-										{{- end -}}
-
-										<div class="flex-shrink-0 nowrap" style="width:1.5em;" aria-hidden="true">
-											{{- if $isplayable -}}
-												{{- if $song.IsFeatured -}}
-													<span class="playing-hide hover-hide">{{icon "star-fill"}}</span>
-												{{- else -}}
-													<span class="playing-hide hover-hide">{{add $index 1}}.</span>
-												{{- end -}}
-												<span class="playing-hide hover-show">{{icon "play-fill"}}</span>
-												<span class="playing-show">{{icon "volume-up-fill"}}</span>
-											{{- else -}}
-												{{- if $song.IsFeatured -}}
-													<span>{{icon "star-fill"}}</span>
-												{{- else -}}
-													<span class="hide sm:show">{{add $index 1}}.</span>
-												{{- end -}}
-											{{- end -}}
-										</div>
-										<div class="flex-grow width-100%">
-											{{$song.Label}}
-											{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
-										</div>
-									</div>
-									<div class="text-xs align-right flex-shrink-0 nowrap">
-										<a href="/{{$song.StreamID}}" hx-boost="true" hx-push-url="true" role="button" class="button">Track Info</a>
-										{{- if $canEdit -}}
-											<button hx-get="/{{$song.StreamID}}/edit" class="margin-left-sm">Edit</button>
-										{{- end -}}
-									</div>
-								</div>
-
-							{{- end -}}
-
-							{{- if $canEdit -}}
-								<div hx-get="/{{.StreamID}}/add-song" role="button" class="link flex-row">
-									<div></div>
-									<div aria-hidden="true">
-										{{icon "add"}}
-									</div>
-									<div colspan="5">
-										Add Another Song
-									</div>
-								</div>
-							{{- end -}}
-
-						</div>
-					</form>
-
-				{{- else if $canEdit -}}
-
-					<div class="table">
-						<div hx-get="/{{.StreamID}}/add-song" role="button" class="clickable flex-row">
-							<div class="margin-horizontal-xs flex-align-self-center link" style="font-size:50px" aria-hidden="true">{{icon "music"}}</div>
-							<div class="flex-grow">
-								<div class="text-lg bold link nowrap">
-									Add the first song to this album
-								</div>
-								<div class="text-sm text-gray">You'll need to add at least one song to this album before you can publish it.</div>
-							</div>
-						</div>
-					</div>
-				{{- end -}}
-			
+		<div class="flex-grow margin-bottom-lg">
+			<h1 id="album-name" class="margin-vertical-none">
+				<span class="hide-visual">Album Name:</span>
+				{{.Label}}
+			</h1>
+			<div class="text-lg margin-top-none">
+				<a href="/@{{.ParentID}}" hx-boost="true" id="album-attributedTo" aria-label="Artist: {{.AttributedTo.Name}}">
+					{{.AttributedTo.Name}}
+				</a>
 			</div>
 
-			<div class="md:width-32 flex-shrink-0 flex-grow-0"></div>
-			<div class="md:width-320 lg:width-480 flex-shrink-0">
+			{{- if .IsPublished -}}
 
-				{{- if $tags.NotEmpty -}}
-					<div id="album-tags" class="text-sm margin-bottom">
-						{{- range $index, $tag := $tags -}}
-							{{- if eq "Hashtag" $tag.Type}}
-								<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm" aria-label="Hashtag: {{$tag.Name}}">#{{$tag.Name}}</a>
-							{{- end -}}
-						{{- end -}}
-					</div>
-				{{- end -}}
+				<div class="margin-vertical"></div>
+	
+				<div id="media-controls" class="margin-vertical-lg">
+					{{- if $isPlayable -}}
+						<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
+						<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none" aria-label="Skip Backward">{{icon "skip-backward-fill"}}</button>
+						<button hx-on:click="Pause()" class="primary playing-show margin-right-none" aria-label="Pause Playback">{{icon "pause-fill"}}</button>
+						<button hx-on:click="PlayNext(true)" class="primary playing-show margin-right" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
+					{{- else if and $songs.NotEmpty $canEdit -}}
+						<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
+						<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
+					{{- end -}}
 
-				{{- if ne "" .Summary -}}
-					<div id="album-notes" class="margin-bottom-lg">
-						<h3>Album Notes</h3>
-						{{.Summary | markdown}}
-					</div>
-				{{- end -}}
+					{{- if .HasProducts -}}
+						<button hx-get="/{{$streamID}}/checkout" class="outline">{{icon "star"}} {{$checkoutLabel}}</button>
+					{{- end -}}
 
-				{{- if $links.NotEmpty -}}
-					<div id="album-links" class="margin-bottom-lg">
-						<h3>Stream Online</h3>
-						{{- range $key, $value := $links -}}
-							
-							{{- if ne "" $value -}}
-								{{- $icon := "music-note-beamed" -}}
-								{{- $label := $value -}}
+				</div>
 
-								{{- if eq "AMAZON" $key -}}
-									{{- $label = "Amazon Music" -}}
-									{{- $icon = "amazon" -}}
+				<div class="text-sm">
+					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
+					<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
+				</div>
+			{{- end -}}
 
-								{{- else if eq "APPLE" $key -}}
-									{{- $icon = "apple" -}}
-									{{- $label = "Apple Music" -}}
+			<!-- Song List -->
+			{{- if $songs.NotEmpty -}}
+			
+				<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end" hx-push-url="false">
+					<div id="album-tracks" class="table margin-top-lg">
+						{{- range $index, $song := $songs -}}
+							{{- $isplayable := ne nil $song.Data.attachmentId -}}
+							<div id="track-{{$index}}" class="clickable flex-row">
+								<div class="flex-grow flex-row track" role="button" aria-label="Play Track: {{$song.Label}}"
+									{{ if $isplayable -}}
+										hx-on:click="Toggle({{$index}})"
+									{{- else -}}
+										hx-get="/{{$song.StreamID}}"
+									{{- end -}}
+								>
+									<input type="hidden" name="keys" value="{{.StreamID}}">
 
-								{{- else if eq "BANDCAMP" $key -}}
-									{{- $label = "Bandcamp" -}}
-
-								{{- else if eq "GOOGLE" $key -}}
-									{{- $label = "Google Play" -}}
-									{{- $icon = "google" -}}
-
-								{{- else if eq "IHEARTRADIO" $key -}}
-									{{- $label = "iHeartRadio" -}}
-
-								{{- else if eq "PANDORA" $key -}}
-									{{- $label = "Pandora" -}}
-
-								{{- else if eq "SOUNDCLOUD" $key -}}
-									{{- $label = "SoundCloud" -}}
-									{{- $icon = "cloud" -}}
-
-								{{- else if eq "SPOTIFY" $key -}}
-									{{- $label = "Spotify" -}}
-									{{- $icon = "spotify" -}}
-
-								{{- else if eq "TIDAL" $key -}}
-									{{- $label = "Tidal" -}}
-
-								{{- else if eq "YOUTUBE" $key -}}
-									{{- $label = "YouTube Music" -}}
-									{{- $icon = "youtube" -}}
-
-								{{- else -}}
-									{{- $label = domainOnly $value -}}
-
-								{{- end -}}
-
-								<a href="{{$value}}" class="block ellipsis" target="_blank">
-									<i class="bi bi-{{$icon}}"></i> {{ $label }}
-								</a>
-							{{- end -}}
-
-						{{- end -}}
-						</div>
-				{{- end -}}
-
-				{{- $uploads := .AttachmentsByCategory "other" -}}
-				{{- if or $uploads.NotEmpty $canEdit -}}
-					<div id="album-attachments" class="margin-bottom-lg">
-						<div class="flex-row">
-							<h3 class="flex-grow margin-none">Other Files</h3>
-						</div>
-
-						{{- if $canEdit -}}
-							<div class="margin-bottom-sm">
-								<div class="text-gray">Attachments like <b class="nowrap">liner notes</b> or <b class="nowrap">album art</b> that anyone can access.</div>
-								<span hx-get="/{{$streamID}}/upload" class="link" role="button" aria-label="Attach a File">{{icon "upload"}} Attach a File</span>
-							</div>
-						{{- end -}}
-
-						{{- if $uploads.NotEmpty -}}
-							<div class="table margin-top-lg">
-								{{- range $index, $upload := $uploads -}}
-									<div class="flex-row padding-vertical-sm">
-										<div class="flex-grow">
-											<a href="/{{$streamID}}/attachments/{{.AttachmentID.Hex}}" target="_blank" class="ellipsis">{{.Label}}</a><br>
-											<span class="text-sm text-gray">{{.Description}}</span>
+									{{- if and $canEdit (gt $songs.Length 1) -}}
+										<div class="">
+											<span class="drag-handle">{{icon "drag-handle"}}</span>
 										</div>
-										{{- if $canEdit -}}
-											<div>
-												<button hx-get="/{{$streamID}}/edit-upload?attachmentId={{.AttachmentID.Hex}}" title="Edit Attachment" aria-label="Edit Attachment" class="text-xs margin-left-sm">{{icon "more-horizontal"}}</button>
-											</div>
+									{{- end -}}
+
+									<div class="flex-shrink-0 nowrap" style="width:1.5em;" aria-hidden="true">
+										{{- if $isplayable -}}
+											{{- if $song.IsFeatured -}}
+												<span class="playing-hide hover-hide">{{icon "star-fill"}}</span>
+											{{- else -}}
+												<span class="playing-hide hover-hide">{{add $index 1}}.</span>
+											{{- end -}}
+											<span class="playing-hide hover-show">{{icon "play-fill"}}</span>
+											<span class="playing-show">{{icon "volume-up-fill"}}</span>
+										{{- else -}}
+											{{- if $song.IsFeatured -}}
+												<span>{{icon "star-fill"}}</span>
+											{{- else -}}
+												<span class="hide sm:show">{{add $index 1}}.</span>
+											{{- end -}}
 										{{- end -}}
 									</div>
-								{{- end -}}
+									<div class="flex-grow width-100%">
+										{{$song.Label}}
+										{{ if eq true $song.Data.explicit }}<span class="text-gray text-xs margin-left-sm">{{icon "explicit-fill"}}</span>{{ end }}
+									</div>
+								</div>
+								<div class="text-xs align-right flex-shrink-0 nowrap">
+									<a href="/{{$song.StreamID}}" hx-boost="true" role="button" class="button">Track Info</a>
+									{{- if $canEdit -}}
+										<button hx-get="/{{$song.StreamID}}/edit" class="margin-left-sm">Edit</button>
+									{{- end -}}
+								</div>
+							</div>
+
+						{{- end -}}
+
+						{{- if $canEdit -}}
+							<div hx-get="/{{.StreamID}}/add-song" role="button" class="link flex-row">
+								<div></div>
+								<div aria-hidden="true">
+									{{icon "add"}}
+								</div>
+								<div colspan="5">
+									Add Another Song
+								</div>
 							</div>
 						{{- end -}}
-					</div>
-				{{- end -}}
 
-				<div id="album-license" class="margin-bottom-lg">
-					{{- $license := .DataString "license"}}
-					{{- if eq "COPYRIGHT" $license -}}
-						<h3 class="margin-none">License</h3>
-						<div>
-							&copy; Copyright
-							{{- if ne nil (.Data "year") }}
-								{{.Data "year"}}.
-							{{- else -}}
-								.
-							{{- end }}
-							All Rights Reserved.
+					</div>
+				</form>
+
+			{{- else if $canEdit -}}
+
+				<div class="table margin-vertical-lg">
+					<div hx-get="/{{.StreamID}}/add-song" role="button" class="clickable flex-row">
+						<div class="margin-horizontal-xs flex-align-self-center link" style="font-size:50px" aria-hidden="true">{{icon "music"}}</div>
+						<div class="flex-grow">
+							<div class="text-lg bold link nowrap">
+								Add the first song to this album
+							</div>
+							<div class="text-sm text-gray">You'll need to add at least one song to this album before you can publish it.</div>
 						</div>
-					{{- else if ne "" $license -}}
-						{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
-						{{- $licenseInfo := $licenses.Value $license -}}
-						<h3 class="margin-none">License</h3>
-						<div>
-							<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
-								{{icon $licenseInfo.Icon}} 
-								{{ if ne nil (.Data "year") }}
-									{{.Data "year"}}
-								{{- end }}
-								{{$licenseInfo.Label}}
+					</div>
+				</div>
+			{{- end -}}
+					
+		</div>
+
+	</div>
+
+	<div class="md:flex-row padding" style="background-color:rgba(0,0,0,0.08);">
+
+		<div class="md:width-50% lg:width-40% md:margin-right-lg flex-grow-0 flex-shrink-0 margin-bottom-lg">
+
+			{{- if ne "" .Summary -}}
+				<div id="album-notes" class="margin-bottom-lg text-gray">
+					<h3>Album Notes</h3>
+					{{.Summary | markdown}}
+				</div>
+			{{- end -}}
+
+		</div>
+
+		<div class="md:width-30% flex-grow-0 flex-shrink-0 margin-bottom-lg">
+
+			{{- if $tags.NotEmpty -}}
+				<h3>Hashtags</h3>
+				<div id="album-tags" class="text-sm margin-bottom">
+					{{- range $index, $tag := $tags -}}
+						{{- if eq "Hashtag" $tag.Type}}
+							<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm" aria-label="Hashtag: {{$tag.Name}}">#{{$tag.Name}}</a>
+						{{- end -}}
+					{{- end -}}
+				</div>
+			{{- end -}}
+
+			{{- if $links.NotEmpty -}}
+				<div id="album-links" class="margin-bottom-lg">
+					<h3>Stream Online</h3>
+					{{- range $key, $value := $links -}}
+						
+						{{- if ne "" $value -}}
+							{{- $icon := "music-note-beamed" -}}
+							{{- $label := $value -}}
+
+							{{- if eq "AMAZON" $key -}}
+								{{- $label = "Amazon Music" -}}
+								{{- $icon = "amazon" -}}
+
+							{{- else if eq "APPLE" $key -}}
+								{{- $icon = "apple" -}}
+								{{- $label = "Apple Music" -}}
+
+							{{- else if eq "BANDCAMP" $key -}}
+								{{- $label = "Bandcamp" -}}
+
+							{{- else if eq "GOOGLE" $key -}}
+								{{- $label = "Google Play" -}}
+								{{- $icon = "google" -}}
+
+							{{- else if eq "IHEARTRADIO" $key -}}
+								{{- $label = "iHeartRadio" -}}
+
+							{{- else if eq "PANDORA" $key -}}
+								{{- $label = "Pandora" -}}
+
+							{{- else if eq "SOUNDCLOUD" $key -}}
+								{{- $label = "SoundCloud" -}}
+								{{- $icon = "cloud" -}}
+
+							{{- else if eq "SPOTIFY" $key -}}
+								{{- $label = "Spotify" -}}
+								{{- $icon = "spotify" -}}
+
+							{{- else if eq "TIDAL" $key -}}
+								{{- $label = "Tidal" -}}
+
+							{{- else if eq "YOUTUBE" $key -}}
+								{{- $label = "YouTube Music" -}}
+								{{- $icon = "youtube" -}}
+
+							{{- else -}}
+								{{- $label = domainOnly $value -}}
+
+							{{- end -}}
+
+							<a href="{{$value}}" class="block ellipsis" target="_blank">
+								<i class="bi bi-{{$icon}}"></i> {{ $label }}
 							</a>
+						{{- end -}}
+
+					{{- end -}}
+					</div>
+			{{- end -}}
+
+			{{- $uploads := .AttachmentsByCategory "other" -}}
+			{{- if or $uploads.NotEmpty $canEdit -}}
+				<div id="album-attachments" class="margin-bottom-lg">
+					<div class="flex-row">
+						<h3 class="flex-grow margin-none">Other Files</h3>
+					</div>
+
+					{{- if $canEdit -}}
+						<div class="margin-bottom-sm">
+							<div class="text-gray">Attachments like <b class="nowrap">liner notes</b> or <b class="nowrap">album art</b> that anyone can access.</div>
+							<span hx-get="/{{$streamID}}/upload" class="link" role="button" aria-label="Attach a File">{{icon "upload"}} Attach a File</span>
+						</div>
+					{{- end -}}
+
+					{{- if $uploads.NotEmpty -}}
+						<div class="table margin-top-lg">
+							{{- range $index, $upload := $uploads -}}
+								<div class="flex-row padding-vertical-sm">
+									<div class="flex-grow">
+										<a href="/{{$streamID}}/attachments/{{.AttachmentID.Hex}}" target="_blank" class="ellipsis">{{.Label}}</a><br>
+										<span class="text-sm text-gray">{{.Description}}</span>
+									</div>
+									{{- if $canEdit -}}
+										<div>
+											<button hx-get="/{{$streamID}}/edit-upload?attachmentId={{.AttachmentID.Hex}}" title="Edit Attachment" aria-label="Edit Attachment" class="text-xs margin-left-sm">{{icon "more-horizontal"}}</button>
+										</div>
+									{{- end -}}
+								</div>
+							{{- end -}}
 						</div>
 					{{- end -}}
 				</div>
-	
+			{{- end -}}
+
+			<div id="album-license" class="margin-bottom-lg">
+				{{- $license := .DataString "license"}}
+				{{- if eq "COPYRIGHT" $license -}}
+					<h3 class="margin-none">License</h3>
+					<div>
+						&copy; Copyright
+						{{- if ne nil (.Data "year") }}
+							{{.Data "year"}}.
+						{{- else -}}
+							.
+						{{- end }}
+						All Rights Reserved.
+					</div>
+				{{- else if ne "" $license -}}
+					{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
+					{{- $licenseInfo := $licenses.Value $license -}}
+					<h3 class="margin-none">License</h3>
+					<div>
+						<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
+							{{icon $licenseInfo.Icon}} 
+							{{ if ne nil (.Data "year") }}
+								{{.Data "year"}}
+							{{- end }}
+							{{$licenseInfo.Label}}
+						</a>
+					</div>
+				{{- end -}}
 			</div>
 
 		</div>
