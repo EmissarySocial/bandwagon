@@ -341,7 +341,9 @@
 				<div class="md:width-60% lg:width-50% hover-trigger pos-relative">
 					<div class="flex-row flex-align-center">
 						<h3>About {{.DisplayName}}</h3>
-						<button hx-get="/@{{.UserID}}/edit-status" class="text-xs hover-show">Edit</button>
+						{{- if $isMyself -}}
+							<button hx-get="/@{{.UserID}}/edit-status" class="text-xs hover-show">Edit</button>
+						{{- end -}}
 					</div>
 					<div id="profile-status" class="margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
 
