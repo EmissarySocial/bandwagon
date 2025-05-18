@@ -33,7 +33,7 @@
 		}
 	}
 
-	accessRoles: {
+	roles: {
 		buyer: {
 			label: Buyer
 			description: Buyers have purchased this album and have lifetime access to it.
@@ -161,13 +161,17 @@
 				{do:"forward-to", url: "/{{.StreamID}}"}
 			]
 		}
+		
 		view: {
-			roles: ["editor", "owner"]
+			roles: ["author"]
 			stateRoles: {
 				published: ["anonymous"]
 			}
-			do: "view-html"
+			steps:[
+				{do: "view-html"}
+			]
 		}
+
 		edit: {
 			roles: ["author"]
 			steps: [
@@ -275,7 +279,7 @@
 		}
 
 		edit-products: {
-			roles: ["owner"]
+			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps: [
 					{do:"set-products", title:"Purchase Options"}
@@ -330,15 +334,8 @@
 			]
 		}
 
-		links: {
-			steps:[
-				{do:"as-modal", steps:[
-					{do:"view-html"}
-				]}
-			]
-		}
-
 		stylesheet: {
+			roles:["anonymous"]
 			steps: [
 				{do:"cache-url"}
 				{do:"view-css"}
@@ -346,6 +343,7 @@
 		}
 
 		upload: {
+			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"view-html"}
@@ -364,6 +362,7 @@
 		}
 
 		edit-upload: {
+			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"with-attachment", steps:[
@@ -390,6 +389,7 @@
 		}
 
 		delete-upload: {
+			roles: ["author"]
 			steps: [
 				{do:"as-confirmation", title:"Delete this Attachment?", message:"Are you sure you want to delete this attachment? There is NO UNDO.", submit:"DELETE"}
 				{do:"delete-attachments"}
@@ -482,12 +482,14 @@
 		}
 
 		icon: {
+			roles:["anonymous"]
 			steps: [
 				{do:"redirect-to", url:"{{.IconURL}}"}
 			]
 		}
 
 		zip9348103752: {
+			roles:["anonymous"]
 			steps: [
 				{do:"get-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					

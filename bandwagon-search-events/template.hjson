@@ -23,12 +23,16 @@
 	}
 
 	actions: {
+		
 		embed: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-html", as-full-page:true}
 			]
 		}
+
 		view: {
+			roles: ["anonymous"]
 			steps:[
 				{do:"if", condition:"{{eq `` (.QueryParam `date`)}}", then:[
 					{do:"set-query-param", date:"next-30-days"}
@@ -38,6 +42,7 @@
 		}
 
 		feed: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-feed", search-types:["Event"]}
 			]

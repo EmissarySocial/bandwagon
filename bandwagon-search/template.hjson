@@ -126,16 +126,19 @@
 		}
 
 		view: {
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]
 		}
 		view-results: {
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]
 		}
 		view-suggestions: {
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]

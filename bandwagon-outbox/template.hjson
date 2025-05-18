@@ -42,6 +42,7 @@
 	actions: {
 
 		create: {
+			roles: ["self"]
 			steps:[
 				{
 					do:"set-data", 
@@ -55,10 +56,33 @@
 			]
 		}
 
-		view: {do:"view-html", file:"outbox"}
-		albums: {do:"view-html"}
-		events: {do:"view-html"}
-		news: {do:"view-html"}
+		view: {
+			roles: ["anonymous"]
+			steps: [
+				{do:"view-html", file:"outbox"}
+			]
+		}
+		
+		albums: {
+			roles: ["self"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
+		
+		events: {
+			roles: ["self"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
+		
+		news: {
+			roles: ["self"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
 
 		add-album: {
 			roles: ["self"]
@@ -375,12 +399,14 @@
 		}
 
 		header: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-html", file:"header"}
 			]
 		}
 
 		stylesheet: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-css"}
 			]

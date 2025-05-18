@@ -24,12 +24,14 @@
 
 	actions: {
 		view-albums: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-html"}
 			]
 		}
 
 		feed: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-feed", search-types:["Album"]}
 			]

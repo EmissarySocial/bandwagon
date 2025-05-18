@@ -150,6 +150,7 @@
 		}
 
 		view: {
+			roles:["anonymous"]
 			steps:[
 				{do:"view-html"}	
 			]

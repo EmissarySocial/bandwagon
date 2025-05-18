@@ -143,7 +143,14 @@
 				{do:"forward-to", url:"/{{.StreamID}}"}
 			]
 		}
-		view: {do:"view-html"}
+
+		view: {
+			roles:["anonymous"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
+
 		edit: {
 			roles: ["author"]
 			steps: [
@@ -266,6 +273,7 @@
 		}
 
 		stylesheet: {
+			roles:["anonymous"]
 			steps:[
 				{do:"view-css"}
 			]
