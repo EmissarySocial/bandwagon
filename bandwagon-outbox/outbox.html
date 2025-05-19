@@ -9,7 +9,7 @@
 	{{- $productCount := .Products.Count -}}
 
 	<!-- Page content -->
-	<div class="framed page h-card padding-none" script="on load add [@aria-selected=true] to #home">
+	<div class="framed page h-card padding-none" script="on load take .selected from .nav-item for #nav-outbox">
 
 		<title>{{.DisplayName}}</title>
 		<link rel="icon" href="{{.IconURL}}"/>
