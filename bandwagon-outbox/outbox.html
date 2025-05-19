@@ -9,7 +9,12 @@
 	{{- $productCount := .Products.Count -}}
 
 	<!-- Page content -->
-	<div class="framed page h-card padding-none" script="on load take .selected from .nav-item for #nav-outbox">
+	<div class="framed page h-card padding-none" 
+		script="{{- if .IsMyself -}}
+			on load take .selected from .nav-item for #nav-outbox
+		{{- else -}}
+			on load remove .selected from .nav-item
+		{{- end -}}">
 
 		<title>{{.DisplayName}}</title>
 		<link rel="icon" href="{{.IconURL}}"/>
