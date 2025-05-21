@@ -86,7 +86,10 @@
 					{{- end -}}
 
 					{{- if .HasProducts -}}
-						<button hx-get="/{{$streamID}}/checkout" class="outline">{{icon "star"}} {{$checkoutLabel}}</button>
+						<button hx-get="/{{$streamID}}/checkout" class="outline">
+							<span class="htmx-request-hide">{{icon "star"}}</span>
+							<span class="htmx-request-show"><span class="spin">{{icon "loading"}}</span></span>
+							{{$checkoutLabel}}</button>
 					{{- end -}}
 
 				</div>
@@ -397,10 +400,6 @@
 
 			{{- end -}}
 
-			{{- if .UserCan "zip" -}}
-				<a class="button" href="/{{.StreamID}}/zip">Download</a>
-			{{- end -}}
-
 		</div>
 
 	</div>
@@ -415,8 +414,5 @@
 			</div>
 		</div>
 	{{- end -}}
-
-		<pre>{{.ProductIDs | jsonIndent}}</pre>
-
 
 </div>
