@@ -3,7 +3,7 @@
 	templateRole: album
 	model: Stream
 	containedBy: ["outbox"]
-	extends: ["base-intent", "bandwagon-common"]
+	extends: ["base-purchase", "base-intent", "bandwagon-common"]
 	icon: album
 	label: Album (Default)
 	description: Contains one or more songs
@@ -258,33 +258,6 @@
 		image: {
 			steps:[
 				{do:"view-attachment", category:"image", format:["webp", "jpeg", "gif"], width:800, height:800}
-			]
-		}
-
-		checkout: {
-			roles: ["anonymous"]
-			steps: [
-				{do:"if", condition:"{{eq 1 .Products.Count }}", then:[
-					{
-						do:"forward-to"
-						url:"/.checkout?productId={{.ProductIDs.First}}&return={{.Permalink}}"
-						method:"get"
-					}
-				], else:[
-					{do:"as-modal", background:"view", steps:[
-						{do:"view-html"}
-					]}
-				]}
-			]
-		}
-
-		edit-products: {
-			roles: ["author"]
-			steps: [
-				{do:"as-modal", steps: [
-					{do:"set-products", title:"Purchase Options"}
-					{do:"save", message:"Subscription settings updated by {{.Author}}"}
-				]}
 			]
 		}
 

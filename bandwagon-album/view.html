@@ -387,18 +387,20 @@
 		<div class="pos-absolute-top-right text-sm">
 			{{- if $canEdit -}}
 				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
-				<button hx-get="/{{.StreamID}}/edit-products">Purchase Options</button>
 
 				{{- if .IsPublished -}}
 					<button hx-get="/{{.StreamID}}/unpublish">{{icon "check"}} Published</button>
 				{{- else if $songs.NotEmpty -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
+				<button hx-get="/{{.StreamID}}/edit-purchase">Purchases &rarr;</button>
+
 			{{- end -}}
 
 			{{- if .UserCan "zip" -}}
 				<a class="button" href="/{{.StreamID}}/zip">Download</a>
 			{{- end -}}
+
 		</div>
 
 	</div>
@@ -413,4 +415,8 @@
 			</div>
 		</div>
 	{{- end -}}
+
+		<pre>{{.ProductIDs | jsonIndent}}</pre>
+
+
 </div>
