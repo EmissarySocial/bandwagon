@@ -34,19 +34,9 @@
 	}
 
 	roles: {
-		buyer: {
-			label: Buyer
-			description: Buyers have purchased this album and have lifetime access to it.
-			purchasable: true
-		}
-		subscriber: {
-			label: Subscriber
-			description: Subscribers have full access so long as their subscription is valid.
-			purchasable: true
-		}
-		renter: {
-			label: Renter
-			description: IDK, man.  I'm just testing subscription stuff.
+		paid: {
+			label: Paid Album
+			description: Select the products that give special access to paid purchasers and subscribers
 			purchasable: true
 		}
 	}
