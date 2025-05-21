@@ -6,7 +6,6 @@
 	{{- $albums := .Outbox.Featured.Where "templateId" "bandwagon-album" -}}
 	{{- $albums := $albums.By "data.releaseDate" -}}
 	{{- $albums := $albums.Reverse.Slice -}}
-	{{- $productCount := .Products.Count -}}
 
 	<!-- Page content -->
 	<div class="framed page h-card padding-none" 
@@ -87,12 +86,17 @@
 
 					<div class="nowrap" script="on load trigger storage on window">
 						<div class="margin-none">
+							<!--
 							{{- if gt $productCount 0 -}}
 								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "person"}} Follow</button>
 								<button hx-get="/@{{.UserID}}/checkout" class="outline">{{icon "star"}} Subscribe</button>
 							{{- else -}}
 								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
 							{{- end }}
+							-->
+
+							<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+
 						</div>
 						<div class="margin-top-sm text-xs text-light-gray">
 							<span hx-get="/@{{.UserID}}/intent" class="clickable intentMarker-account">&nbsp;</span>
