@@ -20,6 +20,17 @@
 	{{- $token := .Token -}}
 	{{- $group := groupie -}}
 
+	<div class="flex-row text-sm">
+		<div class="flex-grow"></div>
+		<div class="margin-bottom nowrap" script="on load trigger storage on window">
+			<div class="margin-bottom-sm">
+				<button hx-post="/.searchQuery?types=Event&{{.RawQuery}}&forward=/{{.StreamID}}/intent%3Fintent%3Dfollow%26object=" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+				<a href="/{{.Token}}/feed?{{.QueryString}}" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
+			</div>
+			<div hx-get="/{{.StreamID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
+		</div>
+	</div>
+
 	<div class="table margin-bottom-lg">
 		{{- range $index, $result := $results -}}
 
@@ -60,10 +71,6 @@
 			</a>
 
 		{{- end -}}
-	</div>
-
-	<div class="text-sm">
-		<a href="/{{.Token}}/feed?{{.QueryString}}" class="button" target="_blank">{{icon "rss"}} Subscribe with RSS</a>
 	</div>
 
 {{- end -}}
