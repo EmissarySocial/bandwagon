@@ -86,10 +86,18 @@
 					{{- end -}}
 
 					{{- if .HasProducts -}}
-						<button hx-get="/{{$streamID}}/checkout" class="outline">
-							<span class="htmx-request-hide">{{icon "star"}}</span>
-							<span class="htmx-request-show"><span class="spin">{{icon "loading"}}</span></span>
-							{{$checkoutLabel}}</button>
+						{{- if .UserHasRole "paid" -}}
+							<button class="outline">
+								{{icon "download"}}
+								DOWNLOAD OMFG
+							</button>
+						{{- else -}}
+							<button hx-get="/{{$streamID}}/checkout" class="outline">
+								<span class="htmx-request-hide">{{icon "star"}}</span>
+								<span class="htmx-request-show"><span class="spin">{{icon "loading"}}</span></span>
+								{{$checkoutLabel}}
+							</button>
+						{{- end -}}
 					{{- end -}}
 
 				</div>
