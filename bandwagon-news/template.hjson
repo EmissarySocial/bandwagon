@@ -5,6 +5,8 @@
 	label: News Item
 	extends: ["base-intent"]
 	containedBy: ["outbox"]
+
+
 	schema: {
 		type:object
 		properties: {
@@ -19,6 +21,17 @@
 				linkText: {type:"string"}
 				bannerUrl: {type:"string", format:"url"}
 			}}
+		}
+	}
+
+	states: {
+		default: {
+			label: Unpublished,
+			description: This item can only be seen by artists
+		}
+		published: {
+			label: Published,
+			description: This item is visible to everyone
 		}
 	}
 
@@ -150,7 +163,10 @@
 		}
 
 		view: {
-			roles:["anonymous"]
+			roles:["author"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps:[
 				{do:"view-html"}	
 			]
@@ -160,7 +176,7 @@
 			roles: ["author"]
 			steps: [
 				{do:"delete"}
-				{do:"unpublish", outbox:"true"}
+				{do:"unpublish", state:"default", outbox:"true"}
 				{do:"refresh-page"}
 			]
 		}
@@ -180,8 +196,7 @@
 						},
 						options:["submit-label:Publish"]
 					}
-					{do:"set-state", state:"published"}
-					{do:"save-and-publish", outbox:"true"}
+					{do:"save-and-publish", state:"published", outbox:"true"}
 					{do:"search-index"}
 					{do:"refresh-page"}
 				]}
@@ -192,8 +207,7 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-confirmation", title:"Un-Publish this News?", message:"Un-Publishing this news will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish from Website"}
-				{do:"set-state", state:"unpublished"}
-				{do:"unpublish", outbox:"true"}
+				{do:"unpublish", state:"default", outbox:"true"}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]

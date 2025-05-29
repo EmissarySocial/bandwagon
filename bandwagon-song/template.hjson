@@ -4,6 +4,14 @@
 	label: Song
 	extends: ["base-intent", "bandwagon-common"]
 	containedBy: ["album"]
+
+	states: {
+		published: {
+			label: Published,
+			description: This item has been published and is visible on the website
+		}
+	}
+
 	schema: {
 		type: object
 		properties: {

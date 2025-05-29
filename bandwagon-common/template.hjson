@@ -6,6 +6,13 @@
 	label: Bandwagon Common
 	description: Common elements for Bandwagon apps
 
+	states: {
+		default: {
+			label: Default
+			description: Default state for Bandwagon Common
+		}
+	}
+
 	datasets: {
 		"licenses": [
 			{value:"COPYRIGHT", label:"All Rights Reserved", icon:"copyright"},

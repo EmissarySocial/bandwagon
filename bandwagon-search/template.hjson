@@ -21,7 +21,16 @@
 			}
 		}    
 	}
-	states: {}
+	states: {
+		default: {
+			label: "Default State",
+			description: "Search templates do not use any other states"
+		}
+		published: {
+			label: "Published",
+			description: "This page can be viewed on the website"
+		}
+	}
 	roles: {}
 
 	bundles: {
@@ -66,7 +75,7 @@
 						]
 					}
 				}
-				{do: "save-and-publish"}
+				{do:"save"}
 				{do:"forward-to", url:"/{{.StreamID}}/edit"}
 			]
 		}
@@ -104,10 +113,29 @@
 						}
 					}
 				]}
-				{do: "save-and-publish", message:"Edited by {{.Author.DisplayName}}"}
+				{do: "save", message:"Edited by {{.Author.DisplayName}}"}
 				{do: "refresh-page"}
 			]
 		}
+
+		publish: {
+			roles: ["owner"]
+			steps: [
+				{do:"as-confirmation", title:"Publish This Search Page?", message:"This will make the page visible to the public."}
+				{do:"save-and-publish", state:"published", message:"Published by {{.Author.DisplayName}}"}
+				{do:"forward-to", url:"/{{.StreamID}}"}
+			]
+		}
+
+		unpublish: {
+			roles: ["owner"]
+			steps: [
+				{do:"as-confirmation", title:"Unpublish This Search Page?", message:"This will make the page invisible to the public."}
+				{do:"unpublish", state:"default", message:"Unpublished by {{.Author.DisplayName}}"}
+				{do:"forward-to", url:"/{{.StreamID}}"}
+			]
+		}
+
 		delete: {
 			roles: ["owner"]
 			steps: [
@@ -115,30 +143,31 @@
 				{do:"forward-to", url:"/{{.ParentID}}"}
 			]
 		}
-		sharing: {
-			roles: ["owner"]
-			steps: [
-				{do:"as-modal", steps: [
-					{do:"set-simple-sharing", roles: ["viewer"], title:"Who Can See This Article?", message:"Select who can view and comment on this article."}
-					{do:"save", message:"Sharing updated by {{.Author}}"}
-				]}
-			]
-		}
 
 		view: {
-			roles: ["anonymous"]
+			roles: ["owner"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps:[
 				{do:"view-html"}
 			]
 		}
+
 		view-results: {
-			roles: ["anonymous"]
+			roles: ["owner"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps:[
 				{do:"view-html"}
 			]
 		}
 		view-suggestions: {
-			roles: ["anonymous"]
+			roles: ["owner"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps:[
 				{do:"view-html"}
 			]

@@ -33,12 +33,27 @@
 		}
 	}
 
+	states: {
+		default: {
+			label: Default,
+			description: This item is not visible on the website
+		}
+
+		published: {
+			label: Published,
+			description: This item has been published and is visible on the website
+		}
+	}
 	roles: {
 		paid: {
 			label: Paid Album
 			description: Select the products that give special access to paid purchasers and subscribers
 			purchasable: true
 		}
+	}
+
+	bundles: {
+		javascript: {contentType: "text/javascript"}
 	}
 
 	socialRole: Album
@@ -68,20 +83,6 @@
 		summary:""
 		text: "{{.Label}} {{.AttributedTo.Name}}"
 		tags: "LIC:{{index .Data `license`}}"
-	}
-
-	states: {
-		unpublished: {
-			label:"Default State"
-			description:"Visible only to Authors and Owners"
-		}
-		published: {
-			label:"Published"
-			description:"Visible to all people with permissions"
-		}
-	}
-	bundles: {
-		javascript: {contentType: "text/javascript"}
 	}
 
 	actions: {
@@ -434,9 +435,7 @@
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"view-html"}
-					/*{do:"as-confirmation", icon:"check", title:"Published to Internet", message:"This album has been published and is visible to everyone online.<br><br>You can un-publish it if you want to hide it.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish Album"} */
-					{do:"set-state", state:"unpublished"}
-					{do:"unpublish", outbox:"true"}
+					{do:"unpublish", state:"default", outbox:"true"}
 					{do:"search-index"}
 					{do:"delete-archive", token:"FULL-ALBUM"}
 					{do:"refresh-page"}

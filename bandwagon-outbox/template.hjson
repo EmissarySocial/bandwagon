@@ -4,6 +4,7 @@
 	model: User
 	label: Bandwagon Outbox
 	extends: ["user-outbox"]
+
 	schema: {
 		type: object
 		properties: {
@@ -34,6 +35,26 @@
 					color-button: {type:"string", format:"color"}
 				}
 			}
+		}
+	}
+
+	states: {
+		default: {
+			label: Default State,
+			description: This template does not use states
+		}
+		"WIZARD-STEP-1": {
+			label: Step 1 of 3
+		}
+		"WIZARD-STEP-2": {
+			label: Step 2 of 3
+		}
+		"WIZARD-STEP-3": {
+			label: Step 3 of 3
+		}
+		LIVE: {
+			label: Live
+			description: This template is visible to all viewers
 		}
 	}
 

@@ -7,6 +7,14 @@
 	icon: home
 	label: Bandwagon News Search
 	description: Search Engine for News
+
+	states: {
+		published: {
+			label: Published,
+			description: This item has been published and is visible on the website
+		}
+	}
+
 	schema: {
 		type:object
 		properties: {
