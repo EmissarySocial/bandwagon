@@ -1,0 +1,22 @@
+{{- $streamID := .StreamID -}}
+<h1>{{icon "download"}} Download Your Purchase</h1>
+
+{{- $attachments := .AttachmentsByCategory "paid" -}}
+
+<div class="table">	
+	{{range $index, $attachment := $attachments}}
+		<a href="/{{$streamID}}/attachments/{{$attachment.ID}}" target="_blank" class="flex-row flex-align-center text-nocolor block" role="link">
+			<div class="text-2xl margin-none">
+				{{icon "file"}}
+			</div>
+			<div class="flex-grow">
+				<div class="bold">{{$attachment.Label}}</div>
+				<div class="text-sm text-gray">{{$attachment.Description}}</div>
+			</div>
+		</a>
+	{{end}}
+</div>
+
+<div class="margin-top">
+	<button script="on click trigger closeModal">Close Window</button>
+</div>

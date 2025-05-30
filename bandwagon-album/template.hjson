@@ -3,7 +3,7 @@
 	templateRole: album
 	model: Stream
 	containedBy: ["outbox"]
-	extends: ["base-purchase", "base-intent", "bandwagon-common"]
+	extends: ["base-checkout", "base-intent", "bandwagon-common"]
 	icon: album
 	label: Album (Default)
 	description: Contains one or more songs
@@ -48,7 +48,7 @@
 		paid: {
 			label: Paid Album
 			description: Select the products that give special access to paid purchasers and subscribers
-			purchasable: true
+			privileged: true
 		}
 	}
 
@@ -447,6 +447,81 @@
 			roles:["anonymous"]
 			steps: [
 				{do:"redirect-to", url:"{{.IconURL}}"}
+			]
+		}
+
+		paid-content: {
+			roles:["paid"]
+			steps: [
+				{do:"as-modal", steps:[
+					{do:"view-html"}
+				]}
+			]
+		}
+
+		edit-paid-content: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"view-html"}
+			]
+		}
+
+		upload-paid-attachment: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"as-modal", steps:[
+					{
+						do:"edit"
+						form:{
+							type:"layout-vertical"
+							label:"Add an Exclusive File"
+							children:[
+								{type:"text", path:"attachmentLabel", label:"Label"}
+								{type:"textarea", path:"attachmentDescription", label:"Description", description:"A few words to show underneath the filename."}
+								{type:"upload", path:"file", label:"Attachment"}
+							]
+						}, 
+						options:["submit-label:Add File"]
+					}
+					{do:"upload-attachments", category:"paid", maximum:6, fieldname:"file", label-fieldname:"attachmentLabel", description-fieldname:"attachmentDescription"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
+		edit-paid-attachment: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"with-attachment", steps:[
+					{do:"as-modal", steps:[
+						{
+							do:"edit"
+							form:{
+								type:"layout-vertical"
+								label:"Edit Exclusive File Info"
+								children:[
+									{type:"text", path:"label", label:"Download Label"}
+									{type:"textarea", path:"description", label:"Description", description:"A few words to show underneath the filename.", options:{rows:8}}
+								]
+							}
+							options:[
+								"endpoint:/{{.ObjectID}}/edit-paid-attachment?attachmentId={{.AttachmentID}}", 
+								"delete:/{{.ObjectID}}/delete-paid-attachment?attachmentId={{.AttachmentID}}"
+							]
+						}
+						{do:"save"}
+						{do:"refresh-page"}
+					]}
+				]}
+			]
+		}
+
+		delete-paid-attachment: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"as-confirmation", title:"Delete this Exclusive File?", message:"Are you sure you want to delete this file? There is NO UNDO.", submit:"Delete File"}
+				{do:"delete-attachments", category:"paid"}
+				{do:"refresh-page"}
 			]
 		}
 

@@ -85,11 +85,11 @@
 						<div class="text-xs text-light-gray">Upload Songs to Enable Playback</div>
 					{{- end -}}
 
-					{{- if .HasProducts -}}
+					{{- if .HasPrivileges -}}
 						{{- if .UserHasRole "paid" -}}
-							<button class="outline">
+							<button hx-get="/{{.StreamID}}/paid-content" class="outline">
 								{{icon "download"}}
-								DOWNLOAD OMFG
+								Download Your Purchase
 							</button>
 						{{- else -}}
 							<button hx-get="/{{$streamID}}/checkout" class="outline">
@@ -404,8 +404,14 @@
 				{{- else if $songs.NotEmpty -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
-				<button hx-get="/{{.StreamID}}/edit-purchase">Purchases &rarr;</button>
-
+				<button hx-get="/{{.StreamID}}/edit-checkout">
+					{{- if .HasPrivileges -}}
+						{{icon "check"}} Sell Online
+					{{- else -}}
+						Sell Online &rarr;
+					{{- end -}}
+				</button>
+					
 			{{- end -}}
 
 		</div>

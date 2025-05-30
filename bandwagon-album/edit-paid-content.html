@@ -1,0 +1,65 @@
+{{- if not .HasPrivileges -}}
+
+	<details class="disabled">
+
+		<summary class="clickable flex-row flex-align-center text-light-gray">
+			<h1 class="text-xl bold">
+				3. Upload Exclusive Files
+			</h1>
+		</summary>
+
+	</details>
+
+{{- else -}}
+	<details open="true">
+
+		<summary class="clickable flex-row flex-align-center">
+			<h1 class="text-xl bold">
+				3. Upload Exclusive Files
+			</h1>
+			<span class="text-sm" style="color:white; background:var(--green70); border-radius:8px; padding:8px 16px;">&check; Files Uploaded</span>
+		</summary>
+
+		{{- $streamID := .StreamID -}}
+		{{- $attachments := .AttachmentsByCategory "paid" -}}
+
+		<div class="table margin-top">
+			{{- if lt $attachments.Length 6 -}}
+				<div hx-get="/{{.StreamID}}/upload-paid-attachment" class="link flex-row" role="button">
+					<div>{{icon "plus"}}</div>
+					<div>Add an Exclusive File</div>
+				</div>
+			{{- end -}}
+			{{range $index, $attachment := $attachments}}
+				<div class="flex-row" role="button">
+					<div hx-get="/{{$streamID}}/edit-paid-attachment?attachmentId={{$attachment.ID}}" class="flex-grow flex-row flex-align-center">
+						<div class="text-2xl margin-none">{{icon "file"}}</div>
+						<div class="flex-grow">
+							<div>{{$attachment.Label}}</div>
+							<div class="text-sm text-gray">
+								{{$attachment.Original}}
+								{{if ne "" $attachment.Description}}
+									&middot; {{$attachment.Description}}
+								{{end}}
+							</div>
+						</div>
+					</div>
+					<div>
+						<button hx-get="/{{$streamID}}/delete-paid-attachment?attachmentId={{$attachment.ID}}" class="text-xs">
+							Remove
+						</button>
+					</div>
+				</div>
+			{{end}}
+		</div>
+
+		{{- if $attachments.NotEmpty -}}
+		<div class="margin-top-xl">
+				<a href="/{{$streamID}}" class="button primary">
+					&larr; Return to Album
+				</a>
+		</div>
+		{{- end -}}
+
+	</details>
+{{- end -}}
