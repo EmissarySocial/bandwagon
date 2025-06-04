@@ -450,7 +450,7 @@
 			]
 		}
 
-		paid-content: {
+		premium-downloads: {
 			roles:["paid"]
 			steps: [
 				{do:"as-modal", steps:[

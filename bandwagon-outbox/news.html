@@ -6,7 +6,7 @@
 {{- $label := first (.Data "label-news") "News" -}}
 {{- $description := .Data "description-news" -}}
 
-<div class="framed page app padding-none" script="on load add [@aria-selected=true] to #news">
+<div class="framed page padding-none" script="on load add [@aria-selected=true] to #news">
 
 	{{- template "header" . -}}
 
