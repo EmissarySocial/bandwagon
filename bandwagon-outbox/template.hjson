@@ -83,6 +83,18 @@
 				{do:"view-html", file:"outbox"}
 			]
 		}
+
+		subscribe: {
+			roles: ["self"]
+			stateRoles: {
+				"LIVE": ["anonymous"]
+			}
+			steps: [
+				{do:"as-modal", background:"view", steps:[
+					{do:"view-html"}
+				]}
+			]
+		}
 		
 		albums: {
 			roles: ["self"]
