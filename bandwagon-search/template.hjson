@@ -3,7 +3,7 @@
 	templateRole:search
 	extends:["base-intent"]
 	containedBy: []
-	model:stream
+	model:Stream
 	label:Bandwagon Search page
 	description:Search Page for Bandwagon
 	schema: {

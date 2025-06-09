@@ -1,6 +1,7 @@
 {
 	templateId: bandwagon-song
 	templateRole: song
+	model: Stream
 	label: Song
 	extends: ["base-intent", "bandwagon-common"]
 	containedBy: ["album"]
