@@ -1,5 +1,6 @@
 {
 	templateId: bandwagon-common
+	model: None
 	templateRole: album
 	containedBy: []
 	extends: []
