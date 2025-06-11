@@ -24,6 +24,13 @@
 		}
 	}
 
+	roles: {
+		viewer: {
+			label: Viewer
+			description: Can view this news item when it is published.
+		}
+	}
+
 	states: {
 		default: {
 			label: Unpublished,
@@ -51,6 +58,20 @@
 
 	actions: {
 
+		togglebutton: {
+			roles:["author"]
+			steps: [
+				{do:"edit", form:{
+					type:layout-vertical
+					label:"Test Form"
+					children:[
+						{type:"check-button", label:"Share with Everyone", description:"This is a cool test description", path:"test", options:{icon:"globe", value:"PUBLIC", script:"on change if my.checked tell .circles set your.checked to false"}}
+						{type:"check-button-group", label:"Circles", path:"test", options:{provider:"circles", script:"on change if my.checked then set #checkbutton-test-PUBLIC.checked to false", class:"circles"}}
+					]
+				}}
+			]
+		}
+
 		create: {
 			roles: ["author"]
 			steps: [				
@@ -76,7 +97,7 @@
 									type:layout-vertical
 									label:"Content"
 									children:[
-										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:12}}
+										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
 									]
 								}
 								{
@@ -128,7 +149,7 @@
 									type:layout-vertical
 									label:"Content"
 									children:[
-										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:12}}
+										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
 									]
 								}
 								{
@@ -162,10 +183,21 @@
 			] 
 		}
 
+		edit-sharing: {
+			roles: ["author"]
+			steps: [
+				{do:"as-modal", steps:[
+					{do:"set-circle-sharing", role:"viewer"}
+					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
 		view: {
 			roles:["author"]
 			stateRoles: {
-				published: ["anonymous"]
+				published: ["viewer"]
 			}
 			steps:[
 				{do:"view-html"}	
@@ -185,17 +217,7 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
-					{
-						do: edit
-						form: {
-							type: layout-vertical
-							label: Publish this News?
-							children:[
-								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
-							]
-						},
-						options:["submit-label:Publish"]
-					}
+					{do:"set-circle-sharing", title:"Publish This News Post", message:"Who is allowed to see this post when you publish it?", button:"Publish Note", role:"viewer"}
 					{do:"save-and-publish", state:"published", outbox:"true"}
 					{do:"search-index"}
 					{do:"refresh-page"}

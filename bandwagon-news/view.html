@@ -1,4 +1,4 @@
-<div class="framed page app padding-none" script="on htmx:load if #news is not null then add [@aria-selected=true] to #news">
+<div class="framed page padding-none" script="on htmx:load if #news is not null then add [@aria-selected=true] to #news">
 
 	<!-- Open Graph: https://ogp.me -->
 	<meta property="og:type" content="article">
@@ -46,6 +46,7 @@
 			<div class="pos-absolute-top-right text-sm">
 				<button hx-get="/{{.StreamID}}/edit">Edit News</button>
 				{{- if .IsPublished -}}
+					<button hx-get="/{{.StreamID}}/edit-sharing">Edit Sharing</button>
 					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
 				{{- else -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
