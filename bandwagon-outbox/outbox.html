@@ -92,7 +92,7 @@
 							<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
 
 							{{- if gt $circleCount 0 -}}
-								<button hx-get="/@{{.UserID}}/subscribe" class="outline margin-left-sm">
+								<button hx-get="/@{{.UserID}}/checkout" class="outline margin-left-sm">
 									{{icon "star"}}
 									Subscribe
 								</button>

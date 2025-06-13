@@ -567,11 +567,11 @@
 		checkout: {
 			roles: ["anonymous"]
 			steps: [
-				{do:"if", condition:"{{eq 1 .Products.Featured.Count}}", 
+				{do:"if", condition:"{{eq 1 .RemoteProductCount}}", 
 				then:[
 					{
 						do:"forward-to"
-						url:"/.checkout?productId={{.Products.Featured.Slice.First.ProductID.Hex}}&return={{.Permalink}}"
+						url:"/.checkout?token={{.RemoteProducts.First.Token}}&return={{.Permalink}}"
 						method:"get"
 					}
 				], 
