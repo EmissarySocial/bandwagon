@@ -97,21 +97,21 @@
 		}
 		
 		albums: {
-			roles: ["self"]
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]
 		}
 		
 		events: {
-			roles: ["self"]
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]
 		}
 		
 		news: {
-			roles: ["self"]
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]
@@ -567,11 +567,11 @@
 		checkout: {
 			roles: ["anonymous"]
 			steps: [
-				{do:"if", condition:"{{eq 1 .RemoteProductCount}}", 
+				{do:"if", condition:"{{.HasProducts}}", 
 				then:[
 					{
 						do:"forward-to"
-						url:"/.checkout?token={{.RemoteProducts.First.Token}}&return={{.Permalink}}"
+						url:"/.checkout?productId={{.Products.First.ProductID}}&return={{.Permalink}}"
 						method:"get"
 					}
 				], 
