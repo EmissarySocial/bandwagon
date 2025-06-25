@@ -17,7 +17,7 @@
 		hx-get="/{{.Token}}/view-suggestions" 
 		hx-trigger="search throttle:100ms queue:last"
 		hx-target="#search-suggestions" 
-		hx-swap="morph:innerHTML" 
+		hx-swap="innerHTML transition:true" 
 		hx-push-url="false">
 		<input type="hidden" id="search-suggestion-query" name="q"/>
 		<div id="search-suggestions" class="pop-up list-box" script="install Popup install Listbox" style="visibility:hidden;"></div>

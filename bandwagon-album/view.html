@@ -51,7 +51,7 @@
 
 		<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-50% lg:width-40% md:margin-right-lg flex-grow-0 flex-shrink-0 margin-bottom-lg rounded pos-relative">
 			{{- if ne "" .IconURL -}}
-				<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
+				<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="view-transition-name:album-icon-{{.StreamID}}; object-fit:cover;">
 			{{- else if $canEdit -}}
 				<div class="rounded width-100% square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--black)" script="install blockselect()">
 					Click here to add album art
@@ -65,7 +65,7 @@
 				{{.Label}}
 			</h1>
 			<div class="text-lg margin-top-none">
-				<a href="/@{{.ParentID}}" hx-boost="true" id="album-attributedTo" aria-label="Artist: {{.AttributedTo.Name}}">
+				<a href="/@{{.ParentID}}" hx-boost="true" hx-swap="transition:true" id="album-attributedTo" aria-label="Artist: {{.AttributedTo.Name}}">
 					{{.AttributedTo.Name}}
 				</a>
 			</div>
@@ -155,7 +155,7 @@
 									</div>
 								</div>
 								<div class="text-xs align-right flex-shrink-0 nowrap">
-									<a href="/{{$song.StreamID}}" hx-boost="true" hx-push-url="false" role="button" class="button">Track Info</a>
+									<a href="/{{$song.StreamID}}" hx-boost="true" hx-swap="transition:true" hx-push-url="true" role="button" class="button">Track Info</a>
 									{{- if $canEdit -}}
 										<button hx-get="/{{$song.StreamID}}/edit" class="margin-left-sm">Edit</button>
 									{{- end -}}

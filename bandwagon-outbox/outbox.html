@@ -145,9 +145,9 @@
 							{{- if or .IsPublished $isMyself -}}
 
 								<div class="rounded card hover-trigger hover-swell">
-									<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor flex-column block">
+									<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="text-plain text-nocolor flex-column block">
 										
-										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
+										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" style="view-transition-name:album-icon-{{.StreamID}};" aria-hidden="true">
 										<div class="padding text-plain">
 											<div class="bold link">{{.Label}}</div>
 											<div class="text-gray">
@@ -316,7 +316,7 @@
 
 				{{- end -}}
 
-				{{- if $news.IsEmpty -}}
+				{{- if and $isMyself $news.IsEmpty -}}
 					<div class="text-gray text-sm">
 						Publish updates to your followers.  Featured items appear here.
 					</div>
@@ -328,7 +328,9 @@
 				<div class="md:width-60% lg:width-50% hover-trigger pos-relative">
 					<div class="flex-row flex-align-center">
 						<h3>About {{.DisplayName}}</h3>
-						<button hx-get="/@{{.UserID}}/edit-status" class="text-xs hover-show">Edit</button>
+						{{ if $isMyself -}}
+							<button hx-get="/@{{.UserID}}/edit-status" class="text-xs hover-show">Edit</button>
+						{{- end -}}
 					</div>
 					<div id="profile-status" class="margin-vertical text-gray">{{.StatusMessage | markdown}}</div>
 

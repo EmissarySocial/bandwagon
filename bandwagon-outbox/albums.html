@@ -39,7 +39,7 @@
 			<div class="sortable margin-vertical-lg cols-2-4">
 				{{- range $albums -}}
 					{{- if or .IsPublished $isMyself -}}
-						<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor turboclick pos-relative hover-trigger hover-swell">
+						<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="text-plain text-nocolor turboclick pos-relative hover-trigger hover-swell">
 							<div class="rounded card">
 								<img src="{{.IconURL}}" class="rounded-top square width-100% block" style="object-fit:cover">
 								<div class="block padding">
