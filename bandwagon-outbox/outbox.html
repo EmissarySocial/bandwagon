@@ -147,7 +147,7 @@
 								<div class="rounded card hover-trigger hover-swell">
 									<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="text-plain text-nocolor flex-column block">
 										
-										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" style="view-transition-name:album-icon-{{.StreamID}};" aria-hidden="true">
+										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" style="view-transition-name:icon-{{.StreamID}};" aria-hidden="true">
 										<div class="padding text-plain">
 											<div class="bold link">{{.Label}}</div>
 											<div class="text-gray">
@@ -285,7 +285,7 @@
 							{{- if or .IsPublished $isMyself -}}
 
 								<div class="pos-relative hover-trigger clickable flex-column">
-									<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor sm:flex-row width-100%">
+									<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="text-plain text-nocolor sm:flex-row width-100%">
 
 										{{- if eq "" .IconURL -}}
 											<div class="hide sm:show rounded square width:100% sm:width-128 margin-right" style="background-color:var(--gray20);"></div>
