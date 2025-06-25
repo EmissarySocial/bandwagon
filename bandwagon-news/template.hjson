@@ -6,7 +6,6 @@
 	extends: ["base-intent"]
 	containedBy: ["outbox"]
 
-
 	schema: {
 		type:object
 		properties: {
@@ -217,7 +216,7 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
-					{do:"set-circle-sharing", title:"Publish This News Post", message:"Who is allowed to see this post when you publish it?", button:"Publish Note", role:"viewer"}
+					{do:"set-circle-sharing", role:"viewer", title:"Publish This News Post", message:"Who is allowed to see this post when you publish it?", button:"Publish Note"}
 					{do:"save-and-publish", state:"published", outbox:"true"}
 					{do:"search-index"}
 					{do:"refresh-page"}
