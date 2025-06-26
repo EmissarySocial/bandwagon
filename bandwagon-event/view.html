@@ -169,8 +169,8 @@
 			<div class="pos-absolute-top-right text-sm">
 				<button hx-get="/{{.StreamID}}/edit">Edit Show</button>
 				{{- if .IsPublished -}}
+					<button hx-get="/{{.StreamID}}/unpublish">&check; Published</button>
 					<button hx-get="/{{.StreamID}}/edit-sharing">Sharing Settings</button>
-					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
 				{{- else -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
