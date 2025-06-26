@@ -51,7 +51,7 @@
 
 		<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-50% lg:width-40% md:margin-right-lg flex-grow-0 flex-shrink-0 margin-bottom-lg rounded pos-relative">
 			{{- if ne "" .IconURL -}}
-				<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="view-transition-name:icon-{{.StreamID}}; object-fit:cover;">
+				<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="view-transition-name: icon-{{.StreamID}}; object-fit:cover;">
 			{{- else if $canEdit -}}
 				<div class="rounded width-100% square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--black)" script="install blockselect()">
 					Click here to add album art
@@ -218,7 +218,7 @@
 				<div id="album-tags" class="text-sm margin-bottom">
 					{{- range $index, $tag := $tags -}}
 						{{- if eq "Hashtag" $tag.Type}}
-							<a href="/albums?q=%23{{$tag.Name}}" class="tag margin-bottom-sm" aria-label="Hashtag: {{$tag.Name}}">#{{$tag.Name}}</a>
+							<a href="/albums?q=%23{{$tag.Name}}" hx-boost="true" class="tag margin-bottom-sm" aria-label="Hashtag: {{$tag.Name}}">#{{$tag.Name}}</a>
 						{{- end -}}
 					{{- end -}}
 				</div>

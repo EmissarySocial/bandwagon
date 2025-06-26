@@ -39,11 +39,11 @@
 						<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="block text-plain text-nocolor flex-row">
 							<div class="width-128 rounded square margin-right">
 								{{- if ne "" .IconURL -}}
-									<img src="{{.IconURL}}" class="rounded square width-100% block" style="view-transition-name:icon-{{.StreamID}};" aria-hidden="true">
+									<img src="{{.IconURL}}" class="rounded square width-100% block" aria-hidden="true">
 								{{- end -}}
 							</div>
 							<div class="padding-right-none flex-column">
-								<div class="text-lg bold margin-none ellipsis" style="view-transition-name:name-{{.StreamID}};">{{.Label}}</div>
+								<div class="text-lg bold margin-none ellipsis">{{.Label}}</div>
 								<div class="margin-bottom flex-grow ellipsis-block" style="max-height:4em;">{{.Summary}}</div>
 								<div class="link">{{first .Data.linkText "Read More"}} &rarr;</div>
 							</div>
