@@ -571,7 +571,7 @@
 				then:[
 					{
 						do:"forward-to"
-						url:"/.checkout?productId={{.Products.First.ProductID}}&return={{.Permalink}}"
+						url:"/.checkout?productId={{.Products.First.ProductID.Hex}}&return={{.Permalink}}"
 						method:"get"
 					}
 				], 
