@@ -351,11 +351,25 @@
 
 			{{- if $isMyself -}}
 				<div id="outbox-refresh-{{.UserID}}" hx-preserve>
-					<div hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
+
+					<div 
+						hx-get="/@{{.UserID}}" 
+						hx-trigger="refreshPage from:window" 
+						hx-target="#main" 
+						hx-swap="innerHTML"
+						hx-push-url="false">
+					</div>
 
 					<div hx-ext="sse" sse-connect="/@{{.UserID}}/sse">
-						<div hx-get="/@{{.UserID}}" hx-trigger="sse:{{.UserID}}" hx-push-url="false"></div>
+						<div 
+							hx-get="/@{{.UserID}}" 
+							hx-trigger="sse:{{.UserID}}"  
+							hx-target="#main" 
+							hx-swap="innerHTML"
+							hx-push-url="false">
+						</div>
 					</div>
+
 				</div>
 			{{- end -}}
 

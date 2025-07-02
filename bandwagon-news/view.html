@@ -54,7 +54,13 @@
 			</div>
 
 			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+				<div
+					hx-get="/{{.StreamID}}" 
+					hx-trigger="sse:{{.StreamID}}, refreshPage from:window" 
+					hx-target="#main" 
+					hx-swap="innerHTML" 
+					hx-push-url="false">
+				</div>
 			</div>
 		{{- end -}}
 
