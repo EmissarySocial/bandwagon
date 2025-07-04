@@ -4,6 +4,8 @@
 {{- if eq .StateID "LIVE" -}}
 
 	{{- $circleCount := .Circles.Featured.Count -}}
+	{{- $isMyself := .IsMyself -}}
+	{{- $isPublic := .IsPublic -}}
 
 	{{- $albums := .Outbox.Featured.Where "templateId" "bandwagon-album" -}}
 	{{- $albums := $albums.By "data.releaseDate" -}}

@@ -474,14 +474,14 @@
 						do:"edit"
 						form:{
 							type:"layout-vertical"
-							label:"Add an Exclusive File"
+							label:"Upload an Exclusive File"
 							children:[
 								{type:"text", path:"attachmentLabel", label:"Label"}
 								{type:"textarea", path:"attachmentDescription", label:"Description", description:"A few words to show underneath the filename."}
 								{type:"upload", path:"file", label:"Attachment"}
 							]
 						}, 
-						options:["submit-label:Add File"]
+						options:["submit-label:Upload Exclusive File"]
 					}
 					{do:"upload-attachments", category:"paid", maximum:6, fieldname:"file", label-fieldname:"attachmentLabel", description-fieldname:"attachmentDescription"}
 					{do:"refresh-page"}
