@@ -38,7 +38,7 @@
 
 	{{- if not .IsPublished -}}
 		{{- if $songs.NotEmpty -}}
-			<div class="clickable alert-green margin-none" hx-get="/{{.StreamID}}/publish" role="button">
+			<div class="clickable alert-green margin-none" hx-get="/{{.StreamID}}/publish" role="button" style="border-radius:0px;">
 				{{icon "check-circle"}} 
 
 				This album IS READY TO PUBLISH on the social web.
@@ -48,6 +48,27 @@
 	{{- end -}}
 
 	<div class="md:flex-row pos-relative padding">
+
+		{{- if $canEdit -}}
+			<div class="pos-absolute-top-right text-sm">
+				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+
+				{{- if .IsPublished -}}
+					<button hx-get="/{{.StreamID}}/unpublish">{{icon "check"}} Published</button>
+				{{- else if $songs.NotEmpty -}}
+					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
+				{{- end -}}
+				<button hx-get="/{{.StreamID}}/edit-checkout">
+					{{- if .StreamHasPrivileges -}}
+						{{icon "check"}} Sell Online
+					{{- else -}}
+						Sell Online &rarr;
+					{{- end -}}
+				</button>
+					
+			</div>
+		{{- end -}}
+
 
 		<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-50% lg:width-40% md:margin-right-lg flex-grow-0 flex-shrink-0 margin-bottom-lg rounded pos-relative">
 			{{- if ne "" .IconURL -}}
@@ -394,27 +415,6 @@
 			{{- end -}}
 
 		{{- end -}}
-
-		<div class="pos-absolute-top-right text-sm">
-			{{- if $canEdit -}}
-				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
-
-				{{- if .IsPublished -}}
-					<button hx-get="/{{.StreamID}}/unpublish">{{icon "check"}} Published</button>
-				{{- else if $songs.NotEmpty -}}
-					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
-				{{- end -}}
-				<button hx-get="/{{.StreamID}}/edit-checkout">
-					{{- if .StreamHasPrivileges -}}
-						{{icon "check"}} Sell Online
-					{{- else -}}
-						Sell Online &rarr;
-					{{- end -}}
-				</button>
-					
-			{{- end -}}
-
-		</div>
 
 	</div>
 
