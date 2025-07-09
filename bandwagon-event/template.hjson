@@ -290,8 +290,8 @@
 		delete: {
 			roles: ["author"]
 			steps: [
-				{do:"delete"}
 				{do:"unpublish", state:"default", outbox:"true"}
+				{do:"delete"}
 				{do:"refresh-page"}
 			]
 		}

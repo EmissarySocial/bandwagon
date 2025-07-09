@@ -170,7 +170,7 @@
 					{do:"process-tags", paths:"data.tags"}
 					{do:"if", condition: "{{.IsPublished}}", 
 						then: [
-							{do:"save-and-publish"}
+							{do:"save-and-publish", outbox:true}
 							{do:"search-index"}
 						], 
 						else: [
@@ -206,9 +206,13 @@
 		delete: {
 			roles: ["author"]
 			steps: [
-				{do:"delete"}
 				{do:"unpublish", state:"default", outbox:"true"}
-				{do:"refresh-page"}
+				{do:"delete"}
+				{do:"if", condition:"{{.IsFeatured}}", then:[
+					{do:"forward-to", url:"{{.AttributedTo.ProfileURL}}"}
+				], else:[
+					{do:"forward-to", url:"{{.AttributedTo.ProfileURL}}/news"}
+				]}
 			]
 		}
 
