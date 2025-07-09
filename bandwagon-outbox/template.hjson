@@ -567,7 +567,7 @@
 		checkout: {
 			roles: ["anonymous"]
 			steps: [
-				{do:"if", condition:"{{.HasProducts}}", 
+				{do:"if", condition:"{{gt 1 .ProductCount}}", 
 				then:[
 					{
 						do:"forward-to"
