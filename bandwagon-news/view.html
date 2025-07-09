@@ -47,7 +47,12 @@
 				<button hx-get="/{{.StreamID}}/edit">Edit News</button>
 				{{- if .IsPublished -}}
 					<button hx-get="/{{.StreamID}}/unpublish">&check; Published</button>
-					<button hx-get="/{{.StreamID}}/edit-sharing">Edit Sharing</button>
+
+					{{- if .IsPublic -}}
+						<button hx-get="/{{.StreamID}}/edit-sharing">Sharing: Public</button>
+					{{- else -}}
+						<button hx-get="/{{.StreamID}}/edit-sharing">Sharing: Private</button>
+					{{- end -}}
 				{{- else -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
