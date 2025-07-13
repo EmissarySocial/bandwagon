@@ -27,6 +27,7 @@
 		viewer: {
 			label: Viewer
 			description: Can view this news item when it is published.
+			privileged: true
 		}
 	}
 
@@ -235,6 +236,16 @@
 				{do:"unpublish", state:"default", outbox:"true"}
 				{do:"search-index"}
 				{do:"refresh-page"}
+			]
+		}
+
+		paid-content: {
+			roles:["author"]
+			stateRoles: {
+				published: ["viewer"]
+			}
+			steps:[
+				{do:"view-html"}
 			]
 		}
 		

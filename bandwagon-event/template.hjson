@@ -12,6 +12,7 @@
 		viewer: {
 			label: Viewer
 			description: This role can view the event details
+			privileged: true
 		}
 	}
 
@@ -256,6 +257,16 @@
 					{do:"save"}
 					{do:"refresh-page"}
 				]}
+			]
+		}
+
+		paid-content: {
+			roles:["author"]
+			stateRoles: {
+				published: ["viewer"]
+			}
+			steps:[
+				{do:"view-html"}
 			]
 		}
 
