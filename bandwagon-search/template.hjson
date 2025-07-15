@@ -26,10 +26,6 @@
 			label: "Default State",
 			description: "Search templates do not use any other states"
 		}
-		published: {
-			label: "Published",
-			description: "This page can be viewed on the website"
-		}
 	}
 	roles: {}
 
@@ -118,24 +114,6 @@
 			]
 		}
 
-		publish: {
-			roles: ["owner"]
-			steps: [
-				{do:"as-confirmation", title:"Publish This Search Page?", message:"This will make the page visible to the public."}
-				{do:"save-and-publish", state:"published", message:"Published by {{.Author.DisplayName}}"}
-				{do:"forward-to", url:"/{{.StreamID}}"}
-			]
-		}
-
-		unpublish: {
-			roles: ["owner"]
-			steps: [
-				{do:"as-confirmation", title:"Unpublish This Search Page?", message:"This will make the page invisible to the public."}
-				{do:"unpublish", state:"default", message:"Unpublished by {{.Author.DisplayName}}"}
-				{do:"forward-to", url:"/{{.StreamID}}"}
-			]
-		}
-
 		delete: {
 			roles: ["owner"]
 			steps: [
@@ -145,29 +123,20 @@
 		}
 
 		view: {
-			roles: ["owner"]
-			stateRoles: {
-				published: ["anonymous"]
-			}
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]
 		}
 
 		view-results: {
-			roles: ["owner"]
-			stateRoles: {
-				published: ["anonymous"]
-			}
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]
 		}
 		view-suggestions: {
-			roles: ["owner"]
-			stateRoles: {
-				published: ["anonymous"]
-			}
+			roles: ["anonymous"]
 			steps:[
 				{do:"view-html"}
 			]

@@ -13,6 +13,17 @@
 
 		<div class="sidebar margin-bottom-lg">
 			{{template "view-sidebar" .}}
+
+
+			{{- if .UserCan "edit" -}}
+				<div class="text-sm margin-top-xl">
+					ADMIN TOOLS
+				</div>
+				<div class="text-sm">
+					<button hx-get="/{{.Token}}/edit">Edit Search Page</button>
+				</div>
+			{{- end -}}
+
 		</div>
 
 		<div class="flex-grow margin-horizontal container">
@@ -20,22 +31,6 @@
 			<div id="search-results">
 				{{template "view-results" .}}
 			</div>
-
-			{{- if .UserCan "edit" -}}
-				<br>
-				<br>
-				<br>
-				<br>
-				<div class="text-sm">
-					<button hx-get="/{{.Token}}/edit">Edit</button>
-
-					{{- if eq .StateID "default"}}
-						<button hx-get="/{{.Token}}/publish">&plus; Publish</button>
-					{{- else -}}
-						<button hx-get="/{{.Token}}/unpublish">&check; Published</button>						
-					{{- end -}}
-				</div>
-			{{- end -}}
 		</div>
 	</div>
 </div>
