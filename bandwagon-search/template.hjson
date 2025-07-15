@@ -109,7 +109,7 @@
 						}
 					}
 				]}
-				{do: "save", message:"Edited by {{.Author.DisplayName}}"}
+				{do: "save-and-publish", state:"default", message:"Edited by {{.Author.DisplayName}}"}
 				{do: "refresh-page"}
 			]
 		}
