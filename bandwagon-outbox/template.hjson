@@ -4,6 +4,7 @@
 	model: User
 	label: Bandwagon Outbox
 	extends: ["user-outbox"]
+
 	schema: {
 		type: object
 		properties: {
@@ -37,11 +38,32 @@
 		}
 	}
 
+	states: {
+		default: {
+			label: Default State,
+			description: This template does not use states
+		}
+		"WIZARD-STEP-1": {
+			label: Step 1 of 3
+		}
+		"WIZARD-STEP-2": {
+			label: Step 2 of 3
+		}
+		"WIZARD-STEP-3": {
+			label: Step 3 of 3
+		}
+		LIVE: {
+			label: Live
+			description: This template is visible to all viewers
+		}
+	}
+
 	tagPaths: ["data.tags"]
 
 	actions: {
 
 		create: {
+			roles: ["self"]
 			steps:[
 				{
 					do:"set-data", 
@@ -55,10 +77,45 @@
 			]
 		}
 
-		view: {do:"view-html", file:"outbox"}
-		albums: {do:"view-html"}
-		events: {do:"view-html"}
-		news: {do:"view-html"}
+		view: {
+			roles: ["anonymous"]
+			steps: [
+				{do:"view-html", file:"outbox"}
+			]
+		}
+
+		subscribe: {
+			roles: ["self"]
+			stateRoles: {
+				"LIVE": ["anonymous"]
+			}
+			steps: [
+				{do:"as-modal", background:"view", steps:[
+					{do:"view-html"}
+				]}
+			]
+		}
+		
+		albums: {
+			roles: ["anonymous"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
+		
+		events: {
+			roles: ["anonymous"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
+		
+		news: {
+			roles: ["anonymous"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
 
 		add-album: {
 			roles: ["self"]
@@ -375,12 +432,14 @@
 		}
 
 		header: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-html", file:"header"}
 			]
 		}
 
 		stylesheet: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-css"}
 			]
@@ -502,6 +561,25 @@
 				{do:"set-data", values:{"data.background-body":""}}
 				{do:"delete-attachments", category:"body-background"}
 				{do:"save"}
+			]
+		}
+
+		checkout: {
+			roles: ["anonymous"]
+			steps: [
+				{do:"if", condition:"{{gt 1 .ProductCount}}", 
+				then:[
+					{
+						do:"forward-to"
+						url:"/.checkout?productId={{.Products.First.ProductID.Hex}}&return={{.Permalink}}"
+						method:"get"
+					}
+				], 
+				else:[
+					{do:"as-modal", steps:[
+						{do:"view-html"}
+					]}
+				]}
 			]
 		}
 	}

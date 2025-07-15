@@ -7,6 +7,26 @@
 	icon: calendar
 	label: Event
 	description: Contains event details
+
+	roles: {
+		viewer: {
+			label: Viewer
+			description: This role can view the event details
+			privileged: true
+		}
+	}
+
+	states: {
+		default: {
+			label: Unpublished,
+			description: This item is only visible to artists and site owners.
+		}
+		published: {
+			label: Published,
+			description: This item is visible to everyone
+		}
+	}
+
 	schema: {
 		type:object
 		properties: {
@@ -101,12 +121,6 @@
 										{type:"text", path:"place.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
 										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
 										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
-									]
-								}
-								{
-									label: Tickets
-									type:layout-vertical
-									children: [
 										{type:"text", path:"data.website", label:"Ticketing Website", description: "Website where fans can buy tickets"}
 										{type:"text", path:"data.websiteLabel", label:"Button Text", description:"The label to display on your website", options:{placeholder:"Get Tickets"}}
 									]
@@ -143,7 +157,17 @@
 				{do:"forward-to", url:"/{{.StreamID}}"}
 			]
 		}
-		view: {do:"view-html"}
+
+		view: {
+			roles:["author"]
+			stateRoles: {
+				published: ["viewer"]
+			}
+			steps:[
+				{do:"view-html"}
+			]
+		}
+
 		edit: {
 			roles: ["author"]
 			steps: [
@@ -180,12 +204,6 @@
 										{type:"text", path:"places.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
 										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
 										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
-									]
-								}
-								{
-									label: Tickets
-									type:layout-vertical
-									children: [
 										{type:"text", path:"data.website", label:"Ticketing Website", description: "Website where fans can buy tickets"}
 										{type:"text", path:"data.websiteLabel", label:"Button Text", description:"The label to display on your website", options:{placeholder:"Get Tickets"}}
 									]
@@ -231,23 +249,33 @@
 			]
 		}
 
+		edit-sharing: {
+			roles: ["author"]
+			steps: [
+				{do:"as-modal", steps:[
+					{do:"set-circle-sharing", role:"viewer"}
+					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
+		paid-content: {
+			roles:["author"]
+			stateRoles: {
+				published: ["viewer"]
+			}
+			steps:[
+				{do:"view-html"}
+			]
+		}
+
 		publish: {
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
-					{
-						do: edit
-						form: {
-							type: layout-vertical
-							label: Publish this Show?
-							children:[
-								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
-							]
-						},
-						options:["submit-label:Publish Show"]
-					}
-					{do:"set-state", state:"published"}
-					{do:"save-and-publish", outbox:"true"}
+					{do:"set-circle-sharing", title:"Publish This Event", message:"Who is allowed to see this event when you publish it?", button:"Publish Event", role:"viewer"}
+					{do:"save-and-publish", state:"published", outbox:"true"}
 					{do:"search-index"}
 					{do:"refresh-page"}
 				]}
@@ -258,14 +286,14 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-confirmation", title:"Un-Publish this Show?", message:"Un-Publishing this show will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish from Website"}
-				{do:"set-state", state:"unpublished"}
-				{do:"unpublish", outbox:"true"}
+				{do:"unpublish", state:"default", outbox:"true"}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]
 		}
 
 		stylesheet: {
+			roles:["anonymous"]
 			steps:[
 				{do:"view-css"}
 			]
@@ -273,8 +301,8 @@
 		delete: {
 			roles: ["author"]
 			steps: [
+				{do:"unpublish", state:"default", outbox:"true"}
 				{do:"delete"}
-				{do:"unpublish", outbox:"true"}
 				{do:"refresh-page"}
 			]
 		}

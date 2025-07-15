@@ -5,6 +5,7 @@
 	label: News Item
 	extends: ["base-intent"]
 	containedBy: ["outbox"]
+
 	schema: {
 		type:object
 		properties: {
@@ -19,6 +20,25 @@
 				linkText: {type:"string"}
 				bannerUrl: {type:"string", format:"url"}
 			}}
+		}
+	}
+
+	roles: {
+		viewer: {
+			label: Viewer
+			description: Can view this news item when it is published.
+			privileged: true
+		}
+	}
+
+	states: {
+		default: {
+			label: Unpublished,
+			description: This item can only be seen by artists
+		}
+		published: {
+			label: Published,
+			description: This item is visible to everyone
 		}
 	}
 
@@ -37,6 +57,20 @@
 	tagPaths: ["summary", "content.html"]
 
 	actions: {
+
+		togglebutton: {
+			roles:["author"]
+			steps: [
+				{do:"edit", form:{
+					type:layout-vertical
+					label:"Test Form"
+					children:[
+						{type:"check-button", label:"Share with Everyone", description:"This is a cool test description", path:"test", options:{icon:"globe", value:"PUBLIC", script:"on change if my.checked tell .circles set your.checked to false"}}
+						{type:"check-button-group", label:"Circles", path:"test", options:{provider:"circles", script:"on change if my.checked then set #checkbutton-test-PUBLIC.checked to false", class:"circles"}}
+					]
+				}}
+			]
+		}
 
 		create: {
 			roles: ["author"]
@@ -63,7 +97,7 @@
 									type:layout-vertical
 									label:"Content"
 									children:[
-										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:12}}
+										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
 									]
 								}
 								{
@@ -115,7 +149,7 @@
 									type:layout-vertical
 									label:"Content"
 									children:[
-										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:12}}
+										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
 									]
 								}
 								{
@@ -137,7 +171,7 @@
 					{do:"process-tags", paths:"data.tags"}
 					{do:"if", condition: "{{.IsPublished}}", 
 						then: [
-							{do:"save-and-publish"}
+							{do:"save-and-publish", outbox:true}
 							{do:"search-index"}
 						], 
 						else: [
@@ -149,7 +183,22 @@
 			] 
 		}
 
+		edit-sharing: {
+			roles: ["author"]
+			steps: [
+				{do:"as-modal", steps:[
+					{do:"set-circle-sharing", role:"viewer"}
+					{do:"save"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
 		view: {
+			roles:["author"]
+			stateRoles: {
+				published: ["viewer"]
+			}
 			steps:[
 				{do:"view-html"}	
 			]
@@ -158,9 +207,13 @@
 		delete: {
 			roles: ["author"]
 			steps: [
+				{do:"unpublish", state:"default", outbox:"true"}
 				{do:"delete"}
-				{do:"unpublish", outbox:"true"}
-				{do:"refresh-page"}
+				{do:"if", condition:"{{.IsFeatured}}", then:[
+					{do:"forward-to", url:"{{.AttributedTo.ProfileURL}}"}
+				], else:[
+					{do:"forward-to", url:"{{.AttributedTo.ProfileURL}}/news"}
+				]}
 			]
 		}
 
@@ -168,19 +221,8 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
-					{
-						do: edit
-						form: {
-							type: layout-vertical
-							label: Publish this News?
-							children:[
-								{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured"}}
-							]
-						},
-						options:["submit-label:Publish"]
-					}
-					{do:"set-state", state:"published"}
-					{do:"save-and-publish", outbox:"true"}
+					{do:"set-circle-sharing", role:"viewer", title:"Publish This News Post", message:"Who is allowed to see this post when you publish it?", button:"Publish Note"}
+					{do:"save-and-publish", state:"published", outbox:"true"}
 					{do:"search-index"}
 					{do:"refresh-page"}
 				]}
@@ -191,10 +233,19 @@
 			roles: ["author"]
 			steps: [
 				{do:"as-confirmation", title:"Un-Publish this News?", message:"Un-Publishing this news will hide it everyone online.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish from Website"}
-				{do:"set-state", state:"unpublished"}
-				{do:"unpublish", outbox:"true"}
+				{do:"unpublish", state:"default", outbox:"true"}
 				{do:"search-index"}
 				{do:"refresh-page"}
+			]
+		}
+
+		paid-content: {
+			roles:["author"]
+			stateRoles: {
+				published: ["viewer"]
+			}
+			steps:[
+				{do:"view-html"}
 			]
 		}
 		

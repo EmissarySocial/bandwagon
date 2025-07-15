@@ -37,7 +37,7 @@
 		<div class="md:flex-row">
 
 			<div class="md:width-256 flex-shrink-0">
-				<img id="track-icon" src="{{$iconURL}}" class="width-100% rounded square" aria-hidden="true" style="object-fit:cover;">
+				<img id="track-icon" src="{{$iconURL}}" class="width-100% rounded square" aria-hidden="true" style="view-transition-name:icon-{{$album.StreamID}}; object-fit:cover;">
 			</div>
 
 			<div class="md:width-32"></div>
@@ -52,12 +52,12 @@
 					{{- end -}}
 				</h1>
 				<div class="text-lg margin-top-none">
-					<a id="track-attributedTo" href="/@{{$album.AttributedTo.UserID.Hex}}" class="turboclick">
+					<a id="track-attributedTo" href="/@{{$album.AttributedTo.UserID.Hex}}" hx-boost="true" hx-swap="transition:true" class="turboclick">
 						<span class="hide-visual">Artist:</span>
 						{{$album.AttributedTo.Name}}
 					</a> 
 					<span aria-hidden="true">&middot;</span>
-					<a id="track-album" href="/{{$album.StreamID}}" class="turboclick">
+					<a id="track-album" href="/{{$album.StreamID}}" hx-boost="true" hx-swap="transition:true" class="turboclick">
 						<span class="hide-visual">Album:</span>
 						{{ $album.Label }}
 					</a>
@@ -259,7 +259,13 @@
 			</div>
 
 			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+				<div 
+					hx-get="/{{.StreamID}}" 
+					hx-trigger="sse:{{.StreamID}}, refreshPage from:window" 
+					hx-target="#main" 
+					hx-swap="innerHTML"
+					hx-push-url="false">
+				</div>
 			</div>
 		{{- end -}}
 		

@@ -1,0 +1,61 @@
+{{- if .StreamHasPrivileges -}}
+
+		<h1 class="text-xl bold">
+			3. Upload Exclusive Content
+		</h1>
+
+		<div class="text-sm text-gray md:width-60% margin-bottom-lg">
+			Upload <b>up to six files</b> that will be available exclusively to people who purchase this album. You can include any type of file, such as audio, video, images, or documents.
+		</div>
+
+		{{- $streamID := .StreamID -}}
+		{{- $attachments := .AttachmentsByCategory "paid" -}}
+
+		{{- if $attachments.IsEmpty -}}
+
+			<div hx-get="/{{.StreamID}}/upload-paid-attachment" class="link card padding md:width-25% align-center">
+				<div class="text-3xl margin-none">{{icon "upload"}}</div>
+				Add an Exclusive File
+			</div>
+
+		{{- else -}}
+			<div class="table margin-top">
+				{{range $index, $attachment := $attachments}}
+					<div class="flex-row" role="button">
+						<div hx-get="/{{$streamID}}/edit-paid-attachment?attachmentId={{$attachment.ID}}" class="flex-grow flex-row flex-align-center">
+							<div class="text-2xl margin-none">{{icon "file"}}</div>
+							<div class="flex-grow">
+								<div>{{$attachment.Label}}</div>
+								<div class="text-sm text-gray">
+									{{$attachment.Original}}
+									{{if ne "" $attachment.Description}}
+										&middot; {{$attachment.Description}}
+									{{end}}
+								</div>
+							</div>
+						</div>
+						<div>
+							<button hx-get="/{{$streamID}}/delete-paid-attachment?attachmentId={{$attachment.ID}}" class="text-xs">
+								Remove
+							</button>
+						</div>
+					</div>
+				{{end}}
+				{{- if lt $attachments.Length 6 -}}
+					<div hx-get="/{{.StreamID}}/upload-paid-attachment" class="link flex-row" role="button">
+						<div>{{icon "plus"}}</div>
+						<div>Upload Another File (up to {{subtract 6 $attachments.Length}} more)</div>
+					</div>
+				{{- end -}}
+			</div>
+
+			<div class="margin-top-xl">
+				<a href="/{{$streamID}}" class="button primary">
+					&larr; Return to Album
+				</a>
+			</div>
+
+		{{- end -}}
+
+	</details>
+{{- end -}}

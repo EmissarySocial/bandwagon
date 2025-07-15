@@ -1,9 +1,18 @@
 {
 	templateId: bandwagon-song
 	templateRole: song
+	model: Stream
 	label: Song
 	extends: ["base-intent", "bandwagon-common"]
 	containedBy: ["album"]
+
+	states: {
+		published: {
+			label: Published,
+			description: This item has been published and is visible on the website
+		}
+	}
+
 	schema: {
 		type: object
 		properties: {
@@ -69,7 +78,7 @@
 
 	actions: {
 		create: {
-			roles: ["admin", "author"]
+			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
 					{
@@ -142,12 +151,13 @@
 			]
 		}
 		view: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-html"}
 			]
 		}
 		edit: {
-			roles: ["admin", "author"]
+			roles: ["author"]
 			steps: [
 				{
 					do:"as-modal",
@@ -225,7 +235,7 @@
 		}
 
 		delete: {
-			roles: ["admin", "author"]
+			roles: ["author"]
 			steps: [
 				{do:"delete", title:"Delete this Song?"}
 				{do:"refresh-page"}
@@ -241,6 +251,7 @@
 			]
 		}
 		prev: {
+			roles: ["anonymous"]
 			steps:[
 				{do:"with-prev-sibling", steps:[
 					{do:"redirect-to", url:"/{{.StreamID}}"}
@@ -249,10 +260,17 @@
 		}
 
 		next: {
+			roles: ["anonymous"]
 			steps:[
 				{do:"with-next-sibling", steps:[
 					{do:"redirect-to", url:"/{{.StreamID}}"}
 				]}
+			]
+		}
+
+		audio: {
+			steps:[
+				{do:"view-attachment", category:"Audio", format:["ogg", "mp3"], bitrate:128}
 			]
 		}
 	}

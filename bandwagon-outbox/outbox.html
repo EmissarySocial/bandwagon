@@ -3,15 +3,20 @@
 
 {{- if eq .StateID "LIVE" -}}
 
+	{{- $circleCount := .Circles.Featured.Count -}}
+	{{- $isPublic := .IsPublic -}}
+
 	{{- $albums := .Outbox.Featured.Where "templateId" "bandwagon-album" -}}
 	{{- $albums := $albums.By "data.releaseDate" -}}
 	{{- $albums := $albums.Reverse.Slice -}}
-	<!--
-	{{- $productCount := .Products.Count -}}
-	-->
 
 	<!-- Page content -->
-	<div class="framed page h-card padding-none" script="on load add [@aria-selected=true] to #home">
+	<div class="framed page h-card padding-none" 
+		script="{{- if .IsMyself -}}
+			on load take .selected from .nav-item for #nav-outbox
+		{{- else -}}
+			on load remove .selected from .nav-item
+		{{- end -}}">
 
 		<title>{{.DisplayName}}</title>
 		<link rel="icon" href="{{.IconURL}}"/>
@@ -35,6 +40,7 @@
 		<!-- Open Graph: https://ogp.me -->
 		<meta property="og:type" content="profile">
 		<meta property="og:title" content="{{.DisplayName}}">
+		<meta property="og:description" content="{{.StatusMessage}}">
 		<meta property="og:url" content="{{.Permalink}}">
 		<meta property="og:image" content="{{.IconURL}}">
 		<meta property="profile:username" content="{{.Username}}">
@@ -59,21 +65,12 @@
 					<img id="profile-icon" src="{{.IconURL}}" class="circle width-60% sm:width:40% md:width-96" aria-hidden="true">
 				</div>
 				<div class="flex-grow">
-					<div class="pos-relative">
-						<h1 id="profile-name" class="margin-none align-center md:align-left">{{.DisplayName}}</h1>
-						{{- if $isMyself -}}
-							<div class="pos-absolute-top-right-0 flex-column">
-								<button hx-get="/@me/edit" class="text-xs">Edit Profile</button>
-								<button hx-get="/@{{.UserID}}/links" class="text-xs">Edit Links</button>
-								<button hx-post="/signout" class="text-xs">Sign Out</button>
-							</div>
-						{{- end -}}
-					</div>
+					<h1 id="profile-name" class="margin-none align-center md:align-left">{{.DisplayName}}</h1>
 
 					<div class="margin-vertical sm:margin-none align-center md:align-left">
-						<span id="profile-username" class="text-gray nowrap" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
+						<span id="profile-username" class="text-gray margin-right-sm margin-bottom-sm nowrap" script="install selectText">@{{.Username}}@{{.Hostname}}</span>
 						{{- if ne "" .Location }}
-							<span id="profile-location" class="text-gray margin-left nowrap"> {{icon "location"}} {{.Location}}</span>
+							<span id="profile-location" class="text-gray nowrap"> {{icon "location"}} {{.Location}}</span>
 						{{- end -}}
 					</div>
 
@@ -87,33 +84,26 @@
 							<a href="{{.Data `shop-url`}}" rel="me" target="_blank">{{first (.Data "label-shop") "Shop"}}</a>
 						{{- end -}}
 					</div>
-		
-					<div class="margin-vertical-lg align-center md:align-left flex-row">
-						<!--
-						{{- if gt $productCount 0 -}}
-							<div>
-								<button hx-get="/@{{.UserID}}/subscribe" class="primary">{{icon "star"}} Subscribe</button>
-								<div class="text-xs">&nbsp;</div>
-							</div>
-						{{- end -}}
-						-->
-						<div class="nowrap" script="on load trigger storage on window">
-							<div class="margin-none">
-								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
-								<!--
-								{{- if gt $productCount 0 -}}
-									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}">{{icon "person"}} Follow</button>
-								{{- else -}}
-									<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
-								{{- end }}
-								-->
+				</div>
+				<div class="margin-top-lg md:margin-none align-center md:align-left">
 
-								<a href="/@{{.UserID}}/feed" class="button text-gray" target="_blank">{{icon "rss"}} RSS</a>
-							</div>
-							<div hx-get="/@{{.UserID}}/intent" class="clickable text-xs text-light-gray intentMarker-account">&nbsp;</div>
+					<div class="nowrap" script="on load trigger storage on window">
+						<div class="margin-none">
+
+							<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+
+							{{- if gt $circleCount 0 -}}
+								<button hx-get="/@{{.UserID}}/checkout" class="outline margin-left-sm">
+									{{icon "star"}}
+									Subscribe
+								</button>
+							{{- end -}}
+
+						</div>
+						<div class="margin-top-sm text-xs text-light-gray">
+							<span hx-get="/@{{.UserID}}/intent" class="clickable intentMarker-account">&nbsp;</span>
 						</div>
 					</div>
-
 				</div>
 			</div>
 
@@ -124,7 +114,7 @@
 
 					{{- $albumLabel := first (.Data "label-albums") "Albums" -}}
 
-					<div class="margin-top-lg margin-bottom pos-relative">
+					<div class="margin-bottom pos-relative">
 						<a href="/@{{$username}}/albums" hx-boost="true" aria-label="View All Albums">
 							<span class="text-nocolor text-plain text-xl bold margin-right-sm">{{$albumLabel}}</span>
 							All &rarr;
@@ -156,7 +146,7 @@
 							{{- if or .IsPublished $isMyself -}}
 
 								<div class="rounded card hover-trigger hover-swell">
-									<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor flex-column block">
+									<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="text-plain text-nocolor flex-column block">
 										
 										<img src="{{.IconURL}}" class="rounded-top square width-100% block object-fit-cover" aria-hidden="true">
 										<div class="padding text-plain">
@@ -192,7 +182,6 @@
 						{{- end -}}
 					</div>
 				{{- end -}}
-
 
 				<!-- Events -->
 				{{- $events := .Outbox.Featured.Where "templateId" "bandwagon-event" -}}
@@ -268,7 +257,6 @@
 
 				{{- end -}}
 
-
 				<!-- News -->
 				{{- $news := .Outbox.Featured.Where "templateId" "bandwagon-news" -}}
 				{{- $news := $news.ByPublishDate.Reverse.Slice -}}
@@ -329,7 +317,7 @@
 
 				{{- end -}}
 
-				{{- if $news.IsEmpty -}}
+				{{- if and $isMyself $news.IsEmpty -}}
 					<div class="text-gray text-sm">
 						Publish updates to your followers.  Featured items appear here.
 					</div>
@@ -341,7 +329,7 @@
 				<div class="md:width-60% lg:width-50% hover-trigger pos-relative">
 					<div class="flex-row flex-align-center">
 						<h3>About {{.DisplayName}}</h3>
-						{{- if $isMyself -}}
+						{{ if $isMyself -}}
 							<button hx-get="/@{{.UserID}}/edit-status" class="text-xs hover-show">Edit</button>
 						{{- end -}}
 					</div>
@@ -364,11 +352,25 @@
 
 			{{- if $isMyself -}}
 				<div id="outbox-refresh-{{.UserID}}" hx-preserve>
-					<div hx-get="/@{{.UserID}}" hx-trigger="refreshPage from:window" hx-push-url="false"></div>
+
+					<div 
+						hx-get="/@{{.UserID}}" 
+						hx-trigger="refreshPage from:window" 
+						hx-target="#main" 
+						hx-swap="innerHTML"
+						hx-push-url="false">
+					</div>
 
 					<div hx-ext="sse" sse-connect="/@{{.UserID}}/sse">
-						<div hx-get="/@{{.UserID}}" hx-trigger="sse:{{.UserID}}" hx-push-url="false"></div>
+						<div 
+							hx-get="/@{{.UserID}}" 
+							hx-trigger="sse:{{.UserID}}"  
+							hx-target="#main" 
+							hx-swap="innerHTML"
+							hx-push-url="false">
+						</div>
 					</div>
+
 				</div>
 			{{- end -}}
 

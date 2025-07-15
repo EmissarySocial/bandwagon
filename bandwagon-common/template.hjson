@@ -1,10 +1,18 @@
 {
 	templateId: bandwagon-common
+	model: None
 	templateRole: album
 	containedBy: []
 	extends: []
 	label: Bandwagon Common
 	description: Common elements for Bandwagon apps
+
+	states: {
+		default: {
+			label: Default
+			description: Default state for Bandwagon Common
+		}
+	}
 
 	datasets: {
 		"licenses": [

@@ -3,7 +3,7 @@
 {{- $bannerURL := .Data "bannerUrl" -}}
 {{- $flyerURL := .Data "flyerUrl" -}}
 
-<div id="event-{{.StreamID}}" class="page app padding-none h-event">
+<div id="event-{{.StreamID}}" class="page padding-none h-event">
 
 	<link rel="stylesheet" type="text/css" href="/{{.StreamID}}/stylesheet?v={{.ETag}}"/>
 
@@ -169,14 +169,21 @@
 			<div class="pos-absolute-top-right text-sm">
 				<button hx-get="/{{.StreamID}}/edit">Edit Show</button>
 				{{- if .IsPublished -}}
-					<button hx-get="/{{.StreamID}}/unpublish">Un-Publish</button>
+					<button hx-get="/{{.StreamID}}/unpublish">&check; Published</button>
+					<button hx-get="/{{.StreamID}}/edit-sharing">Sharing Settings</button>
 				{{- else -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
 			</div>
 
 			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}, refreshPage from:window" hx-push-url="false"></div>
+				<div 
+					hx-get="/{{.StreamID}}" 
+					hx-trigger="sse:{{.StreamID}}, refreshPage from:window" 
+					hx-target="#main" 
+					hx-swap="innerHTML"
+					hx-push-url="false">
+				</div>
 			</div>
 		{{- end -}}
 

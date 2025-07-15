@@ -28,7 +28,12 @@
 				<br>
 				<div class="text-sm">
 					<button hx-get="/{{.Token}}/edit">Edit</button>
-					<button hx-get="/{{.Token}}/sharing">Sharing</button>
+
+					{{- if eq .StateID "default"}}
+						<button hx-get="/{{.Token}}/publish">&plus; Publish</button>
+					{{- else -}}
+						<button hx-get="/{{.Token}}/unpublish">&check; Published</button>						
+					{{- end -}}
 				</div>
 			{{- end -}}
 		</div>

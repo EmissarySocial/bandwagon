@@ -24,6 +24,7 @@
 
 	actions: {
 		feed: {
+			roles: ["anonymous"]
 			steps: [
 				{do:"view-feed", search-types:["Person"]}
 			]

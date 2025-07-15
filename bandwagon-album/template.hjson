@@ -3,7 +3,7 @@
 	templateRole: album
 	model: Stream
 	containedBy: ["outbox"]
-	extends: ["base-intent", "bandwagon-common"]
+	extends: ["base-checkout", "base-intent", "bandwagon-common"]
 	icon: album
 	label: Album (Default)
 	description: Contains one or more songs
@@ -33,22 +33,27 @@
 		}
 	}
 
-	accessRoles: {
-		buyer: {
-			label: Buyer
-			description: Buyers have purchased this album and have lifetime access to it.
-			subscription: true
+	states: {
+		default: {
+			label: Default,
+			description: This item is not visible on the website
 		}
-		subscriber: {
-			label: Subscriber
-			description: Subscribers have full access so long as their subscription is valid.
-			subscription: true
+
+		published: {
+			label: Published,
+			description: This item has been published and is visible on the website
 		}
-		renter: {
-			label: Renter
-			description: IDK, man.  I'm just testing subscription stuff.
-			subscription: true
+	}
+	roles: {
+		paid: {
+			label: Paid Album
+			description: Select the products that give special access to paid purchasers and subscribers
+			privileged: true
 		}
+	}
+
+	bundles: {
+		javascript: {contentType: "text/javascript"}
 	}
 
 	socialRole: Album
@@ -78,20 +83,6 @@
 		summary:""
 		text: "{{.Label}} {{.AttributedTo.Name}}"
 		tags: "LIC:{{index .Data `license`}}"
-	}
-
-	states: {
-		unpublished: {
-			label:"Default State"
-			description:"Visible only to Authors and Owners"
-		}
-		published: {
-			label:"Published"
-			description:"Visible to all people with permissions"
-		}
-	}
-	bundles: {
-		javascript: {contentType: "text/javascript"}
 	}
 
 	actions: {
@@ -161,13 +152,17 @@
 				{do:"forward-to", url: "/{{.StreamID}}"}
 			]
 		}
+		
 		view: {
-			roles: ["editor", "owner"]
+			roles: ["author"]
 			stateRoles: {
 				published: ["anonymous"]
 			}
-			do: "view-html"
+			steps:[
+				{do: "view-html"}
+			]
 		}
+
 		edit: {
 			roles: ["author"]
 			steps: [
@@ -251,30 +246,11 @@
 			]
 		}
 
-		checkout: {
-			roles: ["anonymous"]
-			steps: [
-				{do:"if", condition:"{{eq 1 .Products.Count }}", then:[
-					{do:"redirect-to", url:"/.checkout?productId={{.Products.Slice.First.ProductID.Hex}}&return={{.Permalink}}"}
-				], else:[
-					{do:"as-modal", background:"view", steps:[
-						{do:"view-html"}
-					]}
-				]}
+		image: {
+			steps:[
+				{do:"view-attachment", category:"image", format:["webp", "jpeg", "gif"], width:800, height:800}
 			]
 		}
-
-		/*
-		edit-products: {
-			roles: ["owner"]
-			steps: [
-				{do:"as-modal", steps: [
-					{do:"set-products", title:"Purchase Options"}
-					{do:"save", message:"Subscription settings updated by {{.Author}}"}
-				]}
-			]
-		}
-		*/
 
 		delete: {
 			roles: ["author"]
@@ -322,15 +298,8 @@
 			]
 		}
 
-		links: {
-			steps:[
-				{do:"as-modal", steps:[
-					{do:"view-html"}
-				]}
-			]
-		}
-
 		stylesheet: {
+			roles:["anonymous"]
 			steps: [
 				{do:"cache-url"}
 				{do:"view-css"}
@@ -338,6 +307,7 @@
 		}
 
 		upload: {
+			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"view-html"}
@@ -356,6 +326,7 @@
 		}
 
 		edit-upload: {
+			roles: ["author"]
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"with-attachment", steps:[
@@ -382,6 +353,7 @@
 		}
 
 		delete-upload: {
+			roles: ["author"]
 			steps: [
 				{do:"as-confirmation", title:"Delete this Attachment?", message:"Are you sure you want to delete this attachment? There is NO UNDO.", submit:"DELETE"}
 				{do:"delete-attachments"}
@@ -463,9 +435,7 @@
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"view-html"}
-					/*{do:"as-confirmation", icon:"check", title:"Published to Internet", message:"This album has been published and is visible to everyone online.<br><br>You can un-publish it if you want to hide it.  You'll still be able to edit and make changes to it, but others will not see it.", submit:"Un-Publish Album"} */
-					{do:"set-state", state:"unpublished"}
-					{do:"unpublish", outbox:"true"}
+					{do:"unpublish", state:"default", outbox:"true"}
 					{do:"search-index"}
 					{do:"delete-archive", token:"FULL-ALBUM"}
 					{do:"refresh-page"}
@@ -474,12 +444,89 @@
 		}
 
 		icon: {
+			roles:["anonymous"]
 			steps: [
 				{do:"redirect-to", url:"{{.IconURL}}"}
 			]
 		}
 
+		premium-downloads: {
+			roles:["paid"]
+			steps: [
+				{do:"as-modal", steps:[
+					{do:"view-html"}
+				]}
+			]
+		}
+
+		edit-paid-content: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"view-html"}
+			]
+		}
+
+		upload-paid-attachment: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"as-modal", steps:[
+					{
+						do:"edit"
+						form:{
+							type:"layout-vertical"
+							label:"Upload an Exclusive File"
+							children:[
+								{type:"text", path:"attachmentLabel", label:"Label"}
+								{type:"textarea", path:"attachmentDescription", label:"Description", description:"A few words to show underneath the filename."}
+								{type:"upload", path:"file", label:"Attachment"}
+							]
+						}, 
+						options:["submit-label:Upload Exclusive File"]
+					}
+					{do:"upload-attachments", category:"paid", maximum:6, fieldname:"file", label-fieldname:"attachmentLabel", description-fieldname:"attachmentDescription"}
+					{do:"refresh-page"}
+				]}
+			]
+		}
+
+		edit-paid-attachment: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"with-attachment", steps:[
+					{do:"as-modal", steps:[
+						{
+							do:"edit"
+							form:{
+								type:"layout-vertical"
+								label:"Edit Exclusive File Info"
+								children:[
+									{type:"text", path:"label", label:"Download Label"}
+									{type:"textarea", path:"description", label:"Description", description:"A few words to show underneath the filename.", options:{rows:8}}
+								]
+							}
+							options:[
+								"endpoint:/{{.ObjectID}}/edit-paid-attachment?attachmentId={{.AttachmentID}}", 
+								"delete:/{{.ObjectID}}/delete-paid-attachment?attachmentId={{.AttachmentID}}"
+							]
+						}
+						{do:"save"}
+						{do:"refresh-page"}
+					]}
+				]}
+			]
+		}
+
+		delete-paid-attachment: {
+			roles: ["author", "editor"]
+			steps: [
+				{do:"as-confirmation", title:"Delete this Exclusive File?", message:"Are you sure you want to delete this file? There is NO UNDO.", submit:"Delete File"}
+				{do:"delete-attachments", category:"paid"}
+				{do:"refresh-page"}
+			]
+		}
+
 		zip9348103752: {
+			roles:["anonymous"]
 			steps: [
 				{do:"get-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					

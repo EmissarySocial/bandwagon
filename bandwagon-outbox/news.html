@@ -6,7 +6,7 @@
 {{- $label := first (.Data "label-news") "News" -}}
 {{- $description := .Data "description-news" -}}
 
-<div class="framed page app padding-none" script="on load add [@aria-selected=true] to #news">
+<div class="framed page padding-none" script="on load add [@aria-selected=true] to #news">
 
 	{{- template "header" . -}}
 
@@ -36,7 +36,7 @@
 			<div class="table">
 				{{- range $posts -}}
 					<div class="pos-relative hover-trigger">
-						<a href="/{{.StreamID}}" hx-boost="true" class="block text-plain text-nocolor flex-row">
+						<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="block text-plain text-nocolor flex-row">
 							<div class="width-128 rounded square margin-right">
 								{{- if ne "" .IconURL -}}
 									<img src="{{.IconURL}}" class="rounded square width-100% block" aria-hidden="true">
@@ -59,6 +59,12 @@
 
 	</div>
 
-	<div hx-get="/@{{.UserID}}/news" hx-trigger="refreshPage from:window"></div>
+	<div 
+		hx-get="/@{{.UserID}}/news" 
+		hx-trigger="refreshPage from:window" 
+		hx-target="#main" 
+		hx-swap="innerHTML" 
+		hx-push-url="false">
+	</div>
 
 </div>

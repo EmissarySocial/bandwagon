@@ -1,0 +1,20 @@
+{{- $circles := .Circles.Slice -}}
+
+<h1>Subscribe to {{.DisplayName}}</h1>
+
+<hr>
+{{- range $index, $circle := $circles -}}
+	<div role="button" class="flex-row">
+		<div class="flex-grow">
+			<div class="text-lg bold margin-none">{{$circle.Name}}</div>
+			<div class="text-gray">{{$circle.Description}}</div>
+		</div>
+		<div class="text-2xl">{{icon "chevron-right"}}</div>
+	</div>
+	<hr>
+{{- end -}}
+
+
+<div class="margin-top">
+	<button script="on click trigger closeModal">Close Window</button>
+</div>
