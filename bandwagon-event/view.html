@@ -27,167 +27,163 @@
 		<img id="event-banner" src="{{$bannerURL}}" class="width-100% margin-bottom u-photo">
 	{{- end -}}
 
-	<div class="padding pos-relative">
+	<div class="md:flex-row">
+		{{- if ne "" .IconURL -}}
+			<div class="md:width-4-10">
+				<img id="event-icon" src="{{.IconURL}}" class="square width-100% u-logo" style="border:solid 1px var(--gray30);">
+			</div>
+		{{- end -}}
+		<div class="md:width-24"></div>
+		<div class="md:width-1-2">
+			<h1 id="event-name" class="extra-bold margin-bottom-sm p-name">{{.Label}}</h1>
+			<div id="event-attributedTo"><a href="{{.AttributedTo.ProfileURL}}" hx-boost="true" class="text-lg text-gray">{{.AttributedTo.Name}}</a></div>
+			<h2 id="event-startDate">
+				<span id="event-startDate-Date" class="bold nowrap dt-start" datetime="{{.StartDate.String}}">{{- .StartDate | longDate -}}</span>
+				<span id="event-startDate-Time" class="text-light-gray nowrap">at {{ .StartDate | shortTime -}}</span>
+			</h2>
 	
-		<div class="md:flex-row">
-			{{- if ne "" .IconURL -}}
-				<div class="md:width-4-10">
-					<img id="event-icon" src="{{.IconURL}}" class="square width-100% u-logo" style="border:solid 1px var(--gray30);">
+			<hr>
+			<div class="text-lg">
+				{{- if ne "" $ticketURL -}}
+					{{- $ticketLabel := .Data "websiteLabel" -}}
+					{{- $ticketLabel := first $ticketLabel "Get Tickets" -}}
+					<a id="event-tickets" href="{{$ticketURL}}" class="width-100% md:width-auto button primary margin-left-xs margin-bottom-xs" target="_blank">{{ $ticketLabel }}</a>
+				{{- end -}}
+
+				<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}" class="width-100% md:width-auto margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "share"}}</span> Share</button>
+
+				{{- if ne nil $flyerURL -}}
+					<a id="event-flyer" href="{{$flyerURL}}" target="_blank" class="width-100% md:width-auto button margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "download"}}</span> Download</a>
+				{{- end -}}
+
+			</div>
+
+			{{- if ne "" .Summary -}}
+				<hr>
+				<div id="event-description" class="p-description">{{.Summary | markdown}}</div>
+			{{- end -}}
+
+			{{- if .Tags.NotEmpty -}}
+				<hr>
+				<div id="event-tags">
+					{{- range $index, $tag := .Tags -}}
+						<a href="/events?q=%23{{$tag.Name}}&date=next-365-days" hx-boost="true" class="tag margin-horizontal-xs p-category" role="button">#{{$tag.Name}}</a>
+					{{- end -}}
 				</div>
 			{{- end -}}
-			<div class="md:width-24"></div>
-			<div class="md:width-1-2">
-				<h1 id="event-name" class="extra-bold margin-bottom-sm p-name">{{.Label}}</h1>
-				<div id="event-attributedTo"><a href="{{.AttributedTo.ProfileURL}}" hx-boost="true" class="text-lg text-gray">{{.AttributedTo.Name}}</a></div>
-				<h2 id="event-startDate">
-					<span id="event-startDate-Date" class="bold nowrap dt-start" datetime="{{.StartDate.String}}">{{- .StartDate | longDate -}}</span>
-					<span id="event-startDate-Time" class="text-light-gray nowrap">at {{ .StartDate | shortTime -}}</span>
-				</h2>
-		
-				<hr>
-				<div class="text-lg">
-					{{- if ne "" $ticketURL -}}
-						{{- $ticketLabel := .Data "websiteLabel" -}}
-						{{- $ticketLabel := first $ticketLabel "Get Tickets" -}}
-						<a id="event-tickets" href="{{$ticketURL}}" class="width-100% md:width-auto button primary margin-left-xs margin-bottom-xs" target="_blank">{{ $ticketLabel }}</a>
+		</div>
+	</div>
+
+	{{- if .Places.NotEmpty -}}
+
+		{{- $venue := .Places.First -}}
+
+		{{- if $venue.NotEmpty -}}
+
+			{{- $hasGeocode := $venue.HasGeocode -}}
+			
+			<hr>
+			<div class="md:flex-row margin-top-xxl">
+
+				<div class="md:width-4-10">
+					{{if $hasGeocode}}
+						<div id="map" class="square map" style="width:100%; border:solid 1px var(--gray30);"></div>
+						<div class="align-right text-xs">
+							Maps &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>. &nbsp;
+							Icon by <a href="https://icons8.com/icon/13800/location" target="_blank">Icons8</a>
+						</div>
+
 					{{- end -}}
-
-					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label}} {{.Permalink}}" class="width-100% md:width-auto margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "share"}}</span> Share</button>
-
-					{{- if ne nil $flyerURL -}}
-						<a id="event-flyer" href="{{$flyerURL}}" target="_blank" class="width-100% md:width-auto button margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "download"}}</span> Download</a>
-					{{- end -}}
-
 				</div>
-	
-				{{- if ne "" .Summary -}}
-					<hr>
-					<div id="event-description" class="p-description">{{.Summary | markdown}}</div>
-				{{- end -}}
+				<div class="md:width-24"></div>
+				<div class="md:width-1-2 p-location">
 
-				{{- if .Tags.NotEmpty -}}
-					<hr>
-					<div id="event-tags">
-						{{- range $index, $tag := .Tags -}}
-							<a href="/events?q=%23{{$tag.Name}}&date=next-365-days" hx-boost="true" class="tag margin-horizontal-xs p-category" role="button">#{{$tag.Name}}</a>
-						{{- end -}}
+					<div class="text-lg h-card">
+						<h1 id="event-venue-name" class="extra-bold p-name">{{$venue.Name}}</h1>
+						<div id="event-venue-address" class="text-xl text-gray p-adr">{{- $venue.FullAddress | text -}}</div>
 					</div>
-				{{- end -}}
+		
+					{{if $hasGeocode}}
+						<div class="margin-top-xl text-gray">Open With:</div>
+						<div class="text-lg">
+							<div><a href="https://maps.apple.com?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Apple Maps</a></div>
+							<div><a href="https://maps.google.com/maps/place/{{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Google Maps</a></div>
+							<div><a href="https://bing.com/maps?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Microsoft Maps</a></div>
+						</div>
+
+						<div class="h-geo">
+							<data id="longitude" class="p-longitude" value="{{$venue.Longitude}}"></data>
+							<data id="latitude" class="p-latitude" value="{{$venue.Latitude}}"></data>
+						</div>
+
+						<!-- From: https://wiki.openstreetmap.org/wiki/OpenLayers_Marker_Example -->
+						<!-- https://wiki.openstreetmap.org/wiki/Openlayers_marker_multilayer_example -->
+						<script>
+							function showMap() {
+								map = new OpenLayers.Map("map");
+								map.addLayer(new OpenLayers.Layer.OSM(
+									"",
+									["https://tile.openstreetmap.org/${z}/${x}/${y}.png"],
+									{
+										"attribution": "",
+										"tileOptions": {"crossOriginKeyword": null }}
+									)
+								);
+
+								var zoom=14;
+								var longitude = parseFloat(document.getElementById("longitude").value);
+								var latitude = parseFloat(document.getElementById("latitude").value);
+								var lonLat = new OpenLayers.LonLat(longitude, latitude)
+
+								lonLat = lonLat.transform(
+									new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+									map.getProjectionObject() // to Spherical Mercator Projection
+								);
+							
+								var markers = new OpenLayers.Layer.Markers( "Markers" );
+								map.addLayer(markers);
+								
+								var size = new OpenLayers.Size(32,32);
+								var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+								var icon = new OpenLayers.Icon("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGUlEQVR4nO2aS0hVURSG/8pepDWM7AFFBZk1CdTuXeucHko2qAbRpGkkiaLUJCcNgmjeoIggEGleNGkShRSRSJNUGkVBZVH0VkrF/tjn3m5iaXuf1z1CCxZcLpd//9866yz22ecC/6MQVKyloIWKHgoeUfCOggkqxql4S0U/Bd1UHGMO1chKUNBMxV0qJqmgZZrf3qagsbzGBX0Opv+eggepgrARKyi4Ftn4nyDdzKEqWfMeNlHwJHbzWsoh+tiYlPltFLxJ0DyLV2KYHrbEaz6HagpeJG5eS/mKPtbEY34HFgYjMD3zLOZD+qiIDqA4WwbzLOaZaObzWEfBN8cefkwPncxjK5uwLEjz2XwnGHAEGGUDVkep/kUH498paCUwf0a9I1hARRsVYw4QF8KZz6GKii/W5j3sdijMHmsIwSdzFd0BFIcdqnQihH67g/4hdwDBZeuen6Vt/tFOg5YAl8IA2O1zBB3O4r/XOGkJcN9dvLAFtgGoCQ3go9Zyjdfu4ubGtBH3URkaIBcMCqsh4S5uZrCNeIQdJOuw3BLgq7u44FlmWkjxNAxAr5W4h87Eb2LBnTDi5y3FB8xIDDlGhyyvwDl3gDz2W4qbbHPWF3Q46O9zB2jGYio+WC4wRsFeB/ONxdMKWuR71mCRM0CwkOKKQ5XM3qZ9tnYK2qZQeVvzNDuCUOaLlap3APiVg8HNaSaMj8pi1lJwyqHnOSXrQgMEEIp7IRaNJwW9kcwHAB4Olg0gjwORAQIIc/iUfvX7CMyLB0DhpQ7g2T8g2UEIbqQIcD1W81Me8EdSMD9KxfrYAQIIRVcKvX86EfMBgI+KhG/ofnOQlhhAACHYYH1a4Vb5EQo2J2p+CkRLAgDHUzFfglDcjBHgVmwz3xqgHiuDo/DolR82WqmaL0F42Ol4TDg9x+lBy2K+BFE46wxb/VZkIai4GgKgB1kJNmCp40uQfvpYgiwFFauoeG5h/mVsr4/iDnNGRMHHWcx/pmA7shzMY9cMk8lMnCbMhaCHo9P+ejBpvsNcCprXTQXzP8K8AEEWorj97kpykZ+xubp/rAMA/QAAAABJRU5ErkJggg==", size, offset);
+								var marker = new OpenLayers.Marker(lonLat, icon)
+								markers.addMarker(marker);
+								
+								map.setCenter (lonLat, zoom);
+							}
+						</script>
+
+						<script id="open-layers" src="https://openlayers.org/api/2.13.1/OpenLayers.js" onload="showMap()"></script>
+
+					{{- end -}}
+	
+				</div>
 			</div>
+		{{- end -}}
+
+	{{- end -}}
+
+	{{- if $canEdit -}}
+		<div class="pos-absolute-top-right text-sm">
+			<button hx-get="/{{.StreamID}}/edit">Edit Show</button>
+			{{- if .IsPublished -}}
+				<button hx-get="/{{.StreamID}}/unpublish">&check; Published</button>
+				<button hx-get="/{{.StreamID}}/edit-sharing">Sharing Settings</button>
+			{{- else -}}
+				<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
+			{{- end -}}
 		</div>
 
-		{{- if .Places.NotEmpty -}}
-
-			{{- $venue := .Places.First -}}
-
-			{{- if $venue.NotEmpty -}}
-
-				{{- $hasGeocode := $venue.HasGeocode -}}
-				
-				<hr>
-				<div class="md:flex-row margin-top-xxl">
-
-					<div class="md:width-4-10">
-						{{if $hasGeocode}}
-							<div id="map" class="square map" style="width:100%; border:solid 1px var(--gray30);"></div>
-							<div class="align-right text-xs">
-								Maps &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>. &nbsp;
-								Icon by <a href="https://icons8.com/icon/13800/location" target="_blank">Icons8</a>
-							</div>
-
-						{{- end -}}
-					</div>
-					<div class="md:width-24"></div>
-					<div class="md:width-1-2 p-location">
-
-						<div class="text-lg h-card">
-							<h1 id="event-venue-name" class="extra-bold p-name">{{$venue.Name}}</h1>
-							<div id="event-venue-address" class="text-xl text-gray p-adr">{{- $venue.FullAddress | text -}}</div>
-						</div>
-			
-						{{if $hasGeocode}}
-							<div class="margin-top-xl text-gray">Open With:</div>
-							<div class="text-lg">
-								<div><a href="https://maps.apple.com?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Apple Maps</a></div>
-								<div><a href="https://maps.google.com/maps/place/{{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Google Maps</a></div>
-								<div><a href="https://bing.com/maps?q={{$venue.FullAddress}}" target="_blank" class="inline-block padding-vertical-xs">{{icon "map"}} Microsoft Maps</a></div>
-							</div>
-
-							<div class="h-geo">
-								<data id="longitude" class="p-longitude" value="{{$venue.Longitude}}"></data>
-								<data id="latitude" class="p-latitude" value="{{$venue.Latitude}}"></data>
-							</div>
-
-							<!-- From: https://wiki.openstreetmap.org/wiki/OpenLayers_Marker_Example -->
-							<!-- https://wiki.openstreetmap.org/wiki/Openlayers_marker_multilayer_example -->
-							<script>
-								function showMap() {
-									map = new OpenLayers.Map("map");
-									map.addLayer(new OpenLayers.Layer.OSM(
-										"",
-										["https://tile.openstreetmap.org/${z}/${x}/${y}.png"],
-										{
-											"attribution": "",
-											"tileOptions": {"crossOriginKeyword": null }}
-										)
-									);
-
-									var zoom=14;
-									var longitude = parseFloat(document.getElementById("longitude").value);
-									var latitude = parseFloat(document.getElementById("latitude").value);
-									var lonLat = new OpenLayers.LonLat(longitude, latitude)
-
-									lonLat = lonLat.transform(
-										new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-										map.getProjectionObject() // to Spherical Mercator Projection
-									);
-								
-									var markers = new OpenLayers.Layer.Markers( "Markers" );
-									map.addLayer(markers);
-									
-									var size = new OpenLayers.Size(32,32);
-									var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-									var icon = new OpenLayers.Icon("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADGUlEQVR4nO2aS0hVURSG/8pepDWM7AFFBZk1CdTuXeucHko2qAbRpGkkiaLUJCcNgmjeoIggEGleNGkShRSRSJNUGkVBZVH0VkrF/tjn3m5iaXuf1z1CCxZcLpd//9866yz22ecC/6MQVKyloIWKHgoeUfCOggkqxql4S0U/Bd1UHGMO1chKUNBMxV0qJqmgZZrf3qagsbzGBX0Opv+eggepgrARKyi4Ftn4nyDdzKEqWfMeNlHwJHbzWsoh+tiYlPltFLxJ0DyLV2KYHrbEaz6HagpeJG5eS/mKPtbEY34HFgYjMD3zLOZD+qiIDqA4WwbzLOaZaObzWEfBN8cefkwPncxjK5uwLEjz2XwnGHAEGGUDVkep/kUH498paCUwf0a9I1hARRsVYw4QF8KZz6GKii/W5j3sdijMHmsIwSdzFd0BFIcdqnQihH67g/4hdwDBZeuen6Vt/tFOg5YAl8IA2O1zBB3O4r/XOGkJcN9dvLAFtgGoCQ3go9Zyjdfu4ubGtBH3URkaIBcMCqsh4S5uZrCNeIQdJOuw3BLgq7u44FlmWkjxNAxAr5W4h87Eb2LBnTDi5y3FB8xIDDlGhyyvwDl3gDz2W4qbbHPWF3Q46O9zB2jGYio+WC4wRsFeB/ONxdMKWuR71mCRM0CwkOKKQ5XM3qZ9tnYK2qZQeVvzNDuCUOaLlap3APiVg8HNaSaMj8pi1lJwyqHnOSXrQgMEEIp7IRaNJwW9kcwHAB4Olg0gjwORAQIIc/iUfvX7CMyLB0DhpQ7g2T8g2UEIbqQIcD1W81Me8EdSMD9KxfrYAQIIRVcKvX86EfMBgI+KhG/ofnOQlhhAACHYYH1a4Vb5EQo2J2p+CkRLAgDHUzFfglDcjBHgVmwz3xqgHiuDo/DolR82WqmaL0F42Ol4TDg9x+lBy2K+BFE46wxb/VZkIai4GgKgB1kJNmCp40uQfvpYgiwFFauoeG5h/mVsr4/iDnNGRMHHWcx/pmA7shzMY9cMk8lMnCbMhaCHo9P+ejBpvsNcCprXTQXzP8K8AEEWorj97kpykZ+xubp/rAMA/QAAAABJRU5ErkJggg==", size, offset);
-									var marker = new OpenLayers.Marker(lonLat, icon)
-									markers.addMarker(marker);
-									
-									map.setCenter (lonLat, zoom);
-								}
-							</script>
-
-							<script id="open-layers" src="https://openlayers.org/api/2.13.1/OpenLayers.js" onload="showMap()"></script>
-
-						{{- end -}}
-		
-					</div>
-				</div>
-			{{- end -}}
-
-		{{- end -}}
-
-		{{- if $canEdit -}}
-			<div class="pos-absolute-top-right text-sm">
-				<button hx-get="/{{.StreamID}}/edit">Edit Show</button>
-				{{- if .IsPublished -}}
-					<button hx-get="/{{.StreamID}}/unpublish">&check; Published</button>
-					<button hx-get="/{{.StreamID}}/edit-sharing">Sharing Settings</button>
-				{{- else -}}
-					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
-				{{- end -}}
+		<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
+			<div 
+				hx-get="/{{.StreamID}}" 
+				hx-trigger="sse:{{.StreamID}}, refreshPage from:window" 
+				hx-target="#main" 
+				hx-swap="innerHTML"
+				hx-push-url="false">
 			</div>
-
-			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-				<div 
-					hx-get="/{{.StreamID}}" 
-					hx-trigger="sse:{{.StreamID}}, refreshPage from:window" 
-					hx-target="#main" 
-					hx-swap="innerHTML"
-					hx-push-url="false">
-				</div>
-			</div>
-		{{- end -}}
-
-	</div>
+		</div>
+	{{- end -}}
 
 	<a href="{{.Permalink}}" class="u-url"></a>
 </div>
