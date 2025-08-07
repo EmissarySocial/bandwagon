@@ -286,7 +286,8 @@
 						"data.license": "{{.Data `license`}}"
 					}
 				}
-				{do:"refresh-page"}
+				{do:"add-event", event:"songAdded"}
+				{do:"remove-event", event:"refreshPage"}
 			]
 		}
 

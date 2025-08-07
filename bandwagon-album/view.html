@@ -51,20 +51,20 @@
 
 		{{- if $canEdit -}}
 			<div class="pos-absolute-top-right text-sm">
-				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
 
+				<button hx-get="/{{.StreamID}}/edit">Edit Album</button>
+				<button hx-get="/{{.StreamID}}/edit-checkout">
+					{{- if .StreamHasPrivileges -}}
+						{{icon "check"}} Sales Enabled
+					{{- else -}}
+						Sell Online
+					{{- end -}}
+				</button>
 				{{- if .IsPublished -}}
 					<button hx-get="/{{.StreamID}}/unpublish">{{icon "check"}} Published</button>
 				{{- else if $songs.NotEmpty -}}
 					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
 				{{- end -}}
-				<button hx-get="/{{.StreamID}}/edit-checkout">
-					{{- if .StreamHasPrivileges -}}
-						{{icon "check"}} Sell Online
-					{{- else -}}
-						Sell Online &rarr;
-					{{- end -}}
-				</button>
 					
 			</div>
 		{{- end -}}
@@ -418,16 +418,18 @@
 	</div>
 
 	{{- if $canEdit -}}
+
 		<div id="stream-refresh-{{.StreamID}}" hx-preserve>
 
 			<div 
 				hx-get="/{{.StreamID}}" 
-				hx-trigger="refreshPage from:window" 
+				hx-trigger="refreshPage from:window, songAdded from:window delay:500ms" 
 				hx-push-url="false"
 				hx-target="#main"
 				hx-swap="innerHTML">
 			</div>
 
+			<!--
 			<div 
 				hx-get="/{{.StreamID}}" 
 				hx-trigger="refreshPage from:window delay:1000ms" 
@@ -435,10 +437,20 @@
 				hx-target="#main"
 				hx-swap="innerHTML">
 			</div>
+			-->
 
+			<!--
 			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-				<div hx-get="/{{.StreamID}}" hx-trigger="sse:{{.StreamID}}" hx-push-url="false"></div>
+				<div 
+					hx-get="/{{.StreamID}}" 
+					hx-target="main"
+					hx-swap="innerHTML"
+					hx-trigger="sse:{{.StreamID}}" 
+					hx-push-url="false">
+				</div>
 			</div>
+			-->
+
 		</div>
 	{{- end -}}
 
