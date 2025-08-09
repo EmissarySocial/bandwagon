@@ -1,6 +1,6 @@
 {{- $streamID := .StreamID -}}
 {{- $tags := .Tags -}}
-{{- $songs := .Children.Top60.ByRank.Slice -}}
+{{- $songs := .Children.Top120.ByRank.Slice -}}
 {{- $canEdit := .UserCan "edit" -}}
 {{- $isPlayable := false -}}
 {{- $links := .Data "links" -}}
