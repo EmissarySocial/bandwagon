@@ -100,7 +100,7 @@
 									label: Show Date
 									type:layout-vertical
 									children: [
-										{type:"text", path:"label", label:"Name"}
+										{type:"text", path:"label", label:"Name", options:{autocomplete:"off"}}
 										{type:"text", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
 										{type:"date", path:"startDate.date", label:"Date"}
 										{type:"time", path:"startDate.time", label:"Start Time"}

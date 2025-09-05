@@ -101,7 +101,7 @@
 									type:layout-vertical
 									label: General
 									children: [
-										{type:"text", path:"label", label:"Album Name"}
+										{type:"text", path:"label", label:"Album Name", options:{autocomplete:"off"}}
 										{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
 										{type:"date", path:"data.releaseDate", label:"Release Date"}
 										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
