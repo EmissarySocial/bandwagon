@@ -55,7 +55,6 @@
 				{{- if ne nil $flyerURL -}}
 					<a id="event-flyer" href="{{$flyerURL}}" target="_blank" class="width-100% md:width-auto button margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "download"}}</span> Download</a>
 				{{- end -}}
-
 			</div>
 
 			{{- if ne "" .Summary -}}
@@ -65,9 +64,9 @@
 
 			{{- if .Tags.NotEmpty -}}
 				<hr>
-				<div id="event-tags">
+				<div id="event-tags" class="margin-vertical">
 					{{- range $index, $tag := .Tags -}}
-						<a href="/events?q=%23{{$tag.Name}}&date=next-365-days" hx-boost="true" class="tag margin-horizontal-xs p-category" role="button">#{{$tag.Name}}</a>
+						<a href="/events?q=%23{{$tag.Name}}&date=next-365-days" hx-boost="true" class="tag margin-right-sm p-category" role="button">#{{$tag.Name}}</a>
 					{{- end -}}
 				</div>
 			{{- end -}}
