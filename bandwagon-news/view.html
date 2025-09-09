@@ -20,14 +20,9 @@
 
 	<div hx-get="/@{{.ParentID}}/header" hx-swap="outerHTML" hx-target="this" hx-trigger="load" hx-push-url="false"></div>
 
-	{{- $bannerURL := .Data "bannerUrl" -}}
-	{{- if ne "" $bannerURL -}}
-		<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true">
-	{{- end -}}
+	<article class="content pos-relative">
 
-	<article class="content padding-lg pos-relative">
-
-		<div>
+		<div class="padding-lg">
 			<h1 class="extra-bold margin-bottom-none">{{.Label}}</h1>
 			<div class="margin-bottom-xl text-lg">
 				<a href="/@{{.ParentID}}">{{.AttributedTo.Name}}</a>
@@ -39,7 +34,17 @@
 				<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
 				<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
 			</div>
-			<div class="margin-vertical">{{.ContentHTML}}</div>
+		</div>
+
+		{{- $bannerURL := .Data "bannerUrl" -}}
+		{{- if ne "" $bannerURL -}}
+			<div class="md:padding-horizontal-lg">
+				<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true">
+			</div>
+		{{- end -}}
+
+		<div class="padding-lg flex-row flex-justify-center">
+			<div style="max-width:600px;">{{.ContentHTML}}</div>
 		</div>
 
 		{{- if .UserCan "edit" -}}
