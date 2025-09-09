@@ -104,8 +104,8 @@
 									type:layout-vertical
 									label:"Uploads"
 									children:[
-										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
-										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on summary cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
 									]
 								}
 							]
@@ -156,8 +156,8 @@
 									type:layout-vertical
 									label:"Uploads"
 									children:[
-										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
-										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on summary cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
 									]
 								}
 							]
