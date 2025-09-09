@@ -1,5 +1,7 @@
 <div class="framed page padding-none" script="on htmx:load if #news is not null then add [@aria-selected=true] to #news">
 
+	<link rel="stylesheet" href="/@{{.ParentID}}/stylesheet" />
+
 	<!-- Open Graph: https://ogp.me -->
 	<meta property="og:type" content="article">
 	<meta property="og:title" content="{{.Label}}">
@@ -18,9 +20,14 @@
 		</div>
 	{{- end -}}
 
-	<div hx-get="/@{{.ParentID}}/header" hx-swap="outerHTML" hx-target="this" hx-trigger="load" hx-push-url="false"></div>
-
 	<article class="content pos-relative">
+
+		{{- $bannerURL := .Data "bannerUrl" -}}
+		{{- if ne "" $bannerURL -}}
+			<div>
+				<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true">
+			</div>
+		{{- end -}}
 
 		<div class="padding-lg">
 			<h1 class="extra-bold margin-bottom-none">{{.Label}}</h1>
@@ -35,13 +42,6 @@
 				<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
 			</div>
 		</div>
-
-		{{- $bannerURL := .Data "bannerUrl" -}}
-		{{- if ne "" $bannerURL -}}
-			<div class="md:padding-horizontal-lg">
-				<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true">
-			</div>
-		{{- end -}}
 
 		<div class="padding-lg flex-row flex-justify-center">
 			<div style="max-width:600px;">{{.ContentHTML}}</div>
