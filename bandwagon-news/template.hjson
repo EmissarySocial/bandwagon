@@ -79,6 +79,7 @@
 					{do:"set-data", from-url:["isFeatured"]}
 					{
 						do:edit
+						options:["submit-label:Save Draft"]
 						form: {
 							type:layout-tabs
 							label:"+ Add News"
@@ -131,7 +132,7 @@
 					{do:"view-html"}
 					{
 						do:"edit"
-						options: ["delete:/{{.StreamID}}/delete"]
+						options: ["submit-label:{{if .IsPublished}}Publish Changes{{else}}Save Draft{{end}}", "delete:/{{.StreamID}}/delete"]
 						form: {
 							type:layout-tabs
 							children: [
