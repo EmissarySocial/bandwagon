@@ -390,14 +390,16 @@
 
 			{{- if $canEdit -}}
 
-				<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js" preload></script>
+				<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js" script="on load MakeTracksSortable()"></script>
 
 				<script>
-					new Sortable(document.getElementById("album-tracks"), {
-						handle: ".drag-handle",
-						animation: 150,
-						whisperClass: 'draggable-whisper'
-					});
+					function MakeTracksSortable() {
+						new Sortable(document.getElementById("album-tracks"), {
+							handle: ".drag-handle",
+							animation: 150,
+							whisperClass: 'draggable-whisper'
+						});
+					}
 				</script>
 
 				<style>
