@@ -112,20 +112,20 @@
 				<!-- Albums -->
 				{{- if or $albums.NotEmpty $isMyself -}}
 
-					{{- $albumLabel := first (.Data "label-albums") "Albums" -}}
+					{{- $albumLabel := first (.Data "label-albums") "Releases" -}}
 
 					<div class="margin-bottom pos-relative">
-						<a href="/@{{$username}}/albums" hx-boost="true" aria-label="View All Albums">
+						<a href="/@{{$username}}/albums" hx-boost="true" aria-label="View All Releases">
 							<span class="text-nocolor text-plain text-xl bold margin-right-sm">{{$albumLabel}}</span>
 							All &rarr;
 						</a>
 
 						{{- if $isMyself -}}
 							<div class="pos-absolute-top-right text-sm">
-								<button hx-get="/@{{.UserID}}/add-album?isFeatured=true" aria-label="Add an Album">
-									{{icon "add"}} Album
+								<button hx-get="/@{{.UserID}}/add-album?isFeatured=true" aria-label="Add Release">
+									{{icon "add"}} Release
 								</button>
-								<button hx-get="/@{{.UserID}}/edit-albums" aria-label="Edit Album Page">
+								<button hx-get="/@{{.UserID}}/edit-albums" aria-label="Edit Release">
 									Edit
 								</button>
 							</div>
@@ -152,10 +152,9 @@
 										<div class="padding text-plain">
 											<div class="bold link">{{.Label}}</div>
 											<div class="text-gray">
-												Album 
 												{{- $releaseDate := index .Data "releaseDate" -}}
 												{{- if ne nil $releaseDate }}
-													&middot; {{$releaseDate | year }}
+													{{$releaseDate | year }}
 												{{- end -}}
 											</div>
 										</div>

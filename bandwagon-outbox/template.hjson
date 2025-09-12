@@ -19,7 +19,7 @@
 					show-events: {type:"string"}
 					show-news: {type:"string"}
 					shop-url: {type:"string", format:"url"}
-					label-albums: {type:"string", default:"Albums"}
+					label-albums: {type:"string", default:"Releases"}
 					label-events: {type:"string", default:"Events"}
 					label-news: {type:"string", default:"News"}
 					label-shop: {type:"string", default:"Shop"}
@@ -68,7 +68,7 @@
 				{
 					do:"set-data", 
 					values:{
-						"data.label-albums":"Albums"
+						"data.label-albums":"Releases"
 						"data.label-events":"Events"
 						"data.label-news":"News"
 						"data.label-shop":"Shop"
@@ -125,7 +125,7 @@
 					style: inline
 					location: outbox
 					template: bandwagon-album
-					label: + Add Album
+					label: + Add Release
 					set-permissions: {copy:true, editor:["self"]}
 					with-data:{data.tags:"{{.Data `tags`}}"}
 				}
@@ -298,9 +298,9 @@
 						do: "edit"
 						form:{
 							type: layout-vertical
-							label: Edit Albums
+							label: Edit Releases
 							children: [
-								{type:"text", path:"data.label-albums", label:"Title Text", description:"Used on profile, and at top of 'Albums' page.", options:{placeholder:"Albums"}}
+								{type:"text", path:"data.label-albums", label:"Title Text", description:"Used on profile, and at top of 'Releases' page.", options:{placeholder:"Releases"}}
 								{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of this page. Markdown is allowed.", options:{rows:8}}
 							]
 						}
@@ -355,67 +355,6 @@
 			] 
 		}
 
-		edit-menu: {
-			roles: ["self"]
-			steps: [
-				{do: "as-modal", background:"view", steps:[
-					{
-						do: "edit"
-						form:{
-							label: Edit Menu
-							type:layout-tabs
-							children: [
-								{
-									type: layout-vertical
-									label: Albums
-									children: [
-										{type:"toggle", path:"data.show-albums", options:{text:"Display 'Albums' in Menu Bar"}}
-										{type:"text", path:"data.label-albums", label:"Menu Bar Text", options:{placeholder:"Albums"}}
-										{type:"textarea", path:"data.description-albums", label:"Top of Page Text", description:"Text to show at the top of the 'Albums' section. Markdown is allowed.", options:{rows:8}}
-									]
-								}
-								{
-									type: layout-vertical
-									label: Shows
-									children: [
-										{type:"toggle", path:"data.show-events", options:{text:"Display 'Shows' in Menu Bar"}}
-										{type:"text", path:"data.label-events", label:"Menu Bar Text", options:{placeholder:"Shows"}}
-										{type:"textarea", path:"data.description-events", label:"Top of Page Text", description:"Text to show at the top of the 'Events' section. Markdown is allowed.", options:{rows:8}}
-									]
-								}
-								{
-									type: layout-vertical
-									label: News
-									children: [
-										{type:"toggle", path:"data.show-news", options:{text:"Display 'News' in Menu Bar"}}
-										{type:"text", path:"data.label-news", label:"Menu Bar Text", options:{placeholder:"News"}}
-										{type:"textarea", path:"data.description-news", label:"Top of Page Text", description:"Text to show at the top of the 'News' section. Markdown is allowed.", options:{rows:8}}
-									]
-								}
-								{
-									type: layout-vertical
-									label: Shop Link
-									children: [
-										{type:"label", label:"The 'Shop' link is displayed automatically when you enter the shop URL below"}
-										{type:"text", path:"data.label-shop", label:"Menu Bar Text", options:{placeholder:"Shop"}}
-										{type:"text", path:"data.shop-url", label:"Shop URL"}
-									]
-								}
-								{
-									type: layout-vertical
-									label: Colors
-									children: [
-										{type:"colorpicker", path:"data.color-menu", label:"Background Color"}
-									]
-								}
-							]
-						}
-					}
-					{do:"save"}
-					{do:"refresh-page"}
-				]}
-			] 
-		}
 		sort-featured: {
 			roles: ["self"]
 			steps: [
@@ -508,7 +447,7 @@
 
 						]
 					}
-					options: ["endpoint:/@{{.UserID}}/wizard-3", "submit-label:Continue to Album Upload", "cancel-button:hide"]
+					options: ["endpoint:/@{{.UserID}}/wizard-3", "submit-label:Continue to Upload Music", "cancel-button:hide"]
 				},
 				{do:"set-state", state:"LIVE"}
 				{do:"save"}
