@@ -284,13 +284,13 @@
 						{{- range $news -}}
 							{{- if or .IsPublished $isMyself -}}
 
-								<div class="pos-relative hover-trigger clickable flex-column">
+								<div class="hover-trigger pos-relative hover-trigger clickable flex-column">
 									<a href="/{{.StreamID}}" hx-boost="true" class="text-plain text-nocolor sm:flex-row width-100%">
 
 										{{- if eq "" .IconURL -}}
-											<div class="hide sm:show rounded square width:100% sm:width-128 margin-right" style="background-color:var(--gray20);"></div>
+											<div class="hover-swell hide sm:show rounded square width:100% sm:width-128 margin-right" style="background-color:var(--gray20);"></div>
 										{{- else -}}
-											<img src="{{.IconURL}}" class="rounded square width-100% sm:width-128 object-fit-cover margin-right" aria-hidden="true">
+											<img src="{{.IconURL}}" class="hover-swell rounded square width-100% sm:width-128 object-fit-cover margin-right" aria-hidden="true">
 										{{- end -}}
 
 										<div>
