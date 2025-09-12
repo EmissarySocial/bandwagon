@@ -78,27 +78,27 @@ body {
 
 }
 
-#media-controls:not(.PLAYING) > .playing-show,
-#media-controls.PLAYING > .playing-hide,
-.track:not(.PLAYING) .playing-show,
-.track.PLAYING .playing-hide,
-.track:not(.PLAYING) .playing-hide.hover-hide
-.track:not(.PLAYING):hover .playing-hide.hover-show
+#media-controls:not(.playing) > .playing-show,
+#media-controls.playing > .playing-hide,
+.track:not(.playing) .playing-show,
+.track.playing .playing-hide,
+.track:not(.playing) .playing-hide.hover-hide
+.track:not(.playing):hover .playing-hide.hover-show
 {
 	display: none;
 }
 
-#media-controls.PLAYING > .playing-show,
-#media-controls:not(.PLAYING) > .playing-hide,
-.track.PLAYING playing-show,
-.track:not(.PLAYING) .playing-hide,
-.track:not(.PLAYING) .playing-hide.hover-hide
-.track:not(.PLAYING):hover .playing-hide.hover-show,
+#media-controls.playing > .playing-show,
+#media-controls:not(.playing) > .playing-hide,
+.track.playing playing-show,
+.track:not(.playing) .playing-hide,
+.track:not(.playing) .playing-hide.hover-hide
+.track:not(.playing):hover .playing-hide.hover-show,
  {
 	display: initial;
 }
 
-.track.PLAYING {
+.track.playing {
 	background-color: var(--gray10);
 }
 

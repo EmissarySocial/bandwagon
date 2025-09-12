@@ -4,12 +4,14 @@
 {{- $canEdit := .UserCan "edit" -}}
 {{- $isPlayable := false -}}
 {{- $links := .Data "links" -}}
+{{- $checkoutLabel := first (.Data "checkout label") "Buy Now" -}}
+
+{{- $isPlayable := false -}}
 {{- range $index, $song := $songs -}}
 	{{- if ne nil $song.Data.attachmentId -}}
 		{{- $isPlayable = true -}} 
 	{{- end -}}
 {{- end -}}
-{{- $checkoutLabel := first (.Data "checkout label") "Buy Now" -}}
 
 <div id="album-{{.StreamID}}" class="page padding-none">
 
@@ -69,7 +71,6 @@
 			</div>
 		{{- end -}}
 
-
 		<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-50% lg:width-40% md:margin-right-lg flex-grow-0 flex-shrink-0 margin-bottom-lg rounded pos-relative">
 			{{- if ne "" .IconURL -}}
 				<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="view-transition-name: icon-{{.StreamID}}; object-fit:cover;">
@@ -80,7 +81,9 @@
 			{{- end -}}
 		</div>
 
-		<div class="flex-grow margin-bottom-lg">
+		<div script="install MediaPlayer" class="flex-grow margin-bottom-lg">
+			<audio hidden></audio>
+
 			<h1 id="album-name" class="margin-vertical-none">
 				<span class="hide-visual">Album Name:</span>
 				{{.Label}}
@@ -91,16 +94,27 @@
 				</a>
 			</div>
 
-			{{- if .IsPublished -}}
+			{{- if or $isPlayable .StreamHasPrivileges -}}
 
 				<div class="margin-vertical"></div>
 	
 				<div id="media-controls" class="margin-vertical-lg">
 					{{- if $isPlayable -}}
-						<button hx-on:click="PlayFirst()" class="primary playing-hide">{{icon "play-fill"}} Play Album</button>
-						<button hx-on:click="PlayPrevious()" class="primary playing-show margin-right-none" aria-label="Skip Backward">{{icon "skip-backward-fill"}}</button>
-						<button hx-on:click="Pause()" class="primary playing-show margin-right-none" aria-label="Pause Playback">{{icon "pause-fill"}}</button>
-						<button hx-on:click="PlayNext(true)" class="primary playing-show margin-right" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
+
+					<div class="flex-row flex-align-center">
+						<button class="player-Play primary">{{icon "play-fill"}} Play</button>
+						<button class="player-Prev margin-right-none" aria-label="Skip Backward" hidden>{{icon "skip-backward-fill"}}</button>
+						<button class="player-Pause primary margin-right-none" aria-label="Pause Playback" hidden>{{icon "pause-fill"}}</button>
+						<button class="player-Next margin-right" aria-label="Skip Forward" hidden>{{icon "skip-forward-fill"}}</button>
+
+						<div class="player-Progress flex-grow" script="install Slider" hidden style="background-color:#CCC; border:solid 1px #333;"></div>
+
+						{{- range $index, $song := $songs -}}
+							<data value="/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}.opus?bitrate=128&v=2"></data>
+						{{- end -}}
+
+					</div>
+
 					{{- else if and $songs.NotEmpty $canEdit -}}
 						<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
 					{{- end -}}
@@ -131,19 +145,34 @@
 
 			<!-- Song List -->
 			{{- if $songs.NotEmpty -}}
-			
+				
 				<form hx-post="/{{.StreamID}}/sort-tracks" hx-trigger="end" hx-push-url="false">
 					<div id="album-tracks" class="table margin-top-lg">
+						{{- $counter := 0 -}}
 						{{- range $index, $song := $songs -}}
 							{{- $isplayable := ne nil $song.Data.attachmentId -}}
-							<div id="track-{{$index}}" class="clickable flex-row">
-								<div class="flex-grow flex-row track" role="button" aria-label="Play Track: {{$song.Label}}"
+							<div id="track-{{$index}}" class="track clickable flex-row" 
+
+								{{ if $isplayable -}}
+									aria-label="Play Track: {{$song.Label}}"
+									data-track-url="/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}.opus?bitrate=128&v=2"
+								{{- else -}}
+									aria-label="View Track Info: {{$song.Label}}"
+								{{- end -}}
+							>
+
+								<div class="flex-grow flex-row" role="button" aria-label="Play Track: {{$song.Label}}"
 									{{ if $isplayable -}}
-										hx-on:click="Toggle({{$index}})"
+										script="on click trigger Play(trackNumber:{{$counter}})"
 									{{- else -}}
 										hx-get="/{{$song.StreamID}}"
 									{{- end -}}
 								>
+
+									{{ if $isplayable -}}
+										{{- $counter = inc $counter -}}
+									{{- end -}}
+
 									<input type="hidden" name="keys" value="{{.StreamID}}">
 
 									{{- if and $canEdit (gt $songs.Length 1) -}}
@@ -369,24 +398,6 @@
 		</div>
 
 		{{- if $songs.NotEmpty -}}
-			<audio hx-on:ended="PlayNext()">
-				<source id="source-ogg" type="audio/ogg">
-				<source id="source-mp3" type="audio/mp3">
-			</audio>
-
-			<script src="/.templates/bandwagon-album/javascript" preload></script>
-			<script id="playlist" type="application/javascript" data-json='[
-				{{- $first := true -}}
-				{{- range $index, $song := $songs -}}
-					{{- if ne nil $song.Data.attachmentId -}}
-						{{- if not $first -}},{{- end -}}
-						{{- $first = false -}}
-						{"url":"/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}", "title":{{$song.Label | json}} }
-					{{ end -}}
-				{{- end -}}
-				]'>
-				var playlist = JSON.parse(document.getElementById('playlist').dataset.json);
-			</script>
 
 			{{- if $canEdit -}}
 

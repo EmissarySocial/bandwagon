@@ -5,7 +5,7 @@
 	containedBy: ["outbox"]
 	extends: ["base-checkout", "base-intent", "bandwagon-common"]
 	icon: album
-	label: Album (Default)
+	label: Release
 	description: Contains one or more songs
 	schema: {
 		type:object
@@ -46,14 +46,14 @@
 	}
 	roles: {
 		paid: {
-			label: Paid Album
+			label: Paid
 			description: Select the products that give special access to paid purchasers and subscribers
 			privileged: true
 		}
 	}
 
 	bundles: {
-		javascript: {contentType: "text/javascript"}
+		javascript: {content-type: "text/javascript"}
 	}
 
 	socialRole: Album
@@ -94,17 +94,17 @@
 					{
 						do: edit
 						form: {
-							label: + Add an Album
+							label: + Add Release
 							type:layout-tabs
 							children: [
 								{
 									type:layout-vertical
 									label: General
 									children: [
-										{type:"text", path:"label", label:"Album Name", options:{autocomplete:"off"}}
+										{type:"text", path:"label", label:"Name", options:{autocomplete:"off"}}
 										{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
 										{type:"date", path:"data.releaseDate", label:"Release Date"}
-										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
+										{type:"upload", path:"iconUrl", label:"Artwork", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured?"}}
 									]
 								}
@@ -171,17 +171,17 @@
 						do: edit
 						options: ["delete:/{{.StreamID}}/delete"]
 						form: {
-							label: Edit Album
+							label: Edit Release
 							type:layout-tabs
 							children: [
 								{
 									type:layout-vertical
 									label: General
 									children: [
-										{type:"text", path:"label", label:"Album Name"}
+										{type:"text", path:"label", label:"Name"}
 										{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
 										{type:"date", path:"data.releaseDate", label:"Release Date"}
-										{type:"upload", path:"iconUrl", label:"Album Art", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
+										{type:"upload", path:"iconUrl", label:"Artwork", options:{accept:"image/*", filename:"data.imageFilename", delete:"/{{.StreamID}}/delete-icon", rules:{width:800, height:800, types:["webp"]}}}
 										{type:"toggle", path:"isFeatured", options:{true-text:"Featured (shows on home page)", false-text:"Featured?"}}
 									]
 								}
@@ -376,15 +376,15 @@
 							do: edit
 							form: {
 								type: layout-vertical
-								label: Re-Publish this Album?
-								description: "If you've made changes to this album, you can send updates to all distribution channels.",
+								label: Re-Publish this Release?
+								description: "If you've made changes to this release, you can send updates to all distribution channels.",
 								children:[
 									{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
 									{type:"select", path:"isFeatured", label:"Feature on Home Page", options:{enum:[{value:"false", label:"NO. Do not show on my home page"}, {value:"true", label:"YES. Show on my home page"}]}}
 									{type:"multiselect", path:"syndication", label:"Distribute to Streaming Stations", description:"Share this album with indie streaming services", options:{provider:"syndication-targets"}}
 								]
 							},
-							options:["submit-label:Publish Album"]
+							options:["submit-label:Publish"]
 						}
 					],
 					else:[
@@ -392,14 +392,14 @@
 							do: edit
 							form: {
 								type: layout-vertical
-								label: Publish this Album?
+								label: Publish this Release?
 								children:[
 									{type:"select", path:"data.license", label:"License", options:{required:true, provider:"bandwagon-album.licenses"}}
 									{type:"select", path:"isFeatured", label:"Feature on Home Page", options:{enum:[{value:"false", label:"NO. Do not show on my home page"}, {value:"true", label:"YES. Show on my home page"}]}}
 									{type:"multiselect", path:"syndication", label:"Distribute to Streaming Stations", description:"Share this album with indie streaming services.", options:{provider:"syndication-targets"}}
 								]
 							},
-							options:["submit-label:Publish Album"]
+							options:["submit-label:Publish"]
 						}
 					]}
 					{do:"set-state", state:"published"}
