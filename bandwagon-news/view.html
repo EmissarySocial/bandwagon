@@ -13,10 +13,9 @@
 	<meta property="og:article:author" content="{{.AttributedTo.ProfileURL}}">
 
 	{{- if not .IsPublished -}}
-		<div hx-get="/{{.StreamID}}/publish" class="clickable alert-red margin-none" role="button">
+		<div hx-get="/{{.StreamID}}/publish" class="clickable alert-green margin-none" role="button">
 			{{icon "alert-fill"}} 
-			This news HAS NOT BEEN published yet and won't be seen by others.
-			<span class="text-underline">Click here to publish it</span>
+			This news IS READY TO PUBLISH. Click here to <u>select publishing options</u>.
 		</div>
 	{{- end -}}
 
@@ -59,7 +58,7 @@
 						<button hx-get="/{{.StreamID}}/edit-sharing">Sharing: Private</button>
 					{{- end -}}
 				{{- else -}}
-					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish</button>
+					<button hx-get="/{{.StreamID}}/publish" class="primary">Publish...</button>
 				{{- end -}}
 			</div>
 
