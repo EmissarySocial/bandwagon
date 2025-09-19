@@ -46,7 +46,7 @@
 
 	socialRole: Article
 	socialRules: [
-		{target:"content", expression:"{{.SummaryOrContent}}"}
+		{target:"content", expression:"{{.Content.HTML}}"}
 	]
 
 	search: {
