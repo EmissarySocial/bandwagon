@@ -23,8 +23,9 @@
 
 		{{- $bannerURL := .Data "bannerUrl" -}}
 		{{- if ne "" $bannerURL -}}
+			{{- $bannerDescription := .Data "bannerDescription" -}}
 			<div>
-				<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true">
+				<img src="{{$bannerURL}}" class="width-100% block" aria-hidden="true" alt="{{$bannerDescription}}">
 			</div>
 		{{- end -}}
 

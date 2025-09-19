@@ -19,6 +19,8 @@
 			data: {type:"object", properties:{
 				linkText: {type:"string"}
 				bannerUrl: {type:"string", format:"url"}
+				bannerDescription: {type:"string"}
+				iconDescription: {type:"string"}
 			}}
 		}
 	}
@@ -98,24 +100,32 @@
 									type:layout-vertical
 									label:"Content"
 									children:[
-										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
+										{type:"textarea", path: "content.raw", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
 									]
 								}
 								{
 									type:layout-vertical
-									label:"Images"
+									label:"Icon"
 									children:[
-										{type:"upload", path:"iconUrl", label:"Thumbnail Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"iconUrl", label:"Icon Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"textarea", path:"data.iconDescription", label:"Icon Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
+									]
+								}
+								{
+									type:layout-vertical
+									label:"Banner"
+									children:[
 										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Aspect Ratio: 16x9", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"textarea", path:"data.bannerDescription", label:"Banner Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
 									]
 								}
 							]
 						}
 					}
 
-					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", rules:{width:800, height:800, types:["webp"]}}
-					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
-					
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", description-fieldname:"data.iconDescription", rules:{width:800, height:800, types:["webp"]}}
+					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", description-fieldname:"data.bannerDescription", rules:{}}
+
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
 					{do:"process-tags", paths:"data.tags"}
 					{do:"save"}
@@ -150,24 +160,32 @@
 									type:layout-vertical
 									label:"Content"
 									children:[
-										{type:"textarea", path: "content.raw", label: "Content", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
+										{type:"textarea", path: "content.raw", description:"Shows on news article page only. Markdown is okay.", options:{rows:16}}
 									]
 								}
 								{
 									type:layout-vertical
-									label:"Images"
+									label:"Icon"
 									children:[
-										{type:"upload", path:"iconUrl", label:"Thumbnail Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"iconUrl", label:"Icon Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"textarea", path:"data.iconDescription", label:"Icon Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
+									]
+								}
+								{
+									type:layout-vertical
+									label:"Banner"
+									children:[
 										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Aspect Ratio: 16x9", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"textarea", path:"data.bannerDescription", label:"Banner Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
 									]
 								}
 							]
 						}
 					}
 
-					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", rules:{width:800, height:800, types:["webp"]}}
-					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
-					
+					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", download-path:"iconUrl", description-fieldname:"data.iconDescription", rules:{width:800, height:800, types:["webp"]}}
+					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", description-fieldname:"data.bannerDescription", rules:{}}
+
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
 					{do:"process-tags", paths:"data.tags"}
 					{do:"if", condition: "{{.IsPublished}}", 

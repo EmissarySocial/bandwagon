@@ -39,7 +39,7 @@
 						<a href="/{{.StreamID}}" hx-boost="true" hx-swap="transition:true" class="block text-plain text-nocolor flex-row">
 							<div class="width-128 rounded square margin-right">
 								{{- if ne "" .IconURL -}}
-									<img src="{{.IconURL}}" class="rounded square width-100% block" aria-hidden="true">
+									<img src="{{.IconURL}}" alt="{{.Data.iconDescription}}" class="rounded square width-100% block" aria-hidden="true">
 								{{- end -}}
 							</div>
 							<div class="padding-right-none flex-column">

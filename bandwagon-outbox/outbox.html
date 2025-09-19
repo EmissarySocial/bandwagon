@@ -290,7 +290,7 @@
 										{{- if eq "" .IconURL -}}
 											<div class="hover-swell hide sm:show rounded square width:100% sm:width-128 margin-right" style="background-color:var(--gray20);"></div>
 										{{- else -}}
-											<img src="{{.IconURL}}" class="hover-swell rounded square width-100% sm:width-128 object-fit-cover margin-right" aria-hidden="true">
+											<img src="{{.IconURL}}" alt="{{.Data.iconDescription}}" class="hover-swell rounded square width-100% sm:width-128 object-fit-cover margin-right" aria-hidden="true">
 										{{- end -}}
 
 										<div>
