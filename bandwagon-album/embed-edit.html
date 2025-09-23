@@ -1,0 +1,21 @@
+<h1>{{icon "code"}} Embed Code</h1>
+
+<p>You can embed this release in any website.  Just copy and paste the HTML code below into your web page.</p>
+
+<div script="install Clipboard">
+	<pre><code script="install SelectText" class="clipboard-text text-xs">&lt;iframe 
+&#9;src="{{.Host}}/{{.StreamID}}/embed"
+&#9;height="200"
+&#9;width="600"
+&#9;frameborder="0"
+&#9;loading="lazy"
+&#9;sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"&gt;
+&lt;/iframe&gt;</code></pre>
+	<div class="margin-top-xs text-xs">
+		<button class="clipboard-copy-button margin-none">{{icon "copy"}} Copy HTML Code</button>
+		<button disabled class="clipboard-copy-feedback" style="display:none;">{{icon "check"}} Copied</button>
+	</div>
+</div>
+<div class="margin-top-lg">
+	<button class="primary" script="on click trigger closeModal">Close Window</button>
+</div>

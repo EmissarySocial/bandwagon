@@ -48,7 +48,7 @@
 		{{- end -}}
 	{{- end -}}
 
-	<div class="md:flex-row pos-relative padding">
+	<div script="install MediaPlayer" class="md:flex-row pos-relative padding">
 
 		{{- if $canEdit -}}
 			<div class="pos-absolute-top-right text-sm">
@@ -72,7 +72,7 @@
 
 		<div hx-get="/{{.StreamID}}/edit" role="button" class="md:width-50% lg:width-40% md:margin-right-lg flex-grow-0 flex-shrink-0 margin-bottom-lg rounded pos-relative">
 			{{- if ne "" .IconURL -}}
-				<img id="album-icon" src="{{.IconURL}}" class="width-100% rounded square" aria-hidden="true" style="view-transition-name: icon-{{.StreamID}}; object-fit:cover;">
+				<img id="album-icon" src="{{.IconURL}}" class="media-Image width-100% rounded square" aria-hidden="true" style="view-transition-name: icon-{{.StreamID}}; object-fit:cover;">
 			{{- else if $canEdit -}}
 				<div class="rounded width-100% square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--black)" script="install blockselect()">
 					Click here to add album art
@@ -80,7 +80,7 @@
 			{{- end -}}
 		</div>
 
-		<div script="install MediaPlayer" class="flex-grow margin-bottom-lg">
+		<div class="flex-grow margin-bottom-lg">
 			<audio hidden></audio>
 
 			<h1 id="album-name" class="margin-vertical-none">
@@ -105,7 +105,7 @@
 							{{- end -}}
 						</div>
 
-						<div class="media-show-when-playing flex-row flex-align-center display-none">
+						<div class="media-show-when-playing flex-row flex-align-center" style="display:none;">
 							<button class="media-Prev margin-right-none" aria-label="Skip Backward">{{icon "skip-backward-fill"}}</button>
 							<button class="media-Pause primary margin-right-none" aria-label="Pause Playback">{{icon "pause-fill"}}</button>
 							<button class="media-Next margin-right" aria-label="Skip Forward">{{icon "skip-forward-fill"}}</button>
@@ -114,7 +114,7 @@
 						</div>
 
 						{{- if .StreamHasPrivileges -}}
-							<div class="media-show-when-playing margin-vertical-lg display-none">
+							<div class="media-show-when-playing margin-vertical-lg" style="display:none;">
 								{{- template "buy-button" . -}}
 							</div>
 						{{- end -}}
@@ -132,6 +132,7 @@
 				<div class="text-sm">
 					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
 					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
+					<button hx-get="/{{.StreamID}}/embed-edit"><span aria-hidden="true" class="margin-left-xs">{{icon "code"}}</span> Embed</button>
 					<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
 				</div>
 			{{- end -}}
@@ -149,6 +150,7 @@
 								{{ if $isplayable -}}
 									aria-label="Play Track: {{$song.Label}}"
 									data-track-url="/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}.opus?bitrate=128&v=2"
+									data-track-image="{{$song.IconURL}}"
 								{{- else -}}
 									aria-label="View Track Info: {{$song.Label}}"
 								{{- end -}}

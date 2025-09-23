@@ -52,10 +52,6 @@
 		}
 	}
 
-	bundles: {
-		javascript: {content-type: "text/javascript"}
-	}
-
 	socialRole: Album
 	socialRules: [
 		
@@ -165,6 +161,7 @@
 
 		embed: {
 			states: ["published"]
+			roles:["anonymous"]
 			steps:[
 				{do: "view-html", as-full-page:true}
 			]
@@ -250,6 +247,15 @@
 					]
 				}
 				{do:"refresh-page"}
+			]
+		}
+
+		embed-edit: {
+			roles: ["author"]
+			steps: [
+				{do:"as-modal", steps:[
+					{do:"view-html"}
+				]}
 			]
 		}
 
