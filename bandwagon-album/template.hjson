@@ -163,6 +163,13 @@
 			]
 		}
 
+		embed: {
+			states: ["published"]
+			steps:[
+				{do: "view-html", as-full-page:true}
+			]
+		}
+
 		edit: {
 			roles: ["author"]
 			steps: [

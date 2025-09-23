@@ -1,0 +1,76 @@
+{{- $streamID := .StreamID -}}
+{{- $songs := .Children.Top120.ByRank.Slice -}}
+{{- $releaseDate := .Data "releaseDate" -}}
+
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/.themes/global/stylesheet?v={{.ETag}}" rel="preload" />
+	<link rel="stylesheet" type="text/css" href="/{{.StreamID}}/stylesheet?v={{.ETag}}" rel="preload" />
+	<link rel="stylesheet" type="text/css" href="/.themes/global/resources/bootstrap-icons-1.11.3/font/bootstrap-icons.css" rel="preload">
+</head>
+
+<body script="install MediaPlayer" class="padding-none margin-none scroll-none" style="display:flex; align-items:stretch; background-color:var(--page-background)">
+
+	<div class="width-33% flex-grow-0 flex-shrink-0">
+		<img id="album-icon" src="{{.IconURL}}" aria-hidden="true" class="width-100%" style="object-fit:cover;">
+	</div>
+
+	<div class="flex-grow padding flex-column">
+		
+		<audio hidden></audio>
+
+		<a href="/{{.StreamID}}" target="_blank" class="text-plain block">
+			<div class="flex-row flex-align-center" style="color:var(--text-color)">
+				<div class="hide-visual">Album Name:</div>
+				<div class="text-xl margin-none flex-grow">{{.Label}}</div>
+				<div class="align-right margin-none">
+					{{icon "new-window"}}
+				</div>
+			</div>
+			<div class="text-lg margin-none" style="color:var(--text-color)">
+				<span class="hide-visual">Artist:</span>
+				{{.AttributedTo.Name}}
+				{{- if ne nil $releaseDate }}
+					&middot; {{year $releaseDate}}
+				{{- end -}}
+			</div>
+		</a>
+
+		<div class="margin-vertical-lg">
+
+			<!-- Player Controls -->
+			<div class="flex-row flex-align-center">
+				<button class="player-Play primary">{{icon "play-fill"}} Play</button>
+				<button class="player-Prev margin-right-none" aria-label="Skip Backward" hidden>{{icon "skip-backward-fill"}}</button>
+				<button class="player-Pause primary margin-right-none" aria-label="Pause Playback" hidden>{{icon "pause-fill"}}</button>
+				<button class="player-Next margin-right" aria-label="Skip Forward" hidden>{{icon "skip-forward-fill"}}</button>
+
+				<div class="player-Progress flex-grow" script="install Slider" hidden style="background-color:#CCC; border:solid 1px #333;"></div>
+
+				{{- range $index, $song := $songs -}}
+					<data value="/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}.opus?bitrate=128&v=2"></data>
+				{{- end -}}
+
+			</div>
+
+			<!-- Song List -->
+			{{- range $index, $song := $songs -}}
+				<div id="track-{{$index}}" class="track clickable flex-row" 
+					data-track-label="{{$song.Label}}"
+					data-track-image="{{$song.IconURL}}"
+					data-track-url="/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}.opus?bitrate=128&v=2"></div>
+			{{- end -}}
+				
+		</div>
+
+		<div style="color:var(--text-color);">{{template "license" .}}</div>
+	</div>
+
+</body>
+
+<script type="text/hyperscript" src="/.themes/global/hyperscript"></script>
+<script type="text/javascript" src="/.themes/global/resources/htmx/htmx.min.js" rel="preload"></script>
+<script type="text/javascript" src="/.themes/global/resources/hyperscript/_hyperscript.min.js" rel="preload"></script>
+<script type="text/javascript" src="/.themes/global/javascript" rel="preload"></script>
+
+</html>
