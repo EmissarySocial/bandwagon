@@ -367,32 +367,8 @@
 			{{- end -}}
 
 			<div id="album-license" class="margin-bottom-lg">
-				{{- $license := .DataString "license"}}
-				{{- if eq "COPYRIGHT" $license -}}
-					<h3 class="margin-none">License</h3>
-					<div>
-						&copy; Copyright
-						{{- if ne nil (.Data "year") }}
-							{{.Data "year"}}.
-						{{- else -}}
-							.
-						{{- end }}
-						All Rights Reserved.
-					</div>
-				{{- else if ne "" $license -}}
-					{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
-					{{- $licenseInfo := $licenses.Value $license -}}
-					<h3 class="margin-none">License</h3>
-					<div>
-						<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
-							{{icon $licenseInfo.Icon}} 
-							{{ if ne nil (.Data "year") }}
-								{{.Data "year"}}
-							{{- end }}
-							{{$licenseInfo.Label}}
-						</a>
-					</div>
-				{{- end -}}
+				<h3 class="margin-none">License</h3>
+				<div>{{template "license" .}}</div>
 			</div>
 
 		</div>

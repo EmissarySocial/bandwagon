@@ -1,0 +1,22 @@
+{{- $license := .DataString "license"}}
+{{- $releaseDate := .DataString "releaseDate"}}
+
+{{- if eq "COPYRIGHT" $license -}}
+	&copy; Copyright
+	{{- if ne nil $releaseDate }}
+		{{year $releaseDate}}.
+	{{- else -}}
+		.
+	{{- end }}
+	All Rights Reserved.
+{{- else if ne "" $license -}}
+	{{- $licenses := .Dataset "bandwagon-album.licenses" -}}
+	{{- $licenseInfo := $licenses.Value $license -}}
+	<a href="{{$licenseInfo.Href}}" rel="license" class="text-plain" target="_blank">
+		{{icon $licenseInfo.Icon}} 
+		{{ if ne nil $releaseDate }}
+			{{year $releaseDate}}
+		{{- end }}
+		{{$licenseInfo.Label}}
+	</a>
+{{- end -}}
