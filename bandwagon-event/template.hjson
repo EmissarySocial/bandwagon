@@ -3,7 +3,7 @@
 	templateRole: event
 	model: Stream
 	containedBy: ["outbox"]
-	extends: ["base-intent"]
+	extends: ["base-intent", "base-social"]
 	icon: calendar
 	label: Event
 	description: Contains event details

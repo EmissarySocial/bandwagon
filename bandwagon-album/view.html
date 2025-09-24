@@ -119,23 +119,24 @@
 							</div>
 						{{- end -}}
 
-						{{- range $index, $song := $songs -}}
-							<data value="/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}.opus?bitrate=128&v=2"></data>
-						{{- end -}}
-
 					{{- else if and $songs.NotEmpty $canEdit -}}
 						<button disabled class="primary">{{icon "play-fill"}} Play Album</button>
 					{{- end -}}
 
 				</div>
+			{{- end -}}
 
-				<div class="text-sm">
-					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
-					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
+			<div class="text-sm margin-vertical">
+				{{- if .IsAuthenticated -}}
+					{{- .View "like-button" -}}
+					<button hx-get="/{{.StreamID}}/embed-edit"><span aria-hidden="true" class="margin-left-xs">{{icon "code"}}</span> Embed</button>
+				{{- else -}}
+					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "announce"}}</span> Share</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "like"}}</span> Like</button>
 					<button hx-get="/{{.StreamID}}/embed-edit"><span aria-hidden="true" class="margin-left-xs">{{icon "code"}}</span> Embed</button>
 					<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
-				</div>
-			{{- end -}}
+				{{- end -}}
+			</div>
 
 			<!-- Song List -->
 			{{- if $songs.NotEmpty -}}

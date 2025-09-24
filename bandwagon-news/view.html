@@ -36,10 +36,15 @@
 				&nbsp;
 				<span class="text-gray">{{.PublishDate | shortDate}}</span>
 			</div>
-	
-			<div class="text-sm">
-				<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "share"}}</span> Share</button>
-				<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "thumbs-up"}}</span> Like</button>
+
+			<div class="text-sm margin-vertical">
+				{{- if .IsAuthenticated -}}
+					{{- .View "like-button" -}}
+				{{- else -}}
+					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "announce"}}</span> Share</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "like"}}</span> Like</button>
+					<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
+				{{- end -}}
 			</div>
 		</div>
 

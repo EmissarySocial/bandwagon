@@ -3,7 +3,7 @@
 	model: Stream
 	templateRole: Note
 	label: News Item
-	extends: ["base-intent"]
+	extends: ["base-intent", "base-social"]
 	containedBy: ["outbox"]
 
 	schema: {
@@ -44,9 +44,9 @@
 		}
 	}
 
-	socialRole: Article
+	socialRole: Note
 	socialRules: [
-		{target:"content", expression:"{{.Content.HTML}}"}
+		{target:"content", expression:"<p>{{.Name}}</p>{{.Content.HTML}}"}
 	]
 
 	search: {

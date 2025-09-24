@@ -3,7 +3,7 @@
 	templateRole: album
 	model: Stream
 	containedBy: ["outbox"]
-	extends: ["base-checkout", "base-intent", "bandwagon-common"]
+	extends: ["base-checkout", "base-intent", "base-social", "bandwagon-common"]
 	icon: album
 	label: Release
 	description: Contains one or more songs

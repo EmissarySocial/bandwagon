@@ -50,7 +50,13 @@
 					<a id="event-tickets" href="{{$ticketURL}}" class="width-100% md:width-auto button primary margin-left-xs margin-bottom-xs" target="_blank">{{ $ticketLabel }}</a>
 				{{- end -}}
 
-				<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}" class="width-100% md:width-auto margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "share"}}</span> Share</button>
+				{{- if .IsAuthenticated -}}
+					{{- .View "like-button" -}}
+				{{- else -}}
+					<button hx-get="/{{.StreamID}}/intent?intent=create&content={{.Label | queryEscape}} {{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "announce"}}</span> Share</button>
+					<button hx-get="/{{.StreamID}}/intent?intent=like&object={{.Permalink}}"><span aria-hidden="true" class="margin-left-xs">{{icon "like"}}</span> Like</button>
+					<button hx-get="/{{.StreamID}}/intent" aria-label="Manage Accounts">{{icon "more-horizontal"}}</button>
+				{{- end -}}
 
 				{{- if ne nil $flyerURL -}}
 					<a id="event-flyer" href="{{$flyerURL}}" target="_blank" class="width-100% md:width-auto button margin-left-xs margin-bottom-xs"><span aria-hidden="true">{{icon "download"}}</span> Download</a>
