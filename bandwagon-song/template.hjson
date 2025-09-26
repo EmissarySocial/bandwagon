@@ -49,8 +49,6 @@
 	socialRules: [
 		{target:"@context", append:"https://funkwhale.audio/ns"}
 		{target:"type", value:"Audio"}
-		{target:"attributedTo.id", path:"attributedTo.profileUrl"},
-		{target:"attributedTo.name", path:"attributedTo.name"},
 		{target:"links", forEach:"data.links", rules:[
 			{target:"label", path:"key"}
 			{target:"rel", value:"alternate"}
@@ -64,6 +62,7 @@
 		{target:"content", path:"data.lyrics"}
 		{target:"album", expression:"{{.ParentURL}}"}
 		{target:"library", expression:"{{.ParentURL}}/pub/children"}
+		{target:"url.href", expression:"{{.Permalink}}/audio?format=mp3"}
 	]
 
 	search: {
@@ -269,8 +268,42 @@
 		}
 
 		audio: {
+			roles:["anonymous"]
 			steps:[
-				{do:"view-attachment", category:"Audio", format:["ogg", "mp3"], bitrate:128}
+				{
+					do:"view-attachment", 
+					category:"Audio", 
+					format:["ogg", "mp3"],
+					bitrate:128,
+					cache: false,
+					metadata: [
+						{first:"cover", rules:[
+							{target:"cover", path:"stream.iconUrl"},
+							{target:"cover", path:"parent.iconUrl"},
+						]}
+						{first:"author", rules:[
+							{target:"author", path:"stream.data.artist"}
+							{target:"author", path:"parent.attributedTo.name"}
+						]}
+						{first:"artist", rules:[
+							{target:"artist", path:"stream.data.artist"}
+							{target:"artist", path:"parent.attributedTo.name"}
+						]}
+						{target:"title", path:"stream.name"},
+						{target:"comment", path:"parent.attributedTo.profileUrl"},
+						{target:"album_artist", path:"parent.attributedTo.name"},
+						{target:"album", path:"parent.name"},
+						{target:"composer", path:"stream.data.composer"},
+						{target:"producer", path:"stream.data.producer"},
+						{target:"publisher", path:"stream.data.publisher"},
+						{target:"year", expression:"{{year .parent.Data.ReleaseDate }}"},
+						{target:"track", path:"stream.rank"},
+						{target:"genre", path:"stream.data.genre"},
+						{target:"copyright", path:"parent.data.license"},
+						{target:"lyrics", path:"stream.data.lyrics"},
+						{target:"TISRC", path:"stream.data.isrc"},
+					]
+				}
 			]
 		}
 	}
