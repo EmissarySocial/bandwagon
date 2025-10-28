@@ -501,7 +501,7 @@
 						}, 
 						options:["submit-label:Upload Exclusive File"]
 					}
-					{do:"upload-attachments", category:"paid", maximum:6, fieldname:"file", label-fieldname:"attachmentLabel", description-fieldname:"attachmentDescription"}
+					{do:"upload-attachments", category:"paid", maximum:20, fieldname:"file", label-fieldname:"attachmentLabel", description-fieldname:"attachmentDescription"}
 					{do:"refresh-page"}
 				]}
 			]
