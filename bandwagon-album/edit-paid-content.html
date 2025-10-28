@@ -41,10 +41,10 @@
 					</div>
 				</div>
 			{{end}}
-			{{- if lt $attachments.Length 6 -}}
+			{{- if lt $attachments.Length 20 -}}
 				<div hx-get="/{{.StreamID}}/upload-paid-attachment" class="link flex-row" role="button">
 					<div>{{icon "plus"}}</div>
-					<div>Upload Another File (up to {{subtract 6 $attachments.Length}} more)</div>
+					<div>Upload Another File (up to {{subtract 20 $attachments.Length}} more)</div>
 				</div>
 			{{- end -}}
 		</div>
