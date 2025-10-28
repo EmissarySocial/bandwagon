@@ -13,7 +13,7 @@
 	<!-- Page content -->
 	<div class="framed page h-card padding-none" 
 		script="{{- if .IsMyself -}}
-			on load take .selected from .nav-item for #nav-outbox
+			init send SelectNav(id:'outbox')
 		{{- else -}}
 			on load remove .selected from .nav-item
 		{{- end -}}">
