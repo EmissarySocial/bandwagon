@@ -366,7 +366,7 @@
 					<div 
 						hx-get="/@{{.UserID}}" 
 						hx-trigger="refreshPage from:window" 
-						hx-target="#main" 
+						hx-target="main" 
 						hx-swap="innerHTML"
 						hx-push-url="false">
 					</div>
@@ -375,7 +375,7 @@
 						<div 
 							hx-get="/@{{.UserID}}" 
 							hx-trigger="sse:{{.UserID}}"  
-							hx-target="#main" 
+							hx-target="main" 
 							hx-swap="innerHTML"
 							hx-push-url="false">
 						</div>
