@@ -3,7 +3,7 @@
 {{- $query := .QueryParam "q" -}}
 {{- $escapedQuery := queryEscape $query -}}
 
-{{- $results := .Search.Top120.ByDate.WhereType "Event" -}}
+{{- $results := .Search.Top60.ByDate.WhereType "Event" -}}
 {{- $results := $results.Slice -}}
 
 <!-- No Results -->
