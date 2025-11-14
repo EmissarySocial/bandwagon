@@ -37,16 +37,13 @@
 				date: {type:"string", format:"date"}
 				time: {type:"string", format:"time"}
 			}}
-			places: {
-				type:"array", 
-				items: {
-					type:"object"
-					properties: {
-						"name": {type:"string"}
-						"fullAddress": {type:"string"}
-						"latitude": {type:"number"}
-						"longitude": {type:"number"}
-					}
+			location: {
+				type:"object"
+				properties: {
+					"name": {type:"string"}
+					"formatted": {type:"string"}
+					"latitude": {type:"number"}
+					"longitude": {type:"number"}
 				}
 			}
 			data: {
@@ -118,9 +115,9 @@
 									label: Venue
 									type:layout-vertical
 									children: [
-										{type:"text", path:"place.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
+										{type:"text", path:"location.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
 										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
-										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
+										{type:"textarea", path:"location.formatted", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
 										{type:"text", path:"data.website", label:"Ticketing Website", description: "Website where fans can buy tickets"}
 										{type:"text", path:"data.websiteLabel", label:"Button Text", description:"The label to display on your website", options:{placeholder:"Get Tickets"}}
 									]
@@ -201,9 +198,9 @@
 									label: Venue
 									type:layout-vertical
 									children: [
-										{type:"text", path:"places.0.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
+										{type:"text", path:"location.name", label:"Venue Name", description:"Just a label. Shows on event cards"}
 										{type:"text", path:"data.city", label:"City/State", description:"Just a label. Shows on event cards"}
-										{type:"textarea", path:"places.0.fullAddress", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
+										{type:"textarea", path:"location.formatted", label:"Physical Address", description:"Use an accurate address.  Used to generate maps."}
 										{type:"text", path:"data.website", label:"Ticketing Website", description: "Website where fans can buy tickets"}
 										{type:"text", path:"data.websiteLabel", label:"Button Text", description:"The label to display on your website", options:{placeholder:"Get Tickets"}}
 									]
