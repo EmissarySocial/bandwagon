@@ -311,7 +311,6 @@
 			] 
 		}
 
-
 		edit-events: {
 			roles: ["self"]
 			steps: [
