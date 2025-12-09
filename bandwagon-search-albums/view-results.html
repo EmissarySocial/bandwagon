@@ -57,12 +57,12 @@
 	{{- end -}}
 
 	{{- if $results.IsLength 60 -}}
-	<div class="cols-2-6 margin-bottom-lg"
-		hx-get="/{{.StreamID}}/view-results?q={{$query |queryEscape}}&tags={{$tags | queryEscape}}&after={{$last.Shuffle}}" 
-		hx-target="this" 
-		hx-swap="afterend" 
-		hx-trigger="revealed" 
-		hx-push-url="false">
+		<div class="cols-2-6 margin-bottom-lg"
+			hx-get="/{{.StreamID}}/view-results?q={{$query |queryEscape}}&tags={{$tags | queryEscape}}&after={{$last.Shuffle}}" 
+			hx-target="this" 
+			hx-swap="afterend" 
+			hx-trigger="revealed" 
+			hx-push-url="false">
 	{{- else -}}
 		<div class="cols-2-6 margin-bottom-lg">
 	{{- end -}}
