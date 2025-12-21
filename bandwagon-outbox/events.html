@@ -56,7 +56,7 @@
 
 				{{- $backgroundColor := .Data.color.page | string | parseColor -}}
 				{{- $textColor := $backgroundColor.TextExt -}}
-				{{- $venue := .Places.First -}}
+				{{- $venue := .Location -}}
 
 				<div class="pos-relative hover-trigger">
 					<a href="/{{.StreamID}}" hx-boost="true" class="block text-plain text-nocolor flex-row">
@@ -104,7 +104,7 @@
 	<div 
 		hx-get="/@{{.UserID}}/events" 
 		hx-trigger="refreshPage from:window" 
-		hx-target="#main" 
+		hx-target="main" 
 		hx-swap="innerHTML"
 		hx-push-url="false">
 	</div>

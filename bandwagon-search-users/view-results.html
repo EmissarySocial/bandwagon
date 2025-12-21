@@ -17,12 +17,17 @@
 
 	{{- $token := .Token -}}
 
-	<div class="cols-2-6" 
-		hx-get="/{{.StreamID}}/view-results?q={{$query | queryEscape}}&after={{$last.Shuffle}}" 
-		hx-target="this" 
-		hx-swap="afterend" 
-		hx-trigger="revealed" 
-		hx-push-url="false">
+	{{- if $results.IsLength 60 -}}
+		<div
+			class="cols-2-6"
+			hx-get="/{{.StreamID}}/view-results?q={{$query | queryEscape}}&after={{$last.Shuffle}}" 
+			hx-target="this" 
+			hx-swap="afterend" 
+			hx-trigger="revealed" 
+			hx-push-url="false">
+	{{- else -}}
+		<div class="cols-2-6">
+	{{- end -}}
 
 		{{- range $index, $result := $results -}}
 			<div class="align-center hover-swell">

@@ -1,4 +1,4 @@
-<div id="search" class="fullscreen padding-none" script="on load take .selected from .nav-item for #nav-{{.NavigationID}}">
+<div id="search" class="fullscreen padding-none" script="init send SelectNav(id:'{{.NavigationID}}')">
 
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/{{.Token}}/feed?{{.QueryString}}">
 
@@ -52,7 +52,7 @@
 
 	.search-navigation {
 		border-radius:8px;
-		padding:8px 16px;
+		padding:8px 12px;
 		display:block;
 		cursor:pointer;
 		color:var(--text-color);

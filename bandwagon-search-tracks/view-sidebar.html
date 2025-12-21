@@ -1,7 +1,7 @@
 {{- $query := .QueryParam "q" -}}
 {{- $escapedQuery := queryEscape $query -}}
 
-<div class="flex-row md:flex-column">
+<div class="flex-row md:flex-column scroll-horizontal">
 	<a href="/artists?q={{$query}}" hx-boost="true" class="search-navigation turboclick">Artists</a>
 	<a href="/albums?q={{$query}}" hx-boost="true" class="search-navigation turboclick">Albums</a>
 	<a href="/tracks" hx-boost="true" class="search-navigation turboclick selected">Tracks</a>

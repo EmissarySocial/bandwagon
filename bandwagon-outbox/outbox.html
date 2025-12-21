@@ -13,7 +13,7 @@
 	<!-- Page content -->
 	<div class="framed page h-card padding-none" 
 		script="{{- if .IsMyself -}}
-			on load take .selected from .nav-item for #nav-outbox
+			init send SelectNav(id:'outbox')
 		{{- else -}}
 			on load remove .selected from .nav-item
 		{{- end -}}">
@@ -244,7 +244,7 @@
 												&nbsp;{{- $time -}}
 											{{- end -}}
 											<br>
-											{{$event.Places.First.Name}}<br>
+											{{$event.Location.Name}}<br>
 										</div>
 										<div class="hide sm:show">
 											<span class="bold link">More Info &rarr;</span>
@@ -313,7 +313,7 @@
 										<div>
 											<div class="text-lg bold margin-none padding-none ellipsis-block" style="max-height:3em;">{{.Label}}</div>
 											<div class="padding-bottom text-gray">{{.PublishDate | shortDate }}</div>
-											<div class="text-gray width-512">{{.Summary}}</div>
+											<div class="text-gray max-width-512">{{.Summary}}</div>
 											<div class="bold link">{{first .Data.linkText "Read More"}} &rarr;</div>
 										</div>
 
@@ -372,7 +372,7 @@
 					<div 
 						hx-get="/@{{.UserID}}" 
 						hx-trigger="refreshPage from:window" 
-						hx-target="#main" 
+						hx-target="main" 
 						hx-swap="innerHTML"
 						hx-push-url="false">
 					</div>
@@ -381,7 +381,7 @@
 						<div 
 							hx-get="/@{{.UserID}}" 
 							hx-trigger="sse:{{.UserID}}"  
-							hx-target="#main" 
+							hx-target="main" 
 							hx-swap="innerHTML"
 							hx-push-url="false">
 						</div>
