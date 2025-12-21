@@ -1,4 +1,12 @@
-<h2 class="text-gray margin-top-none margin-bottom-lg">Bandwagon.fm</h2>
+{{- $domainImage := .DomainImage -}}
+
+{{- if ne "" $domainImage -}}
+	<div class="margin-bottom-lg align-center">
+		<img src="{{$domainImage}}" style="max-width:80%; max-height:200px">
+	</div>
+{{- else -}}
+	<h2 class="text-gray margin-top-none margin-bottom-lg">Bandwagon.fm</h2>
+{{- end -}}
 
 <div role="tablist" class="tabs">
 	<a role="tab" href="/signin" aria-selected="true">Artists Sign In</a>
