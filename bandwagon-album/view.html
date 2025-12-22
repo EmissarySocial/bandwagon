@@ -438,28 +438,6 @@
 				hx-swap="innerHTML">
 			</div>
 
-			<!--
-			<div 
-				hx-get="/{{.StreamID}}" 
-				hx-trigger="refreshPage from:window delay:1000ms" 
-				hx-push-url="false"
-				hx-target="main"
-				hx-swap="innerHTML">
-			</div>
-			-->
-
-			<!--
-			<div hx-ext="sse" sse-connect="/{{.StreamID}}/sse">
-				<div 
-					hx-get="/{{.StreamID}}" 
-					hx-target="main"
-					hx-swap="innerHTML"
-					hx-trigger="sse:{{.StreamID}}" 
-					hx-push-url="false">
-				</div>
-			</div>
-			-->
-
 		</div>
 	{{- end -}}
 
