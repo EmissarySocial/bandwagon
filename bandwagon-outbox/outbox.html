@@ -84,6 +84,13 @@
 							<a href="{{.Data `shop-url`}}" rel="me" target="_blank">{{first (.Data "label-shop") "Shop"}}</a>
 						{{- end -}}
 					</div>
+					{{- if $isMyself -}}
+						<div>
+							<button hx-get="/@me/edit" class="text-xs">Edit Profile</button>
+							<button hx-get="/@{{.UserID}}/links" class="text-xs">Edit Links</button>
+							<button hx-post="/signout" class="text-xs">Sign Out</button>
+						</div>
+					{{- end -}}
 				</div>
 				<div class="margin-top-lg md:margin-none align-center md:align-left">
 
