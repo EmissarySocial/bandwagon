@@ -152,6 +152,9 @@
 									aria-label="Play Track: {{$song.Label}}"
 									data-track-url="/{{$song.StreamID}}/attachments/{{$song.Data.attachmentId}}.opus?bitrate=128&v=2"
 									data-track-image="{{$song.IconURL}}"
+									data-track-name="{{$song.Label}}"
+									data-track-artist="{{.AttributedTo.Name}}"
+									data-track-album="{{.Label}}"
 								{{- else -}}
 									aria-label="View Track Info: {{$song.Label}}"
 								{{- end -}}
