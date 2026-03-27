@@ -252,7 +252,7 @@
 		}
 
 		embed-edit: {
-			roles: ["author"]
+			roles: ["anonymous"]
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"view-html"}
