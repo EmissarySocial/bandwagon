@@ -56,6 +56,8 @@
 	socialRules: [
 		
 		{target:"@context", append:"https://funkwhale.audio/ns"}
+		{target:"@context", append:"http://purl.org/dc/terms/license"}
+		{target:"@context", append:"https://creativecommons.org/licenses/by/4.0/legalcode"}
 		{target:"content", expression:"{{ markdown .Summary }}"}
 		{target:"license", path:"data.license"}
 		{target:"links", forEach:"data.links", rules:[
