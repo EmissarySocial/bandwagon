@@ -1,11 +1,12 @@
 {
 	templateId: bandwagon-search-news
+	category: Bandwagon
 	templateRole: search
 	extends: ["bandwagon-search"]
 	model: Stream
 	containedBy: ["top"]
-	icon: home
-	label: Bandwagon News Search
+	icon: newspaper
+	label: Bandwagon: News
 	description: Search Engine for News
 
 	states: {

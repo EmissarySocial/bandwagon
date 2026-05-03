@@ -1,12 +1,13 @@
 {
 	templateId: bandwagon-search-users
+	category: Bandwagon
 	templateRole: search
 	extends: ["bandwagon-search"]
 	model: Stream
 	containedBy: ["top"]
-	icon: home
-	label: Bandwagon User Search
-	description: Search Engine for Users
+	icon: person
+	label: Bandwagon: Artists
+	description: Search artists by name, description, and hashtags
 	schema: {
 		type:object
 		properties: {

@@ -1,5 +1,6 @@
 {
 	templateId: bandwagon-common
+	category: Content
 	model: None
 	templateRole: album
 	containedBy: []

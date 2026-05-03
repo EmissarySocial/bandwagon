@@ -1,5 +1,6 @@
 {
 	templateId: bandwagon-album
+	category: Media
 	templateRole: album
 	model: Stream
 	containedBy: ["outbox"]

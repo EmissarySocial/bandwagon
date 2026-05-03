@@ -1,5 +1,6 @@
 {
 	templateId: bandwagon-song
+	category: Media
 	templateRole: song
 	model: Stream
 	label: Song

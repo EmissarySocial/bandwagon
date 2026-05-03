@@ -1,5 +1,6 @@
 {
 	templateId: bandwagon-outbox
+	category: Special
 	templateRole: user-outbox
 	model: User
 	label: Bandwagon Outbox

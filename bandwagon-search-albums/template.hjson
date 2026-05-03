@@ -1,12 +1,13 @@
 {
 	templateId: bandwagon-search-albums
+	category: Bandwagon
 	templateRole: search
 	extends: ["bandwagon-search", "bandwagon-common"]
 	model: Stream
 	containedBy: ["top"]
-	icon: book
-	label: Bandwagon Album Search
-	description: Search Engine for Albums
+	icon: album
+	label: Bandwagon: Albums
+	description: Search albums by name, hashtags, and license
 	schema: {
 		type:object
 		properties: {
