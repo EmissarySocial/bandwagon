@@ -1,6 +1,6 @@
 {{- $albums := (.Outbox.Where "templateId" "bandwagon-album").ByRankAlt.Slice -}}
 {{- $isMyself := .IsMyself -}}
-{{- $label := first (.Data "label-albums") "Albums" -}}
+{{- $label := first (.Data "label-albums") "Releases" -}}
 {{- $description := .Data "description-albums" -}}
 
 <!-- Page content -->
