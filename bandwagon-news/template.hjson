@@ -11,11 +11,11 @@
 		type:object
 		properties: {
 			summary: {type:"string"}
-			content: {type:"object", properties:{
-				"format": {type:"string"}
-				"raw": {type:"string"}
-				"html": {type:"string"}
-			}}
+			// NOTE: "content" is intentionally NOT declared here.  The Stream model's
+			// base schema already defines it (with raw="unsafe-any", html="html").
+			// Re-declaring it with un-formatted strings would shadow those formats --
+			// String.Inherit is a no-op, so the template's empty format wins -- and the
+			// default "no-html" formatter would strip Markdown/whitespace from content.raw.
 			data: {type:"object", properties:{
 				linkText: {type:"string"}
 				bannerUrl: {type:"string", format:"url"}
