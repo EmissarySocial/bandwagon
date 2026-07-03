@@ -10,10 +10,9 @@
 	schema: {
 		type:object
 		properties: {
-			title: {type:"string"}
 			summary: {type:"string"}
 			content: {type:"object", properties:{
-				"type": {type:"string"}
+				"format": {type:"string"}
 				"raw": {type:"string"}
 				"html": {type:"string"}
 			}}
@@ -60,20 +59,6 @@
 	tagPaths: ["summary", "content.html"]
 
 	actions: {
-
-		togglebutton: {
-			roles:["author"]
-			steps: [
-				{do:"edit", form:{
-					type:layout-vertical
-					label:"Test Form"
-					children:[
-						{type:"check-button", label:"Share with Everyone", description:"This is a cool test description", path:"test", options:{icon:"globe", value:"PUBLIC", script:"on change if my.checked tell .circles set your.checked to false"}}
-						{type:"check-button-group", label:"Circles", path:"test", options:{provider:"circles", script:"on change if my.checked then set #checkbutton-test-PUBLIC.checked to false", class:"circles"}}
-					]
-				}}
-			]
-		}
 
 		create: {
 			roles: ["author"]
