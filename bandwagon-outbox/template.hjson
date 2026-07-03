@@ -9,8 +9,6 @@
 	schema: {
 		type: object
 		properties: {
-			statusMessage: {type:"string"}
-			location: {type:"string"}
 			data: {
 				type: object
 				wildcard: string
