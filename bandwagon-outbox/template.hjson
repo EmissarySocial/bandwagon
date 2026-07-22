@@ -221,7 +221,7 @@
 									type:"layout-vertical"
 									label: Security
 									children: [
-										{type:"text", path:"username", label:"Username", description:"How others will identify you online. (PUBLIC)", options:{autocomplete:"off", validator:"/.validate/username"}}
+										{type:"text", path:"username", label:"Username", description:"How others will identify you online. (PUBLIC)", options:{autocomplete:"off", validator:"/.validate/user/username"}}
 										{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in and support your account. Not shared. (PRIVATE)"}
 										{type:"toggle", path:"isPublic", options:{text:"Public (visible to people)"}}
 										{type:"toggle", path:"isIndexable", options:{text:"Indexable (request inclusion in search engines)"}}
