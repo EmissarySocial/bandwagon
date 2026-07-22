@@ -113,7 +113,6 @@
 					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", description-fieldname:"data.bannerDescription", rules:{}}
 
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
-					{do:"process-tags", paths:"data.tags"}
 					{do:"save"}
 					{do:"search-index"}
 					{do:"forward-to", url:"/{{.StreamID}}"}
@@ -173,7 +172,6 @@
 					{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", description-fieldname:"data.bannerDescription", rules:{}}
 
 					{do:"edit-content", field:"content.raw", format:"MARKDOWN"}
-					{do:"process-tags", paths:"data.tags"}
 					{do:"if", condition: "{{.IsPublished}}", 
 						then: [
 							{do:"save-and-publish", outbox:true}

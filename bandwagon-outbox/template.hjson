@@ -234,7 +234,6 @@
 					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
 					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
 					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
-					{do:"process-tags", paths:["data.tags"]}
 					{do:"save"}
 					{do:"set-password"}
 					{do:"search-index"}

@@ -150,7 +150,6 @@
 				{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
 				{do:"upload-attachments", category:"flyer", fieldname:"data.flyerUrl", download-path:"data.flyerUrl", rules:{}}
 				
-				{do:"process-tags", paths:"data.tags"}
 				{do:"save", outbox:"true"}
 				{do:"forward-to", url:"/{{.StreamID}}"}
 			]
@@ -233,7 +232,6 @@
 				{do:"upload-attachments", category:"image", fieldname:"data.bannerUrl", download-path:"data.bannerUrl", rules:{}}
 				{do:"upload-attachments", category:"flyer", fieldname:"data.flyerUrl", download-path:"data.flyerUrl", rules:{}}
 				
-				{do:"process-tags", paths:"data.tags"}
 				{do:"if", condition: "{{.IsPublished}}", 
 					then: [
 						{do:"save-and-publish"}
