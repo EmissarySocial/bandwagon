@@ -143,7 +143,6 @@
 						}
 					}
 				]}
-				{do:"process-tags", paths:"data.tags"}
 				{do:"save"}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1}
 				{do:"save"}
@@ -237,7 +236,6 @@
 					}
 				]}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1}
-				{do:"process-tags", paths:"data.tags"}
 				{do:"search-index"}
 				
 				{do:"if", condition: "{{.IsPublished}}", 

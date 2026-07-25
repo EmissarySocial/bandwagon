@@ -15,9 +15,9 @@ behavior SearchTag
 	on click or keydown[key=="Backspace"]
         set newTag to the previous <[data-tag]/> within #search-tags
         if newTag is not null then
-            focus() the newTag
+            focus the newTag
         else 
-            focus() the #search-input
+            focus the #search-input
         end
         remove me
     end
@@ -25,7 +25,7 @@ behavior SearchTag
     on keydown[key=="ArrowLeft"]
         set newTag to the previous <[data-tag]/> within #search-tags
         if newTag is not null then
-            focus() the newTag
+            focus the newTag
         end
     end
 
@@ -33,9 +33,9 @@ behavior SearchTag
         halt the event
         set newTag to the next <[data-tag]/> within #search-tags
         if newTag is not null then
-            focus() the newTag
+            focus the newTag
         else 
-            focus() the #search-input
+            focus the #search-input
         end
     end
 
