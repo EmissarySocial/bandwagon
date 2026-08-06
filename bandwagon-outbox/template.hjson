@@ -225,6 +225,7 @@
 										{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in and support your account. Not shared. (PRIVATE)"}
 										{type:"toggle", path:"isPublic", options:{text:"Public (visible to people)"}}
 										{type:"toggle", path:"isIndexable", options:{text:"Indexable (request inclusion in search engines)"}}
+										{type:"toggle", path:"isBridgeBluesky", options:{text:"Bridge My Profile to Bluesky"}}
 										{type:"html", description:"<div class='float-right'><span hx-get='/@me/delete' class='margin-top-xs text-red clickable'>Delete my account</span></div>"}
 									]
 								}
@@ -463,6 +464,7 @@
 						children:[
 							{type:"toggle", path:"isPublic", options:{text:"Make My Profile Public (visible to people)"}}
 							{type:"toggle", path:"isIndexable", options:{text:"Make My Profile Indexable (include in search results)"}}
+							{type:"toggle", path:"isBridgeBluesky", options:{text:"Bridge My Profile to Bluesky"}}
 						]}
 					}
 				]}
