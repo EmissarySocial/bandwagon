@@ -68,7 +68,24 @@
 					<h1 id="profile-name" class="margin-none align-center md:align-left">{{.DisplayName}}</h1>
 
 					<div class="margin-vertical sm:margin-none align-center md:align-left">
-						<span id="profile-username" class="text-gray margin-right-sm margin-bottom-sm nowrap" script="install SelectText">@{{.Username}}@{{.Hostname}}</span>
+
+						<span id="profile-username" class="margin-right-sm nowrap" script="install Clipboard">
+							<span class="clipboard-text" hidden>@{{.Username}}@{{.Hostname}}</span>
+							<span class="clickable clipboard-copy-button">
+								<span>@{{.Username}}</span>
+								<span class="text-xs">{{icon "copy"}}</span>
+							</span>
+							<span class="clipboard-copy-feedback" style="display:none;">
+								<span>@{{.Username}}</span>
+								<span class="text-xs text-green">{{icon "check"}} Copied to clipboard</span>
+							</span>
+						</span>
+
+						{{- if .IsBridgeBluesky -}}
+							<br>
+							<a href="https://bsky.app/profile/{{.BlueskyHandle}}" id="profile-bluesky" class="text-gray margin-right-sm margin-bottom-sm nowrap" target="_blank">{{icon "bluesky"}} {{.BlueskyHandle}}</a>
+							</br>
+						{{- end -}}
 						{{- if ne "" .Location }}
 							<span id="profile-location" class="text-gray nowrap"> {{icon "location"}} {{.Location}}</span>
 						{{- end -}}
