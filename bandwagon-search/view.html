@@ -2,7 +2,7 @@
 
 	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/{{.Token}}/feed?{{.QueryString}}">
 
-	<div class="flex-row padding-vertical-lg margin-bottom" style="background-color:var(--gray50);">
+	<div class="search-bar flex-row padding-vertical-lg margin-bottom">
 		<div class="hide md:show sidebar"></div>
 		<div class="flex-grow margin-horizontal">
 			{{- template "view-widget" . -}}
@@ -13,7 +13,6 @@
 
 		<div class="sidebar margin-bottom-lg">
 			{{template "view-sidebar" .}}
-
 
 			{{- if .UserCan "edit" -}}
 				<div class="text-sm margin-top-xl">
@@ -50,6 +49,16 @@
 		}
 	}
 
+	.search-bar {
+		background-color:var(--gray50);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.search-bar {
+			background-color:var(--gray30);
+		}
+	}
+
 	.search-navigation {
 		border-radius:8px;
 		padding:8px 12px;
@@ -65,7 +74,7 @@
 
 	.search-navigation.selected,
 	.search-navigation.selected:hover {
-		background-color:var(--gray40);
+		background-color:var(--gray30);
 		color:var(--white);
 		font-weight:600;
 	}

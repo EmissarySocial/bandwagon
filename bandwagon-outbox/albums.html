@@ -72,7 +72,7 @@
 		{{- if $isMyself -}}
 		</form>
 
-			<script src="/.themes/global/resources/sortable-1.15.0/Sortable.min.js"></script>
+			<script src="/.themes/global/resources/sortable-1.15.7/Sortable.min.js"></script>
 
 			<script>
 				var sortables = document.querySelectorAll(".sortable");
@@ -80,7 +80,7 @@
 					new Sortable(node, {
 						handle: ".drag-handle",
 						animation: 150,
-						whisperClass: 'draggable-whisper'
+						ghostClass: 'draggable-whisper'
 					});
 				}
 			</script>
