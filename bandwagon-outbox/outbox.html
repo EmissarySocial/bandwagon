@@ -117,12 +117,12 @@
 							{{- if .IsAuthenticated -}}
 								{{- $following := .AmFollowing .Permalink -}}
 								{{- if $following.IsNew -}}
-									<button hx-get="/@me/settings/following-edit?url={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+									<button hx-get="/@me/settings/following-edit?url={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow</button>
 								{{- else -}}
 									<button hx-get="/@me/settings/following-edit?url={{.Permalink}}" class="primary">{{icon "check"}} Following</button>
 								{{- end -}}
 							{{- else -}}
-								<button hx-get="/@{{.UserID}}/intent?intent=follow&object={{.Permalink}}" class="primary">{{icon "fediverse"}} Follow for Updates</button>
+								<button hx-get="/@{{.UserID}}/follow" class="primary">⁂ Follow</button>
 							{{- end -}}
 
 							{{- if gt $circleCount 0 -}}
@@ -133,11 +133,6 @@
 							{{- end -}}
 
 						</div>
-						{{- if not .IsAuthenticated -}}
-							<div class="margin-top-sm text-xs text-light-gray">
-								<span hx-get="/@{{.UserID}}/intent" class="clickable intentMarker-account">&nbsp;</span>
-							</div>
-						{{- end -}}
 					</div>
 				</div>
 			</div>
