@@ -57,6 +57,7 @@
 	socialRules: [
 		
 		{target:"@context", append:"https://funkwhale.audio/ns"}
+		{target:"type", value:["Album","Article"]}
 		{target:"content", expression:"{{ markdown .Summary }}"}
 		{target:"license", path:"data.license"}
 		{target:"links", forEach:"data.links", rules:[
