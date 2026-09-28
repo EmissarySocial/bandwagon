@@ -93,7 +93,7 @@
 									type:layout-vertical
 									label:"Icon"
 									children:[
-										{type:"upload", path:"iconUrl", label:"Icon Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"iconUrl", label:"Icon Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.ID}}/delete-icon"}}
 										{type:"textarea", path:"data.iconDescription", label:"Icon Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
 									]
 								}
@@ -101,7 +101,7 @@
 									type:layout-vertical
 									label:"Banner"
 									children:[
-										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Aspect Ratio: 16x9", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Aspect Ratio: 16x9", options:{accept:"image/*", delete:"/{{.ID}}/delete-image"}}
 										{type:"textarea", path:"data.bannerDescription", label:"Banner Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
 									]
 								}
@@ -152,7 +152,7 @@
 									type:layout-vertical
 									label:"Icon"
 									children:[
-										{type:"upload", path:"iconUrl", label:"Icon Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
+										{type:"upload", path:"iconUrl", label:"Icon Image", description:"Shows on article lists. Aspect Ratio: square", options:{accept:"image/*", delete:"/{{.ID}}/delete-icon"}}
 										{type:"textarea", path:"data.iconDescription", label:"Icon Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
 									]
 								}
@@ -160,7 +160,7 @@
 									type:layout-vertical
 									label:"Banner"
 									children:[
-										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Aspect Ratio: 16x9", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of article page. Aspect Ratio: 16x9", options:{accept:"image/*", delete:"/{{.ID}}/delete-image"}}
 										{type:"textarea", path:"data.bannerDescription", label:"Banner Description", description:"'Alt text' for screen readers and SEO", options:{rows:4}}
 									]
 								}
