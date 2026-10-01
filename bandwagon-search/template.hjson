@@ -55,7 +55,7 @@
 								type:layout-vertical
 								label:Page Info
 								children: [
-									{type:"text", label:"Token", path:"token"}
+									{type:"text", label:"Token", path:"token", options:{validator:"/.validate/stream/token?streamId={{.ID}}"}}
 									{type:"text", label:"Icon", path:"icon"}
 									{type:"text", label:"Page Name", path:"label"}
 									{type:"textarea", label:"Description", path:"summary"}
@@ -92,7 +92,7 @@
 									label:"Page Info",
 									children: [
 										{type:"text", readOnly:true, label:"Template Type", path:"templateId"}
-										{type:"text", label:"Token", path:"token"}
+										{type:"text", label:"Token", path:"token", options:{validator:"/.validate/stream/token?streamId={{.ID}}"}}
 										{type:"text", label:"Icon", path:"icon"}
 										{type:"text", label:"Page Name", path:"label"}
 										{type:"textarea", label:"Description", path:"summary"}

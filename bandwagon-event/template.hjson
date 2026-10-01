@@ -136,9 +136,9 @@
 									label: Uploads
 									type:layout-vertical
 									children: [
-										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
-										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
-										{type:"upload", path:"data.flyerUrl", label:"Flyer", options:{delete:"/{{.StreamID}}/delete-flyer"}}
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.ID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.ID}}/delete-image"}}
+										{type:"upload", path:"data.flyerUrl", label:"Flyer", options:{delete:"/{{.ID}}/delete-flyer"}}
 									]
 								}
 							]
@@ -218,9 +218,9 @@
 									label: Uploads
 									type:layout-vertical
 									children: [
-										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-icon"}}
-										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.StreamID}}/delete-image"}}
-										{type:"upload", path:"data.flyerUrl", label:"Flyer", options:{delete:"/{{.StreamID}}/delete-flyer"}}
+										{type:"upload", path:"iconUrl", label:"Card Image", description:"Shows on event cards.  Square recommended.", options:{accept:"image/*", delete:"/{{.ID}}/delete-icon"}}
+										{type:"upload", path:"data.bannerUrl", label:"Banner Image", description:"Shows on top of event page. Optional.", options:{accept:"image/*", delete:"/{{.ID}}/delete-image"}}
+										{type:"upload", path:"data.flyerUrl", label:"Flyer", options:{delete:"/{{.ID}}/delete-flyer"}}
 									]
 								}
 							]
