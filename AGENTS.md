@@ -67,3 +67,22 @@ A template's `socialSchema` declares the social-only terms its rules write, such
 ## A song federates only while its album is published
 
 `bandwagon-song` publishes to the outbox only when `{{(.Parent "view").IsPublished}}`, and the album's `publish`, `unpublish` and `delete` actions reach each song through `with-children`. A song stays published on the site while its album is a draft, because the album lists only published songs, so the album's `unpublish` and `delete` send each song's Delete with `local:false` instead of unpublishing it. Emissary sends a Create the first time a song reaches the outbox, so a song added while the album was a draft is created, not updated, when the album is published (FUNKWHALE task 1.5).
+
+## The album's credit is defined twice, and both copies must change together
+
+Funkwhale 2.0 validates the `artist_credit` embedded in an album, then discards it and fetches the credit again from its `id` (FUNKWHALE §7.7). So `bandwagon-album` writes the credit in its `socialRules`, and serves it again from its `artist-credit` action through `view-json` with `rules` and `schema`. The two rule lists are separate copies of one object. Funkwhale keeps only the fetched one and compares nothing, so a change made to one copy alone breaks nothing visibly; change both together.
+
+Two idioms in those rules are not optional. The credit starts as a whole object (`{target:"artist_credit.0", value:{…}}` in `socialRules`, `{target:"", value:{…}}` as the first rule in the action), because `joinphrase:""` and `index:0` written one field at a time beneath a typed property are dropped, and Funkwhale 2.0 fails without `joinphrase`. And list items beneath a typed array are written by index, so the action's `@context` is two rules.
+
+## A published Stream is unpublished before it is deleted
+
+Emissary's `delete` step sends no ActivityPub activity, so a template that federates must run `{do:"unpublish", outbox:true}` before `{do:"delete"}`, as `bandwagon-event` and `bandwagon-news` do. `bandwagon-album` does not yet unpublish itself before deleting (BUG-257).
+
+## A profile field's format is not enforced yet
+
+Emissary validates profile saves against its own `UserSchema`, not the `bandwagon-outbox` template's schema (MUSICBRAINZ §1.1), so a `format` or limit declared under the outbox's `data` (the profile colors, `background-body`, `musicbrainzArtistId`) is stored unchecked. Album and song fields are enforced, because Stream builders use the template's schema. Do not rely on a profile field's format until that task ships.
+
+## MusicBrainz IDs are stored as bare UUIDs
+
+`data.musicbrainzReleaseId` (album), `data.musicbrainzRecordingId` (song) and `data.musicbrainzArtistId` (profile) use rosetta's `uuid` format, which keeps only the last path segment of a pasted MusicBrainz URL and lowercases it. A song's ID is a recording, not a track, whatever Picard's tag names say (MUSICBRAINZ D1, D5).
+
