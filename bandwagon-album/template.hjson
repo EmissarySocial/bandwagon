@@ -302,6 +302,11 @@
 		delete: {
 			roles: ["author"]
 			steps: [
+				{do:"if", condition:"{{.IsPublished}}", then:[
+					{do:"with-children", steps:[
+						{do:"unpublish", state:"published", outbox:true, local:false}
+					]}
+				]}
 				{do:"delete"}
 				{do:"search-index"}
 				{do:"forward-to", url: "/@{{.AttributedTo.UserID.Hex}}"}
@@ -451,6 +456,9 @@
 					]}
 					{do:"set-state", state:"published"}
 					{do:"save-and-publish", outbox:"true", republish:true}
+					{do:"with-children", steps:[
+						{do:"save-and-publish", outbox:true}
+					]}
 					{do:"search-index"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
 					
@@ -487,6 +495,9 @@
 			steps: [
 				{do:"as-modal", steps:[
 					{do:"view-html"}
+					{do:"with-children", steps:[
+						{do:"unpublish", state:"published", outbox:true, local:false}
+					]}
 					{do:"unpublish", state:"default", outbox:"true"}
 					{do:"search-index"}
 					{do:"delete-archive", token:"FULL-ALBUM"}

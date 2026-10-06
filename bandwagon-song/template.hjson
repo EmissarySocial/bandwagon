@@ -172,7 +172,12 @@
 				]}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
-				{do:"save-and-publish", outbox:false}
+				// RULE: A song federates only while its album is published
+				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
+					{do:"save-and-publish", outbox:true}
+				], else:[
+					{do:"save-and-publish", outbox:false}
+				]}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]
@@ -254,7 +259,12 @@
 				}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
-				{do:"save-and-publish"}
+				// RULE: A song federates only while its album is published
+				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
+					{do:"save-and-publish", outbox:true}
+				], else:[
+					{do:"save-and-publish", outbox:false}
+				]}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]
@@ -263,6 +273,10 @@
 		delete: {
 			roles: ["author"]
 			steps: [
+				// A published album's followers receive a Delete of the song
+				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
+					{do:"unpublish", state:"published", outbox:true, local:false}
+				]}
 				{do:"delete", title:"Delete this Song?"}
 				{do:"refresh-page"}
 			]

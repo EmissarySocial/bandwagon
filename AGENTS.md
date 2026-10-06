@@ -63,3 +63,7 @@ Rosetta bounds a list's length only through the schema, never in its accessors (
 ## `socialSchema` types what `socialRules` write, and its arrays are written by index
 
 A template's `socialSchema` declares the social-only terms its rules write, such as the album's `artists` and the song's `url`; Emissary adds them to its base ActivityStreams schema. Its `schema` describes the Stream, and every rule `path` must be declared there. Beneath an array declared in `socialSchema`, write items by index (`{target:"artists.0.id", …}`) and give the array a `maxLength`: `value: []` followed by `append` fails against a typed array, although it still works for an undeclared one.
+
+## A song federates only while its album is published
+
+`bandwagon-song` publishes to the outbox only when `{{(.Parent "view").IsPublished}}`, and the album's `publish`, `unpublish` and `delete` actions reach each song through `with-children`. A song stays published on the site while its album is a draft, because the album lists only published songs, so the album's `unpublish` and `delete` send each song's Delete with `local:false` instead of unpublishing it. Emissary sends a Create the first time a song reaches the outbox, so a song added while the album was a draft is created, not updated, when the album is published (FUNKWHALE task 1.5).
