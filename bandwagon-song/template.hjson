@@ -30,6 +30,7 @@
 					producer: {type: "string"}
 					publisher: {type: "string"}
 					isrc: {type: "string"}
+					musicbrainzRecordingId: {type: "string", format: "uuid"}
 					license: {type: "string"}
 					lyrics: {type: "string"}
 					streamURL: {type: "string", format:"url"}
@@ -146,6 +147,7 @@
 										{type: "text", path: "data.producer", label: "Producer"},
 										{type: "text", path: "data.publisher", label: "Publisher"},
 										{type: "text", path: "data.isrc", label: "ISRC"},
+										{type: "text", path: "data.musicbrainzRecordingId", label: "MusicBrainz Recording ID", description: "Optional. Paste this song's MusicBrainz recording ID, or the URL of its MusicBrainz page.", options: {autocomplete: "off"}},
 									]
 								}
 								{
@@ -232,6 +234,7 @@
 											{type: "text", path: "data.producer", label: "Producer"},
 											{type: "text", path: "data.publisher", label: "Publisher"},
 											{type: "text", path: "data.isrc", label: "ISRC"},
+											{type: "text", path: "data.musicbrainzRecordingId", label: "MusicBrainz Recording ID", description: "Optional. Paste this song's MusicBrainz recording ID, or the URL of its MusicBrainz page.", options: {autocomplete: "off"}},
 										]
 									}
 									{

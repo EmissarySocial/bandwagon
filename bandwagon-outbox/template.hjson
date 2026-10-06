@@ -18,6 +18,7 @@
 					show-events: {type:"string"}
 					show-news: {type:"string"}
 					shop-url: {type:"string", format:"url"}
+					musicbrainzArtistId: {type:"string", format:"uuid"}
 					label-albums: {type:"string", default:"Releases"}
 					label-events: {type:"string", default:"Events"}
 					label-news: {type:"string", default:"News"}
@@ -197,6 +198,7 @@
 										{type:"textarea", path:"statusMessage", label:"About Me", description:"Displayed on your profile page. Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
 										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
 										{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces.  (PUBLIC)"}
+										{type:"text", path:"data.musicbrainzArtistId", label:"MusicBrainz Artist ID", description:"Optional. Paste your MusicBrainz artist ID, or the URL of your MusicBrainz page. (PUBLIC)", options:{autocomplete:"off"}}
 									]
 								}
 								{

@@ -23,6 +23,7 @@
 					imageFilename: {type:"string", maxLength:255}
 					tags: {type:"string"}
 					releaseDate:{type:"string", format:"date"}
+					musicbrainzReleaseId: {type:"string", format:"uuid"}
 					links: {type:"object", wildcard: {type:"string", format:"uri"}}
 					color: {type:"object", properties: {
 						body: {type:"string", format:"color"},
@@ -145,6 +146,7 @@
 									children: [
 										{type:"textarea", path:"summary", label:"Sidebar Notes", description:"Notes appear on the side of the album page. Markdown is allowed.", options:{rows:8, showLimit:true}}
 										{type:"textarea", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces."}
+										{type:"text", path:"data.musicbrainzReleaseId", label:"MusicBrainz Release ID", description:"Optional. Paste this release's MusicBrainz ID, or the URL of its MusicBrainz page.", options:{autocomplete:"off"}}
 									]
 								}
 								{
@@ -230,6 +232,7 @@
 									children: [
 										{type:"textarea", path:"summary", label:"Sidebar Notes", description:"Notes appear on the side of the album page. Markdown is allowed.", options:{rows:8, showLimit:true}}
 										{type:"textarea", path:"data.tags", label:"Tags", description:"Enter #Hashtags separated by spaces"}
+										{type:"text", path:"data.musicbrainzReleaseId", label:"MusicBrainz Release ID", description:"Optional. Paste this release's MusicBrainz ID, or the URL of its MusicBrainz page.", options:{autocomplete:"off"}}
 									]
 								}
 								{
