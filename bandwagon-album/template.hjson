@@ -66,10 +66,18 @@
 			{target:"href", path:"value"}
 		]}
 		{target:"library", expression:"{{.URL}}/pub/children"}
-		{target:"artists.0.type", value:"Artist"}
+		{target:"artists.0.type", value:"Person"}
 		{target:"artists.0.id", path:"attributedTo.profileUrl"}
 		{target:"artists.0.name", path:"attributedTo.name"}
 		{target:"tracks", expression:"{{.URL}}/pub/children"}
+		{if:'{{ne .IconURL ""}}', then:[
+			{target:"image.type", value:"Image"}
+			{target:"image.mediaType", value:"image/webp"}
+			{target:"image.url", path:"iconUrl"}
+		]}
+		{if:'{{ne (.Data.GetString "releaseDate") ""}}', then:[
+			{target:"released", path:"data.releaseDate"}
+		]}
 	]
 	socialSchema: {
 		type: object
@@ -84,6 +92,15 @@
 						id: {type: "string", format: "url"}
 						name: {type: "string"}
 					}
+				}
+			}
+			released: {type: "string", format: "date"}
+			image: {
+				type: object
+				properties: {
+					type: {type: "string"}
+					mediaType: {type: "string"}
+					url: {type: "string", format: "url"}
 				}
 			}
 		}
