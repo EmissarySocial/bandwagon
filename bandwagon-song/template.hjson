@@ -60,9 +60,12 @@
 		{target:"track.name", path:"label"}
 		{target:"track.album", expression:"{{.ParentURL}}"}
 		{target:"track.position", path:"rank"}
-		{target:"content", path:"data.lyrics"}
+		{target:"position", path:"rank"}
+		{target:"content", expression:'{{text (.Data.GetString "lyrics")}}'}
+		{target:"image.type", value:"Image"}
+		{target:"image.mediaType", value:"image/webp"}
+		{target:"image.url", expression:'{{first .IconURL (print .ParentURL "/icon")}}'}
 		{target:"album", expression:"{{.ParentURL}}"}
-		{target:"library", expression:"{{.ParentURL}}/pub/children"}
 		{target:"url", value:{}}
 		{target:"url.type", value:"Link"}
 		{target:"url.mediaType", value:"audio/mpeg"}
@@ -71,6 +74,15 @@
 	socialSchema: {
 		type: object
 		properties: {
+			position: {type: "integer"}
+			image: {
+				type: object
+				properties: {
+					type: {type: "string"}
+					mediaType: {type: "string"}
+					url: {type: "string", format: "url"}
+				}
+			}
 			url: {
 				type: object
 				properties: {
