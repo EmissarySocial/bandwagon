@@ -70,6 +70,14 @@
 		{target:"artists.0.type", value:"Person"}
 		{target:"artists.0.id", path:"attributedTo.profileUrl"}
 		{target:"artists.0.name", path:"attributedTo.name"}
+		{target:"artist_credit.0", value:{type:"ArtistCredit", joinphrase:"", index:0}}
+		{target:"artist_credit.0.id", expression:"{{.URL}}/artist-credit"}
+		{target:"artist_credit.0.credit", path:"attributedTo.name"}
+		{target:"artist_credit.0.published", expression:"{{isoDate .PublishDate}}"}
+		{target:"artist_credit.0.artist.type", value:"Artist"}
+		{target:"artist_credit.0.artist.id", path:"attributedTo.profileUrl"}
+		{target:"artist_credit.0.artist.name", path:"attributedTo.name"}
+		{target:"artist_credit.0.artist.published", expression:"{{isoDate .PublishDate}}"}
 		{target:"tracks", expression:"{{.URL}}/pub/children"}
 		{if:'{{ne .IconURL ""}}', then:[
 			{target:"image.type", value:"Image"}
@@ -92,6 +100,30 @@
 						type: {type: "string"}
 						id: {type: "string", format: "url"}
 						name: {type: "string"}
+					}
+				}
+			}
+			artist_credit: {
+				type: array
+				maxLength: 16
+				items: {
+					type: object
+					properties: {
+						type: {type: "string"}
+						id: {type: "string", format: "url"}
+						credit: {type: "string"}
+						joinphrase: {type: "string"}
+						index: {type: "integer"}
+						published: {type: "string"}
+						artist: {
+							type: object
+							properties: {
+								type: {type: "string"}
+								id: {type: "string", format: "url"}
+								name: {type: "string"}
+								published: {type: "string"}
+							}
+						}
 					}
 				}
 			}
@@ -193,6 +225,53 @@
 			}
 			steps:[
 				{do: "view-html"}
+			]
+		}
+
+		artist-credit: {
+			roles: ["author"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
+			steps: [
+				{
+					do: "view-json"
+					content-type: "application/activity+json"
+					schema: {
+						type: "object"
+						properties: {
+							"@context": {type: "array", maxLength: 4, items: {type: "string"}}
+							type: {type: "string"}
+							id: {type: "string", format: "url"}
+							credit: {type: "string"}
+							joinphrase: {type: "string"}
+							index: {type: "integer"}
+							published: {type: "string"}
+							artist: {
+								type: "object"
+								properties: {
+									type: {type: "string"}
+									id: {type: "string", format: "url"}
+									name: {type: "string"}
+									published: {type: "string"}
+								}
+							}
+						}
+					}
+					// RULE: the whole object comes first, because it replaces the document. Matches the embedded credit in socialRules.
+					rules: [
+						{target:"", value:{type:"ArtistCredit", joinphrase:"", index:0}}
+						{target:"@context.0", value:"https://www.w3.org/ns/activitystreams"}
+						{target:"@context.1", value:"https://funkwhale.audio/ns"}
+						{target:"id", expression:"{{.URL}}/artist-credit"}
+						{target:"credit", path:"attributedTo.name"}
+						{target:"published", expression:"{{isoDate .PublishDate}}"}
+						{target:"artist.type", value:"Artist"}
+						{target:"artist.id", path:"attributedTo.profileUrl"}
+						{target:"artist.name", path:"attributedTo.name"}
+						{target:"artist.published", expression:"{{isoDate .PublishDate}}"}
+					]
+				}
 			]
 		}
 
