@@ -63,8 +63,24 @@
 		{target:"content", path:"data.lyrics"}
 		{target:"album", expression:"{{.ParentURL}}"}
 		{target:"library", expression:"{{.ParentURL}}/pub/children"}
+		{target:"url", value:{}}
+		{target:"url.type", value:"Link"}
+		{target:"url.mediaType", value:"audio/mpeg"}
 		{target:"url.href", expression:"{{.Permalink}}/audio?format=mp3"}
 	]
+	socialSchema: {
+		type: object
+		properties: {
+			url: {
+				type: object
+				properties: {
+					type: {type: "string"}
+					mediaType: {type: "string"}
+					href: {type: "string", format: "url"}
+				}
+			}
+		}
+	}
 
 	search: {
 		type: Audio

@@ -55,3 +55,11 @@ Both cast a string to trusted CSS, but they earn it differently. `css` is a raw,
 ## A new funcmap helper couples this repo to a minimum Emissary version
 
 Go's `html/template` resolves function names at **parse** time, so calling a helper that the running server's template funcmap does not define does not degrade that one expression — the entire template fails to parse and the page dies. Helpers like `cssValue` arrive in Emissary through its pinned `benpate/rosetta` dependency, so a template edit that adopts a newly added helper cannot deploy until Emissary itself ships a build carrying it. Check that the helper exists in the target server's build before using it in a template here.
+
+## Every `type: array` in a schema needs a `maxLength`
+
+Rosetta bounds a list's length only through the schema, never in its accessors (decided 2026-10-05; see rosetta's AGENTS.md). An array with no `maxLength` lets one form field such as `feeds.5000000` build a list of 5,000,001 items. Give every array in a template's `schema` or `socialSchema` a `maxLength` sized to its real use.
+
+## `socialSchema` types what `socialRules` write, and its arrays are written by index
+
+A template's `socialSchema` declares the social-only terms its rules write, such as the album's `artists` and the song's `url`; Emissary adds them to its base ActivityStreams schema. Its `schema` describes the Stream, and every rule `path` must be declared there. Beneath an array declared in `socialSchema`, write items by index (`{target:"artists.0.id", …}`) and give the array a `maxLength`: `value: []` followed by `append` fails against a typed array, although it still works for an undeclared one.

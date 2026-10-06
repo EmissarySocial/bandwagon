@@ -66,12 +66,28 @@
 			{target:"href", path:"value"}
 		]}
 		{target:"library", expression:"{{.URL}}/pub/children"}
-		{target:"artists", value:[]}
-		{target:"artists", append:{type:"Artist"}}
+		{target:"artists.0.type", value:"Artist"}
 		{target:"artists.0.id", path:"attributedTo.profileUrl"}
 		{target:"artists.0.name", path:"attributedTo.name"}
 		{target:"tracks", expression:"{{.URL}}/pub/children"}
 	]
+	socialSchema: {
+		type: object
+		properties: {
+			artists: {
+				type: array
+				maxLength: 16
+				items: {
+					type: object
+					properties: {
+						type: {type: "string"}
+						id: {type: "string", format: "url"}
+						name: {type: "string"}
+					}
+				}
+			}
+		}
+	}
 
 	tagPaths: ["data.tags"]
 

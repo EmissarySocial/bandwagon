@@ -37,6 +37,16 @@
 		}
 	}
 
+	socialRules: [
+		{target:"url", value:[]}
+		{target:"url.0.type", value:"Link"}
+		{target:"url.0.mediaType", value:"text/html"}
+		{target:"url.0.href", expression:"{{.Host}}/@{{.Username}}"}
+		{target:"url.1.type", value:"Link"}
+		{target:"url.1.mediaType", value:"application/rss+xml"}
+		{target:"url.1.href", expression:"{{.Host}}/@{{.Username}}/feed?format=rss"}
+	]
+
 	states: {
 		default: {
 			label: Default State,
