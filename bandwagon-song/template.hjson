@@ -31,7 +31,7 @@
 					publisher: {type: "string"}
 					isrc: {type: "string"}
 					license: {type: "string"}
-					lyrics: {type: "string"}
+					lyrics: {type: "string", format:"text"}
 					streamURL: {type: "string", format:"url"}
 					featured: {type: "boolean"}
 					explicit: {type: "boolean"}
