@@ -30,6 +30,7 @@
 					producer: {type: "string"}
 					publisher: {type: "string"}
 					isrc: {type: "string"}
+					musicbrainzRecordingId: {type: "string", format: "uuid"}
 					license: {type: "string"}
 					lyrics: {type: "string", format:"text"}
 					streamURL: {type: "string", format:"url"}
@@ -60,11 +61,39 @@
 		{target:"track.name", path:"label"}
 		{target:"track.album", expression:"{{.ParentURL}}"}
 		{target:"track.position", path:"rank"}
-		{target:"content", path:"data.lyrics"}
+		{target:"position", path:"rank"}
+		{target:"content", expression:'{{text (.Data.GetString "lyrics")}}'}
+		{target:"image.type", value:"Image"}
+		{target:"image.mediaType", value:"image/webp"}
+		{target:"image.url", expression:'{{first .IconURL (print .ParentURL "/icon")}}'}
 		{target:"album", expression:"{{.ParentURL}}"}
-		{target:"library", expression:"{{.ParentURL}}/pub/children"}
+		{target:"url", value:{}}
+		{target:"url.type", value:"Link"}
+		{target:"url.mediaType", value:"audio/mpeg"}
 		{target:"url.href", expression:"{{.Permalink}}/audio?format=mp3"}
 	]
+	socialSchema: {
+		type: object
+		properties: {
+			position: {type: "integer"}
+			image: {
+				type: object
+				properties: {
+					type: {type: "string"}
+					mediaType: {type: "string"}
+					url: {type: "string", format: "url"}
+				}
+			}
+			url: {
+				type: object
+				properties: {
+					type: {type: "string"}
+					mediaType: {type: "string"}
+					href: {type: "string", format: "url"}
+				}
+			}
+		}
+	}
 
 	search: {
 		type: Audio
@@ -118,6 +147,7 @@
 										{type: "text", path: "data.producer", label: "Producer"},
 										{type: "text", path: "data.publisher", label: "Publisher"},
 										{type: "text", path: "data.isrc", label: "ISRC"},
+										{type: "text", path: "data.musicbrainzRecordingId", label: "MusicBrainz Recording ID", description: "Optional. Paste this song's MusicBrainz recording ID, or the URL of its MusicBrainz page.", options: {autocomplete: "off"}},
 									]
 								}
 								{
@@ -144,7 +174,12 @@
 				]}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
-				{do:"save-and-publish", outbox:false}
+				// RULE: A song federates only while its album is published
+				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
+					{do:"save-and-publish", outbox:true}
+				], else:[
+					{do:"save-and-publish", outbox:false}
+				]}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]
@@ -199,6 +234,7 @@
 											{type: "text", path: "data.producer", label: "Producer"},
 											{type: "text", path: "data.publisher", label: "Publisher"},
 											{type: "text", path: "data.isrc", label: "ISRC"},
+											{type: "text", path: "data.musicbrainzRecordingId", label: "MusicBrainz Recording ID", description: "Optional. Paste this song's MusicBrainz recording ID, or the URL of its MusicBrainz page.", options: {autocomplete: "off"}},
 										]
 									}
 									{
@@ -226,7 +262,12 @@
 				}
 				{do:"upload-attachments", category:"image", fieldname:"iconUrl", download-path:"iconUrl", accept-type:"image/*", maximum:1, rules:{width:800, height:800, types:["webp"]}}
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
-				{do:"save-and-publish"}
+				// RULE: A song federates only while its album is published
+				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
+					{do:"save-and-publish", outbox:true}
+				], else:[
+					{do:"save-and-publish", outbox:false}
+				]}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]
@@ -235,6 +276,10 @@
 		delete: {
 			roles: ["author"]
 			steps: [
+				// A published album's followers receive a Delete of the song
+				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
+					{do:"unpublish", state:"published", outbox:true, local:false}
+				]}
 				{do:"delete", title:"Delete this Song?"}
 				{do:"refresh-page"}
 			]
