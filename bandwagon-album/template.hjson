@@ -386,7 +386,7 @@
 			steps: [
 				{do:"if", condition:"{{.IsPublished}}", then:[
 					{do:"with-children", steps:[
-						{do:"unpublish", state:"published", outbox:true, local:false}
+						{do:"unpublish", state:"published", outbox:true}
 					]}
 				]}
 				{do:"delete"}
@@ -559,7 +559,7 @@
 							{target:"composer", path:"stream.data.composer"},
 							{target:"producer", path:"stream.data.producer"},
 							{target:"publisher", path:"stream.data.publisher"},
-							{target:"year", path:"parent.data.year"},
+							{target:"year", expression:'{{year (.parent.Data.GetString "releaseDate")}}'},
 							{target:"track", path:"stream.rank"},
 							{target:"genre", path:"stream.data.genre"}
 							{target:"copyright", path:"parent.data.license"},
@@ -578,7 +578,7 @@
 				{do:"as-modal", steps:[
 					{do:"view-html"}
 					{do:"with-children", steps:[
-						{do:"unpublish", state:"published", outbox:true, local:false}
+						{do:"unpublish", state:"published", outbox:true}
 					]}
 					{do:"unpublish", state:"default", outbox:"true"}
 					{do:"search-index"}
@@ -690,7 +690,7 @@
 						{target:"composer", path:"stream.data.composer"},
 						{target:"producer", path:"stream.data.producer"},
 						{target:"publisher", path:"stream.data.publisher"},
-						{target:"year", path:"parent.data.year"},
+						{target:"year", expression:'{{year (.parent.Data.GetString "releaseDate")}}'},
 						{target:"track", path:"stream.rank"},
 						{target:"genre", path:"stream.data.genre"}
 						{target:"copyright", path:"parent.data.license"},

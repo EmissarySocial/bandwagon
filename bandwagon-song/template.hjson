@@ -278,7 +278,7 @@
 			steps: [
 				// A published album's followers receive a Delete of the song
 				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
-					{do:"unpublish", state:"published", outbox:true, local:false}
+					{do:"unpublish", state:"published", outbox:true}
 				]}
 				{do:"delete", title:"Delete this Song?"}
 				{do:"refresh-page"}
@@ -340,7 +340,7 @@
 						{target:"composer", path:"stream.data.composer"},
 						{target:"producer", path:"stream.data.producer"},
 						{target:"publisher", path:"stream.data.publisher"},
-						{target:"year", expression:"{{year .parent.Data.ReleaseDate }}"},
+						{target:"year", expression:'{{year (.parent.Data.GetString "releaseDate")}}'},
 						{target:"track", path:"stream.rank"},
 						{target:"genre", path:"stream.data.genre"},
 						{target:"copyright", path:"parent.data.license"},
