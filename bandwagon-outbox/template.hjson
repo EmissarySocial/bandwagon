@@ -4,7 +4,7 @@
 	templateRole: user-outbox
 	model: User
 	label: Bandwagon Outbox
-	extends: ["user-outbox"]
+	extends: ["user-outbox", "base-outbox"]
 
 	schema: {
 		type: object
@@ -180,79 +180,119 @@
 			]
 		}
 
-		edit: {
-			roles: ["self"]
-			steps: [
-				{do: "as-modal", background:"view", steps:[
-					{
-						do: "edit"
-						form:{
-							label: Edit Profile
-							type:layout-tabs
-							children: [
-								{
-									type: layout-vertical
-									label: Basics
-									children: [
-										{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
-										{type:"textarea", path:"statusMessage", label:"About Me", description:"Displayed on your profile page. Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
-										{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
-										{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces.  (PUBLIC)"}
-										{type:"text", path:"data.musicbrainzArtistId", label:"MusicBrainz Artist ID", description:"Optional. Paste your MusicBrainz artist ID, or the URL of your MusicBrainz page. (PUBLIC)", options:{autocomplete:"off"}}
-									]
-								}
-								{
-									type: layout-vertical
-									label: Images
-									children: [
-										{type:"upload", path:"iconUrl", label:"Avatar Image", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-icon"}}
-										{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page. (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-image"}}
-										{type:"upload", path:"data.background-body", label:"Window Background Image", description:"Displays instead of the window's background color (PUBLIC)", options:{accept:"image/*", delete:"/@me/delete-background"}}
-									]
-								}
-								{
-									label: Colors
-									description: "Change the colors of your profile page to match your brand."
-									type:layout-vertical
-									children: [
-										{type:"colorpicker", path:"data.color-body", label:"Window Background"}
-										{type:"colorpicker", path:"data.color-banner", label:"Banner Background"}
-										{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
-										{type:"colorpicker", path:"data.color-page", label:"Page Background"}
-										{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
-									]
-								}
-								{
-									label: Style
-									type:layout-vertical
-									children: [
-										{type:"textarea", path:"data.stylesheet", label:"Custom CSS Stylesheet", description: "Experts only! &nbsp; <a href=https://bandwagon.fm/css-guide target=_blank>Read the CSS Guide &rarr;</a>", options:{rows:12, style:"font-family:monospace; font-size:14px;"}}
-									]
-								}
-								{
-									type:"layout-vertical"
-									label: Security
-									children: [
-										{type:"text", path:"username", label:"Username", description:"How others will identify you online. (PUBLIC)", options:{autocomplete:"off", validator:"/.validate/user/username"}}
-										{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in and support your account. Not shared. (PRIVATE)"}
-										{type:"toggle", path:"isPublic", options:{text:"Public (visible to people)"}}
-										{type:"toggle", path:"isIndexable", options:{text:"Indexable (request inclusion in search engines)"}}
-										{type:"toggle", path:"isBridgeBluesky", options:{text:"Bridge My Profile to Bluesky"}}
-										{type:"html", description:"<div class='float-right'><span hx-get='/@me/delete' class='margin-top-xs text-red clickable'>Delete my account</span></div>"}
-									]
-								}
-							]
-						}
+		settings-general-form: {
+			roles:["self"]
+			steps:[
+				{
+					do:"edit"
+					options:["endpoint:/@me/settings-general-form", "cancel-button:hide"]
+					form:{
+						type:layout-vertical
+						children:[
+							{type:"text", path:"userId", label:"Permanent ID", readOnly:true}
+							{type:"text", path:"displayName", label:"Name", description:"Displayed wherever someone sees your profile. (PUBLIC)"}
+							{type:"text", path:"username", label:"Username", description:"How others will identify you online. (PUBLIC)", options:{autocomplete:"off", validator:"/.validate/user/username"}}
+							{type:"text", path:"emailAddress", label:"Email Address", description:"Used to sign in and support your account. Not shared. (PRIVATE)"}
+							{type:"textarea", path:"statusMessage", label:"About Me", description:"Displayed on your profile page. Markdown is allowed. (PUBLIC)", options:{rows:4, showLimit:true}}
+							{type:"text", path:"location", label:"Location", description:"City, State, or whatever you want. (PUBLIC)"}
+							{type:"text", path:"data.tags", label:"Hashtags", description:"Enter #Hashtags separated by spaces.  (PUBLIC)"}
+							{type:"text", path:"data.musicbrainzArtistId", label:"MusicBrainz Artist ID", description:"Optional. Paste your MusicBrainz artist ID, or the URL of your MusicBrainz page. (PUBLIC)", options:{autocomplete:"off"}}
+							{type:"html", description:"<div class='float-right'><span hx-get='/@me/delete' class='margin-top-xs text-red clickable'>Delete my account</span></div>"}
+						]
 					}
-					{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", rules:{width:400, height:400, types:["webp"]}}
-					{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", rules:{types:["webp"]}}
-					{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", rules:{types:["webp"]}}
-					{do:"save"}
-					{do:"set-password"}
-					{do:"search-index"}
-					{do:"refresh-page"}
-				]}
-			] 
+				}
+				{do:"save"}
+				{do:"search-index"}
+				{do:"inline-save-button"}
+			]
+		}
+
+		settings-images-form: {
+			roles:["self"]
+			steps:[
+				{
+					do:"edit"
+					options:["endpoint:/@me/settings-images-form", "cancel-button:hide"]
+					form:{
+						type:layout-vertical
+						children:[
+							{type:"upload", path:"iconUrl", label:"Avatar Image", description:"Displayed next to your name as an icon. (PUBLIC)", options:{accept:"image/*", delete:"/@me/settings-icon-delete"}}
+							{type:"upload", path:"imageUrl", label:"Banner Image", description:"Displays at the top of your profile page. (PUBLIC)", options:{accept:"image/*", delete:"/@me/settings-image-delete"}}
+							{type:"upload", path:"data.background-body", label:"Window Background Image", description:"Displays instead of the window's background color (PUBLIC)", options:{accept:"image/*", delete:"/@me/settings-background-delete"}}
+						]
+					}
+				}
+				{do:"upload-attachments", category:"icon", fieldname:"iconUrl", attachment-path:"iconId", accept-type:"image/*", rules:{width:400, height:400, types:["webp"]}}
+				{do:"upload-attachments", category:"image", fieldname:"imageUrl", attachment-path:"imageId", accept-type:"image/*", rules:{types:["webp"]}}
+				{do:"upload-attachments", category:"body-background", fieldname:"data.background-body", download-path:"data.background-body", accept-type:"image/*", rules:{types:["webp"]}}
+				{do:"save"}
+				{do:"search-index"}
+				{do:"refresh-page"}
+			]
+		}
+
+		settings-background-delete: {
+			roles:["self"]
+			steps:[
+				{do:"set-data", values:{"data.background-body":""}}
+				{do:"delete-attachments", category:"body-background"}
+				{do:"save", comment:"Window background deleted by me"}
+				{do:"refresh-page"}
+			]
+		}
+
+		settings-colors: {
+			roles:["self"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
+
+		settings-colors-form: {
+			roles:["self"]
+			steps:[
+				{
+					do:"edit"
+					options:["endpoint:/@me/settings-colors-form", "cancel-button:hide"]
+					form:{
+						type:layout-vertical
+						children:[
+							{type:"colorpicker", path:"data.color-body", label:"Window Background"}
+							{type:"colorpicker", path:"data.color-banner", label:"Banner Background"}
+							{type:"colorpicker", path:"data.color-menu", label:"Menu Background"}
+							{type:"colorpicker", path:"data.color-page", label:"Page Background"}
+							{type:"colorpicker", path:"data.color-button", label:"Links and Buttons"}
+						]
+					}
+				}
+				{do:"save"}
+				{do:"inline-save-button"}
+			]
+		}
+
+		settings-style: {
+			roles:["self"]
+			steps:[
+				{do:"view-html"}
+			]
+		}
+
+		settings-style-form: {
+			roles:["self"]
+			steps:[
+				{
+					do:"edit"
+					options:["endpoint:/@me/settings-style-form", "cancel-button:hide"]
+					form:{
+						type:layout-vertical
+						children:[
+							{type:"textarea", path:"data.stylesheet", description:"Experts only! &nbsp; <a href=https://bandwagon.fm/css-guide target=_blank rel='noopener noreferrer'>Read the CSS Guide &rarr;</a>", options:{rows:12, style:"font-family:monospace; font-size:14px;"}}
+						]
+					}
+				}
+				{do:"save"}
+				{do:"inline-save-button"}
+			]
 		}
 
 		edit-status: {

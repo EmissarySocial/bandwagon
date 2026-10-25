@@ -12,7 +12,7 @@ A theme's `resources/` folder is different — it is served as plain static file
 
 ## `extends` composes templates, and the base templates live in Emissary
 
-A template inherits actions, states, roles, schema, and datasets from each entry in its `extends` array, and a value defined locally wins over an inherited one. `base-checkout`, `base-intent`, `base-social`, and `user-outbox` are **not in this repo** — they ship inside Emissary's `_embed/templates`, so an unexplained action or role usually comes from there. Within this repo, `bandwagon-search` is the base that `bandwagon-search-albums`, `-events`, `-news`, `-tracks`, and `-users` all extend.
+A template inherits actions, states, roles, schema, and datasets from each entry in its `extends` array, and a value defined locally wins over an inherited one. `base-checkout`, `base-intent`, `base-outbox`, `base-social`, and `user-outbox` are **not in this repo** — they ship inside Emissary's `_embed/templates`, so an unexplained action or role usually comes from there. Within this repo, `bandwagon-search` is the base that `bandwagon-search-albums`, `-events`, `-news`, `-tracks`, and `-users` all extend.
 
 ## `bandwagon-common` exists only to carry shared datasets
 
@@ -86,3 +86,7 @@ Emissary validates profile saves against its own `UserSchema`, not the `bandwago
 
 `data.musicbrainzReleaseId` (album), `data.musicbrainzRecordingId` (song) and `data.musicbrainzArtistId` (profile) use rosetta's `uuid` format, which keeps only the last path segment of a pasted MusicBrainz URL and lowercases it. A song's ID is a recording, not a track, whatever Picard's tag names say (MUSICBRAINZ D1, D5).
 
+
+## Profile editing lives in Settings, drawn by `bandwagon-outbox`
+
+Emissary's settings page at `/@me/settings/general` loads its Profile tabs from the user's outbox, through `base-outbox`. `bandwagon-outbox` overrides `settings-tabs.html` and the General and Images forms, and adds the Colors and Style tabs, so every band-profile field is edited there. The Edit Profile button on the band page opens that settings page, which also edits the profile links; there is no profile or links modal. Keep `base-outbox` in `bandwagon-outbox`'s own `extends`, and never ship that line to a server whose Emissary predates `base-outbox`, because an unknown `extends` halts first boot.

@@ -24,7 +24,7 @@
 					tags: {type:"string"}
 					releaseDate:{type:"string", format:"date"}
 					musicbrainzReleaseId: {type:"string", format:"uuid"}
-					links: {type:"object", wildcard: {type:"string", format:"uri"}}
+					links: {type:"object", wildcard: {type:"string", format:"url"}}
 					color: {type:"object", properties: {
 						body: {type:"string", format:"color"},
 						page: {type:"string", format:"color"}, 

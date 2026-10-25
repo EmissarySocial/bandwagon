@@ -74,7 +74,7 @@
 			{{- if ne "" .IconURL -}}
 				<img id="album-icon" src="{{.IconURL}}" class="media-Image width-100% rounded square" aria-hidden="true" style="view-transition-name: icon-{{.StreamID}}; object-fit:cover;">
 			{{- else if $canEdit -}}
-				<div class="rounded width-100% square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--black)" script="install blockselect()">
+				<div class="rounded width-100% square text-center flex-column flex-justify-center flex-align-center text-gray" style="border:solid 1px var(--gray100)" script="install blockselect()">
 					Click here to add album art
 				</div>
 			{{- end -}}
