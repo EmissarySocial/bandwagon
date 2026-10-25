@@ -103,8 +103,7 @@
 					</div>
 					{{- if $isMyself -}}
 						<div>
-							<button hx-get="/@me/edit" class="text-xs">Edit Profile</button>
-							<button hx-get="/@{{.UserID}}/links" class="text-xs">Edit Links</button>
+							<button hx-get="/@me/settings/general" class="text-xs">Edit Profile</button>
 							<button hx-post="/signout" class="text-xs">Sign Out</button>
 						</div>
 					{{- end -}}

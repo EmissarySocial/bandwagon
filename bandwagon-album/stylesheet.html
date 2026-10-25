@@ -19,7 +19,6 @@ body {
 	--text-color: {{$pageColorParsed.TextExt}};
 
 	{{if $pageColorParsed.IsLight }}
-		--white:  rgb(255, 255, 255);
 		--gray00: rgb(255, 255, 255);
 		--gray01: rgba(0, 0, 0, 0.01);
 		--gray02: rgba(0, 0, 0, 0.02);
@@ -37,9 +36,7 @@ body {
 		--gray80: rgba(0, 0, 0, 0.80);
 		--gray90: rgba(0, 0, 0, 0.90);
 		--gray100: rgb(0, 0, 0);
-		--black:   rgb(0, 0, 0);
 	{{- else }}
-		--white:  rgb(0, 0, 0) ;
 		--gray00: rgb(0, 0, 0) ;
 		--gray01: rgba(255, 255, 255, 0.01);
 		--gray02: rgba(255, 255, 255, 0.02);
@@ -57,7 +54,6 @@ body {
 		--gray80: rgba(255, 255, 255, 0.80);
 		--gray90: rgba(255, 255, 255, 0.90);
 		--gray100: rgb(255, 255, 255);
-		--black:   rgb(255, 255, 255);
 	{{- end -}}
 
 {{- end }}
