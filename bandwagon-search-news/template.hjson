@@ -26,6 +26,7 @@
 				properties: {
 					searchText: {type:"string"}
 					content: {type:"string"}
+					tags: {type:"string"}
 				}
 			}
 		}    
