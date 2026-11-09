@@ -50,7 +50,7 @@ Emissary's turboclick fires its synthetic click on the element actually pressed,
 
 ## `css` and `cssValue` are two different trust levels — pick deliberately
 
-Both cast a string to trusted CSS, but they earn it differently. `css` is a raw, unvalidated cast, kept for exactly one job: emitting the site owner's own hand-written stylesheet in [bandwagon-outbox/stylesheet.html](bandwagon-outbox/stylesheet.html), where the input is the owner's `data.stylesheet` field. `cssValue` validates a single computed property value against a conservative character allowlist and rejects `expression` and `url` spellings, returning empty rather than emitting anything unsafe. Anything your template *builds* — a concatenated gradient, an interpolated color — goes through `cssValue`, as the two tag views do with `background-image: {{$backgroundImage | cssValue }}`.
+Both cast a string to trusted CSS, but they earn it differently. `css` is a raw, unvalidated cast, kept for one job: emitting the band's own hand-written stylesheet in [bandwagon-outbox/stylesheet.html](bandwagon-outbox/stylesheet.html), which `header.html` places inside a `<style>` element on every visitor's page. That is safe only because `data.stylesheet` declares no format, so rosetta's no-html default strips every tag from it in the form and again on save, `</style>` included. Never give it a format that keeps tags, such as `markdown` or `unsafe-any`, and never hand `css` any other field. Emissary's `custom-css=remote` format would keep the band's CSS as written and still refuse `"</"`. `cssValue` validates a single computed property value against a conservative character allowlist and rejects `expression` and `url` spellings, returning empty rather than emitting anything unsafe. Anything your template *builds* — a concatenated gradient, an interpolated color — goes through `cssValue`, as the two tag views do with `background-image: {{$backgroundImage | cssValue }}`.
 
 ## A new funcmap helper couples this repo to a minimum Emissary version
 
@@ -78,9 +78,12 @@ Two idioms in those rules are not optional. The credit starts as a whole object 
 
 Emissary's `delete` step sends no ActivityPub activity, so a template that federates must run `{do:"unpublish", outbox:true}` before `{do:"delete"}`, as `bandwagon-event` and `bandwagon-news` do. `bandwagon-album` does not yet unpublish itself before deleting (BUG-257).
 
-## A profile field's format is not enforced yet
+## A profile field's format is enforced, and a stored value it refuses blocks every save
 
-Emissary validates profile saves against its own `UserSchema`, not the `bandwagon-outbox` template's schema (MUSICBRAINZ §1.1), so a `format` or limit declared under the outbox's `data` (the profile colors, `background-body`, `musicbrainzArtistId`) is stored unchecked. Album and song fields are enforced, because Stream builders use the template's schema. Do not rely on a profile field's format until that task ships.
+Emissary checks the `bandwagon-outbox` schema's `data` formats when a form writes them and again when `User.Save` stores the User (Emissary's `service/AGENTS.md`). A stored value that its format refuses, such as a color saved as `#abc`, makes every save of that User fail, a password reset included, until the value is repaired. Before declaring a new or stricter format here, find the stored values it would refuse (emissary-specs BUG-362 has the queries).
+
+- **`shop-url` declares no format on purpose.** No form has written it since 2025-09, so a `url` format could only ever refuse a value that a band typed before formats were checked, such as `www.example.com`.
+- **`data.stylesheet` and the `description-*` fields declare no format on purpose,** so they keep rosetta's no-html default, which strips tags and collapses line breaks. Moving the stylesheet to Emissary's `custom-css` waits on BUG-362's scan for bands that load files from other websites. A Markdown format would refuse any description holding HTML, and `edit` would drop it without a word (BUG-261, BUG-360).
 
 ## MusicBrainz IDs are stored as bare UUIDs
 

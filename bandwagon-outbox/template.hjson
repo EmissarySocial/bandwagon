@@ -17,7 +17,8 @@
 					show-albums: {type:"string"}
 					show-events: {type:"string"}
 					show-news: {type:"string"}
-					shop-url: {type:"string", format:"url"}
+					// No format: no form writes this, so a format could only refuse a stored value (see AGENTS.md)
+					shop-url: {type:"string"}
 					musicbrainzArtistId: {type:"string", format:"uuid"}
 					label-albums: {type:"string", default:"Releases"}
 					label-events: {type:"string", default:"Events"}
