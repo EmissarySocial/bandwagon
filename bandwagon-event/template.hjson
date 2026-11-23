@@ -25,6 +25,7 @@
 		published: {
 			label: Published,
 			description: This item is visible to everyone
+			outbox: true
 		}
 	}
 

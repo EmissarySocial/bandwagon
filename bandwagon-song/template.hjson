@@ -8,9 +8,14 @@
 	containedBy: ["album"]
 
 	states: {
+		default: {
+			label: Unpublished,
+			description: This item is only visible to its artist, because its album has not been published
+		}
 		published: {
 			label: Published,
 			description: This item has been published and is visible on the website
+			outbox: true
 		}
 	}
 
@@ -176,16 +181,19 @@
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				// RULE: A song federates only while its album is published
 				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
-					{do:"save-and-publish", outbox:true}
+					{do:"save-and-publish", state:"published", outbox:true}
 				], else:[
-					{do:"save-and-publish", outbox:false}
+					{do:"save-and-publish", state:"default", outbox:false}
 				]}
 				{do:"search-index"}
 				{do:"refresh-page"}
 			]
 		}
 		view: {
-			roles: ["anonymous"]
+			roles: ["author"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps: [
 				{do:"view-html"}
 			]
@@ -264,9 +272,9 @@
 				{do:"upload-attachments", action:"replace", category:"Audio", fieldname:"data.attachmentId", attachment-path:"data.attachmentId", filename-path:"data.attachmentFilename", accept-type:"audio/*", maximum:1}
 				// RULE: A song federates only while its album is published
 				{do:"if", condition:'{{(.Parent "view").IsPublished}}', then:[
-					{do:"save-and-publish", outbox:true}
+					{do:"save-and-publish", state:"published", outbox:true}
 				], else:[
-					{do:"save-and-publish", outbox:false}
+					{do:"save-and-publish", state:"default", outbox:false}
 				]}
 				{do:"search-index"}
 				{do:"refresh-page"}
@@ -294,7 +302,10 @@
 			]
 		}
 		prev: {
-			roles: ["anonymous"]
+			roles: ["author"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps:[
 				{do:"with-prev-sibling", steps:[
 					{do:"redirect-to", url:"/{{.StreamID}}"}
@@ -303,7 +314,10 @@
 		}
 
 		next: {
-			roles: ["anonymous"]
+			roles: ["author"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps:[
 				{do:"with-next-sibling", steps:[
 					{do:"redirect-to", url:"/{{.StreamID}}"}
@@ -312,7 +326,10 @@
 		}
 
 		audio: {
-			roles:["anonymous"]
+			roles: ["author"]
+			stateRoles: {
+				published: ["anonymous"]
+			}
 			steps:[
 				{
 					do:"view-attachment", 

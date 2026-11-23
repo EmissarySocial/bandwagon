@@ -44,6 +44,7 @@
 		published: {
 			label: Published,
 			description: This item has been published and is visible on the website
+			outbox: true
 		}
 	}
 	roles: {
@@ -539,7 +540,7 @@
 					{do:"set-state", state:"published"}
 					{do:"save-and-publish", outbox:"true", republish:true}
 					{do:"with-children", steps:[
-						{do:"save-and-publish", outbox:true}
+						{do:"save-and-publish", state:"published", outbox:true}
 					]}
 					{do:"search-index"}
 					{do:"make-archive", token:"FULL-ALBUM", depth:1, json:true, attachments:true, metadata: [
@@ -578,7 +579,7 @@
 				{do:"as-modal", steps:[
 					{do:"view-html"}
 					{do:"with-children", steps:[
-						{do:"unpublish", state:"published", outbox:true}
+						{do:"unpublish", state:"default", outbox:true}
 					]}
 					{do:"unpublish", state:"default", outbox:"true"}
 					{do:"search-index"}
