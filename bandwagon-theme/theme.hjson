@@ -1,13 +1,13 @@
 {
-	themeId: "bandwagon"
+	themeId: bandwagon
 	extends:["default"]
 	isVisible:true
-	category:"Custom"
-	label: "Bandwagon"
-	description: "Customized Theme for Bandwagon"
+	category: Custom
+	label: Bandwagon
+	description: Bandwagon is the social music server that brings your music to the social web.  Post albums, events, and notes from the band. Or set up online payments to sell music and subscriptions.
 	rank: 100
 	schema: {
-		type: "object", 
+		type: object
 		properties: {
 			iconId: {type:"string", format:"objectId"}
 			iconUrl: {type:"string", format:"url"}
@@ -22,15 +22,37 @@
 		children: [
 			{type: "text", label: "Website Name", path: "label", description: "Title of this website and domain."}
 			{type: "upload", label: "Icon", path: "iconUrl", description: "Icon for this website. Must be square. Often cropped to be a circle.", options:{accept:"image/*", delete:"/admin/domain/delete-icon"}}
-			{type: "upload", label: "Image", path: "imageUrl", description: "Image to display on signin pages and emails. Roughly 16:9 works best.", options:{accept:"image/*", delete:"/admin/domain/delete-image"}}
+			{type: "upload", label: "Image", path: "imageUrl", description: "Displays on signin pages and emails. Roughly 16:9 works best.", options:{accept:"image/*", delete:"/admin/domain/delete-image"}}
 			{type: "textarea", label: "Description", path: "description", options:{rows:5}}
 		]
 	}
+	startupTasks: [
+		{label:"Website Name and Logo", description:"Set some basic info about this domain.", href:"/admin/domain/index", value:"/admin/domain"}
+		{label:"Add Default Content", description:"Creates the Albums, Artists, Tracks, Events, and News pages, and sets your start pages.", href:"/startup/content", value:"/startup/content"}
+		{label:"New User Signups", description:"Let bands and musicians sign up for their own page.", href:"/admin/domain/signup", value:"/admin/domain/signup"}
+		{label:"Payments", description:"Connect Stripe, so artists can sell their music.", href:"/admin/connections/edit?providerId=STRIPE-CONNECT", value:"STRIPE-CONNECT"}
+		{label:"Maps: Address Geocoder", description:"Finds the map coordinates of each event's address.", href:"/admin/connections/edit?providerId=GEOCODE-ADDRESS", value:"GEOCODE-ADDRESS"}
+		{label:"Maps: Address Search", description:"Suggests places as people type a location.", href:"/admin/connections/edit?providerId=GEOCODE-AUTOCOMPLETE", value:"GEOCODE-AUTOCOMPLETE"}
+		{label:"Maps: Timezone Lookup", description:"Finds the local timezone of each event's location.", href:"/admin/connections/edit?providerId=GEOCODE-TIMEZONE", value:"GEOCODE-TIMEZONE"}
+	]
+	startupDefaultPages: {
+		anonymous: /albums
+		authenticated: /@me
+		owner: /admin
+	}
+	// Each search page links to the others at /artists, /albums, /tracks, /events, and /news, so these tokens are fixed
+	// Only Discover is in the top navigation.  The rest are its sub-pages, reached from each search page's sidebar
+	startupStreams: [
+		{templateId:"bandwagon-search-albums", token:"albums", label:"Discover", icon:"album", rank:1}
+		{templateId:"bandwagon-search-users", token:"artists", parentToken:"albums", label:"Artists", icon:"person", rank:1}
+		{templateId:"bandwagon-search-tracks", token:"tracks", parentToken:"albums", label:"Tracks", icon:"music", rank:2}
+		{templateId:"bandwagon-search-events", token:"events", parentToken:"albums", label:"Events", icon:"calendar", rank:3}
+		{templateId:"bandwagon-search-news", token:"news", parentToken:"albums", label:"News", icon:"newspaper", rank:4}
+	]
 	defaultFolders: [
-		{label:"Friends"}
-		{label:"Family"}
 		{label:"Music"}
-		{label:"Podcasts"}
-		{label:"Videos"}
+		{label:"Family"}
+		{label:"Fediverse"}
+		{label:"Events"}
 	]
 }

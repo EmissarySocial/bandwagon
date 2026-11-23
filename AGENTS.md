@@ -90,3 +90,16 @@ Emissary validates profile saves against its own `UserSchema`, not the `bandwago
 ## Profile editing lives in Settings, drawn by `bandwagon-outbox`
 
 Emissary's settings page at `/@me/settings/general` loads its Profile tabs from the user's outbox, through `base-outbox`. `bandwagon-outbox` overrides `settings-tabs.html` and the General and Images forms, and adds the Colors and Style tabs, so every band-profile field is edited there. The Edit Profile button on the band page opens that settings page, which also edits the profile links; there is no profile or links modal. Keep `base-outbox` in `bandwagon-outbox`'s own `extends`, and never ship that line to a server whose Emissary predates `base-outbox`, because an unknown `extends` halts first boot.
+
+## The theme's startup tasks depend on Emissary's own actions
+
+[theme.hjson](bandwagon-theme/theme.hjson) lists `startupTasks`, the rows of the first-run checklist at `/startup`. Each row is checked off in one of two ways, and neither is checked when this package loads:
+
+- **Its `value` is recorded by a `startup-save-task` step** in some action, usually one of Emissary's admin templates. A value that no step records leaves a row that can never be checked.
+- **Its `value` is a connection provider ID**, such as `GEOCODE-TILES`, and the row is checked while that connection is active. Link such a row to `/admin/connections/edit?providerId=...`.
+
+`startupDefaultPages` names the start pages that "Add Default Content" sets after it creates `startupStreams`. Each must be a path on the website, and the anonymous one must be a page that `startupStreams` creates. Emissary's `tests/startup_test.go` checks all of this for every sibling package, so run `go test ./tests` in Emissary after editing these lists.
+
+`startupStreams` seeds the five search pages as they are on bandwagon.fm: Discover (albums) at `/albums`, which is also the anonymous start page, then `/artists`, `/tracks`, `/events`, and `/news`. Those tokens are not free to change: every `view-sidebar.html` links to the other four by these exact paths, so a search page seeded under another token leaves its siblings' links answering 404.
+
+Only Discover is seeded at the top level, so it is the only search page in the top navigation. The other four carry `parentToken:"albums"`, which Emissary's startup reads to create them as its sub-pages; a token still resolves at the root, so `/artists` works for a sub-page. That is why those four templates list `search` in `containedBy`: Emissary refuses to place a page under a parent whose role its template does not name. A `parentToken` entry must come after its parent in the list.
